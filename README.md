@@ -4,11 +4,11 @@ The homepage for the WaveKat audio ecosystem — built with [Astro](https://astr
 
 ## What is WaveKat?
 
-Big companies have had intelligent phone systems, voice automation, and 24/7 call handling for years. Small businesses haven't — until now.
+For too long, powerful technology has been locked inside big companies — enterprise phone systems, intelligent automation, capabilities that only organizations with large engineering teams and big budgets could afford.
 
-WaveKat builds open-source, AI-powered voice solutions so that anyone can have the same capabilities. Our first solution, **wavekat-voice**, lets small businesses answer phones intelligently using AI — no enterprise budget required.
+We believe AI changes that. With AI, the same power is now available to everyone: normal people, small businesses, independent builders.
 
-Everything we build runs on a foundation of Rust audio libraries that handle the hard parts of voice pipelines: detecting when someone is speaking, knowing when they're done, and processing audio reliably.
+WaveKat is building open-source, AI-powered solutions to make that real. We start with audio and voice — because it's one of the most natural human interfaces, and one of the most underserved outside of the enterprise. But voice is just where we begin.
 
 ### Solutions
 
