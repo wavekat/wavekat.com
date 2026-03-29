@@ -1,16 +1,22 @@
 # wavekat.com
 
-The homepage for the WaveKat audio ecosystem — built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
+> Give every small business the voice of a big one.
 
-## What is WaveKat?
+WaveKat builds open-source, AI-powered solutions that put enterprise-grade capabilities in the hands of everyone. We start with voice — answering phones, handling conversations, being present 24/7 — the kind of thing only big companies could afford to do well. But voice is just where we begin.
 
-WaveKat is a collection of Rust libraries for audio intelligence in voice pipelines. Each library is independently usable and designed around a common set of audio primitives.
+### Solutions
 
-| Repo | Purpose |
-|------|---------|
-| [wavekat-core](https://github.com/wavekat/wavekat-core) | Shared audio types (`AudioFrame`, sample format conversion) |
-| [wavekat-vad](https://github.com/wavekat/wavekat-vad) | Voice Activity Detection — unified interface across WebRTC, Silero, TEN-VAD, FireRedVAD |
-| [wavekat-turn](https://github.com/wavekat/wavekat-turn) | Turn detection — end-of-utterance for voice pipelines |
+| Repo | What it does |
+|------|-------------|
+| [wavekat-voice](https://github.com/wavekat/wavekat-voice) | AI phone answering for small businesses — SIP/RTP, voice-to-voice conversations |
+
+### Libraries
+
+| Repo | What it does |
+|------|-------------|
+| [wavekat-core](https://github.com/wavekat/wavekat-core) | Shared audio primitives (`AudioFrame`, sample format conversion) |
+| [wavekat-vad](https://github.com/wavekat/wavekat-vad) | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD |
+| [wavekat-turn](https://github.com/wavekat/wavekat-turn) | Turn detection — knows when a speaker is done talking |
 | [wavekat-lab](https://github.com/wavekat/wavekat-lab) | Interactive dashboard for testing and comparing audio backends |
 
 ## Tech Stack
@@ -21,16 +27,32 @@ WaveKat is a collection of Rust libraries for audio intelligence in voice pipeli
 
 ## Development
 
+Requires Node 22 (`nvm use 22`).
+
 ```sh
-npm install
-npm run dev
+make install   # install dependencies
+make dev       # sync brand assets + start dev server
 ```
 
 ## Build
 
 ```sh
-npm run build
-# output → dist/
+make build     # sync brand assets + build → dist/
+```
+
+## Brand assets
+
+Logo and wordmark files are sourced from the `wavekat-brand` submodule — never edited here.
+
+```sh
+# After cloning, initialise the submodule:
+git submodule update --init
+
+# Pull brand updates:
+git submodule update --remote vendor/wavekat-brand
+
+# Re-sync assets into public/logos/:
+make sync
 ```
 
 ## License

@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Class-based dark mode — toggle .dark on <html> */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Library accent colors */
+  --color-wk-core: #00e676;
+  --color-wk-vad: #00bcd4;
+  --color-wk-turn: #7c4dff;
+  --color-wk-lab: #ffd740;
+  --color-wk-voice: #ff6d00;
+
+  /* Site background */
+  --color-wk-bg: #070b14;
+  --color-wk-surface: #0a1018;
+}
+
+@layer base {
+  * {
+    font-family: 'JetBrains Mono', Menlo, 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+}

@@ -1,0 +1,3 @@
+[submodule "vendor/wavekat-brand"]
+	path = vendor/wavekat-brand
+	url = https://github.com/wavekat/wavekat-brand.git
