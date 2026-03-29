@@ -1,22 +1,17 @@
 SHELL  := /bin/bash
 NVM    := . ~/.nvm/nvm.sh && nvm use 22 &&
-BRAND  := vendor/wavekat-brand/assets/logos
-
-.PHONY: dev build preview sync install clean
+.PHONY: dev build preview sync install clean cf-build
 
 # Copy needed assets from wavekat-brand submodule → public/
 sync:
-	@mkdir -p public/logos
-	cp $(BRAND)/wavekat-tight-light.svg public/logos/
-	cp $(BRAND)/wavekat-tight-dark.svg public/logos/
-	cp $(BRAND)/wavekat-icon-light.svg public/logos/
+	$(NVM) npm run sync
 
 # Start dev server
-dev: sync
+dev:
 	$(NVM) npm run dev
 
 # Build for production → dist/
-build: sync
+build:
 	$(NVM) npm run build
 
 # Preview production build locally
@@ -26,6 +21,10 @@ preview: build
 # Install dependencies
 install:
 	$(NVM) npm install
+
+# Simulate Cloudflare Pages build locally (no nvm, plain npm — mirrors CI)
+cf-build:
+	npm run cf:build
 
 # Remove build artifacts and synced assets
 clean:
