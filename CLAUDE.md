@@ -39,16 +39,32 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 - **Deployment**: Cloudflare Pages (consistent with rest of org)
 - **Domain**: `wavekat.com` — DNS to be pointed at Cloudflare Pages once site is ready
 
+## Brand assets
+
+Logo SVGs come from `vendor/wavekat-brand` (git submodule — source of truth, never edit here).
+`make sync` copies the needed files into `public/logos/` which is gitignored.
+`make dev` and `make build` both run sync automatically.
+
+To pull brand updates:
+```sh
+git submodule update --remote vendor/wavekat-brand
+make sync
+```
+
 ## Current state
 
 - Working branch: `feat/astro-scaffold`
-- Astro project has NOT been scaffolded yet — next step is Phase 1 of `docs/dev-plan.md`
-- `main` only has the README
+- Phase 1 (scaffold) and Phase 2 (homepage) are complete
+- Node ≥ 22 required — use `nvm use 22`, or just use `make` (it handles this)
+- Dark/light mode toggle with localStorage + OS preference fallback
+- `wavekat-brand` is a git submodule at `vendor/wavekat-brand`
 
 ## What to do next
 
-Start Phase 1 in `docs/dev-plan.md`:
-1. `npm create astro@latest` inside this repo (static output, minimal template)
-2. Add Tailwind CSS via `npx astro add tailwind`
-3. Add brand color tokens to `tailwind.config.mjs`
-4. Set up `wrangler.toml` for Cloudflare Pages
+Phase 3 in `docs/dev-plan.md`:
+- Pull remaining banners/assets from `wavekat-brand` as needed
+- Optimise any additional SVGs for web
+
+Phase 4:
+- Connect repo to Cloudflare Pages (build command: `make build`, Node version: 22)
+- Point `wavekat.com` DNS

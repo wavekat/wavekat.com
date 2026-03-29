@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+
+const libraries = [
+  {
+    name: 'wavekat-core',
+    description: 'Shared audio primitives — AudioFrame, sample format conversion.',
+    color: '#00e676',
+    href: 'https://github.com/wavekat/wavekat-core',
+  },
+  {
+    name: 'wavekat-vad',
+    description: 'Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD.',
+    color: '#00bcd4',
+    href: 'https://github.com/wavekat/wavekat-vad',
+  },
+  {
+    name: 'wavekat-turn',
+    description: 'Turn detection — knows when a speaker is done talking.',
+    color: '#7c4dff',
+    href: 'https://github.com/wavekat/wavekat-turn',
+  },
+  {
+    name: 'wavekat-lab',
+    description: 'Interactive dashboard for testing and comparing audio backends.',
+    color: '#ffd740',
+    href: 'https://github.com/wavekat/wavekat-lab',
+  },
+];
+---
+
+<Base>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between mb-20">
+      <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
+      <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
+      <button
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+      >
+        <span class="dark:hidden">dark</span>
+        <span class="hidden dark:inline">light</span>
+      </button>
+    </header>
+
+    <!-- Hero -->
+    <section class="mb-20">
+      <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+        Give every small business<br />the voice of a big one.
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
+        WaveKat builds open-source, AI-powered tools that put enterprise-grade capabilities in the hands of everyone.
+        We start with voice — answering phones, handling conversations, being present 24/7.
+      </p>
+    </section>
+
+    <!-- Solutions -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Solutions</h2>
+      <div class="rounded border p-5 dark:bg-wk-surface bg-gray-50" style="border-color: #ff6d0050">
+        <div class="flex items-center gap-2 mb-1.5">
+          <span class="text-sm font-bold" style="color: #ff6d00">wavekat-voice</span>
+          <span class="text-[10px] font-bold tracking-wider uppercase rounded px-2 py-0.5" style="color: #ff6d00; border: 1px solid #ff6d0060">coming soon</span>
+        </div>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          AI phone answering for small businesses — SIP/RTP, voice-to-voice conversations.
+        </p>
+      </div>
+    </section>
+
+    <!-- Libraries -->
+    <section class="mb-20">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Libraries</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {libraries.map((lib) => (
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+            style={`border-color: ${lib.color}40`}
+          >
+            <span class="text-sm font-bold block mb-1.5" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{lib.description}</p>
+            <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+              github.com/wavekat/{lib.name} →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 dark:border-white/10 pt-6 flex items-center justify-between text-xs text-gray-400 dark:text-gray-600">
+      <a
+        href="https://github.com/wavekat"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
+      >
+        github.com/wavekat
+      </a>
+      <span>Apache 2.0</span>
+    </footer>
+
+  </div>
+
+  <script>
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+</Base>

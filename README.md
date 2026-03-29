@@ -27,16 +27,32 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 
 ## Development
 
+Requires Node 22 (`nvm use 22`).
+
 ```sh
-npm install
-npm run dev
+make install   # install dependencies
+make dev       # sync brand assets + start dev server
 ```
 
 ## Build
 
 ```sh
-npm run build
-# output → dist/
+make build     # sync brand assets + build → dist/
+```
+
+## Brand assets
+
+Logo and wordmark files are sourced from the `wavekat-brand` submodule — never edited here.
+
+```sh
+# After cloning, initialise the submodule:
+git submodule update --init
+
+# Pull brand updates:
+git submodule update --remote vendor/wavekat-brand
+
+# Re-sync assets into public/logos/:
+make sync
 ```
 
 ## License
