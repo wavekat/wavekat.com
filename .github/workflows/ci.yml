@@ -11,9 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Rewrite submodule SSH alias to HTTPS
-        run: git config --global url."https://github.com/".insteadOf "git@github.com-wavekat:"
-
       - uses: actions/checkout@v4
         with:
           submodules: recursive
