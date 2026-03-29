@@ -9,6 +9,7 @@ sync:
 	@mkdir -p public/logos
 	cp $(BRAND)/wavekat-tight-light.svg public/logos/
 	cp $(BRAND)/wavekat-tight-dark.svg public/logos/
+	cp $(BRAND)/wavekat-icon-dark.svg public/logos/
 
 # Start dev server
 dev: sync
