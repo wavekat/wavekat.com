@@ -1,14 +1,8 @@
 # wavekat.com
 
-The homepage for the WaveKat audio ecosystem — built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
+> Give every small business the voice of a big one.
 
-## What is WaveKat?
-
-For too long, powerful technology has been locked inside big companies — enterprise phone systems, intelligent automation, capabilities that only organizations with large engineering teams and big budgets could afford.
-
-We believe AI changes that. With AI, the same power is now available to everyone: normal people, small businesses, independent builders.
-
-WaveKat is building open-source, AI-powered solutions to make that real. We start with audio and voice — because it's one of the most natural human interfaces, and one of the most underserved outside of the enterprise. But voice is just where we begin.
+WaveKat builds open-source, AI-powered solutions that put enterprise-grade capabilities in the hands of everyone. We start with voice — answering phones, handling conversations, being present 24/7 — the kind of thing only big companies could afford to do well. But voice is just where we begin.
 
 ### Solutions
 
