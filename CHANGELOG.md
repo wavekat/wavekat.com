@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.5...wavekat-com-v0.0.6) (2026-03-30)
+
+
+### Features
+
+* link footer version to GitHub source repo ([#17](https://github.com/wavekat/wavekat.com/issues/17)) ([b3d639b](https://github.com/wavekat/wavekat.com/commit/b3d639bdaa036ab3725c9b96fe4e5817db7c81e6))
+
 ## [0.0.5](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.4...wavekat-com-v0.0.5) (2026-03-30)
 
 
