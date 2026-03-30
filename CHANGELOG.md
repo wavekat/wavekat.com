@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.2...wavekat-com-v0.0.3) (2026-03-30)
+
+
+### Bug Fixes
+
+* dark favicon for dark browser chrome ([#9](https://github.com/wavekat/wavekat.com/issues/9)) ([cf1a2db](https://github.com/wavekat/wavekat.com/commit/cf1a2dbad85a66b81c7930ab081147ef26a48bb9))
+
 ## [0.0.2](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.1...wavekat-com-v0.0.2) (2026-03-30)
 
 
