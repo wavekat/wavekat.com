@@ -27,6 +27,7 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 ## Tech Stack
 
 - **Framework**: [Astro](https://astro.build) (static output)
+- **Icons**: [Lucide](https://lucide.dev) via `@lucide/astro`
 - **Styles**: [Tailwind CSS](https://tailwindcss.com)
 - **Deployment**: [Cloudflare Pages](https://pages.cloudflare.com)
 
