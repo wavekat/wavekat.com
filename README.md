@@ -1,5 +1,8 @@
 # wavekat.com
 
+[![CI](https://github.com/wavekat/wavekat.com/actions/workflows/ci.yml/badge.svg)](https://github.com/wavekat/wavekat.com/actions/workflows/ci.yml)
+[![Release](https://github.com/wavekat/wavekat.com/actions/workflows/release.yml/badge.svg)](https://github.com/wavekat/wavekat.com/actions/workflows/release.yml)
+
 > Give every small business the voice of a big one.
 
 [wavekat.com](https://wavekat.com)
