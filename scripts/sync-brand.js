@@ -11,13 +11,18 @@ import { join } from "path";
 import { fileURLToPath } from "url";
 
 const root = join(fileURLToPath(import.meta.url), "../..");
-const src = join(root, "vendor/wavekat-brand/assets/logos");
-const dest = join(root, "public/logos");
+const brandDir = join(root, "vendor/wavekat-brand/assets");
+const logoSrc = join(brandDir, "logos");
+const logoDest = join(root, "public/logos");
 
-const assets = [
+const logos = [
   "wavekat-tight-light.svg",
   "wavekat-tight-dark.svg",
   "wavekat-icon-light.svg",
+];
+
+const rootAssets = [
+  { src: "og.png", dest: join(root, "public/og.png") },
 ];
 
 // Initialise submodule if vendor directory is empty (Cloudflare Pages shallow clone)
@@ -30,9 +35,14 @@ try {
   // Not a fatal error — submodule may already be present
 }
 
-mkdirSync(dest, { recursive: true });
+mkdirSync(logoDest, { recursive: true });
 
-for (const file of assets) {
-  cpSync(join(src, file), join(dest, file));
+for (const file of logos) {
+  cpSync(join(logoSrc, file), join(logoDest, file));
   console.log(`synced ${file}`);
+}
+
+for (const { src, dest } of rootAssets) {
+  cpSync(join(brandDir, src), dest);
+  console.log(`synced ${src}`);
 }
