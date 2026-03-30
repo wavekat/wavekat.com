@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.4...wavekat-com-v0.0.5) (2026-03-30)
+
+
+### Features
+
+* add LinkedIn link with social icons to footer ([#15](https://github.com/wavekat/wavekat.com/issues/15)) ([7764402](https://github.com/wavekat/wavekat.com/commit/7764402860d27409b0d0bc8a6b22720f1f3c6ade))
+
 ## [0.0.4](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.3...wavekat-com-v0.0.4) (2026-03-30)
 
 
