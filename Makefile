@@ -1,6 +1,7 @@
 SHELL  := /bin/bash
 NVM    := . ~/.nvm/nvm.sh && nvm use 22 &&
-.PHONY: dev build preview sync install clean cf-build
+.PHONY: dev build preview sync install clean cf-build help
+.DEFAULT_GOAL := help
 
 # Copy needed assets from wavekat-brand submodule → public/
 sync:
@@ -29,3 +30,14 @@ cf-build:
 # Remove build artifacts and synced assets
 clean:
 	rm -rf dist/ .astro/ public/logos/
+
+help:
+	@echo "Usage: make <target>"
+	@echo ""
+	@echo "  dev       Start dev server"
+	@echo "  build     Build for production → dist/"
+	@echo "  preview   Build and preview locally"
+	@echo "  sync      Copy assets from wavekat-brand submodule"
+	@echo "  install   Install dependencies"
+	@echo "  cf-build  Simulate Cloudflare Pages build (no nvm)"
+	@echo "  clean     Remove dist/, .astro/, public/logos/"
