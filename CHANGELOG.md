@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.3...wavekat-com-v0.0.4) (2026-03-30)
+
+
+### Bug Fixes
+
+* improve OG metadata for sharing ([#11](https://github.com/wavekat/wavekat.com/issues/11)) ([f589e9c](https://github.com/wavekat/wavekat.com/commit/f589e9c6c5cb7a7832c40e5151f0d786534fee59))
+
 ## [0.0.3](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.2...wavekat-com-v0.0.3) (2026-03-30)
 
 
