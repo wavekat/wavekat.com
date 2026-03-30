@@ -17,12 +17,12 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 
 ### Libraries
 
-| Repo | What it does |
-|------|-------------|
-| [wavekat-core](https://github.com/wavekat/wavekat-core) | Shared audio primitives (`AudioFrame`, sample format conversion) |
-| [wavekat-vad](https://github.com/wavekat/wavekat-vad) | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD |
-| [wavekat-turn](https://github.com/wavekat/wavekat-turn) | Turn detection — knows when a speaker is done talking |
-| [wavekat-lab](https://github.com/wavekat/wavekat-lab) | Interactive dashboard for testing and comparing audio backends |
+| Repo | What it does | Stars |
+|------|-------------|-------|
+| [wavekat-core](https://github.com/wavekat/wavekat-core) | Shared audio primitives (`AudioFrame`, sample format conversion) | ![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-core?style=flat-square) |
+| [wavekat-vad](https://github.com/wavekat/wavekat-vad) | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD | ![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-vad?style=flat-square) |
+| [wavekat-turn](https://github.com/wavekat/wavekat-turn) | Turn detection — knows when a speaker is done talking | ![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-turn?style=flat-square) |
+| [wavekat-lab](https://github.com/wavekat/wavekat-lab) | Interactive dashboard for testing and comparing audio backends | ![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-lab?style=flat-square) |
 
 ## Tech Stack
 
