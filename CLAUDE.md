@@ -32,6 +32,13 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 |------|-------------|
 | `wavekat-brand` | All brand assets — banners, wordmarks, logos, icons, SVG sources |
 
+## Release
+
+This repo uses **release-please**. Since GitHub squash-merges use the PR title as the commit message, the PR title must have a conventional prefix or release-please will silently ignore the commit.
+
+- `feat:` / `fix:` → patch bump (pre-1.0, per `bump-patch-for-minor-pre-major`)
+- `feat!:` / `fix!:` → minor bump (pre-1.0)
+
 ## Tech decisions
 
 - **Framework**: Astro (static output) — chosen for speed, simplicity, GitHub Pages / Cloudflare Pages compatibility
