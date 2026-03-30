@@ -7,6 +7,7 @@ dist/
 
 # Generated from vendor/wavekat-brand submodule (run `make sync`)
 /public/logos/
+/public/og.png
 
 # Environment
 .env
