@@ -1,0 +1,124 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  updated?: Date;
+  author?: string;
+  tags?: string[];
+  ogImage?: string;
+}
+
+const { title, description, date, updated, author, tags = [], ogImage } = Astro.props;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Base title={`${title} — WaveKat`} description={description} ogImage={ogImage}>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between mb-12">
+      <a href="/" class="block">
+        <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
+        <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
+      </a>
+      <div class="flex items-center gap-3">
+        <a
+          href="/blog"
+          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+        >
+          blog
+        </a>
+        <button
+          id="theme-toggle"
+          aria-label="Toggle theme"
+          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+        >
+          <span class="dark:hidden">dark</span>
+          <span class="hidden dark:inline">light</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Post meta -->
+    <div class="mb-8">
+      <a href="/blog" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+        ← back to blog
+      </a>
+    </div>
+
+    <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">
+      {title}
+    </h1>
+
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400 dark:text-gray-500 mb-8">
+      <time datetime={date.toISOString()}>{formatDate(date)}</time>
+      {updated && (
+        <span>(updated {formatDate(updated)})</span>
+      )}
+      {author && <span>· {author}</span>}
+    </div>
+
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-8">
+        {tags.map((tag) => (
+          <span class="text-[10px] font-bold tracking-wider uppercase rounded px-2 py-0.5 border border-gray-200 dark:border-white/10 text-gray-400 dark:text-gray-500">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Post content -->
+    <article class="prose prose-sm dark:prose-invert prose-gray max-w-none
+      prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+      prose-a:text-gray-600 dark:prose-a:text-gray-300 prose-a:underline prose-a:underline-offset-2
+      prose-strong:text-gray-900 dark:prose-strong:text-white
+      prose-code:text-gray-700 dark:prose-code:text-gray-300
+      prose-pre:bg-gray-50 dark:prose-pre:bg-wk-surface prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-white/10">
+      <slot />
+    </article>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 dark:border-white/10 mt-16 pt-6 text-xs text-gray-400 dark:text-gray-600">
+      <a href="/blog" class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors">
+        ← back to blog
+      </a>
+    </footer>
+
+  </div>
+
+  <!-- JSON-LD structured data -->
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      datePublished: date.toISOString(),
+      ...(updated && { dateModified: updated.toISOString() }),
+      author: {
+        '@type': 'Organization',
+        name: author || 'WaveKat',
+        url: 'https://wavekat.com',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'WaveKat',
+        url: 'https://wavekat.com',
+      },
+    })}
+  />
+
+  <script>
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+</Base>

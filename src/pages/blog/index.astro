@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Base title="Blog — WaveKat" description="Engineering notes, announcements, and deep-dives from the WaveKat team.">
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between mb-20">
+      <a href="/" class="block">
+        <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
+        <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
+      </a>
+      <div class="flex items-center gap-3">
+        <a
+          href="/blog"
+          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+        >
+          blog
+        </a>
+        <button
+          id="theme-toggle"
+          aria-label="Toggle theme"
+          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+        >
+          <span class="dark:hidden">dark</span>
+          <span class="hidden dark:inline">light</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Blog listing -->
+    <section>
+      <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">Blog</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10">
+        Engineering notes, announcements, and deep-dives from the WaveKat team.
+      </p>
+
+      {posts.length === 0 ? (
+        <p class="text-sm text-gray-400 dark:text-gray-600">No posts yet. Check back soon.</p>
+      ) : (
+        <div class="grid gap-3">
+          {posts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              tags={post.data.tags}
+              slug={post.id}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 dark:border-white/10 mt-16 pt-6 flex items-center justify-between text-xs text-gray-400 dark:text-gray-600">
+      <a href="/" class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors">
+        ← wavekat.com
+      </a>
+      <span>Apache 2.0</span>
+    </footer>
+
+  </div>
+
+  <script>
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+</Base>
