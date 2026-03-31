@@ -1,5 +1,6 @@
 ---
 import Base from './Base.astro';
+import { Sun, Moon } from '@lucide/astro';
 
 interface Props {
   title: string;
@@ -36,10 +37,10 @@ const formatDate = (d: Date) =>
         <button
           id="theme-toggle"
           aria-label="Toggle theme"
-          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
         >
-          <span class="dark:hidden">dark</span>
-          <span class="hidden dark:inline">light</span>
+          <Sun class="w-4 h-4 dark:hidden" />
+          <Moon class="w-4 h-4 hidden dark:block" />
         </button>
       </div>
     </header>

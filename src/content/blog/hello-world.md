@@ -2,7 +2,7 @@
 title: "Hello, World — WaveKat Is Here"
 description: "Introducing WaveKat: open-source, AI-powered voice tools built for small businesses. Here's what we're building and why."
 date: 2026-04-01
-author: WaveKat
+author: Eason Guo
 tags: [announcement, open-source, voice-ai]
 ---
 
@@ -12,7 +12,7 @@ Small businesses miss calls. They can't afford a front desk or a 24/7 answering 
 
 ## What we're building
 
-WaveKat is an ecosystem of open-source tools for real-time voice AI:
+WaveKat is building tools for real-time voice AI. We're starting with a set of open-source libraries:
 
 - **wavekat-core** — shared audio primitives like `AudioFrame` and sample format conversion
 - **wavekat-vad** — voice activity detection with multiple backends (WebRTC, Silero, and more)
@@ -21,11 +21,9 @@ WaveKat is an ecosystem of open-source tools for real-time voice AI:
 
 On top of these libraries, we're building **wavekat-voice** — an AI phone answering system that plugs into standard SIP/RTP infrastructure. It picks up the phone, has a real conversation, and handles the call — so the business owner doesn't have to.
 
-## Why open source?
+## Why start with open source?
 
-Voice AI shouldn't be locked behind enterprise contracts. The underlying technology — VAD, turn detection, audio processing — is foundational infrastructure. We think it should be open, auditable, and free to build on.
-
-Every library in the WaveKat ecosystem ships under the **Apache 2.0** license.
+We believe the foundational technology — VAD, turn detection, audio processing — should be open, auditable, and free to build on. These building blocks shouldn't be locked behind enterprise contracts.
 
 ## What's next
 
