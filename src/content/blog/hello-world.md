@@ -6,7 +6,9 @@ author: Eason Guo
 tags: [announcement, open-source, voice-ai]
 ---
 
-We started WaveKat with a simple belief: **every small business deserves the voice of a big one.**
+We started WaveKat with a simple belief:
+
+> Every small business deserves the voice of a big one.
 
 Small businesses miss calls. They can't afford a front desk or a 24/7 answering service. Meanwhile, enterprise companies deploy sophisticated voice AI that handles thousands of calls a day. That gap shouldn't exist.
 
