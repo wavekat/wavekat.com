@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.7...wavekat-com-v0.0.8) (2026-03-31)
+
+
+### Features
+
+* add blog and SEO ([#21](https://github.com/wavekat/wavekat.com/issues/21)) ([1d65bad](https://github.com/wavekat/wavekat.com/commit/1d65bad6995518fd0e950528a6676f65e9e1d35d))
+
 ## [0.0.7](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.6...wavekat-com-v0.0.7) (2026-03-31)
 
 
