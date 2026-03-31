@@ -1,7 +1,7 @@
 ---
 import { execSync } from 'child_process';
 import Base from '../layouts/Base.astro';
-import { Mail } from '@lucide/astro';
+import { Mail, Sun, Moon } from '@lucide/astro';
 import { version } from '../../package.json';
 
 let siteVersion: string;
@@ -46,14 +46,22 @@ const libraries = [
     <header class="flex items-center justify-between mb-20">
       <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
       <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
-      <button
-        id="theme-toggle"
-        aria-label="Toggle theme"
-        class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
-      >
-        <span class="dark:hidden">dark</span>
-        <span class="hidden dark:inline">light</span>
-      </button>
+      <div class="flex items-center gap-3">
+        <a
+          href="/blog"
+          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
+        >
+          blog
+        </a>
+        <button
+          id="theme-toggle"
+          aria-label="Toggle theme"
+          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+        >
+          <Sun class="w-4 h-4 dark:hidden" />
+          <Moon class="w-4 h-4 hidden dark:block" />
+        </button>
+      </div>
     </header>
 
     <!-- Hero -->
@@ -144,7 +152,7 @@ const libraries = [
       >
         {siteVersion}
       </a>
-      <span>Apache 2.0</span>
+      <span>© {new Date().getFullYear()} WaveKat</span>
     </footer>
 
   </div>

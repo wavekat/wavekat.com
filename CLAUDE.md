@@ -68,7 +68,7 @@ make sync
 
 ## What to do next
 
-Phase 3 in `docs/dev-plan.md`:
+Phase 3 in `docs/01-dev-plan.md`:
 - Pull remaining banners/assets from `wavekat-brand` as needed
 - Optimise any additional SVGs for web
 
