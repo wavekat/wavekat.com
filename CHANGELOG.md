@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.6...wavekat-com-v0.0.7) (2026-03-31)
+
+
+### Features
+
+* add Google Analytics tracking ([#19](https://github.com/wavekat/wavekat.com/issues/19)) ([ce9dc7b](https://github.com/wavekat/wavekat.com/commit/ce9dc7be2ad71acac0778c9c8a08183924555f66))
+
 ## [0.0.6](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.5...wavekat-com-v0.0.6) (2026-03-30)
 
 
