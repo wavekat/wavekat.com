@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.8...wavekat-com-v0.0.9) (2026-04-01)
+
+
+### Bug Fixes
+
+* blog favicon and dark mode text ([#23](https://github.com/wavekat/wavekat.com/issues/23)) ([cc30f5f](https://github.com/wavekat/wavekat.com/commit/cc30f5f3638c70de3cdc9bab914451e88628d3ce))
+
 ## [0.0.8](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.7...wavekat-com-v0.0.8) (2026-03-31)
 
 
