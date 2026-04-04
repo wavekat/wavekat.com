@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.9...wavekat-com-v0.0.10) (2026-04-04)
+
+
+### Features
+
+* add Common Voice Explorer ([#25](https://github.com/wavekat/wavekat.com/issues/25)) ([a2b7e7f](https://github.com/wavekat/wavekat.com/commit/a2b7e7f2f4bafdbfc08b97913a890e9352754e33))
+
 ## [0.0.9](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.8...wavekat-com-v0.0.9) (2026-04-01)
 
 
