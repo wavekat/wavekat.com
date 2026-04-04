@@ -27,6 +27,11 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 | `wavekat-turn` | Turn detection — end-of-utterance for voice pipelines | Purple `#7c4dff` |
 | `wavekat-lab` | Interactive dashboard for testing audio backends | Amber `#ffd740` |
 
+### Tools
+| Name | What it does | URL |
+|------|-------------|-----|
+| Common Voice Explorer | Browse, filter, and review Mozilla Common Voice dataset clips | `commonvoice-explorer.wavekat.com` |
+
 ### Other
 | Repo | What it does |
 |------|-------------|
