@@ -15,6 +15,12 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 |------|-------------|
 | [wavekat-voice](https://github.com/wavekat/wavekat-voice) | AI phone answering for small businesses — SIP/RTP, voice-to-voice conversations |
 
+### Tools
+
+| Name | What it does |
+|------|-------------|
+| [Common Voice Explorer](https://commonvoice-explorer.wavekat.com/) | Browse, filter, and review Mozilla Common Voice dataset clips |
+
 ### Libraries
 
 | Repo | What it does | Stars |
