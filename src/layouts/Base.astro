@@ -59,8 +59,8 @@ const ogImageURL = new URL(ogImage, Astro.site);
     <script is:inline>
       // Apply theme before first paint to prevent flash
       const saved = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      if (saved !== 'light' && (saved === 'dark' || !prefersLight)) {
         document.documentElement.classList.add('dark');
       }
     </script>
