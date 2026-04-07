@@ -17,9 +17,9 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 
 ### Tools
 
-| Name | What it does | URL |
-|------|-------------|-----|
-| [Common Voice Explorer](https://github.com/wavekat/wavekat-lab/tree/main/tools/cv-explorer) | Browse, filter, and review Mozilla Common Voice dataset clips | [commonvoice-explorer.wavekat.com](https://commonvoice-explorer.wavekat.com/) |
+| Name | What it does |
+|------|-------------|
+| [Common Voice Explorer](https://github.com/wavekat/wavekat-lab/tree/main/tools/cv-explorer) | Browse, filter, and review Mozilla Common Voice dataset clips<br>[commonvoice-explorer.wavekat.com](https://commonvoice-explorer.wavekat.com/) |
 
 ### Libraries
 
