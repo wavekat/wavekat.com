@@ -29,6 +29,7 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 | [wavekat-vad](https://github.com/wavekat/wavekat-vad) | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-vad?style=flat-square)](https://github.com/wavekat/wavekat-vad) |
 | [wavekat-turn](https://github.com/wavekat/wavekat-turn) | Turn detection — knows when a speaker is done talking | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-turn?style=flat-square)](https://github.com/wavekat/wavekat-turn) |
 | [wavekat-lab](https://github.com/wavekat/wavekat-lab) | Interactive dashboard for testing and comparing audio backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-lab?style=flat-square)](https://github.com/wavekat/wavekat-lab) |
+| [wavekat-tts](https://github.com/wavekat/wavekat-tts) | Text-to-speech synthesis — unified Rust interface for multiple TTS backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-tts?style=flat-square)](https://github.com/wavekat/wavekat-tts) |
 
 ## Tech Stack
 
