@@ -5,7 +5,7 @@
 
 > Give every small business the voice of a big one.
 
-[wavekat.com](https://wavekat.com)
+[https://wavekat.com](https://wavekat.com)
 
 WaveKat builds open-source, AI-powered solutions that put enterprise-grade capabilities in the hands of everyone. We start with voice — answering phones, handling conversations, being present 24/7 — the kind of thing only big companies could afford to do well. But voice is just where we begin.
 
@@ -19,7 +19,7 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 
 | Name | What it does |
 |------|-------------|
-| [Common Voice Explorer](https://commonvoice-explorer.wavekat.com/) | Browse, filter, and review Mozilla Common Voice dataset clips |
+| [Common Voice Explorer](https://github.com/wavekat/wavekat-lab/tree/main/tools/cv-explorer) | Browse, filter, and review Mozilla Common Voice dataset clips<br>**Try it:** [https://commonvoice-explorer.wavekat.com](https://commonvoice-explorer.wavekat.com/) |
 
 ### Libraries
 
@@ -29,6 +29,7 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 | [wavekat-vad](https://github.com/wavekat/wavekat-vad) | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-vad?style=flat-square)](https://github.com/wavekat/wavekat-vad) |
 | [wavekat-turn](https://github.com/wavekat/wavekat-turn) | Turn detection — knows when a speaker is done talking | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-turn?style=flat-square)](https://github.com/wavekat/wavekat-turn) |
 | [wavekat-lab](https://github.com/wavekat/wavekat-lab) | Interactive dashboard for testing and comparing audio backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-lab?style=flat-square)](https://github.com/wavekat/wavekat-lab) |
+| [wavekat-tts](https://github.com/wavekat/wavekat-tts) | Text-to-speech synthesis — unified Rust interface for multiple TTS backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-tts?style=flat-square)](https://github.com/wavekat/wavekat-tts) |
 
 ## Tech Stack
 

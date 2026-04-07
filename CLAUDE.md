@@ -26,6 +26,7 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 | `wavekat-vad` | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD | Cyan `#00bcd4` |
 | `wavekat-turn` | Turn detection — end-of-utterance for voice pipelines | Purple `#7c4dff` |
 | `wavekat-lab` | Interactive dashboard for testing audio backends | Amber `#ffd740` |
+| `wavekat-tts` | Text-to-speech synthesis for voice pipelines | Pink `#ff4081` |
 
 ### Tools
 | Name | What it does | URL |
