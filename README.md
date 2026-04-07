@@ -5,7 +5,7 @@
 
 > Give every small business the voice of a big one.
 
-[wavekat.com](https://wavekat.com)
+[https://wavekat.com](https://wavekat.com)
 
 WaveKat builds open-source, AI-powered solutions that put enterprise-grade capabilities in the hands of everyone. We start with voice — answering phones, handling conversations, being present 24/7 — the kind of thing only big companies could afford to do well. But voice is just where we begin.
 
