@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.10...wavekat-com-v0.0.11) (2026-04-07)
+
+
+### Features
+
+* add wavekat-tts library ([#27](https://github.com/wavekat/wavekat.com/issues/27)) ([8777fc6](https://github.com/wavekat/wavekat.com/commit/8777fc675293228a1df6522e91499ea97e6942a8))
+
 ## [0.0.10](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.9...wavekat-com-v0.0.10) (2026-04-04)
 
 
