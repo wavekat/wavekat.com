@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.12](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.11...wavekat-com-v0.0.12) (2026-04-20)
+
+
+### Features
+
+* add crates.io download badges ([#29](https://github.com/wavekat/wavekat.com/issues/29)) ([0513101](https://github.com/wavekat/wavekat.com/commit/05131014b3f2cca2cad846d9b219f98321b38515))
+* add CV Explorer blog post ([#31](https://github.com/wavekat/wavekat.com/issues/31)) ([3e33fb0](https://github.com/wavekat/wavekat.com/commit/3e33fb016e64fbbaca2f5c81d29714f9f028a8d0))
+
 ## [0.0.11](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.10...wavekat-com-v0.0.11) (2026-04-07)
 
 
