@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.13](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.12...wavekat-com-v0.0.13) (2026-04-22)
+
+
+### Features
+
+* add Buttondown subscribe form ([#32](https://github.com/wavekat/wavekat.com/issues/32)) ([678b1ce](https://github.com/wavekat/wavekat.com/commit/678b1ced71262d3805d040ca5293304885f8bdd9))
+
 ## [0.0.12](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.11...wavekat-com-v0.0.12) (2026-04-20)
 
 
