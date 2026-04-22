@@ -1,6 +1,7 @@
 ---
 import { execSync } from 'child_process';
 import Base from '../layouts/Base.astro';
+import Subscribe from '../components/Subscribe.astro';
 import { Mail, Sun, Moon } from '@lucide/astro';
 import { version } from '../../package.json';
 
@@ -138,6 +139,8 @@ const libraries = [
         ))}
       </div>
     </section>
+
+    <Subscribe />
 
     <!-- Footer -->
     <footer class="border-t border-gray-100 dark:border-white/10 pt-6 flex items-center justify-between text-xs text-gray-400 dark:text-gray-600">
