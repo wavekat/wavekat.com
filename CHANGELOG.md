@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.14](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.13...wavekat-com-v0.0.14) (2026-04-27)
+
+
+### Features
+
+* add wavekat-cli to libraries ([#34](https://github.com/wavekat/wavekat.com/issues/34)) ([83fb52d](https://github.com/wavekat/wavekat.com/commit/83fb52dbad5d2800bd4524e342d40eaf38566771))
+
 ## [0.0.13](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.12...wavekat-com-v0.0.13) (2026-04-22)
 
 
