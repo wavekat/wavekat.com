@@ -1,0 +1,71 @@
+---
+import Voice from '../../layouts/Voice.astro';
+import TalkCTA from '../../components/TalkCTA.astro';
+---
+
+<Voice
+  title="Open-source AI phone answering"
+  description="An open-source AI phone agent for small businesses. We're early — looking for businesses to build it with."
+>
+  <!-- Hero -->
+  <section class="mb-16">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="text-[10px] font-bold tracking-wider uppercase rounded px-2 py-0.5" style="color: #ff6d00; border: 1px solid #ff6d0060">in development</span>
+    </div>
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      AI phone answering<br />for small business.<br />
+      <span style="color: #ff6d00">Built in the open.</span>
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      We're building an open-source AI agent that answers your phone — books appointments, screens calls, takes messages. It runs on standard SIP, sounds natural, and there's no black-box vendor between you and your customers.
+    </p>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mt-3">
+      It's still early. We're not selling anything yet — we're looking for small businesses to build it with.
+    </p>
+  </section>
+
+  <!-- If this sounds familiar -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">If this sounds familiar</h2>
+    <ul class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+      <li class="flex gap-3">
+        <span style="color: #ff6d00" aria-hidden="true">→</span>
+        <span>You're missing calls during busy hours, evenings, or weekends — and customers don't leave voicemails.</span>
+      </li>
+      <li class="flex gap-3">
+        <span style="color: #ff6d00" aria-hidden="true">→</span>
+        <span>You answer every call yourself because the alternatives are expensive or feel impersonal.</span>
+      </li>
+      <li class="flex gap-3">
+        <span style="color: #ff6d00" aria-hidden="true">→</span>
+        <span>You want a phone presence that sounds like your business — not a generic call center.</span>
+      </li>
+      <li class="flex gap-3">
+        <span style="color: #ff6d00" aria-hidden="true">→</span>
+        <span>You don't want your customer data sitting inside a vendor you can't inspect.</span>
+      </li>
+    </ul>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-6">
+      …then we'd like to talk. We're trying to build the right thing, and the only way to do that is to learn from the people who'd actually use it.
+    </p>
+  </section>
+
+  <!-- Where to next -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Read more</h2>
+    <a
+      href="/voice/use-cases/"
+      class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+    >
+      <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">Use cases</span>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
+        Who we're starting with — clinics, salons, trades, law firms, and more.
+      </p>
+      <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+        wavekat.com/voice/use-cases →
+      </span>
+    </a>
+  </section>
+
+  <TalkCTA showMailto={true} />
+</Voice>

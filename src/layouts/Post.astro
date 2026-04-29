@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
-import { Sun, Moon } from '@lucide/astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -21,29 +22,7 @@ const formatDate = (d: Date) =>
 <Base title={`${title} — WaveKat`} description={description} ogImage={ogImage}>
   <div class="max-w-3xl mx-auto px-6 py-12">
 
-    <!-- Header -->
-    <header class="flex items-center justify-between mb-12">
-      <a href="/" class="block">
-        <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
-        <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
-      </a>
-      <div class="flex items-center gap-3">
-        <a
-          href="/blog"
-          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
-        >
-          blog
-        </a>
-        <button
-          id="theme-toggle"
-          aria-label="Toggle theme"
-          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-        >
-          <Sun class="w-4 h-4 dark:hidden" />
-          <Moon class="w-4 h-4 hidden dark:block" />
-        </button>
-      </div>
-    </header>
+    <Header active="blog" />
 
     <!-- Post meta -->
     <div class="mb-8">
@@ -84,12 +63,15 @@ const formatDate = (d: Date) =>
       <slot />
     </article>
 
-    <!-- Footer -->
-    <footer class="border-t border-gray-100 dark:border-white/10 mt-16 pt-6 text-xs text-gray-400 dark:text-gray-600">
-      <a href="/blog" class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors">
+    <div class="mt-16">
+      <a href="/blog" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
         ← back to blog
       </a>
-    </footer>
+    </div>
+
+    <div class="mt-20">
+      <Footer />
+    </div>
 
   </div>
 
@@ -115,11 +97,4 @@ const formatDate = (d: Date) =>
       },
     })}
   />
-
-  <script>
-    document.getElementById('theme-toggle')?.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-  </script>
 </Base>

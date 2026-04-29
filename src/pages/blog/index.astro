@@ -1,8 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import PostCard from '../../components/PostCard.astro';
-import { Sun, Moon } from '@lucide/astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -11,32 +12,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 <Base title="Blog — WaveKat" description="Engineering notes, announcements, and deep-dives from the WaveKat team.">
   <div class="max-w-3xl mx-auto px-6 py-12">
 
-    <!-- Header -->
-    <header class="flex items-center justify-between mb-20">
-      <a href="/" class="block">
-        <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
-        <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
-      </a>
-      <div class="flex items-center gap-3">
-        <a
-          href="/blog"
-          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1"
-        >
-          blog
-        </a>
-        <button
-          id="theme-toggle"
-          aria-label="Toggle theme"
-          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-        >
-          <Sun class="w-4 h-4 dark:hidden" />
-          <Moon class="w-4 h-4 hidden dark:block" />
-        </button>
-      </div>
-    </header>
+    <Header active="blog" />
 
     <!-- Blog listing -->
-    <section>
+    <section class="mb-20">
       <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">Blog</h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10">
         Engineering notes, announcements, and deep-dives from the WaveKat team.
@@ -59,20 +38,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       )}
     </section>
 
-    <!-- Footer -->
-    <footer class="border-t border-gray-100 dark:border-white/10 mt-16 pt-6 flex items-center justify-between text-xs text-gray-400 dark:text-gray-600">
-      <a href="/" class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors">
-        ← wavekat.com
-      </a>
-      <span>© {new Date().getFullYear()} WaveKat</span>
-    </footer>
+    <Footer />
 
   </div>
-
-  <script>
-    document.getElementById('theme-toggle')?.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-  </script>
 </Base>

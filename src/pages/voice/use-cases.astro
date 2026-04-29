@@ -1,0 +1,66 @@
+---
+import Voice from '../../layouts/Voice.astro';
+import TalkCTA from '../../components/TalkCTA.astro';
+
+const cases = [
+  {
+    title: 'Clinics & dental offices',
+    pain: 'Front desk is busy with in-person patients. Calls go to voicemail, appointments don\'t get booked.',
+  },
+  {
+    title: 'Salons & spas',
+    pain: 'Stylists can\'t pause a service to pick up the phone. Booking inquiries fall through.',
+  },
+  {
+    title: 'Trades — plumbers, electricians, HVAC',
+    pain: 'You\'re on a job site. The phone rings. The job costs you the call, or the call costs you the job.',
+  },
+  {
+    title: 'Law firms (intake)',
+    pain: 'Initial intake calls are repetitive but high-stakes. A missed call is a missed client.',
+  },
+  {
+    title: 'Restaurants & takeout',
+    pain: 'Phone rings during the dinner rush. Reservations and orders get dropped.',
+  },
+  {
+    title: 'Property management',
+    pain: 'After-hours maintenance calls, tenant questions, leasing inquiries — all needing a real answer.',
+  },
+];
+---
+
+<Voice
+  title="Use cases"
+  description="Who we want to talk to first — small businesses where missed calls mean lost customers."
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      Who we want to talk to
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      We're starting with small businesses where missed calls mean lost customers. If you're one of these — or something close — we'd love to learn how you handle the phone today, what's broken, and what would actually help.
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Examples</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+      {cases.map((c) => (
+        <div>
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{c.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{c.pain}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Don't see yours?</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+      This list is who we're starting with — not who we're limited to. If your business runs on the phone and you've been frustrated by the alternatives, we want to hear from you.
+    </p>
+  </section>
+
+  <TalkCTA />
+</Voice>
