@@ -1,0 +1,72 @@
+---
+import { Calendar } from '@lucide/astro';
+
+interface Props {
+  marginTop?: string;
+}
+
+const { marginTop = 'mt-16' } = Astro.props;
+
+const bookingUrl = 'https://calendar.app.google/A9sGuckUm2pVpuKa9';
+---
+
+<section class={marginTop}>
+  <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Talk to us</h2>
+  <div class="rounded p-5 bg-gray-50 dark:bg-wk-surface">
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-xl">
+      We're looking for small businesses to build this with. Pick a time below — no pitch, no slide deck. We just want to learn how the phone works in your business today.
+    </p>
+
+    <a
+      href={bookingUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+      style="background-color: #ff6d00"
+    >
+      <Calendar class="w-4 h-4" />
+      Book a call
+    </a>
+
+    <div class="mt-8">
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
+        Not ready to book? Drop your email and we'll keep you posted.
+      </p>
+      <form
+        action="https://buttondown.com/api/emails/embed-subscribe/wavekat"
+        method="post"
+        target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/wavekat', 'popupwindow')"
+        class="flex flex-col sm:flex-row gap-2"
+      >
+        <input type="hidden" name="tag" value="voice-interest" />
+        <label for="talk-cta-email" class="sr-only">Email address</label>
+        <input
+          type="email"
+          name="email"
+          id="talk-cta-email"
+          required
+          placeholder="you@example.com"
+          class="flex-1 min-w-0 rounded border border-gray-200 dark:border-white/10 bg-white dark:bg-black px-3 py-2 text-xs text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:outline-none focus:border-gray-400 dark:focus:border-white/30 transition-colors"
+        />
+        <button
+          type="submit"
+          class="rounded border border-gray-300 dark:border-white/20 bg-white dark:bg-black px-4 py-2 text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+        >
+          Keep me posted
+        </button>
+      </form>
+    </div>
+
+    <p class="text-xs text-gray-400 dark:text-gray-600 mt-5 leading-relaxed">
+      Or email{' '}
+      <a
+        href="mailto:eason@wavekat.com?subject=wavekat-voice"
+        class="text-gray-600 dark:text-gray-300 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        eason@wavekat.com
+      </a>{' '}
+      directly.
+    </p>
+  </div>
+</section>

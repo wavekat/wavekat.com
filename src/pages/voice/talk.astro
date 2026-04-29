@@ -1,0 +1,85 @@
+---
+import Voice from '../../layouts/Voice.astro';
+import { Calendar } from '@lucide/astro';
+
+const bookingUrl = 'https://calendar.app.google/A9sGuckUm2pVpuKa9';
+---
+
+<Voice
+  title="Talk to us"
+  description="We're looking for small businesses to talk to. Book a call — no pitch, we just want to learn."
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      Talk to us
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      We're trying to build the right thing. The only way to do that is to talk to the people who'd actually use it.
+    </p>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mt-3">
+      Pick a time that works. No pitch, no slide deck — we want to go deep on how the phone works in your business today and what's broken about it.
+    </p>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Book a call</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-xl">
+      Pick a time directly on our calendar — confirmation lands in your inbox right away.
+    </p>
+    <a
+      href={bookingUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+      style="background-color: #ff6d00"
+    >
+      <Calendar class="w-4 h-4" />
+      Book a call
+    </a>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Not ready yet?</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-xl">
+      Drop your email and we'll keep you posted as the project takes shape.
+    </p>
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/wavekat"
+      method="post"
+      target="popupwindow"
+      onsubmit="window.open('https://buttondown.com/wavekat', 'popupwindow')"
+      class="flex flex-col sm:flex-row gap-2"
+    >
+      <input type="hidden" name="tag" value="voice-interest" />
+      <label for="talk-email" class="sr-only">Email address</label>
+      <input
+        type="email"
+        name="email"
+        id="talk-email"
+        required
+        placeholder="you@example.com"
+        class="flex-1 min-w-0 rounded border border-gray-200 dark:border-white/10 bg-white dark:bg-black px-3 py-2 text-xs text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:outline-none focus:border-gray-400 dark:focus:border-white/30 transition-colors"
+      />
+      <button
+        type="submit"
+        class="rounded border border-gray-300 dark:border-white/20 bg-white dark:bg-black px-4 py-2 text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+      >
+        Keep me posted
+      </button>
+    </form>
+  </section>
+
+  <section>
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Or email directly</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+      Prefer to write a few sentences about your business right now? Email{' '}
+      <a
+        href="mailto:eason@wavekat.com?subject=wavekat-voice&body=Hi%20%E2%80%94%20a%20bit%20about%20my%20business%3A%0A%0A-%20What%20we%20do%3A%0A-%20How%20the%20phone%20works%20today%3A%0A-%20What's%20broken%20about%20it%3A%0A%0AThanks!"
+        class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity"
+      >
+        eason@wavekat.com
+      </a>
+      — there's a short template pre-filled for you, but feel free to ignore it.
+    </p>
+  </section>
+</Voice>
