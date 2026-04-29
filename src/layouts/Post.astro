@@ -44,10 +44,10 @@ const formatDate = (d: Date) =>
     </div>
 
     {tags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-8">
+      <div class="flex flex-wrap gap-3 mb-8">
         {tags.map((tag) => (
-          <span class="text-[10px] font-bold tracking-wider uppercase rounded px-2 py-0.5 border border-gray-200 dark:border-white/10 text-gray-400 dark:text-gray-500">
-            {tag}
+          <span class="text-[10px] tracking-wider uppercase text-gray-400 dark:text-gray-600">
+            #{tag}
           </span>
         ))}
       </div>

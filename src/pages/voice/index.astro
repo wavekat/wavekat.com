@@ -10,7 +10,10 @@ import TalkCTA from '../../components/TalkCTA.astro';
   <!-- Hero -->
   <section class="mb-16">
     <div class="flex items-center gap-2 mb-4">
-      <span class="text-[10px] font-bold tracking-wider uppercase rounded px-2 py-0.5" style="color: #ff6d00; border: 1px solid #ff6d0060">in development</span>
+      <span class="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00">
+        <span class="w-1.5 h-1.5 rounded-full" style="background-color: #ff6d00"></span>
+        in development
+      </span>
     </div>
     <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
       AI phone answering<br />for small business.<br />
@@ -67,5 +70,5 @@ import TalkCTA from '../../components/TalkCTA.astro';
     </a>
   </section>
 
-  <TalkCTA showMailto={true} />
+  <TalkCTA />
 </Voice>

@@ -63,20 +63,25 @@ const libraries = [
     <!-- Solutions -->
     <section class="mb-16">
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Solutions</h2>
-      <div class="flex items-center gap-2 mb-2">
-        <span class="text-sm font-bold" style="color: #ff6d00">wavekat-voice</span>
-        <span class="text-[10px] font-bold tracking-wider uppercase rounded px-2 py-0.5" style="color: #ff6d00; border: 1px solid #ff6d0060">in development</span>
+      <div class="rounded p-5 bg-gray-50 dark:bg-wk-surface">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="text-sm font-bold" style="color: #ff6d00">wavekat-voice</span>
+          <span class="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00">
+            <span class="w-1.5 h-1.5 rounded-full" style="background-color: #ff6d00"></span>
+            in development
+          </span>
+        </div>
+        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mb-5">
+          AI phone answering for small businesses — SIP/RTP, voice-to-voice conversations. Built in the open.
+        </p>
+        <a
+          href="/voice/"
+          class="inline-flex items-center gap-2 text-xs font-bold rounded px-4 py-2 text-white transition-opacity hover:opacity-90"
+          style="background-color: #ff6d00"
+        >
+          Learn more →
+        </a>
       </div>
-      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mb-5">
-        AI phone answering for small businesses — SIP/RTP, voice-to-voice conversations. Built in the open.
-      </p>
-      <a
-        href="/voice/"
-        class="inline-flex items-center gap-2 text-xs font-bold rounded px-4 py-2 text-white transition-opacity hover:opacity-90"
-        style="background-color: #ff6d00"
-      >
-        Learn more →
-      </a>
     </section>
 
     <!-- Tools -->
@@ -123,15 +128,7 @@ const libraries = [
       </div>
     </section>
 
-    <TalkCTA
-      heading="Stay updated"
-      copy="Get notified when we release new libraries or ship major updates. No spam — just release notes and the occasional write-up."
-      bookingUrl={null}
-      tag={undefined}
-      buttonLabel="Subscribe"
-      inputId="subscribe-email"
-      marginTop="mb-20"
-    />
+    <TalkCTA marginTop="mb-20" />
 
     <Footer />
 
