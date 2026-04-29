@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.15](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.14...wavekat-com-v0.0.15) (2026-04-29)
+
+
+### Features
+
+* voice landing pages and unified chrome ([#36](https://github.com/wavekat/wavekat.com/issues/36)) ([3a42154](https://github.com/wavekat/wavekat.com/commit/3a421549f8ecd19149d070ba3c092b05b3306245))
+
 ## [0.0.14](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.13...wavekat-com-v0.0.14) (2026-04-27)
 
 
