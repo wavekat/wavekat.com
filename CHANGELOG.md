@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.17](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.16...wavekat-com-v0.0.17) (2026-04-30)
+
+
+### Features
+
+* wire Google Ads conversion labels ([#40](https://github.com/wavekat/wavekat.com/issues/40)) ([a41b8f6](https://github.com/wavekat/wavekat.com/commit/a41b8f611f3a8f36d3a5b40dfd6272d72afe84b3))
+
 ## [0.0.16](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.15...wavekat-com-v0.0.16) (2026-04-30)
 
 
