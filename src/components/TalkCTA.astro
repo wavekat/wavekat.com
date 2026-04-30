@@ -21,6 +21,7 @@ const bookingUrl = 'https://calendar.app.google/A9sGuckUm2pVpuKa9';
       href={bookingUrl}
       target="_blank"
       rel="noopener noreferrer"
+      data-conversion="book_a_call"
       class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
       style="background-color: #ff6d00"
     >
@@ -37,6 +38,7 @@ const bookingUrl = 'https://calendar.app.google/A9sGuckUm2pVpuKa9';
         method="post"
         target="popupwindow"
         onsubmit="window.open('https://buttondown.com/wavekat', 'popupwindow')"
+        data-conversion="email_signup"
         class="flex flex-col sm:flex-row gap-2"
       >
         <input type="hidden" name="tag" value="voice-interest" />
@@ -62,6 +64,7 @@ const bookingUrl = 'https://calendar.app.google/A9sGuckUm2pVpuKa9';
       Or email{' '}
       <a
         href="mailto:eason@wavekat.com?subject=wavekat-voice"
+        data-conversion="mailto_click"
         class="text-gray-600 dark:text-gray-300 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         eason@wavekat.com
@@ -70,3 +73,26 @@ const bookingUrl = 'https://calendar.app.google/A9sGuckUm2pVpuKa9';
     </p>
   </div>
 </section>
+
+<script is:inline>
+  // Google Ads conversion labels — replace placeholders with the value from
+  // Google Ads → Tools → Conversions → <action> → Tag setup (the part after the slash).
+  const CONVERSIONS = {
+    book_a_call: 'AW-18128547216/REPLACE_WITH_BOOK_CALL_LABEL',
+    email_signup: 'AW-18128547216/REPLACE_WITH_EMAIL_SIGNUP_LABEL',
+    mailto_click: 'AW-18128547216/REPLACE_WITH_MAILTO_LABEL',
+  };
+
+  function fireConversion(name) {
+    const sendTo = CONVERSIONS[name];
+    if (!sendTo || sendTo.includes('REPLACE_WITH_') || typeof gtag !== 'function') return;
+    gtag('event', 'conversion', { send_to: sendTo });
+  }
+
+  document.querySelectorAll('a[data-conversion]').forEach((el) => {
+    el.addEventListener('click', () => fireConversion(el.dataset.conversion));
+  });
+  document.querySelectorAll('form[data-conversion]').forEach((el) => {
+    el.addEventListener('submit', () => fireConversion(el.dataset.conversion));
+  });
+</script>
