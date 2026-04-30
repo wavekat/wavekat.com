@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.16](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.15...wavekat-com-v0.0.16) (2026-04-30)
+
+
+### Features
+
+* add Google Ads conversion tracking ([#38](https://github.com/wavekat/wavekat.com/issues/38)) ([c3f3081](https://github.com/wavekat/wavekat.com/commit/c3f3081a62f2883fd3713156a9b28b17c8e1ceb9))
+
 ## [0.0.15](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.14...wavekat-com-v0.0.15) (2026-04-29)
 
 
