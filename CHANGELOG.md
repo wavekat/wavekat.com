@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.18](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.17...wavekat-com-v0.0.18) (2026-05-02)
+
+
+### Bug Fixes
+
+* tighten landing page bottom spacing ([#43](https://github.com/wavekat/wavekat.com/issues/43)) ([0d9cc68](https://github.com/wavekat/wavekat.com/commit/0d9cc68113e6d05f5a48fde5e586b2d5664bca00))
+
 ## [0.0.17](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.16...wavekat-com-v0.0.17) (2026-04-30)
 
 
