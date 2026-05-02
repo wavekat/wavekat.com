@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import TalkCTA from '../components/TalkCTA.astro';
 
 const libraries = [
   {
@@ -60,30 +59,6 @@ const libraries = [
       </p>
     </section>
 
-    <!-- Solutions -->
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Solutions</h2>
-      <div class="rounded p-5 bg-gray-50 dark:bg-wk-surface">
-        <div class="flex items-center justify-between gap-2 mb-2">
-          <span class="text-sm font-bold" style="color: #ff6d00">wavekat-voice</span>
-          <span class="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00">
-            <span class="w-1.5 h-1.5 rounded-full" style="background-color: #ff6d00"></span>
-            in development
-          </span>
-        </div>
-        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mb-5">
-          AI phone answering for small businesses — SIP/RTP, voice-to-voice conversations. Built in the open.
-        </p>
-        <a
-          href="/voice/"
-          class="inline-flex items-center gap-2 text-xs font-bold rounded px-4 py-2 text-white transition-opacity hover:opacity-90"
-          style="background-color: #ff6d00"
-        >
-          Learn more →
-        </a>
-      </div>
-    </section>
-
     <!-- Tools -->
     <section class="mb-16">
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Tools</h2>
@@ -127,8 +102,6 @@ const libraries = [
         ))}
       </div>
     </section>
-
-    <TalkCTA marginTop="mb-20" />
 
     <Footer />
 

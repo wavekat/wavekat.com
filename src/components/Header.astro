@@ -7,14 +7,6 @@ interface Props {
 
 const { active = null } = Astro.props;
 
-const voicePillClass = active === 'voice'
-  ? 'text-xs font-bold rounded px-3 py-1 transition-colors'
-  : 'text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1';
-
-const voicePillStyle = active === 'voice'
-  ? 'color: #ff6d00; border: 1px solid #ff6d0060;'
-  : '';
-
 const blogPillClass = active === 'blog'
   ? 'text-xs font-bold rounded px-3 py-1 text-gray-700 dark:text-gray-200 border border-gray-400 dark:border-white/30 transition-colors'
   : 'text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1';
@@ -26,7 +18,6 @@ const blogPillClass = active === 'blog'
     <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
   </a>
   <div class="flex items-center gap-3">
-    <a href="/voice/" class={voicePillClass} style={voicePillStyle}>voice</a>
     <a href="/blog" class={blogPillClass}>blog</a>
     <button
       id="theme-toggle"
