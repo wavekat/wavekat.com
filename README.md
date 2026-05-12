@@ -31,6 +31,7 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 | [wavekat-lab](https://github.com/wavekat/wavekat-lab) | Interactive dashboard for testing and comparing audio backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-lab?style=flat-square)](https://github.com/wavekat/wavekat-lab) | |
 | [wavekat-tts](https://github.com/wavekat/wavekat-tts) | Text-to-speech synthesis — unified Rust interface for multiple TTS backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-tts?style=flat-square)](https://github.com/wavekat/wavekat-tts) | [![Crates.io Total Downloads](https://img.shields.io/crates/d/wavekat-tts?style=flat-square)](https://crates.io/crates/wavekat-tts) |
 | [wavekat-cli](https://github.com/wavekat/wavekat-cli) | Command-line client (`wk`) for the WaveKat platform | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-cli?style=flat-square)](https://github.com/wavekat/wavekat-cli) | [![Crates.io Total Downloads](https://img.shields.io/crates/d/wavekat-cli?style=flat-square)](https://crates.io/crates/wavekat-cli) |
+| [wavekat-sip](https://github.com/wavekat/wavekat-sip) | SIP signaling and RTP transport for voice pipelines | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-sip?style=flat-square)](https://github.com/wavekat/wavekat-sip) | [![Crates.io Total Downloads](https://img.shields.io/crates/d/wavekat-sip?style=flat-square)](https://crates.io/crates/wavekat-sip) |
 
 ## Tech Stack
 
