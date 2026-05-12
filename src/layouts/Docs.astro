@@ -3,6 +3,7 @@ import Base from './Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import DocsSidebar from '../components/DocsSidebar.astro';
+import { productLabel } from '../lib/docs-products';
 
 interface Props {
   title: string;
@@ -12,6 +13,15 @@ interface Props {
 }
 
 const { title, description, activeId, ogImage } = Astro.props;
+
+// Back-link target: from a product index (top-level slug like "cli"), go
+// back to /docs/. From any nested doc ("cli/getting-started"), go up to the
+// product index. Astro's glob loader strips /index from IDs, so product
+// index pages have no slash.
+const isProductIndex = !activeId || !activeId.includes('/');
+const productSlug = activeId ? activeId.split('/')[0] : '';
+const backHref = isProductIndex ? '/docs/' : `/docs/${productSlug}/`;
+const backLabel = isProductIndex ? 'all docs' : productLabel(productSlug);
 ---
 
 <Base title={`${title} — WaveKat Docs`} description={description} ogImage={ogImage}>
@@ -40,8 +50,8 @@ const { title, description, activeId, ogImage } = Astro.props;
         </article>
 
         <div class="mt-16">
-          <a href="/docs/" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-            ← all docs
+          <a href={backHref} class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+            ← {backLabel}
           </a>
         </div>
       </main>

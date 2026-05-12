@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { getDocsVersions } from '../lib/docs-versions';
+import { productLabel } from '../lib/docs-products';
 
 interface Props {
   activeId?: string;
@@ -8,16 +9,6 @@ interface Props {
 
 const { activeId } = Astro.props;
 const versions = getDocsVersions();
-
-const PRODUCT_LABELS: Record<string, string> = {
-  voice: 'Voice',
-  cli: 'CLI',
-  lab: 'Lab',
-  vad: 'VAD',
-  turn: 'Turn',
-  tts: 'TTS',
-  core: 'Core',
-};
 
 type Item = { id: string; title: string; order: number; href: string };
 type Section = { key: string; label: string; items: Item[] };
@@ -45,7 +36,7 @@ for (const entry of entries) {
 const sections: Section[] = Array.from(sectionMap.entries())
   .map(([key, items]) => ({
     key,
-    label: PRODUCT_LABELS[key] ?? key,
+    label: productLabel(key, 'short'),
     items: items.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title)),
   }))
   .sort((a, b) => a.label.localeCompare(b.label));
