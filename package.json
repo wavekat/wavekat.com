@@ -7,6 +7,7 @@
   },
   "scripts": {
     "sync": "node scripts/sync-brand.js",
+    "sync:docs": "node scripts/sync-docs.js",
     "dev": "npm run sync && astro dev",
     "build": "npm run sync && astro build",
     "preview": "astro preview",
@@ -20,9 +21,9 @@
     "@lucide/astro": "^1.7.0",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.1.1",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "wrangler": "^4.47.0"

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import { getDocsVersions } from '../lib/docs-versions';
+
+interface Props {
+  activeId?: string;
+}
+
+const { activeId } = Astro.props;
+const versions = getDocsVersions();
+
+const PRODUCT_LABELS: Record<string, string> = {
+  voice: 'Voice',
+  cli: 'CLI',
+  lab: 'Lab',
+  vad: 'VAD',
+  turn: 'Turn',
+  tts: 'TTS',
+  core: 'Core',
+};
+
+type Item = { id: string; title: string; order: number; href: string };
+type Section = { key: string; label: string; items: Item[] };
+
+const entries = await getCollection('docs');
+
+const idToHref = (id: string) => {
+  const stripped = id.replace(/\/index$/, '');
+  return stripped ? `/docs/${stripped}/` : '/docs/';
+};
+
+const sectionMap = new Map<string, Item[]>();
+for (const entry of entries) {
+  const product = entry.id.split('/')[0];
+  const item: Item = {
+    id: entry.id,
+    title: entry.data.title,
+    order: entry.data.order ?? 999,
+    href: idToHref(entry.id),
+  };
+  if (!sectionMap.has(product)) sectionMap.set(product, []);
+  sectionMap.get(product)!.push(item);
+}
+
+const sections: Section[] = Array.from(sectionMap.entries())
+  .map(([key, items]) => ({
+    key,
+    label: PRODUCT_LABELS[key] ?? key,
+    items: items.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title)),
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+---
+
+<nav class="text-sm" aria-label="Docs">
+  <a
+    href="/docs/"
+    class={`block text-xs uppercase tracking-wider mb-6 ${
+      !activeId
+        ? 'text-gray-700 dark:text-gray-200 font-bold'
+        : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
+    } transition-colors`}
+  >
+    All Docs
+  </a>
+
+  {sections.map((section) => (
+    <div class="mb-8">
+      <div class="flex items-baseline gap-2 mb-3">
+        <div class="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-600">
+          {section.label}
+        </div>
+        {versions[section.key] && (
+          <div class="text-[10px] text-gray-300 dark:text-gray-700 font-mono">
+            {versions[section.key]}
+          </div>
+        )}
+      </div>
+      <ul class="space-y-1.5">
+        {section.items.map((item) => {
+          const isActive = item.id === activeId;
+          return (
+            <li>
+              <a
+                href={item.href}
+                class={`block text-xs leading-relaxed ${
+                  isActive
+                    ? 'text-gray-900 dark:text-white font-bold'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                } transition-colors`}
+              >
+                {item.title}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  ))}
+</nav>
