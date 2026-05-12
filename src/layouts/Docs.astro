@@ -1,0 +1,65 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import DocsSidebar from '../components/DocsSidebar.astro';
+import { productLabel } from '../lib/docs-products';
+
+interface Props {
+  title: string;
+  description?: string;
+  activeId?: string;
+  ogImage?: string;
+}
+
+const { title, description, activeId, ogImage } = Astro.props;
+
+// Back-link target: from a product index (top-level slug like "cli"), go
+// back to /docs/. From any nested doc ("cli/getting-started"), go up to the
+// product index. Astro's glob loader strips /index from IDs, so product
+// index pages have no slash.
+const isProductIndex = !activeId || !activeId.includes('/');
+const productSlug = activeId ? activeId.split('/')[0] : '';
+const backHref = isProductIndex ? '/docs/' : `/docs/${productSlug}/`;
+const backLabel = isProductIndex ? 'all docs' : productLabel(productSlug);
+---
+
+<Base title={`${title} — WaveKat Docs`} description={description} ogImage={ogImage}>
+  <div class="max-w-6xl mx-auto px-6 py-12">
+
+    <Header active="docs" />
+
+    <div class="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-12">
+      <aside class="md:sticky md:top-8 md:self-start">
+        <DocsSidebar activeId={activeId} />
+      </aside>
+
+      <main class="min-w-0">
+        <article class="prose prose-sm dark:prose-invert prose-gray max-w-none dark:text-gray-400
+          prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+          prose-h1:text-2xl prose-h1:leading-snug prose-h1:mb-3
+          prose-a:text-gray-600 dark:prose-a:text-gray-400 prose-a:underline prose-a:underline-offset-2
+          prose-strong:text-gray-900 dark:prose-strong:text-gray-200
+          prose-code:text-gray-800 dark:prose-code:text-gray-200 prose-code:bg-gray-100 dark:prose-code:bg-white/10
+          prose-code:font-normal prose-code:rounded prose-code:px-1.5 prose-code:py-0.5
+          prose-code:before:content-none prose-code:after:content-none
+          prose-pre:bg-gray-50 dark:prose-pre:bg-wk-surface prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-white/10
+          [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:rounded-none [&_pre_code]:text-gray-700 dark:[&_pre_code]:text-gray-300
+          prose-th:text-gray-800 dark:prose-th:text-gray-200 prose-td:align-top">
+          <slot />
+        </article>
+
+        <div class="mt-16">
+          <a href={backHref} class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+            ← {backLabel}
+          </a>
+        </div>
+      </main>
+    </div>
+
+    <div class="mt-20">
+      <Footer />
+    </div>
+
+  </div>
+</Base>

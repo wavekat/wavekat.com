@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import DocsSidebar from '../../components/DocsSidebar.astro';
+import { getDocsVersions } from '../../lib/docs-versions';
+
+type Product = {
+  slug: string;
+  label: string;
+  description: string;
+  href: string;
+};
+
+const PRODUCTS: Product[] = [
+  { slug: 'cli', label: 'CLI', description: 'Terminal client (wk) for the WaveKat platform.', href: '/docs/cli/' },
+];
+
+const entries = await getCollection('docs');
+const liveSlugs = new Set(entries.map((e) => e.id.split('/')[0]));
+const versions = getDocsVersions();
+
+const products = PRODUCTS
+  .filter((p) => liveSlugs.has(p.slug))
+  .map((p) => ({ ...p, version: versions[p.slug] }));
+---
+
+<Base title="Docs — WaveKat" description="Documentation for the WaveKat ecosystem.">
+  <div class="max-w-6xl mx-auto px-6 py-12">
+
+    <Header active="docs" />
+
+    <div class="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-12">
+      <aside class="md:sticky md:top-8 md:self-start">
+        <DocsSidebar />
+      </aside>
+
+      <main class="min-w-0">
+        <section class="mb-16">
+          <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">Docs</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10 max-w-prose">
+            Docs for every WaveKat tool we ship.<br />
+            Grab one, wire it in, and go.
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-3">
+            {products.map((p) => (
+              <a
+                href={p.href}
+                class="block rounded border p-5 transition-colors border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30"
+              >
+                <div class="flex items-baseline gap-2 mb-1">
+                  <span class="text-sm font-bold text-gray-900 dark:text-white">{p.label}</span>
+                  {p.version && (
+                    <span class="text-[10px] text-gray-400 dark:text-gray-600 font-mono">{p.version}</span>
+                  )}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{p.description}</div>
+              </a>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="mt-20">
+      <Footer />
+    </div>
+
+  </div>
+</Base>

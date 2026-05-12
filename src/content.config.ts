@@ -15,4 +15,17 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const docs = defineCollection({
+  // README.md files in each product repo are contributor-facing, not published.
+  loader: glob({
+    pattern: ['**/*.md', '!**/README.md'],
+    base: './src/content/docs',
+  }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    order: z.number().optional(),
+  }),
+});
+
+export const collections = { blog, docs };
