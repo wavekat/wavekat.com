@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.19](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.18...wavekat-com-v0.0.19) (2026-05-12)
+
+
+### Features
+
+* docs section with CLI as first product ([#46](https://github.com/wavekat/wavekat.com/issues/46)) ([c45121f](https://github.com/wavekat/wavekat.com/commit/c45121f3cc7ea06c8a5290b2643c73fdc1204127))
+
 ## [0.0.18](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.17...wavekat-com-v0.0.18) (2026-05-02)
 
 
