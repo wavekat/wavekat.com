@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.20](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.19...wavekat-com-v0.0.20) (2026-05-12)
+
+
+### Features
+
+* add wavekat-sip to libraries list ([#48](https://github.com/wavekat/wavekat.com/issues/48)) ([421eaa7](https://github.com/wavekat/wavekat.com/commit/421eaa796a0ce780adba7314ae8903d1421b1deb))
+
 ## [0.0.19](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.18...wavekat-com-v0.0.19) (2026-05-12)
 
 
