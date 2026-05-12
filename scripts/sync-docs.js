@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Syncs product docs from each WaveKat product repo into src/content/docs/<product>/.
 // Each product repo keeps its docs source in its own /docs/ folder; this script
-// pulls them into one tree so Astro can render docs.wavekat.com.
+// pulls them into one tree so Astro can render wavekat.com/docs/.
 //
 // Status: SKELETON. Real cloning is gated behind SYNC_DOCS=1 until the
 // Starlight integration PR lands. For now it just prints what it would do.

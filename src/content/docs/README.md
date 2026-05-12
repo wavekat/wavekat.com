@@ -2,7 +2,7 @@
 
 **This folder is sync output. Do not edit by hand.**
 
-Contents are populated by `scripts/sync-docs.js`, which pulls the `/docs/` folder from each WaveKat product repo (wavekat-voice, wavekat-cli, …) and writes them into subdirectories here. The result becomes the source for the unified docs site at `docs.wavekat.com`.
+Contents are populated by `scripts/sync-docs.js`, which pulls the `/docs/` folder from each WaveKat product repo (wavekat-voice, wavekat-cli, …) and writes them into subdirectories here. The result is rendered as the unified docs section at `wavekat.com/docs/`.
 
 To edit a Voice doc, change it in [`wavekat/wavekat-voice`](https://github.com/wavekat/wavekat-voice) under `docs/`. The next build of this site picks it up.
 

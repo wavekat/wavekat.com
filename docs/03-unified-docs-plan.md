@@ -1,25 +1,26 @@
-# Unified Docs Site Plan
+# Unified Docs Plan
 
-`docs.wavekat.com` is the single docs site for every WaveKat product (Voice, CLI, Lab, SDKs). Each product repo keeps its own `/docs/` folder; **this repo builds them into one site**.
+`wavekat.com/docs` is the single docs site for every WaveKat product (Voice, CLI, Lab, SDKs). Each product repo keeps its own `/docs/` folder; **this repo builds them into one site**, served as a path on the main site.
 
 ## Goal
 
 ```
 github.com/wavekat/wavekat-voice/docs/   ─┐
 github.com/wavekat/wavekat-cli/docs/     ─┤
-github.com/wavekat/wavekat-lab/docs/     ─┼─▶  this repo  ─▶  docs.wavekat.com/<product>/
+github.com/wavekat/wavekat-lab/docs/     ─┼─▶  this repo  ─▶  wavekat.com/docs/<product>/
 github.com/wavekat/wavekat-vad/docs/     ─┤
 github.com/wavekat/wavekat-turn/docs/    ─┤
 github.com/wavekat/wavekat-tts/docs/     ─┘
 ```
 
 - Each product team edits docs in PRs **next to the code they describe**.
-- Readers see one coherent docs site, with a shared sidebar (Voice / CLI / Lab / SDKs).
+- Readers see one coherent docs section, with a shared sidebar (Voice / CLI / Lab / SDKs).
+- One Astro project, one Cloudflare Pages deploy — no separate subdomain, no extra DNS or build pipeline.
 
 ## URL layout
 
 ```
-docs.wavekat.com/
+wavekat.com/docs/
 ├── voice/        ← from wavekat-voice/docs/        (private repo)
 ├── cli/          ← from wavekat-cli/docs/          (public)
 ├── lab/          ← from wavekat-lab/docs/          (public)
@@ -42,12 +43,7 @@ Astro Starlight. Reasons:
 - Content lives in Astro Content Collections — same pattern as the existing `blog` collection.
 - Cloudflare Pages compatible — static output, no edge runtime requirements.
 
-Routing options to decide later:
-
-- **Subdomain** (`docs.wavekat.com`) — separate Cloudflare Pages project (or same project, separate route). Cleaner separation, independent caching.
-- **Path** (`wavekat.com/docs`) — same Astro build, single deploy. Simpler infra.
-
-Default plan: subdomain, same Astro project, deployed via a `docs.wavekat.com` route in Cloudflare Pages. Easy to flip later.
+Routing: **path-based** at `wavekat.com/docs/`. Same Astro build, single Cloudflare Pages deploy, no extra DNS. Starlight mounts under `/docs/` via its `base` config.
 
 ## Sync mechanism
 
@@ -105,7 +101,6 @@ What this branch **does not** ship:
 
 ## Open decisions (resolve before the Starlight PR)
 
-- Subdomain vs path? (default plan: subdomain.)
 - Search: built-in pagefind, or Algolia DocSearch (free for OSS)?
 - Versioning: do we tag docs to product releases, or always show "latest"?
 - Auth for private repo sync on Cloudflare Pages: fine-grained PAT, or GitHub App?
