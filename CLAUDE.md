@@ -22,6 +22,7 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 ### Libraries
 | Repo | What it does | Brand color |
 |------|-------------|-------------|
+| `wavekat-sip` | SIP signaling + RTP transport for voice pipelines | Indigo `#3f51b5` |
 | `wavekat-core` | Shared audio primitives (`AudioFrame`, sample conversion) | Green `#00e676` |
 | `wavekat-vad` | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD | Cyan `#00bcd4` |
 | `wavekat-turn` | Turn detection — end-of-utterance for voice pipelines | Purple `#7c4dff` |

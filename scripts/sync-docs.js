@@ -46,6 +46,7 @@ const sources = [
   // { slug: "core",  repo: "wavekat/wavekat-core",  docsPath: "docs/site", private: false },
   // { slug: "tts",   repo: "wavekat/wavekat-tts",   docsPath: "docs/site", private: false },
   // { slug: "asr",   repo: "wavekat/wavekat-asr",   docsPath: "docs/site", private: false },
+  // { slug: "sip",   repo: "wavekat/wavekat-sip",   docsPath: "docs/site", private: false },
 ];
 
 const enabled = process.env.SYNC_DOCS === "1";
