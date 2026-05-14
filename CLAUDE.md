@@ -25,8 +25,9 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 | `wavekat-core` | Shared audio primitives (`AudioFrame`, sample conversion) | Green `#00e676` |
 | `wavekat-vad` | Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD | Cyan `#00bcd4` |
 | `wavekat-turn` | Turn detection — end-of-utterance for voice pipelines | Purple `#7c4dff` |
-| `wavekat-lab` | Interactive dashboard for testing audio backends | Amber `#ffd740` |
+| `wavekat-asr` | Streaming speech-to-text for voice pipelines | Red `#f44336` |
 | `wavekat-tts` | Text-to-speech synthesis for voice pipelines | Pink `#ff4081` |
+| `wavekat-lab` | Interactive dashboard for testing audio backends | Amber `#ffd740` |
 | `wavekat-cli` | Command-line client (`wk`) for the WaveKat platform | Blue `#2196f3` |
 
 ### Tools

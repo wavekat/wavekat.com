@@ -9,6 +9,7 @@ const LABELS: Record<string, ProductLabels> = {
   lab:   { short: 'Lab',   long: 'WaveKat Lab' },
   vad:   { short: 'VAD',   long: 'WaveKat VAD' },
   turn:  { short: 'Turn',  long: 'WaveKat Turn' },
+  asr:   { short: 'ASR',   long: 'WaveKat ASR' },
   tts:   { short: 'TTS',   long: 'WaveKat TTS' },
   core:  { short: 'Core',  long: 'WaveKat Core' },
 };
