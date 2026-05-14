@@ -3,13 +3,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const libraries = [
-  {
-    name: 'wavekat-core',
-    description: 'Shared audio primitives — AudioFrame, sample format conversion.',
-    color: '#00e676',
-    href: 'https://github.com/wavekat/wavekat-core',
-  },
+const voicePipeline = [
   {
     name: 'wavekat-vad',
     description: 'Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD.',
@@ -23,10 +17,10 @@ const libraries = [
     href: 'https://github.com/wavekat/wavekat-turn',
   },
   {
-    name: 'wavekat-lab',
-    description: 'Interactive dashboard for testing and comparing audio backends.',
-    color: '#ffd740',
-    href: 'https://github.com/wavekat/wavekat-lab',
+    name: 'wavekat-asr',
+    description: 'Streaming speech-to-text — unified Rust interface over multiple ASR backends.',
+    color: '#f44336',
+    href: 'https://github.com/wavekat/wavekat-asr',
   },
   {
     name: 'wavekat-tts',
@@ -35,16 +29,31 @@ const libraries = [
     href: 'https://github.com/wavekat/wavekat-tts',
   },
   {
+    name: 'wavekat-core',
+    description: 'Shared audio primitives — AudioFrame, sample format conversion.',
+    color: '#00e676',
+    href: 'https://github.com/wavekat/wavekat-core',
+  },
+  {
+    name: 'wavekat-sip',
+    description: 'SIP signaling and RTP transport — REGISTER, INVITE, SDP, dialog tracking.',
+    color: '#3f51b5',
+    href: 'https://github.com/wavekat/wavekat-sip',
+  },
+];
+
+const toolsAndClients = [
+  {
+    name: 'wavekat-lab',
+    description: 'Interactive dashboard for testing and comparing audio backends.',
+    color: '#ffd740',
+    href: 'https://github.com/wavekat/wavekat-lab',
+  },
+  {
     name: 'wavekat-cli',
     description: 'Command-line client (wk) for the WaveKat platform.',
     color: '#2196f3',
     href: 'https://github.com/wavekat/wavekat-cli',
-  },
-  {
-    name: 'wavekat-sip',
-    description: 'SIP signaling and RTP transport — REGISTER, INVITE, dialogs, SDP, and RTP for voice pipelines.',
-    color: '#3f51b5',
-    href: 'https://github.com/wavekat/wavekat-sip',
   },
 ];
 ---
@@ -90,8 +99,29 @@ const libraries = [
     <!-- Libraries -->
     <section class="mb-16">
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Libraries</h2>
+
+      <h3 class="text-[11px] font-semibold tracking-wider text-gray-500 dark:text-gray-500 uppercase mb-3">Voice pipeline</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {libraries.map((lib) => (
+        {voicePipeline.map((lib) => (
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+            style={`border-color: ${lib.color}40`}
+          >
+            <span class="text-sm font-bold block mb-1.5" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{lib.description}</p>
+            <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+              github.com/wavekat/{lib.name} →
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <h3 class="text-[11px] font-semibold tracking-wider text-gray-500 dark:text-gray-500 uppercase mb-3 mt-8">Tools & clients</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {toolsAndClients.map((lib) => (
           <a
             href={lib.href}
             target="_blank"

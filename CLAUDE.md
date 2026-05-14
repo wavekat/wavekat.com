@@ -29,6 +29,7 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 | `wavekat-tts` | Text-to-speech synthesis for voice pipelines | Pink `#ff4081` |
 | `wavekat-cli` | Command-line client (`wk`) for the WaveKat platform | Blue `#2196f3` |
 | `wavekat-sip` | SIP signaling and RTP transport for voice pipelines | Indigo `#3f51b5` |
+| `wavekat-asr` | Streaming speech-to-text for voice pipelines | Red `#f44336` |
 
 ### Tools
 | Name | What it does | URL |

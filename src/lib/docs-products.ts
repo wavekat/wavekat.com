@@ -11,6 +11,8 @@ const LABELS: Record<string, ProductLabels> = {
   turn:  { short: 'Turn',  long: 'WaveKat Turn' },
   tts:   { short: 'TTS',   long: 'WaveKat TTS' },
   core:  { short: 'Core',  long: 'WaveKat Core' },
+  sip:   { short: 'SIP',   long: 'WaveKat SIP' },
+  asr:   { short: 'ASR',   long: 'WaveKat ASR' },
 };
 
 export function productLabel(slug: string, form: 'short' | 'long' = 'long'): string {
