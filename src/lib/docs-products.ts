@@ -5,14 +5,14 @@ type ProductLabels = { short: string; long: string };
 
 const LABELS: Record<string, ProductLabels> = {
   voice: { short: 'Voice', long: 'WaveKat Voice' },
-  sip:   { short: 'SIP',   long: 'WaveKat SIP' },
-  cli:   { short: 'CLI',   long: 'WaveKat CLI' },
-  lab:   { short: 'Lab',   long: 'WaveKat Lab' },
   vad:   { short: 'VAD',   long: 'WaveKat VAD' },
   turn:  { short: 'Turn',  long: 'WaveKat Turn' },
-  asr:   { short: 'ASR',   long: 'WaveKat ASR' },
-  tts:   { short: 'TTS',   long: 'WaveKat TTS' },
   core:  { short: 'Core',  long: 'WaveKat Core' },
+  lab:   { short: 'Lab',   long: 'WaveKat Lab' },
+  tts:   { short: 'TTS',   long: 'WaveKat TTS' },
+  cli:   { short: 'CLI',   long: 'WaveKat CLI' },
+  sip:   { short: 'SIP',   long: 'WaveKat SIP' },
+  asr:   { short: 'ASR',   long: 'WaveKat ASR' },
 };
 
 export function productLabel(slug: string, form: 'short' | 'long' = 'long'): string {
