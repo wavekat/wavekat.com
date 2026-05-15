@@ -1,0 +1,29 @@
+name = "wavekat-star-tracker"
+main = "src/index.ts"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Bind D1 database. Create with:
+#   wrangler d1 create wavekat-stars
+# Then paste the returned database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "wavekat-stars"
+database_id = "d8b73960-2bec-451a-8de0-c373ae05a87f"
+
+# Nightly reconciliation against the GitHub API to catch missed webhook deliveries.
+[triggers]
+crons = ["13 7 * * *"]
+
+# Public hostname. Update the route after the DNS record is in place.
+# [[routes]]
+# pattern = "stars.wavekat.com/*"
+# zone_name = "wavekat.com"
+# custom_domain = true
+
+# Secrets (set with `wrangler secret put <NAME>`):
+#   GITHUB_CLIENT_ID      — OAuth App client ID
+#   GITHUB_CLIENT_SECRET  — OAuth App client secret
+#   JWT_SECRET            — random 32+ byte string for signing session cookies
+[vars]
+PUBLIC_URL = "https://stars.wavekat.com"

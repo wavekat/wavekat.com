@@ -1,0 +1,10 @@
+# Copy to .dev.vars for `make dev` (loaded by wrangler).
+# Do NOT commit .dev.vars — it's gitignored.
+
+GITHUB_CLIENT_ID=Iv1.xxxxxxxxxxxxxxxx
+GITHUB_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+JWT_SECRET=replace-with-32-plus-bytes-of-randomness
+
+# Overrides the wrangler.toml [vars] value during local dev so the OAuth
+# redirect_uri matches your dev GitHub OAuth App's callback URL.
+PUBLIC_URL=http://localhost:8787
