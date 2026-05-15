@@ -172,6 +172,21 @@ export async function setRepoSyncMode(
     .run();
 }
 
+// Live update of the repo's star count from a webhook payload. Keeps the
+// "Tracked repos — N stars" line in sync with reality between nightly
+// reconciles — without this the count is frozen at backfill time and a
+// repo that gains stars via webhook reads as stale.
+export async function updateStargazersCount(
+  db: D1Database,
+  fullName: string,
+  count: number,
+): Promise<void> {
+  await db
+    .prepare(`UPDATE repos SET stargazers_count = ? WHERE full_name = ?`)
+    .bind(count, fullName)
+    .run();
+}
+
 export async function recordEvent(
   db: D1Database,
   tenant: string,
