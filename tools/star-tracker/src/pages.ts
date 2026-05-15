@@ -53,7 +53,8 @@ function shell(title: string, user: User | null, body: string): string {
   .theme-toggle label { padding: 6px 14px; font-size: 0.85em; cursor: pointer; user-select: none; }
   .chart-section #theme-light:checked ~ .theme-toggle label[for=theme-light],
   .chart-section #theme-dark:checked ~ .theme-toggle label[for=theme-dark] { background: #2196f3; color: white; }
-  .chart-preview img { max-width: 100%; border-radius: 4px; display: block; }
+  .chart-preview img { max-width: 100%; border-radius: 6px; display: block; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+  @media (prefers-color-scheme: dark) { .chart-preview img { border-color: #1e293b; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); } }
   .chart-section .chart-preview .dark { display: none; }
   .chart-section #theme-dark:checked ~ .chart-preview .light { display: none; }
   .chart-section #theme-dark:checked ~ .chart-preview .dark { display: block; }
