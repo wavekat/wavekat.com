@@ -68,6 +68,36 @@ function pickDateFmt(spanMs: number): (ms: number) => string {
   return (ms) => `${new Date(ms).getUTCFullYear()}`;
 }
 
+// Bucket points by x-pixel and keep first + last of each bucket. For step-after
+// cumulative curves this is visually indistinguishable from the raw data once
+// rendered, at a fraction of the SVG size.
+function downsample(points: TimelinePoint[], maxBuckets: number, tMin: number, tMax: number): TimelinePoint[] {
+  if (points.length <= maxBuckets * 2) return points;
+  const span = Math.max(1, tMax - tMin);
+  const out: TimelinePoint[] = [];
+  let curBucket = -1;
+  let bFirst: TimelinePoint | null = null;
+  let bLast: TimelinePoint | null = null;
+  const flush = () => {
+    if (!bFirst) return;
+    out.push(bFirst);
+    if (bLast && bLast !== bFirst) out.push(bLast);
+  };
+  for (const pt of points) {
+    const b = Math.min(maxBuckets - 1, Math.max(0, Math.floor(((pt.t - tMin) / span) * maxBuckets)));
+    if (b !== curBucket) {
+      flush();
+      curBucket = b;
+      bFirst = pt;
+      bLast = pt;
+    } else {
+      bLast = pt;
+    }
+  }
+  flush();
+  return out;
+}
+
 function niceTicks(min: number, max: number, count = 5): number[] {
   if (max <= min) return [min];
   const range = max - min;
@@ -117,18 +147,25 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
   const PH = H - M.top - M.bottom;
 
   // -- Domain --------------------------------------------------------------
-  const allPoints = series.flatMap((s) => s.points);
-  const hasData = allPoints.length >= 1;
+  const allPointsRaw = series.flatMap((s) => s.points);
+  const hasData = allPointsRaw.length >= 1;
   let tMin = Date.now() - 30 * 86400_000;
   let tMax = Date.now();
   let yMax = 1;
   if (hasData) {
     tMin = Infinity;
     tMax = -Infinity;
-    for (const pt of allPoints) {
+    for (const pt of allPointsRaw) {
       if (pt.t < tMin) tMin = pt.t;
       if (pt.t > tMax) tMax = pt.t;
     }
+  }
+
+  // Downsample each series to ~one bucket per x-pixel. Above this resolution
+  // extra points just bloat the SVG without changing any visible pixel.
+  const maxBuckets = isSplit ? Math.max(64, Math.floor(PW / 2)) : Math.max(128, PW);
+  if (hasData) {
+    series = series.map((s) => ({ label: s.label, points: downsample(s.points, maxBuckets, tMin, tMax) }));
   }
 
   // In stacked mode, the y domain is the top of the stack — sum of each series'
@@ -168,7 +205,7 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
     const finalTop = stackTop[stackTop.length - 1];
     for (const v of finalTop) if (v > yMax) yMax = v;
   } else if (hasData) {
-    for (const pt of allPoints) if (pt.total > yMax) yMax = pt.total;
+    for (const s of series) for (const pt of s.points) if (pt.total > yMax) yMax = pt.total;
   }
 
   const tx = (t: number) => M.left + ((t - tMin) / Math.max(1, tMax - tMin)) * PW;
@@ -189,22 +226,22 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
       const bot = stackBot[i];
       const color = seriesColor(i, series[i].label, opts.theme);
       const cmds: string[] = [];
-      cmds.push(`M${tx(stackTs[0]).toFixed(1)},${ty(top[0]).toFixed(1)}`);
+      cmds.push(`M${tx(stackTs[0]).toFixed(0)},${ty(top[0]).toFixed(0)}`);
       for (let j = 1; j < N; j++) {
-        const x = tx(stackTs[j]).toFixed(1);
-        cmds.push(`L${x},${ty(top[j - 1]).toFixed(1)}`);
-        cmds.push(`L${x},${ty(top[j]).toFixed(1)}`);
+        const x = tx(stackTs[j]).toFixed(0);
+        cmds.push(`L${x},${ty(top[j - 1]).toFixed(0)}`);
+        cmds.push(`L${x},${ty(top[j]).toFixed(0)}`);
       }
       // Extend the last flat segment out to tMax (= last timestamp by construction).
-      cmds.push(`L${tx(tMax).toFixed(1)},${ty(top[N - 1]).toFixed(1)}`);
+      cmds.push(`L${tx(tMax).toFixed(0)},${ty(top[N - 1]).toFixed(0)}`);
       // Drop to bottom curve and walk back to the start.
-      cmds.push(`L${tx(tMax).toFixed(1)},${ty(bot[N - 1]).toFixed(1)}`);
+      cmds.push(`L${tx(tMax).toFixed(0)},${ty(bot[N - 1]).toFixed(0)}`);
       for (let j = N - 1; j > 0; j--) {
-        const x = tx(stackTs[j]).toFixed(1);
-        cmds.push(`L${x},${ty(bot[j]).toFixed(1)}`);
-        cmds.push(`L${x},${ty(bot[j - 1]).toFixed(1)}`);
+        const x = tx(stackTs[j]).toFixed(0);
+        cmds.push(`L${x},${ty(bot[j]).toFixed(0)}`);
+        cmds.push(`L${x},${ty(bot[j - 1]).toFixed(0)}`);
       }
-      cmds.push(`L${tx(stackTs[0]).toFixed(1)},${ty(bot[0]).toFixed(1)}`);
+      cmds.push(`L${tx(stackTs[0]).toFixed(0)},${ty(bot[0]).toFixed(0)}`);
       cmds.push('Z');
       seriesSvg.push(
         `<path class="st-stack" d="${cmds.join(' ')}" fill="${color}" fill-opacity="0.85" stroke="${color}" stroke-width="0.5"/>`,
@@ -216,18 +253,18 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
       if (s.points.length < 1) return;
       const color = p.line;
       const cmds: string[] = [];
-      cmds.push(`M${tx(s.points[0].t).toFixed(1)},${ty(s.points[0].total).toFixed(1)}`);
+      cmds.push(`M${tx(s.points[0].t).toFixed(0)},${ty(s.points[0].total).toFixed(0)}`);
       for (let i = 1; i < s.points.length; i++) {
-        const x = tx(s.points[i].t).toFixed(1);
-        const yPrev = ty(s.points[i - 1].total).toFixed(1);
-        const yCur = ty(s.points[i].total).toFixed(1);
+        const x = tx(s.points[i].t).toFixed(0);
+        const yPrev = ty(s.points[i - 1].total).toFixed(0);
+        const yCur = ty(s.points[i].total).toFixed(0);
         cmds.push(`L${x},${yPrev}`, `L${x},${yCur}`);
       }
-      const xEnd = tx(tMax).toFixed(1);
-      const yEnd = ty(s.points[s.points.length - 1].total).toFixed(1);
+      const xEnd = tx(tMax).toFixed(0);
+      const yEnd = ty(s.points[s.points.length - 1].total).toFixed(0);
       cmds.push(`L${xEnd},${yEnd}`);
       const line = cmds.join(' ');
-      const area = `${line} L${xEnd},${(M.top + PH).toFixed(1)} L${tx(s.points[0].t).toFixed(1)},${(M.top + PH).toFixed(1)} Z`;
+      const area = `${line} L${xEnd},${(M.top + PH).toFixed(0)} L${tx(s.points[0].t).toFixed(0)},${(M.top + PH).toFixed(0)} Z`;
       seriesSvg.push(`<path class="st-area" d="${area}" fill="${p.fill}"/>`);
       seriesSvg.push(
         `<path class="st-line" d="${line}" pathLength="1" stroke="${color}" stroke-width="2" fill="none" stroke-linejoin="round"/>`,
@@ -242,18 +279,18 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
   for (let i = 0; i <= xTickCount; i++) xTicks.push(tMin + ((tMax - tMin) * i) / xTickCount);
 
   const gridLines = yTicks.map((v) => {
-    const y = ty(v).toFixed(1);
+    const y = ty(v).toFixed(0);
     return `<line x1="${M.left}" y1="${y}" x2="${M.left + PW}" y2="${y}" stroke="${p.grid}" stroke-width="1"/>`;
   }).join('');
 
   const yLabels = yTicks.map((v) => {
-    const y = ty(v).toFixed(1);
+    const y = ty(v).toFixed(0);
     return `<text x="${M.left - 10}" y="${y}" fill="${p.muted}" font-size="11" text-anchor="end" dominant-baseline="middle">${fmtInt(v)}</text>`;
   }).join('');
 
   const fmtDate = pickDateFmt(tMax - tMin);
   const xLabels = xTicks.map((t, i) => {
-    const x = tx(t).toFixed(1);
+    const x = tx(t).toFixed(0);
     const anchor = i === 0 ? 'start' : i === xTicks.length - 1 ? 'end' : 'middle';
     return `<text x="${x}" y="${H - M.bottom + 20}" fill="${p.muted}" font-size="11" text-anchor="${anchor}">${fmtDate(t)}</text>`;
   }).join('');

@@ -310,12 +310,36 @@ app.get('/:slug/chart.svg', async (c) => {
   }
 
   const title = c.req.query('title') ?? defaultTitle;
+
+  // ETag = hash of inputs that change the rendered output. Latest event
+  // timestamp captures "did any star arrive since last render"; theme/split/
+  // title cover the URL-level variants. Clients send If-None-Match → 304.
+  let latestTs = 0;
+  for (const s of series) {
+    const last = s.points[s.points.length - 1];
+    if (last && last.t > latestTs) latestTs = last.t;
+  }
+  const etag = `"${theme}.${splitN}.${latestTs}.${djb2(title)}"`;
+  if (c.req.header('if-none-match') === etag) {
+    return new Response(null, { status: 304, headers: { etag, 'cache-control': 'public, max-age=300' } });
+  }
+
   const svg = renderSVG(series, { title, theme, sampled: hasSampled });
 
   return new Response(svg, {
-    headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=60' },
+    headers: {
+      'content-type': 'image/svg+xml; charset=utf-8',
+      'cache-control': 'public, max-age=300',
+      etag,
+    },
   });
 });
+
+function djb2(s: string): string {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
+}
 
 // GET handlers redirect to the tenant page so bookmarks / refreshes of a
 // previously-POSTed action URL don't 404.
