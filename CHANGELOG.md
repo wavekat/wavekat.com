@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.21](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.20...wavekat-com-v0.0.21) (2026-05-15)
+
+
+### Features
+
+* add star-tracker worker ([#52](https://github.com/wavekat/wavekat.com/issues/52)) ([6f13ee1](https://github.com/wavekat/wavekat.com/commit/6f13ee1d5438505ee104cf15cee8b5c5e35a89f9))
+* add wavekat-asr to ecosystem ([#50](https://github.com/wavekat/wavekat.com/issues/50)) ([f26f29b](https://github.com/wavekat/wavekat.com/commit/f26f29b7fe1d46d299226fcd7e8003a21015c388))
+* auto-theme star-tracker embed snippet ([#55](https://github.com/wavekat/wavekat.com/issues/55)) ([4989603](https://github.com/wavekat/wavekat.com/commit/498960364d008819b151cf1cfafea7c6b974d678))
+* star-tracker recent trend, range, per-repo charts ([#54](https://github.com/wavekat/wavekat.com/issues/54)) ([7189f91](https://github.com/wavekat/wavekat.com/commit/7189f910a536c3cb721562938e00c5618a500c65))
+
+
+### Bug Fixes
+
+* keep star-tracker count fresh on webhook ([#56](https://github.com/wavekat/wavekat.com/issues/56)) ([1fdf264](https://github.com/wavekat/wavekat.com/commit/1fdf26434e7825f7edd310cb4db5c75512e9257a))
+* stop long embed snippets blowing out page width ([#57](https://github.com/wavekat/wavekat.com/issues/57)) ([7b6b096](https://github.com/wavekat/wavekat.com/commit/7b6b09608c2360967c6dd2a228dcc708abfea869))
+* wrap star-tracker header on mobile ([#53](https://github.com/wavekat/wavekat.com/issues/53)) ([82e92b9](https://github.com/wavekat/wavekat.com/commit/82e92b970dd88757ac3affc97ffaaddf2236e1d3))
+
 ## [0.0.20](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.19...wavekat-com-v0.0.20) (2026-05-12)
 
 
