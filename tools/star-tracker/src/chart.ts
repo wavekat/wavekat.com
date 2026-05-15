@@ -1,6 +1,7 @@
 // Chart renderer: builds an SVG from one or more cumulative star timelines.
 // One series → filled area + line (the merged tenant view).
-// Many series → N lines + legend, no fill (per-repo "split" view).
+// Many series → stacked areas + legend (per-repo "split" view); the top of
+// the stack equals the tenant total when the caller includes an "others" bucket.
 
 export type TimelinePoint = { t: number; total: number };
 
@@ -28,6 +29,14 @@ const SPLIT_COLORS = [
   '#2196f3', '#ff4081', '#00e676', '#ffd740',
   '#7c4dff', '#00bcd4', '#f44336', '#3f51b5',
 ];
+
+// The "others" bucket gets a muted slate so it visually recedes behind the
+// named repos. Detected by label prefix — see index.ts.
+const OTHERS_COLOR = { light: '#94a3b8', dark: '#475569' };
+function seriesColor(idx: number, label: string, theme: 'light' | 'dark'): string {
+  if (label.startsWith('others ')) return OTHERS_COLOR[theme];
+  return SPLIT_COLORS[idx % SPLIT_COLORS.length];
+}
 
 function fmtInt(n: number): string {
   return n.toLocaleString('en-US');
@@ -116,12 +125,50 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
   if (hasData) {
     tMin = Infinity;
     tMax = -Infinity;
-    yMax = 1;
     for (const pt of allPoints) {
       if (pt.t < tMin) tMin = pt.t;
       if (pt.t > tMax) tMax = pt.t;
-      if (pt.total > yMax) yMax = pt.total;
     }
+  }
+
+  // In stacked mode, the y domain is the top of the stack — sum of each series'
+  // cumulative at the latest timestamp.
+  let stackTs: number[] = [];
+  let stackTop: number[][] = [];
+  let stackBot: number[][] = [];
+  if (isSplit && hasData) {
+    const tsSet = new Set<number>();
+    for (const s of series) for (const pt of s.points) tsSet.add(pt.t);
+    stackTs = [...tsSet].sort((a, b) => a - b);
+
+    // For each series, compute its cumulative at-or-before every ts.
+    const valueAt: number[][] = series.map((s) => {
+      const col: number[] = new Array(stackTs.length);
+      let idx = 0;
+      let cur = 0;
+      for (let j = 0; j < stackTs.length; j++) {
+        while (idx < s.points.length && s.points[idx].t <= stackTs[j]) {
+          cur = s.points[idx].total;
+          idx += 1;
+        }
+        col[j] = cur;
+      }
+      return col;
+    });
+
+    stackBot = new Array(series.length);
+    stackTop = new Array(series.length);
+    for (let i = 0; i < series.length; i++) {
+      const bot = i === 0 ? new Array(stackTs.length).fill(0) : stackTop[i - 1];
+      const top: number[] = new Array(stackTs.length);
+      for (let j = 0; j < stackTs.length; j++) top[j] = bot[j] + valueAt[i][j];
+      stackBot[i] = bot;
+      stackTop[i] = top;
+    }
+    const finalTop = stackTop[stackTop.length - 1];
+    for (const v of finalTop) if (v > yMax) yMax = v;
+  } else if (hasData) {
+    for (const pt of allPoints) if (pt.total > yMax) yMax = pt.total;
   }
 
   const tx = (t: number) => M.left + ((t - tMin) / Math.max(1, tMax - tMin)) * PW;
@@ -131,32 +178,63 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
   // Step-after: stars are discrete; the cumulative stays flat between events.
   const seriesSvg: string[] = [];
   let summaryTotal = 0;
-  series.forEach((s, idx) => {
-    if (s.points.length < 1) return;
-    const color = isSplit ? SPLIT_COLORS[idx % SPLIT_COLORS.length] : p.line;
-    const cmds: string[] = [];
-    cmds.push(`M${tx(s.points[0].t).toFixed(1)},${ty(s.points[0].total).toFixed(1)}`);
-    for (let i = 1; i < s.points.length; i++) {
-      const x = tx(s.points[i].t).toFixed(1);
-      const yPrev = ty(s.points[i - 1].total).toFixed(1);
-      const yCur = ty(s.points[i].total).toFixed(1);
-      cmds.push(`L${x},${yPrev}`, `L${x},${yCur}`);
-    }
-    // Extend the last value out to the right edge so the line reaches "now".
-    const xEnd = tx(tMax).toFixed(1);
-    const yEnd = ty(s.points[s.points.length - 1].total).toFixed(1);
-    cmds.push(`L${xEnd},${yEnd}`);
-    const line = cmds.join(' ');
 
-    if (!isSplit) {
+  if (isSplit && hasData) {
+    // Stacked areas: for each series, build a polygon between its bottom and
+    // top step curves. Step-after between adjacent timestamps means the value
+    // stays flat until the next event.
+    const N = stackTs.length;
+    for (let i = 0; i < series.length; i++) {
+      const top = stackTop[i];
+      const bot = stackBot[i];
+      const color = seriesColor(i, series[i].label, opts.theme);
+      const cmds: string[] = [];
+      cmds.push(`M${tx(stackTs[0]).toFixed(1)},${ty(top[0]).toFixed(1)}`);
+      for (let j = 1; j < N; j++) {
+        const x = tx(stackTs[j]).toFixed(1);
+        cmds.push(`L${x},${ty(top[j - 1]).toFixed(1)}`);
+        cmds.push(`L${x},${ty(top[j]).toFixed(1)}`);
+      }
+      // Extend the last flat segment out to tMax (= last timestamp by construction).
+      cmds.push(`L${tx(tMax).toFixed(1)},${ty(top[N - 1]).toFixed(1)}`);
+      // Drop to bottom curve and walk back to the start.
+      cmds.push(`L${tx(tMax).toFixed(1)},${ty(bot[N - 1]).toFixed(1)}`);
+      for (let j = N - 1; j > 0; j--) {
+        const x = tx(stackTs[j]).toFixed(1);
+        cmds.push(`L${x},${ty(bot[j]).toFixed(1)}`);
+        cmds.push(`L${x},${ty(bot[j - 1]).toFixed(1)}`);
+      }
+      cmds.push(`L${tx(stackTs[0]).toFixed(1)},${ty(bot[0]).toFixed(1)}`);
+      cmds.push('Z');
+      seriesSvg.push(
+        `<path class="st-stack" d="${cmds.join(' ')}" fill="${color}" fill-opacity="0.85" stroke="${color}" stroke-width="0.5"/>`,
+      );
+      summaryTotal += series[i].points.length ? series[i].points[series[i].points.length - 1].total : 0;
+    }
+  } else {
+    series.forEach((s) => {
+      if (s.points.length < 1) return;
+      const color = p.line;
+      const cmds: string[] = [];
+      cmds.push(`M${tx(s.points[0].t).toFixed(1)},${ty(s.points[0].total).toFixed(1)}`);
+      for (let i = 1; i < s.points.length; i++) {
+        const x = tx(s.points[i].t).toFixed(1);
+        const yPrev = ty(s.points[i - 1].total).toFixed(1);
+        const yCur = ty(s.points[i].total).toFixed(1);
+        cmds.push(`L${x},${yPrev}`, `L${x},${yCur}`);
+      }
+      const xEnd = tx(tMax).toFixed(1);
+      const yEnd = ty(s.points[s.points.length - 1].total).toFixed(1);
+      cmds.push(`L${xEnd},${yEnd}`);
+      const line = cmds.join(' ');
       const area = `${line} L${xEnd},${(M.top + PH).toFixed(1)} L${tx(s.points[0].t).toFixed(1)},${(M.top + PH).toFixed(1)} Z`;
       seriesSvg.push(`<path class="st-area" d="${area}" fill="${p.fill}"/>`);
-    }
-    seriesSvg.push(
-      `<path class="st-line" d="${line}" pathLength="1" stroke="${color}" stroke-width="2" fill="none" stroke-linejoin="round"/>`,
-    );
-    summaryTotal += s.points[s.points.length - 1].total;
-  });
+      seriesSvg.push(
+        `<path class="st-line" d="${line}" pathLength="1" stroke="${color}" stroke-width="2" fill="none" stroke-linejoin="round"/>`,
+      );
+      summaryTotal += s.points[s.points.length - 1].total;
+    });
+  }
 
   const yTicks = niceTicks(0, yMax, 5);
   const xTickCount = 5;
@@ -180,17 +258,18 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
     return `<text x="${x}" y="${H - M.bottom + 20}" fill="${p.muted}" font-size="11" text-anchor="${anchor}">${fmtDate(t)}</text>`;
   }).join('');
 
+  const hasOthers = isSplit && series[series.length - 1]?.label.startsWith('others ');
   const summary = isSplit
-    ? `${series.length} repos · ${fmtInt(summaryTotal)} stars`
+    ? `${hasOthers ? `top ${series.length - 1} + others` : `${series.length} repos`} · ${fmtInt(summaryTotal)} stars`
     : `${fmtInt(hasData ? series[0]?.points[series[0].points.length - 1]?.total ?? 0 : 0)} GitHub stars`;
 
   const legendSvg = isSplit
     ? legendPositions.map((pos, idx) => {
-        const color = SPLIT_COLORS[idx % SPLIT_COLORS.length];
+        const color = seriesColor(idx, series[idx].label, opts.theme);
         const x = 64 + pos.x;
         const y = legendY0 + pos.y;
         return `<rect x="${x}" y="${y}" width="10" height="10" fill="${color}" rx="2"/>` +
-          `<text x="${x + 16}" y="${y + 9}" fill="${p.fg}" font-size="11" dominant-baseline="middle">${escapeXml(legendLabels[idx])}</text>`;
+          `<text x="${x + 16}" y="${y + 5}" fill="${p.fg}" font-size="11" dominant-baseline="middle">${escapeXml(legendLabels[idx])}</text>`;
       }).join('')
     : '';
 
@@ -205,11 +284,12 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
   <style>
     .st-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: st-draw 1.6s ease-out forwards; }
     .st-area { opacity: 0; animation: st-fade 1.6s ease-out forwards; }
+    .st-stack { opacity: 0; animation: st-fade 1.0s ease-out forwards; }
     @keyframes st-draw { to { stroke-dashoffset: 0; } }
     @keyframes st-fade { to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       .st-line { animation: none; stroke-dashoffset: 0; }
-      .st-area { animation: none; opacity: 1; }
+      .st-area, .st-stack { animation: none; opacity: 1; }
     }
   </style>
   <rect width="${W}" height="${H}" fill="${p.bg}"/>

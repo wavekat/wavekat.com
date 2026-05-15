@@ -278,11 +278,30 @@ app.get('/:slug/chart.svg', async (c) => {
   if (splitN > 1) {
     const perRepo = await db.tenantPerRepoTimelines(c.env.DB, slug);
     const top = perRepo.slice(0, splitN);
+    const rest = perRepo.slice(splitN);
     // Strip the owner prefix — every repo shares it within a tenant.
     series = top.map((r) => ({
       label: r.repo.includes('/') ? r.repo.split('/')[1]! : r.repo,
       points: r.points,
     }));
+    // Stack mode: append an "Others" bucket aggregating the remaining
+    // repos so top-N + others = tenant total. Skip if there's nothing left.
+    if (rest.length > 0) {
+      type Ev = { t: number; repo: string; total: number };
+      const events: Ev[] = [];
+      for (const r of rest) for (const p of r.points) events.push({ t: p.t, repo: r.repo, total: p.total });
+      events.sort((a, b) => a.t - b.t);
+      const latest = new Map<string, number>();
+      const points: db.TimelinePoint[] = [];
+      let sum = 0;
+      for (const e of events) {
+        const prev = latest.get(e.repo) ?? 0;
+        sum += e.total - prev;
+        latest.set(e.repo, e.total);
+        points.push({ t: e.t, total: sum });
+      }
+      series.push({ label: `others (${rest.length})`, points });
+    }
     defaultTitle = `${tenant.display_name ?? slug} · top ${top.length} repos`;
   } else {
     const points = await db.tenantTimeline(c.env.DB, slug);

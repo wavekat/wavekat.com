@@ -48,11 +48,18 @@ function shell(title: string, user: User | null, body: string): string {
   .eye-btn[data-revealed="true"] .eye-open { display: none; }
   .eye-btn[data-revealed="true"] .eye-closed { display: inline; }
   .chart-section input[type=radio] { position: absolute; opacity: 0; pointer-events: none; }
-  .theme-toggle { display: inline-flex; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; margin-bottom: .75rem; }
-  @media (prefers-color-scheme: dark) { .theme-toggle { border-color: #334155; } }
-  .theme-toggle label { padding: 6px 14px; font-size: 0.85em; cursor: pointer; user-select: none; }
-  .chart-section #theme-light:checked ~ .theme-toggle label[for=theme-light],
-  .chart-section #theme-dark:checked ~ .theme-toggle label[for=theme-dark] { background: #2196f3; color: white; }
+  .chart-controls { display: flex; flex-wrap: wrap; gap: .5rem .75rem; margin-bottom: .75rem; align-items: center; }
+  .seg-toggle { display: inline-flex; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; }
+  @media (prefers-color-scheme: dark) { .seg-toggle { border-color: #334155; } }
+  .seg-toggle label { padding: 6px 14px; font-size: 0.85em; cursor: pointer; user-select: none; }
+  .chart-section #theme-light:checked ~ .chart-controls .seg-toggle label[for=theme-light],
+  .chart-section #theme-dark:checked ~ .chart-controls .seg-toggle label[for=theme-dark],
+  .chart-section #split-1:checked ~ .chart-controls .seg-toggle label[for=split-1],
+  .chart-section #split-3:checked ~ .chart-controls .seg-toggle label[for=split-3],
+  .chart-section #split-5:checked ~ .chart-controls .seg-toggle label[for=split-5],
+  .chart-section #split-8:checked ~ .chart-controls .seg-toggle label[for=split-8] { background: #2196f3; color: white; }
+  .seg-toggle .seg-label { padding: 6px 10px 6px 12px; font-size: 0.75em; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-right: 1px solid #cbd5e1; }
+  @media (prefers-color-scheme: dark) { .seg-toggle .seg-label { border-right-color: #334155; } }
   .chart-preview img { max-width: 100%; border-radius: 6px; display: block; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
   @media (prefers-color-scheme: dark) { .chart-preview img { border-color: #1e293b; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); } }
   .chart-section .chart-preview .dark { display: none; }
@@ -104,6 +111,25 @@ ${body}
     var btn = row && row.querySelector('.eye-btn');
     if (btn) btn.dataset.revealed = s.dataset.revealed || 'false';
   });
+
+  // Chart top-N selector: rewrite the preview img src on change. Theme is
+  // still handled by CSS (two pre-rendered imgs), so we update both.
+  var preview = document.querySelector('.chart-preview[data-base]');
+  if (preview) {
+    var base = preview.getAttribute('data-base');
+    var version = preview.getAttribute('data-version');
+    document.querySelectorAll('input[name=chart-split]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        if (!r.checked) return;
+        var n = parseInt(r.value, 10);
+        var splitParam = n > 1 ? '&split=' + n : '';
+        preview.querySelectorAll('img').forEach(function (img) {
+          var isDark = img.classList.contains('dark');
+          img.src = base + '?v=' + version + (isDark ? '&theme=dark' : '') + splitParam;
+        });
+      });
+    });
+  }
 })();
 </script>
 </body></html>`;
@@ -190,11 +216,25 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
 <div class="chart-section">
   <input type="radio" id="theme-light" name="chart-theme" checked />
   <input type="radio" id="theme-dark" name="chart-theme" />
-  <div class="theme-toggle" role="group" aria-label="Preview theme">
-    <label for="theme-light">Light</label>
-    <label for="theme-dark">Dark</label>
+  <input type="radio" id="split-1" name="chart-split" value="1" checked />
+  <input type="radio" id="split-3" name="chart-split" value="3" />
+  <input type="radio" id="split-5" name="chart-split" value="5" />
+  <input type="radio" id="split-8" name="chart-split" value="8" />
+  <div class="chart-controls">
+    <div class="seg-toggle" role="group" aria-label="Preview theme">
+      <span class="seg-label">Theme</span>
+      <label for="theme-light">Light</label>
+      <label for="theme-dark">Dark</label>
+    </div>
+    <div class="seg-toggle" role="group" aria-label="Top repos">
+      <span class="seg-label">Top</span>
+      <label for="split-1">Merged</label>
+      <label for="split-3">3</label>
+      <label for="split-5">5</label>
+      <label for="split-8">8</label>
+    </div>
   </div>
-  <div class="chart-preview">
+  <div class="chart-preview" data-base="${chartSvg}" data-version="${totalStars}">
     <img class="light" src="${previewLight}" alt="${esc(tenant.slug)} star history (light)"/>
     <img class="dark" src="${previewDark}" alt="${esc(tenant.slug)} star history (dark)"/>
   </div>
@@ -207,7 +247,7 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
   <dt>Dark theme</dt>
   <dd>append <code>?theme=dark</code> to any chart URL</dd>
   <dt>Top-N per repo</dt>
-  <dd>append <code>?split=5</code> (up to 8) to show one line per top repo instead of the merged total</dd>
+  <dd>append <code>?split=5</code> (up to 8) to show a stacked breakdown of the top repos plus an "others" bucket — the stack sums to the tenant total</dd>
 </dl>
 
 <h2>1. GitHub webhook</h2>

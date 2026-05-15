@@ -366,7 +366,8 @@ export async function listTenantRepos(db: D1Database, tenant: string): Promise<R
   const { results } = await db
     .prepare(
       `SELECT full_name, sync_mode, stargazers_count, last_synced_at
-       FROM repos WHERE tenant_slug = ? ORDER BY full_name`,
+       FROM repos WHERE tenant_slug = ?
+       ORDER BY stargazers_count IS NULL, stargazers_count DESC, full_name`,
     )
     .bind(tenant)
     .all<RepoRow>();
