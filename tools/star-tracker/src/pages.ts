@@ -57,9 +57,7 @@ function shell(title: string, user: User | null, body: string): string {
   .btn-github { display: inline-block; padding: 10px 18px; background: #24292f; color: white; border-radius: 4px; text-decoration: none; }
   dl.embed { display: grid; grid-template-columns: 110px 1fr; gap: 6px 12px; align-items: start; margin: .75rem 0; }
   dl.embed dt { color: #64748b; font-size: 0.85em; padding-top: 4px; }
-  dl.embed-snippets { grid-template-columns: 150px 1fr; }
-  dl.embed-snippets dt { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
-  dl.embed-snippets dt .badge { font-size: 0.7em; padding: 1px 5px; }
+  dl.embed-snippets dt .badge { font-size: 0.85em; padding: 1px 4px; line-height: 1; }
   dl.embed dd { margin: 0; }
   dl.embed code { display: inline-block; max-width: 100%; }
   .embed-row { display: flex; align-items: flex-start; gap: 6px; }
@@ -491,7 +489,7 @@ function chartBlock(
     <dd><div class="embed-row"><pre><code data-embed-html>&lt;a href="${linkTarget}"&gt;
   &lt;img src="${chartSvg}" alt="${altText} stars"&gt;
 &lt;/a&gt;</code></pre>${copyBtn('HTML snippet')}</div></dd>
-    <dt>Auto theme <span class="badge badge-exact" title="Adapts to the reader's light/dark mode — recommended for GitHub READMEs">recommended</span></dt>
+    <dt>Auto theme <span class="badge badge-exact" title="Adapts to the reader's light/dark mode — recommended for GitHub READMEs" aria-label="recommended">👍</span></dt>
     <dd><div class="embed-row"><pre><code data-embed-picture>&lt;a href="${linkTarget}"&gt;
   &lt;picture&gt;
     &lt;source media="(prefers-color-scheme: dark)" srcset="${chartSvg}?theme=dark"&gt;
