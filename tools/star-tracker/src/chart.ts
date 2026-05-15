@@ -104,6 +104,7 @@ export function renderSVG(points: TimelinePoint[], opts: ChartOptions): string {
   ${hasData ? `<path d="${area}" fill="${p.fill}"/><path d="${line}" stroke="${p.line}" stroke-width="2" fill="none" stroke-linejoin="round"/>` : `<text x="${W / 2}" y="${H / 2}" fill="${p.muted}" font-size="13" text-anchor="middle">no data yet</text>`}
   ${yLabels}
   ${xLabels}
+  <text x="${M.left + PW}" y="${H - 8}" fill="${p.muted}" font-size="10" text-anchor="end">stars.wavekat.com</text>
 </svg>`;
 }
 
