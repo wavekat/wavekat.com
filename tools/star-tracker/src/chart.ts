@@ -113,12 +113,29 @@ export function renderSVG(points: TimelinePoint[], opts: ChartOptions): string {
 
   const currentTotal = hasData ? points[points.length - 1].total : 0;
 
+  // Line-draw animation: pathLength="1" normalises the line length so we can
+  // animate stroke-dashoffset from 1→0 regardless of how many points there are.
+  // CSS inside <style> works for SVG loaded via <img>; <script> would not.
+  const chartBody = hasData
+    ? `<path class="st-area" d="${area}" fill="${p.fill}"/><path class="st-line" d="${line}" pathLength="1" stroke="${p.line}" stroke-width="2" fill="none" stroke-linejoin="round"/>`
+    : `<text x="${W / 2}" y="${H / 2}" fill="${p.muted}" font-size="13" text-anchor="middle">no data yet</text>`;
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .st-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: st-draw 1.6s ease-out forwards; }
+    .st-area { opacity: 0; animation: st-fade 1.6s ease-out forwards; }
+    @keyframes st-draw { to { stroke-dashoffset: 0; } }
+    @keyframes st-fade { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .st-line { animation: none; stroke-dashoffset: 0; }
+      .st-area { animation: none; opacity: 1; }
+    }
+  </style>
   <rect width="${W}" height="${H}" fill="${p.bg}"/>
   <text x="${M.left}" y="28" fill="${p.fg}" font-size="16" font-weight="700">${escapeXml(opts.title)}</text>
   <text x="${M.left + PW}" y="28" fill="${p.muted}" font-size="12" text-anchor="end">${fmtInt(currentTotal)} GitHub stars</text>
   ${gridLines}
-  ${hasData ? `<path d="${area}" fill="${p.fill}"/><path d="${line}" stroke="${p.line}" stroke-width="2" fill="none" stroke-linejoin="round"/>` : `<text x="${W / 2}" y="${H / 2}" fill="${p.muted}" font-size="13" text-anchor="middle">no data yet</text>`}
+  ${chartBody}
   ${yLabels}
   ${xLabels}
   <text x="${M.left + PW}" y="${H - 8}" fill="${p.muted}" font-size="10" text-anchor="end">stars.wavekat.com</text>
