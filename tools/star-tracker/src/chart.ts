@@ -19,9 +19,26 @@ function fmtInt(n: number): string {
   return n.toLocaleString('en-US');
 }
 
-function fmtDate(ms: number): string {
-  const d = new Date(ms);
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// Pick a label format granular enough that adjacent ticks won't collide.
+// Coarser formats look cleaner but duplicate when the span is short.
+function pickDateFmt(spanMs: number): (ms: number) => string {
+  const day = 86400_000;
+  const days = spanMs / day;
+  if (days <= 2) return (ms) => {
+    const d = new Date(ms);
+    return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+  };
+  if (days <= 180) return (ms) => {
+    const d = new Date(ms);
+    return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}`;
+  };
+  if (days <= 365 * 4) return (ms) => {
+    const d = new Date(ms);
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+  };
+  return (ms) => `${new Date(ms).getUTCFullYear()}`;
 }
 
 function niceTicks(min: number, max: number, count = 5): number[] {
@@ -88,6 +105,7 @@ export function renderSVG(points: TimelinePoint[], opts: ChartOptions): string {
     return `<text x="${M.left - 10}" y="${y}" fill="${p.muted}" font-size="11" text-anchor="end" dominant-baseline="middle">${fmtInt(v)}</text>`;
   }).join('');
 
+  const fmtDate = pickDateFmt(tMax - tMin);
   const xLabels = xTicks.map((t, i) => {
     const x = tx(t).toFixed(1);
     const anchor = i === 0 ? 'start' : i === xTicks.length - 1 ? 'end' : 'middle';
@@ -99,7 +117,7 @@ export function renderSVG(points: TimelinePoint[], opts: ChartOptions): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
   <rect width="${W}" height="${H}" fill="${p.bg}"/>
   <text x="${M.left}" y="28" fill="${p.fg}" font-size="16" font-weight="700">${escapeXml(opts.title)}</text>
-  <text x="${M.left + PW}" y="28" fill="${p.muted}" font-size="12" text-anchor="end">${fmtInt(currentTotal)} total stars</text>
+  <text x="${M.left + PW}" y="28" fill="${p.muted}" font-size="12" text-anchor="end">${fmtInt(currentTotal)} GitHub stars</text>
   ${gridLines}
   ${hasData ? `<path d="${area}" fill="${p.fill}"/><path d="${line}" stroke="${p.line}" stroke-width="2" fill="none" stroke-linejoin="round"/>` : `<text x="${W / 2}" y="${H / 2}" fill="${p.muted}" font-size="13" text-anchor="middle">no data yet</text>`}
   ${yLabels}
