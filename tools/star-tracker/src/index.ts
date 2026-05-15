@@ -317,6 +317,14 @@ app.post('/webhook', async (c) => {
   // current visibility, so every event keeps our flag in sync even if
   // the user didn't subscribe to the 'repository' event.
   await db.setRepoPrivacy(c.env.DB, fullName, payload.repository?.private === true);
+  // GitHub includes the post-action stargazers_count on the repo object,
+  // so use it to keep our cached count fresh between nightly reconciles.
+  // Without this the "Tracked repos — N stars" line lags behind the live
+  // chart by up to a day after a webhook-driven star.
+  const liveCount = payload.repository?.stargazers_count;
+  if (typeof liveCount === 'number') {
+    await db.updateStargazersCount(c.env.DB, fullName, liveCount);
+  }
   await db.recordEvent(c.env.DB, slug, fullName, 'star', payload.action, payload.sender, payload.starred_at);
   await db.bumpTenantLastEvent(c.env.DB, slug);
 
