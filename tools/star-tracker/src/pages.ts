@@ -143,7 +143,6 @@ ${list}
 export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: string[], totalStars: number, justCreated?: boolean, flash?: string): string {
   const webhookUrl = `${publicUrl}/webhook`;
   const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
-  const chartPng = `${publicUrl}/${tenant.slug}/chart.png`;
   // Cache-bust the on-page preview when the star count changes — the chart
   // route sends a max-age=60 cache header so READMEs etc. benefit from it,
   // but our own dashboard should never show stale data after a backfill.
@@ -188,8 +187,6 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
   <dd><code>![${esc(tenant.slug)} stars](${chartSvg})</code></dd>
   <dt>HTML</dt>
   <dd><code>&lt;img src="${chartSvg}" alt="${esc(tenant.slug)} stars"&gt;</code></dd>
-  <dt>PNG</dt>
-  <dd><code>${chartPng}</code></dd>
   <dt>Dark theme</dt>
   <dd>append <code>?theme=dark</code> to any chart URL</dd>
 </dl>

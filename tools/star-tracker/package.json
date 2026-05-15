@@ -9,7 +9,6 @@
     "db:migrate:local": "wrangler d1 migrations apply wavekat-stars --local"
   },
   "dependencies": {
-    "@resvg/resvg-wasm": "^2.6.2",
     "hono": "^4.7.0"
   },
   "devDependencies": {

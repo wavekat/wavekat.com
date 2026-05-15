@@ -1,5 +1,4 @@
-// Chart renderer: builds an SVG from a cumulative star timeline, optionally
-// rasterises to PNG via resvg-wasm.
+// Chart renderer: builds an SVG from a cumulative star timeline.
 
 export type TimelinePoint = { t: number; total: number };
 
@@ -128,24 +127,4 @@ export function renderSVG(points: TimelinePoint[], opts: ChartOptions): string {
 
 function escapeXml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-// PNG rendering via resvg-wasm. The wasm module is statically imported so
-// wrangler bundles it; we still init lazily so the cost (~1MB) is only paid
-// on the first PNG request.
-import { initWasm, Resvg } from '@resvg/resvg-wasm';
-// @ts-expect-error — wrangler resolves the .wasm import to a WebAssembly.Module.
-import resvgWasm from '@resvg/resvg-wasm/index_bg.wasm';
-
-let resvgReady: Promise<void> | null = null;
-
-function ensureResvg(): Promise<void> {
-  if (!resvgReady) resvgReady = initWasm(resvgWasm);
-  return resvgReady;
-}
-
-export async function renderPNG(svg: string): Promise<Uint8Array> {
-  await ensureResvg();
-  const resvg = new Resvg(svg, { fitTo: { mode: 'original' } });
-  return resvg.render().asPng();
 }

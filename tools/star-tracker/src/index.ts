@@ -9,7 +9,7 @@ import {
 } from './github';
 import * as db from './db';
 import * as pages from './pages';
-import { renderPNG, renderSVG } from './chart';
+import { renderSVG } from './chart';
 import {
   clearSession,
   issueSession,
@@ -215,7 +215,7 @@ app.get('/:slug', async (c) => {
   return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length));
 });
 
-async function chartResponse(c: any, format: 'svg' | 'png') {
+app.get('/:slug/chart.svg', async (c) => {
   const slug = c.req.param('slug').toLowerCase();
   const tenant = await db.getTenant(c.env.DB, slug);
   if (!tenant) return c.text('unknown tenant', 404);
@@ -225,19 +225,10 @@ async function chartResponse(c: any, format: 'svg' | 'png') {
   const title = c.req.query('title') ?? `${tenant.display_name ?? slug} · stars over time`;
   const svg = renderSVG(points, { title, theme });
 
-  if (format === 'svg') {
-    return new Response(svg, {
-      headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=60' },
-    });
-  }
-  const png = await renderPNG(svg);
-  return new Response(png, {
-    headers: { 'content-type': 'image/png', 'cache-control': 'public, max-age=60' },
+  return new Response(svg, {
+    headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=60' },
   });
-}
-
-app.get('/:slug/chart.svg', (c) => chartResponse(c, 'svg'));
-app.get('/:slug/chart.png', (c) => chartResponse(c, 'png'));
+});
 
 app.post('/:slug/backfill', async (c) => {
   const user = requireUser(c);

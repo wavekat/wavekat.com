@@ -2,7 +2,7 @@
 
 A small multi-tenant Cloudflare Worker that listens for GitHub `star` webhook
 events, stores them in D1, and renders a cumulative star-history chart as SVG
-or PNG for any GitHub org or user.
+for any GitHub org or user.
 
 It's self-serve: anyone can sign in with GitHub, register an org (with
 admin/owner verification), install a webhook, and embed the resulting chart
@@ -16,7 +16,7 @@ src/
   auth.ts       OAuth state cookie + signed session cookie helpers
   github.ts     GitHub REST + HMAC webhook signature verification
   db.ts         D1 queries
-  chart.ts     SVG renderer + PNG rasterisation via resvg-wasm
+  chart.ts     SVG renderer
   pages.ts      Server-rendered HTML pages
 migrations/
   0001_init.sql
@@ -84,7 +84,7 @@ Add a Worker route in `wrangler.toml` (or via the Cloudflare dashboard) for
 4. New star/unstar events flow into D1 immediately. They can backfill
    historical stars from the tenant page (uses the same OAuth token).
 5. Embed the chart anywhere: `https://stars.wavekat.com/<slug>/chart.svg`
-   (also `.png`, `?theme=dark`, `?title=...`).
+   (also `?theme=dark`, `?title=...`).
 
 ## Security notes
 
