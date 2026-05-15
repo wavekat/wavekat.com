@@ -38,12 +38,13 @@ function shell(title: string, user: User | null, body: string): string {
   :root { color-scheme: light dark; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 760px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; line-height: 1.55; color: #0f172a; background: #ffffff; }
   @media (prefers-color-scheme: dark) { body { background: #0b0f17; color: #e2e8f0; } a { color: #38bdf8; } code, pre { background: #111827 !important; color: #e2e8f0 !important; } .warn { background: #422006 !important; color: #fde68a !important; } header { border-color: #1e293b !important; } .card { background: #111827 !important; border-color: #1e293b !important; } }
-  header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.5rem; font-size: 0.95rem; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: .5rem 1rem; flex-wrap: wrap; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.5rem; font-size: 0.95rem; }
   header a, header form { color: inherit; text-decoration: none; }
   header strong { font-weight: 700; }
+  @media (max-width: 600px) { header .muted { display: block; margin-top: 2px; } }
   h1 { font-size: 1.5rem; margin: 0 0 1rem; }
   h2 { font-size: 1.1rem; margin: 2rem 0 .5rem; }
-  code, pre { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  code, pre { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; overflow-wrap: anywhere; }
   pre { padding: 12px 14px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
   input[type=text] { padding: 8px 10px; font: inherit; width: 100%; max-width: 320px; border: 1px solid #cbd5e1; border-radius: 4px; background: transparent; color: inherit; }
   button { padding: 8px 16px; font: inherit; background: #2196f3; color: white; border: 0; border-radius: 4px; cursor: pointer; }
