@@ -15,11 +15,11 @@ database_id = "d8b73960-2bec-451a-8de0-c373ae05a87f"
 [triggers]
 crons = ["13 7 * * *"]
 
-# Public hostname. Update the route after the DNS record is in place.
-# [[routes]]
-# pattern = "stars.wavekat.com/*"
-# zone_name = "wavekat.com"
-# custom_domain = true
+# Public hostname. With custom_domain=true wrangler creates the DNS record on deploy.
+[[routes]]
+pattern = "stars.wavekat.com"
+zone_name = "wavekat.com"
+custom_domain = true
 
 # Secrets (set with `wrangler secret put <NAME>`):
 #   GITHUB_CLIENT_ID      — OAuth App client ID
