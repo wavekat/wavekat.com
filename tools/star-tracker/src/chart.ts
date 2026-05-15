@@ -269,7 +269,7 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
         const x = 64 + pos.x;
         const y = legendY0 + pos.y;
         return `<rect x="${x}" y="${y}" width="10" height="10" fill="${color}" rx="2"/>` +
-          `<text x="${x + 16}" y="${y + 5}" fill="${p.fg}" font-size="11" dominant-baseline="middle">${escapeXml(legendLabels[idx])}</text>`;
+          `<text x="${x + 16}" y="${y + 8}" fill="${p.fg}" font-size="11">${escapeXml(legendLabels[idx])}</text>`;
       }).join('')
     : '';
 
