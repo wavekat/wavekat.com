@@ -16,11 +16,16 @@ export type ChartOptions = {
   // repo. Renders a small disclosure next to the watermark so embedders
   // know the curve isn't strictly per-star accurate.
   sampled?: boolean;
+  // Single-series interpolation. 'smooth' (default) draws a monotone
+  // cubic Hermite curve through the points; 'step' draws step-after
+  // corners (the old behavior). Stacked split mode always uses step
+  // because the stacking math assumes flat segments between events.
+  style?: 'smooth' | 'step';
 };
 
 const PALETTE = {
-  light: { bg: '#ffffff', fg: '#0f172a', muted: '#64748b', grid: '#e2e8f0', line: '#2196f3', fill: 'rgba(33,150,243,0.12)' },
-  dark:  { bg: '#0b0f17', fg: '#e2e8f0', muted: '#64748b', grid: '#1e293b', line: '#22d3ee', fill: 'rgba(34,211,238,0.14)' },
+  light: { bg: '#ffffff', fg: '#0f172a', muted: '#64748b', grid: '#e2e8f0', line: '#2196f3', fill: 'rgba(33,150,243,0.12)', border: '#e2e8f0' },
+  dark:  { bg: '#0b0f17', fg: '#e2e8f0', muted: '#64748b', grid: '#1e293b', line: '#22d3ee', fill: 'rgba(34,211,238,0.14)', border: '#1e293b' },
 };
 
 // Categorical palette for split mode. Pulled from the WaveKat brand colors —
@@ -96,6 +101,57 @@ function downsample(points: TimelinePoint[], maxBuckets: number, tMin: number, t
   }
   flush();
   return out;
+}
+
+// Monotone cubic Hermite interpolation (Fritsch-Carlson). Builds a smooth
+// SVG path through the given xy points without overshoot — guaranteed
+// monotonic in y, which matches cumulative star series exactly. Without
+// the constraint, plain Catmull-Rom or Bezier curves can dip below
+// previous points and visually "lose" stars.
+function monotonePath(pts: { x: number; y: number }[]): string {
+  const n = pts.length;
+  if (n === 0) return '';
+  if (n === 1) return `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
+  const d: number[] = new Array(n - 1);
+  for (let i = 0; i < n - 1; i++) {
+    const dx = pts[i + 1].x - pts[i].x;
+    d[i] = dx === 0 ? 0 : (pts[i + 1].y - pts[i].y) / dx;
+  }
+  const m: number[] = new Array(n);
+  m[0] = d[0];
+  m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) {
+    if (d[i - 1] * d[i] <= 0) m[i] = 0;
+    else m[i] = (d[i - 1] + d[i]) / 2;
+  }
+  // Constrain tangents to keep the curve monotone (Fritsch-Carlson rule).
+  for (let i = 0; i < n - 1; i++) {
+    if (d[i] === 0) {
+      m[i] = 0;
+      m[i + 1] = 0;
+      continue;
+    }
+    const a = m[i] / d[i];
+    const b = m[i + 1] / d[i];
+    const h = a * a + b * b;
+    if (h > 9) {
+      const t = 3 / Math.sqrt(h);
+      m[i] = t * a * d[i];
+      m[i + 1] = t * b * d[i];
+    }
+  }
+  const cmds: string[] = [`M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`];
+  for (let i = 0; i < n - 1; i++) {
+    const dx = pts[i + 1].x - pts[i].x;
+    const c1x = pts[i].x + dx / 3;
+    const c1y = pts[i].y + (m[i] * dx) / 3;
+    const c2x = pts[i + 1].x - dx / 3;
+    const c2y = pts[i + 1].y - (m[i + 1] * dx) / 3;
+    cmds.push(
+      `C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${pts[i + 1].x.toFixed(1)},${pts[i + 1].y.toFixed(1)}`,
+    );
+  }
+  return cmds.join(' ');
 }
 
 function niceTicks(min: number, max: number, count = 5): number[] {
@@ -249,22 +305,40 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
       summaryTotal += series[i].points.length ? series[i].points[series[i].points.length - 1].total : 0;
     }
   } else {
+    const style = opts.style ?? 'smooth';
     series.forEach((s) => {
       if (s.points.length < 1) return;
       const color = p.line;
-      const cmds: string[] = [];
-      cmds.push(`M${tx(s.points[0].t).toFixed(0)},${ty(s.points[0].total).toFixed(0)}`);
-      for (let i = 1; i < s.points.length; i++) {
-        const x = tx(s.points[i].t).toFixed(0);
-        const yPrev = ty(s.points[i - 1].total).toFixed(0);
-        const yCur = ty(s.points[i].total).toFixed(0);
-        cmds.push(`L${x},${yPrev}`, `L${x},${yCur}`);
-      }
       const xEnd = tx(tMax).toFixed(0);
       const yEnd = ty(s.points[s.points.length - 1].total).toFixed(0);
-      cmds.push(`L${xEnd},${yEnd}`);
-      const line = cmds.join(' ');
-      const area = `${line} L${xEnd},${(M.top + PH).toFixed(0)} L${tx(s.points[0].t).toFixed(0)},${(M.top + PH).toFixed(0)} Z`;
+      const xFirst = tx(s.points[0].t).toFixed(0);
+      const yBase = (M.top + PH).toFixed(0);
+
+      let line: string;
+      if (style === 'step') {
+        const cmds: string[] = [];
+        cmds.push(`M${xFirst},${ty(s.points[0].total).toFixed(0)}`);
+        for (let i = 1; i < s.points.length; i++) {
+          const x = tx(s.points[i].t).toFixed(0);
+          const yPrev = ty(s.points[i - 1].total).toFixed(0);
+          const yCur = ty(s.points[i].total).toFixed(0);
+          cmds.push(`L${x},${yPrev}`, `L${x},${yCur}`);
+        }
+        cmds.push(`L${xEnd},${yEnd}`);
+        line = cmds.join(' ');
+      } else {
+        // Monotone cubic. Append a synthetic last point at tMax with the
+        // same y as the latest event so the curve extends flat to the
+        // right edge (matches the step-mode behavior visually).
+        const px = s.points.map((pt) => ({ x: tx(pt.t), y: ty(pt.total) }));
+        const lastTx = tx(tMax);
+        if (px[px.length - 1].x < lastTx - 0.5) {
+          px.push({ x: lastTx, y: px[px.length - 1].y });
+        }
+        line = monotonePath(px);
+      }
+
+      const area = `${line} L${xEnd},${yBase} L${xFirst},${yBase} Z`;
       seriesSvg.push(`<path class="st-area" d="${area}" fill="${p.fill}"/>`);
       seriesSvg.push(
         `<path class="st-line" d="${line}" pathLength="1" stroke="${color}" stroke-width="2" fill="none" stroke-linejoin="round"/>`,
@@ -330,6 +404,10 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
     }
   </style>
   <rect width="${W}" height="${H}" fill="${p.bg}"/>
+  <!-- Subtle 1px frame so the chart reads as a discrete card when embedded
+       on README pages with arbitrary background colors. Inset by 0.5px so
+       the stroke sits exactly on the pixel grid. -->
+  <rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="none" stroke="${p.border}" stroke-width="1" rx="6"/>
   <text x="${M.left}" y="28" fill="${p.fg}" font-size="16" font-weight="700">${escapeXml(opts.title)}</text>
   <text x="${M.left + PW}" y="28" fill="${p.muted}" font-size="12" text-anchor="end">${summary}</text>
   ${legendSvg}
@@ -344,4 +422,22 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
 
 function escapeXml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Placeholder SVG for slugs that exist on GitHub but aren't yet tracked
+// here. Anyone who embedded the chart URL ahead of registration sees an
+// inviting card pointing back to the registration page, instead of a
+// broken-image icon (404) or a blank rectangle.
+export function renderInviteSVG(slug: string, theme: 'light' | 'dark', orgPage: string): string {
+  const W = 900;
+  const H = 420;
+  const p = PALETTE[theme];
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <rect width="${W}" height="${H}" fill="${p.bg}"/>
+  <rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="none" stroke="${p.border}" stroke-width="1" rx="6"/>
+  <text x="${W / 2}" y="${H / 2 - 32}" fill="${p.fg}" font-size="22" font-weight="700" text-anchor="middle">${escapeXml(slug)} isn't being tracked yet</text>
+  <text x="${W / 2}" y="${H / 2 + 4}" fill="${p.muted}" font-size="14" text-anchor="middle">Visit <tspan fill="${p.line}" font-weight="600">${escapeXml(orgPage)}</tspan> to register it.</text>
+  <text x="${W / 2}" y="${H / 2 + 32}" fill="${p.muted}" font-size="12" text-anchor="middle">Free, open-source star history for any GitHub org or user account.</text>
+  <text x="${W - 32}" y="${H - 8}" fill="${p.muted}" font-size="10" text-anchor="end">stars.wavekat.com</text>
+</svg>`;
 }

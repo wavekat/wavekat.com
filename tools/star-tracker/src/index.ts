@@ -13,7 +13,7 @@ import {
 } from './github';
 import * as db from './db';
 import * as pages from './pages';
-import { renderSVG } from './chart';
+import { renderSVG, renderInviteSVG } from './chart';
 import {
   clearSession,
   issueSession,
@@ -60,15 +60,24 @@ function requireUser(c: any): db.User | Response {
 
 // Syncs one repo, choosing exact vs sampled based on stargazers_count.
 // Returns the chosen mode + counts so callers can build flash messages.
+// Private repos return mode 'private' — we ensure the row exists and tag
+// privacy so live webhook events can accumulate, but we can't backfill
+// historical stargazers without `repo` scope.
 async function backfillRepo(
   database: D1Database,
   tenantSlug: string,
   fullName: string,
-  starsCountHint: number | null,
+  hint: { stargazers_count: number; private: boolean } | null,
   token: string | undefined,
-): Promise<{ mode: 'exact' | 'sampled'; stargazers_count: number }> {
+): Promise<{ mode: 'exact' | 'sampled' | 'private'; stargazers_count: number }> {
+  const meta = hint ?? (await fetchRepoMetadata(fullName, token));
   await db.ensureRepo(database, tenantSlug, fullName);
-  const count = starsCountHint ?? (await fetchRepoMetadata(fullName, token)).stargazers_count;
+  await db.setRepoPrivacy(database, fullName, meta.private);
+
+  const count = meta.stargazers_count;
+  if (meta.private) {
+    return { mode: 'private', stargazers_count: count };
+  }
 
   if (count <= EXACT_THRESHOLD) {
     const stars = await fetchStargazers(fullName, token);
@@ -192,22 +201,39 @@ app.post('/webhook', async (c) => {
   const signature = c.req.header('x-hub-signature-256') ?? null;
   const body = await c.req.text();
 
-  if (eventType === 'ping') return c.json({ ok: true, pong: true });
-  if (eventType !== 'star') return c.json({ ok: true, ignored: eventType }, 202);
+  // Pings carry no repo, but they do carry a hub-signature when the user
+  // configures a secret. Verify against any tenant whose ping URL we got —
+  // we identify it via the hook's URL only, so the simplest robust check
+  // is: try every tenant's secret. Cheap because pings are rare and
+  // tenants are few. Bump last_ping_at on first match.
+  if (eventType === 'ping') {
+    const tenants = await db.listAllTenants(c.env.DB);
+    for (const t of tenants) {
+      if (await verifySignature(body, signature, t.webhook_secret)) {
+        await db.bumpTenantPing(c.env.DB, t.slug);
+        return c.json({ ok: true, pong: true });
+      }
+    }
+    // Unsigned or unknown — still 200 so GitHub doesn't retry, but don't
+    // record health for a tenant we can't identify.
+    return c.json({ ok: true, pong: true, identified: false });
+  }
 
-  let payload: {
-    action: 'created' | 'deleted';
-    starred_at: string | null;
-    repository: { full_name: string };
-    sender: { id: number; login: string };
-  };
+  // Acted-on event types: 'star' (drives the chart) and 'repository'
+  // (visibility flips so we can hide/reveal repos). Anything else is
+  // acknowledged but ignored — GitHub retries on non-2xx.
+  if (eventType !== 'star' && eventType !== 'repository') {
+    return c.json({ ok: true, ignored: eventType }, 202);
+  }
+
+  let payload: any;
   try {
     payload = JSON.parse(body);
   } catch {
     return c.text('invalid json', 400);
   }
-  const fullName = payload.repository?.full_name;
-  if (!fullName || !payload.sender?.id) return c.text('malformed payload', 400);
+  const fullName: string | undefined = payload?.repository?.full_name;
+  if (!fullName) return c.text('malformed payload', 400);
   const slug = fullName.split('/')[0]!.toLowerCase();
 
   const tenant = await db.getTenant(c.env.DB, slug);
@@ -216,8 +242,33 @@ app.post('/webhook', async (c) => {
   const ok = await verifySignature(body, signature, tenant.webhook_secret);
   if (!ok) return c.text('signature mismatch', 401);
 
+  if (eventType === 'repository') {
+    // Only privatized/publicized affect us; created/deleted/renamed/etc.
+    // are acknowledged but not acted on. Skip privacy flips for repos we
+    // don't already track — there's nothing to reveal or hide.
+    const action = payload.action;
+    if (action !== 'privatized' && action !== 'publicized') {
+      return c.json({ ok: true, ignored_action: action }, 202);
+    }
+    const existing = await db.getRepo(c.env.DB, fullName);
+    if (existing) {
+      await db.setRepoPrivacy(c.env.DB, fullName, action === 'privatized');
+      await db.recordEvent(c.env.DB, slug, fullName, 'repository', action, payload.sender ?? null, null);
+      await db.bumpTenantLastEvent(c.env.DB, slug);
+    }
+    return c.json({ ok: true });
+  }
+
+  // eventType === 'star'
+  if (!payload.sender?.id) return c.text('malformed payload', 400);
+
   await db.ensureRepo(c.env.DB, slug, fullName);
-  await db.recordEvent(c.env.DB, slug, fullName, payload.action, payload.sender, payload.starred_at);
+  // Trust the freshest signal we get — the star payload carries the
+  // current visibility, so every event keeps our flag in sync even if
+  // the user didn't subscribe to the 'repository' event.
+  await db.setRepoPrivacy(c.env.DB, fullName, payload.repository?.private === true);
+  await db.recordEvent(c.env.DB, slug, fullName, 'star', payload.action, payload.sender, payload.starred_at);
+  await db.bumpTenantLastEvent(c.env.DB, slug);
 
   // Live update strategy depends on how the repo was backfilled. Sampled
   // repos don't keep per-user rows — they extend the curve via deltas.
@@ -241,20 +292,29 @@ app.get('/:slug', async (c) => {
   const slug = c.req.param('slug').toLowerCase();
   if (!SLUG_RE.test(slug)) return c.notFound();
   const tenant = await db.getTenant(c.env.DB, slug);
-  if (!tenant) return c.notFound();
-
   const user = c.get('user');
-  if (!user || user.id !== tenant.owner_user_id) {
-    // Non-owner view: just show the chart embed page.
-    return c.redirect(`/${slug}/chart.svg`);
+
+  // Not tracked yet — render an invite page rather than 404. Anyone can
+  // land here from a shared README link, so the copy nudges admins to
+  // register and gives non-admins something to forward.
+  if (!tenant) {
+    return c.html(pages.notTrackedInvite(user, slug, c.env.PUBLIC_URL));
+  }
+
+  // Owner view: full controls + status. Public view: chart + light stats.
+  if (user && user.id === tenant.owner_user_id) {
+    const repos = await db.listTenantRepos(c.env.DB, slug);
+    const timeline = await db.tenantTimeline(c.env.DB, slug);
+    const counts = await db.eventCountsByType(c.env.DB, slug);
+    const flash = takeFlash(c);
+    return c.html(
+      pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, counts, flash?.justCreated, flash?.msg),
+    );
   }
 
   const repos = await db.listTenantRepos(c.env.DB, slug);
   const timeline = await db.tenantTimeline(c.env.DB, slug);
-  const flash = takeFlash(c);
-  return c.html(
-    pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, flash?.justCreated, flash?.msg),
-  );
+  return c.html(pages.publicOrg(user, tenant, c.env.PUBLIC_URL, repos, timeline.length));
 });
 
 // Max number of per-repo lines we'll render in split mode. Beyond this the
@@ -263,15 +323,32 @@ const SPLIT_CAP = 8;
 
 app.get('/:slug/chart.svg', async (c) => {
   const slug = c.req.param('slug').toLowerCase();
+  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light';
   const tenant = await db.getTenant(c.env.DB, slug);
-  if (!tenant) return c.text('unknown tenant', 404);
+  if (!tenant) {
+    // Render an inviting placeholder rather than 404, so README embeds
+    // for not-yet-tracked orgs become self-explaining ("visit X to
+    // register") instead of broken-image icons.
+    if (!SLUG_RE.test(slug)) return c.text('invalid slug', 400);
+    const svg = renderInviteSVG(slug, theme, `${c.env.PUBLIC_URL}/${slug}`);
+    return new Response(svg, {
+      headers: {
+        'content-type': 'image/svg+xml; charset=utf-8',
+        // Short cache: the moment the org gets registered, this should
+        // flip to the live chart on next refresh.
+        'cache-control': 'public, max-age=60',
+      },
+    });
+  }
 
   const repos = await db.listTenantRepos(c.env.DB, slug);
-  const hasSampled = repos.some((r) => r.sync_mode === 'sampled');
-  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light';
+  // hasSampled drives the "≈ approximate" footnote. Private repos are
+  // excluded from chart series, so they shouldn't trigger the footnote.
+  const hasSampled = repos.some((r) => r.sync_mode === 'sampled' && !r.private);
 
   const splitRaw = c.req.query('split');
   const splitN = splitRaw ? Math.max(1, Math.min(SPLIT_CAP, parseInt(splitRaw, 10) || 0)) : 1;
+  const style = c.req.query('style') === 'step' ? 'step' : 'smooth';
 
   let series: { label: string; points: db.TimelinePoint[] }[];
   let defaultTitle: string;
@@ -312,19 +389,23 @@ app.get('/:slug/chart.svg', async (c) => {
   const title = c.req.query('title') ?? defaultTitle;
 
   // ETag = hash of inputs that change the rendered output. Latest event
-  // timestamp captures "did any star arrive since last render"; theme/split/
-  // title cover the URL-level variants. Clients send If-None-Match → 304.
+  // timestamp captures "did any star arrive since last render"; latest
+  // privacy flip captures "did a repo just get hidden/revealed even
+  // though no new star arrived"; theme/split/title cover the URL-level
+  // variants. Clients send If-None-Match → 304.
   let latestTs = 0;
   for (const s of series) {
     const last = s.points[s.points.length - 1];
     if (last && last.t > latestTs) latestTs = last.t;
   }
-  const etag = `"${theme}.${splitN}.${latestTs}.${djb2(title)}"`;
+  const privTs = await db.latestPrivacyChangeMs(c.env.DB, slug);
+  const reactiveTs = Math.max(latestTs, privTs);
+  const etag = `"${theme}.${splitN}.${style}.${reactiveTs}.${djb2(title)}"`;
   if (c.req.header('if-none-match') === etag) {
     return new Response(null, { status: 304, headers: { etag, 'cache-control': 'public, max-age=300' } });
   }
 
-  const svg = renderSVG(series, { title, theme, sampled: hasSampled });
+  const svg = renderSVG(series, { title, theme, sampled: hasSampled, style });
 
   return new Response(svg, {
     headers: {
@@ -364,10 +445,13 @@ app.post('/:slug/backfill', async (c) => {
   let flash: string;
   try {
     const result = await backfillRepo(c.env.DB, slug, repo, null, user.github_access_token ?? undefined);
-    flash =
-      result.mode === 'exact'
-        ? `Backfilled ${repo} — ${result.stargazers_count} stars (exact).`
-        : `Backfilled ${repo} — ${result.stargazers_count} stars (sampled curve, >${EXACT_THRESHOLD}).`;
+    if (result.mode === 'private') {
+      flash = `${repo} is private — recorded but hidden from the public chart. Star events will still flow in via webhook.`;
+    } else if (result.mode === 'exact') {
+      flash = `Backfilled ${repo} — ${result.stargazers_count} stars (exact).`;
+    } else {
+      flash = `Backfilled ${repo} — ${result.stargazers_count} stars (sampled curve, >${EXACT_THRESHOLD}).`;
+    }
   } catch (err) {
     flash = `Backfill failed: ${(err as Error).message}`;
   }
@@ -398,15 +482,16 @@ app.post('/:slug/backfill-all', async (c) => {
     let failures = 0;
     for (const r of selected) {
       try {
+        // listOwnerPublicRepos already filters to public repos, so private=false.
         const result = await backfillRepo(
           c.env.DB,
           slug,
           r.full_name,
-          r.stargazers_count,
+          { stargazers_count: r.stargazers_count, private: false },
           user.github_access_token ?? undefined,
         );
         if (result.mode === 'exact') exact += 1;
-        else sampled += 1;
+        else if (result.mode === 'sampled') sampled += 1;
       } catch {
         failures += 1;
       }

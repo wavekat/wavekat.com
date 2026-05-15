@@ -80,12 +80,17 @@ Add a Worker route in `wrangler.toml` (or via the Cloudflare dashboard) for
    `GET /user/memberships/orgs/{org}` with their OAuth token; only `admin` role
    succeeds. For a personal account, the slug must match their login.
 3. We mint a `webhook_secret` and show it once. They install an org-level
-   webhook on the **Stars** event with content type `application/json`.
-4. New star/unstar events flow into D1 immediately. They can backfill
+   webhook with content type `application/json` and subscribe to **Stars**
+   (required) and **Repositories** (recommended — lets us hide a repo
+   immediately when it flips to private and reveal it again on publicize).
+4. New star/unstar events flow into D1 immediately. Star events on private
+   repos are still recorded but excluded from chart output; if the repo
+   later goes public, its full history appears at once. They can backfill
    historical stars from the tenant page (uses the same OAuth token).
 5. Embed the chart anywhere: `https://stars.wavekat.com/<slug>/chart.svg`
    (also `?theme=dark`, `?title=...`, `?split=N` for a top-N per-repo
-   breakdown — N up to 8, default is one merged line).
+   breakdown — N up to 8, default is one merged line; `?style=step` for the
+   old step-after rendering, default is monotone-cubic smooth).
 
 ## Security notes
 

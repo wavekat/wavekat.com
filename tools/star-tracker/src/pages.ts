@@ -1,7 +1,25 @@
 // Server-rendered HTML pages. Inline CSS, no JS — keeps the bundle small and
 // the UX dependable inside a Worker.
 
-import type { RepoRow, Tenant, User } from './db';
+import type { EventCounts, RepoRow, Tenant, User } from './db';
+
+// Human-friendly relative timestamp ("3 minutes ago"). Used for webhook
+// status — absolute UTC strings are precise but require mental math; "5
+// minutes ago" tells you instantly whether the webhook is alive.
+function relTime(iso: string | null): string {
+  if (!iso) return 'never';
+  const ms = Date.now() - Date.parse(iso);
+  if (!Number.isFinite(ms) || ms < 0) return iso;
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return `${s}s ago`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 48) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 60) return `${d}d ago`;
+  return new Date(iso).toISOString().slice(0, 10);
+}
 
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -80,10 +98,12 @@ function shell(title: string, user: User | null, body: string): string {
   .badge-exact { background: #dcfce7; color: #166534; }
   .badge-sampled { background: #fef3c7; color: #78350f; }
   .badge-pending { background: #e2e8f0; color: #475569; }
+  .badge-private { background: #fee2e2; color: #991b1b; }
   @media (prefers-color-scheme: dark) {
     .badge-exact { background: #14532d; color: #bbf7d0; }
     .badge-sampled { background: #422006; color: #fde68a; }
     .badge-pending { background: #1e293b; color: #94a3b8; }
+    .badge-private { background: #450a0a; color: #fecaca; }
   }
 </style></head>
 <body>
@@ -181,12 +201,13 @@ ${body}
     function refreshEmbed() {
       if (!embed) return;
       var base = embed.getAttribute('data-base');
+      var link = embed.getAttribute('data-link') || '';
       var slug = embed.getAttribute('data-slug');
       var url = base + buildQuery(currentTheme(), currentSplit(), null);
       var md = embed.querySelector('[data-embed-md]');
       var html = embed.querySelector('[data-embed-html]');
-      if (md) md.textContent = '![' + slug + ' stars](' + url + ')';
-      if (html) html.textContent = '<img src="' + url + '" alt="' + slug + ' stars">';
+      if (md) md.textContent = '[![' + slug + ' stars](' + url + ')](' + link + ')';
+      if (html) html.textContent = '<a href="' + link + '"><img src="' + url + '" alt="' + slug + ' stars"></a>';
     }
     document.querySelectorAll('input[name=chart-split], input[name=chart-theme]').forEach(function (r) {
       r.addEventListener('change', function () {
@@ -249,21 +270,102 @@ ${list}
   );
 }
 
-function repoBadge(mode: RepoRow['sync_mode']): string {
-  if (mode === 'exact') return `<span class="badge badge-exact" title="Every star fetched per-user">exact</span>`;
-  if (mode === 'sampled') return `<span class="badge badge-sampled" title="Curve sampled across ~15 pages — accurate within a few %">sampled</span>`;
-  return `<span class="badge badge-pending" title="Not yet backfilled — only webhook events so far">pending</span>`;
+function repoBadges(repo: RepoRow): string {
+  const mode =
+    repo.sync_mode === 'exact'
+      ? `<span class="badge badge-exact" title="Every star fetched per-user">exact</span>`
+      : repo.sync_mode === 'sampled'
+        ? `<span class="badge badge-sampled" title="Curve sampled across ~15 pages — accurate within a few %">sampled</span>`
+        : `<span class="badge badge-pending" title="Not yet backfilled — only webhook events so far">pending</span>`;
+  const priv = repo.private
+    ? `<span class="badge badge-private" title="Private repo — events recorded but hidden from public chart">private</span>`
+    : '';
+  return priv ? `${mode} ${priv}` : mode;
 }
 
-export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, justCreated?: boolean, flash?: string): string {
-  const webhookUrl = `${publicUrl}/webhook`;
-  const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
-  // Cache-bust the on-page preview when the star count changes — the chart
-  // route sends a max-age=60 cache header so READMEs etc. benefit from it,
-  // but our own dashboard should never show stale data after a backfill.
+// Reusable chart preview block used by both the owner detail page and the
+// public org page. Self-contained: renders the radio inputs that drive
+// the seg-toggle CSS, the dual-theme img preview, and the embed snippets
+// (Markdown/HTML) wrapped in a link back to `orgPage`.
+function chartBlock(slug: string, displayName: string | null, chartSvg: string, orgPage: string, totalStars: number): string {
   const previewLight = `${chartSvg}?v=${totalStars}`;
   const previewDark = `${chartSvg}?v=${totalStars}&theme=dark`;
+  const label = esc(displayName ?? slug);
+  return `<div class="chart-section">
+  <input type="radio" id="theme-light" name="chart-theme" checked />
+  <input type="radio" id="theme-dark" name="chart-theme" />
+  <input type="radio" id="split-1" name="chart-split" value="1" checked />
+  <input type="radio" id="split-3" name="chart-split" value="3" />
+  <input type="radio" id="split-5" name="chart-split" value="5" />
+  <input type="radio" id="split-8" name="chart-split" value="8" />
+  <div class="chart-controls">
+    <div class="seg-toggle" role="group" aria-label="Preview theme">
+      <span class="seg-label">Theme</span>
+      <label for="theme-light">Light</label>
+      <label for="theme-dark">Dark</label>
+    </div>
+    <div class="seg-toggle" role="group" aria-label="Top repos">
+      <span class="seg-label">Top</span>
+      <label for="split-1">Merged</label>
+      <label for="split-3">3</label>
+      <label for="split-5">5</label>
+      <label for="split-8">8</label>
+    </div>
+  </div>
+  <div class="chart-preview" data-base="${chartSvg}" data-version="${totalStars}">
+    <img class="light" src="${previewLight}" alt="${label} star history (light)"/>
+    <img class="dark" src="${previewDark}" alt="${label} star history (dark)"/>
+  </div>
+  <dl class="embed" data-embed data-base="${chartSvg}" data-link="${orgPage}" data-slug="${esc(slug)}">
+    <dt>Markdown</dt>
+    <dd><code data-embed-md>[![${esc(slug)} stars](${chartSvg})](${orgPage})</code></dd>
+    <dt>HTML</dt>
+    <dd><code data-embed-html>&lt;a href="${orgPage}"&gt;&lt;img src="${chartSvg}" alt="${esc(slug)} stars"&gt;&lt;/a&gt;</code></dd>
+  </dl>
+  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8).</p>
+</div>`;
+}
 
+// Webhook health summary for the owner page. Surfaces (a) whether GitHub
+// has delivered the install ping, (b) when the most recent event landed,
+// and (c) per-event-type counts so the owner can verify they enabled the
+// right subscriptions (e.g. zero repository events ⇒ they probably
+// forgot to tick the Repositories checkbox).
+function webhookStatusBlock(tenant: Tenant, counts: EventCounts): string {
+  const pingOk = !!tenant.last_ping_at;
+  const pingBadge = pingOk
+    ? `<span class="badge badge-exact">configured</span>`
+    : `<span class="badge badge-pending">awaiting ping</span>`;
+  const pingLine = pingOk
+    ? `Ping received <strong>${relTime(tenant.last_ping_at)}</strong>.`
+    : `No ping yet — install the webhook in step 1 above. GitHub sends a ping the moment you save the hook.`;
+  const lastEvent = tenant.last_event_at
+    ? `Last event <strong>${relTime(tenant.last_event_at)}</strong>.`
+    : `No star or repository events received yet.`;
+  const repoTotal = counts.repository_publicized + counts.repository_privatized;
+  const repoHint = pingOk && repoTotal === 0
+    ? `<p class="muted" style="font-size:0.85em">No <code>repository</code> events received. If you want auto-hide on private flips, edit the webhook and tick <strong>Repositories</strong>.</p>`
+    : '';
+  return `<h2>Webhook status</h2>
+<div class="card">
+  <p style="margin:0 0 .5rem">${pingBadge} ${pingLine}</p>
+  <p class="muted" style="margin:0 0 .75rem">${lastEvent}</p>
+  <dl class="embed" style="grid-template-columns: 180px 1fr">
+    <dt>Stars added</dt><dd>${counts.star_created.toLocaleString('en-US')}</dd>
+    <dt>Stars removed</dt><dd>${counts.star_deleted.toLocaleString('en-US')}</dd>
+    <dt>Repos publicized</dt><dd>${counts.repository_publicized.toLocaleString('en-US')}</dd>
+    <dt>Repos privatized</dt><dd>${counts.repository_privatized.toLocaleString('en-US')}</dd>
+  </dl>
+  ${repoHint}
+</div>`;
+}
+
+export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, counts: EventCounts, justCreated?: boolean, flash?: string): string {
+  const webhookUrl = `${publicUrl}/webhook`;
+  const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
+  // Embed snippets wrap the chart in a link back to the org's stars page
+  // so README readers can click through to the live chart.
+  const orgPage = `${publicUrl}/${tenant.slug}`;
   const secretLen = tenant.webhook_secret.length;
   const secretBlock = `${justCreated ? `<p class="warn">Tenant registered. Install the webhook below to start collecting events.</p>` : ''}
        <p>Webhook secret:</p>
@@ -294,39 +396,7 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
 <p class="muted">${repos.length} ${repos.length === 1 ? 'repo' : 'repos'} tracked · ${totalStars} total stars recorded.</p>
 
 <h2>Live chart</h2>
-<div class="chart-section">
-  <input type="radio" id="theme-light" name="chart-theme" checked />
-  <input type="radio" id="theme-dark" name="chart-theme" />
-  <input type="radio" id="split-1" name="chart-split" value="1" checked />
-  <input type="radio" id="split-3" name="chart-split" value="3" />
-  <input type="radio" id="split-5" name="chart-split" value="5" />
-  <input type="radio" id="split-8" name="chart-split" value="8" />
-  <div class="chart-controls">
-    <div class="seg-toggle" role="group" aria-label="Preview theme">
-      <span class="seg-label">Theme</span>
-      <label for="theme-light">Light</label>
-      <label for="theme-dark">Dark</label>
-    </div>
-    <div class="seg-toggle" role="group" aria-label="Top repos">
-      <span class="seg-label">Top</span>
-      <label for="split-1">Merged</label>
-      <label for="split-3">3</label>
-      <label for="split-5">5</label>
-      <label for="split-8">8</label>
-    </div>
-  </div>
-  <div class="chart-preview" data-base="${chartSvg}" data-version="${totalStars}">
-    <img class="light" src="${previewLight}" alt="${esc(tenant.slug)} star history (light)"/>
-    <img class="dark" src="${previewDark}" alt="${esc(tenant.slug)} star history (dark)"/>
-  </div>
-  <dl class="embed" data-embed data-base="${chartSvg}" data-slug="${esc(tenant.slug)}">
-    <dt>Markdown</dt>
-    <dd><code data-embed-md>![${esc(tenant.slug)} stars](${chartSvg})</code></dd>
-    <dt>HTML</dt>
-    <dd><code data-embed-html>&lt;img src="${chartSvg}" alt="${esc(tenant.slug)} stars"&gt;</code></dd>
-  </dl>
-  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8).</p>
-</div>
+${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars)}
 
 <h2>1. GitHub webhook</h2>
 ${secretBlock}
@@ -334,8 +404,10 @@ ${secretBlock}
 <ul>
   <li>Payload URL: <code>${esc(webhookUrl)}</code></li>
   <li>Content type: <code>application/json</code></li>
-  <li>Events: just <strong>Stars</strong></li>
+  <li>Events: <strong>Stars</strong> (required) and <strong>Repositories</strong> (recommended — lets us hide a repo immediately when you flip it private).</li>
 </ul>
+
+${webhookStatusBlock(tenant, counts)}
 
 <h2>2. Backfill historical stars</h2>
 <p>The webhook only sees new events. Backfill seeds the chart with existing stars (uses your GitHub OAuth token, no extra setup).</p>
@@ -352,7 +424,58 @@ ${flash ? `<p class="warn">${esc(flash)}</p>` : ''}
   </form>
 </details>
 ${repos.length > 0 ? `<h2>Tracked repos</h2>
-<ul class="repo-list">${repos.map((r) => `<li>${repoBadge(r.sync_mode)}<code>${esc(r.full_name)}</code>${r.stargazers_count != null ? ` <span class="muted">— ${r.stargazers_count.toLocaleString('en-US')} stars</span>` : ''}</li>`).join('')}</ul>` : ''}`,
+<ul class="repo-list">${repos.map((r) => `<li>${repoBadges(r)}<code>${esc(r.full_name)}</code>${r.stargazers_count != null ? ` <span class="muted">— ${r.stargazers_count.toLocaleString('en-US')} stars</span>` : ''}</li>`).join('')}</ul>` : ''}`,
+  );
+}
+
+// Public org page — what an anonymous visitor or non-owner sees at /:slug
+// for a tracked tenant. Shows the chart + embed snippets (no secrets, no
+// backfill controls), with a soft CTA to sign in if the viewer happens to
+// be the owner of another org.
+export function publicOrg(user: User | null, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number): string {
+  const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
+  const orgPage = `${publicUrl}/${tenant.slug}`;
+  const visibleRepos = repos.filter((r) => !r.private);
+  const visibleCount = visibleRepos.length;
+  return shell(
+    `${tenant.slug} · stars.wavekat.com`,
+    user,
+    `<h1>${esc(tenant.display_name ?? tenant.slug)}</h1>
+<p class="muted"><a href="https://github.com/${esc(tenant.slug)}">github.com/${esc(tenant.slug)}</a> · ${visibleCount} ${visibleCount === 1 ? 'repo' : 'repos'} tracked · ${totalStars.toLocaleString('en-US')} total stars.</p>
+
+${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars)}
+
+${visibleCount > 0 ? `<h2>Tracked repos</h2>
+<ul class="repo-list">${visibleRepos.map((r) => `<li><code>${esc(r.full_name)}</code>${r.stargazers_count != null ? ` <span class="muted">— ${r.stargazers_count.toLocaleString('en-US')} stars</span>` : ''}</li>`).join('')}</ul>` : ''}
+
+<h2>Track your own org</h2>
+<p>stars.wavekat.com is a free, open-source star-history service. ${user ? `<a href="/dashboard">Open your dashboard →</a>` : `<a href="/auth/login">Sign in with GitHub</a> to register a tracker for your org or personal account.`}</p>`,
+  );
+}
+
+// Landing page for /:slug when the slug isn't tracked yet. Anyone might
+// arrive here from a shared link (a README that anticipated tracking, a
+// blog post). The copy is share-friendly: admins get a register CTA,
+// non-admins get a forwardable explanation.
+export function notTrackedInvite(user: User | null, slug: string, _publicUrl: string): string {
+  const isOwnAccount = user && user.username.toLowerCase() === slug;
+  const cta = isOwnAccount
+    ? `<p><a class="btn-github" href="/dashboard">Register ${esc(slug)} on your dashboard →</a></p>
+       <p class="muted">You're signed in as <code>${esc(user.username)}</code>, which matches this slug exactly — registration is one click.</p>`
+    : user
+      ? `<p>You're signed in as <code>${esc(user.username)}</code>. To register <code>${esc(slug)}</code>, you must be a GitHub admin of that org.</p>
+         <p><a class="btn-github" href="/dashboard">Go to dashboard →</a></p>`
+      : `<p><a class="btn-github" href="/auth/login">Sign in with GitHub</a></p>
+         <p class="muted">If you're a GitHub admin of <code>${esc(slug)}</code>, sign in and register it from your dashboard. We verify org admin (or that the slug matches your username) before issuing a webhook secret.</p>`;
+  const adminUrl = `https://github.com/${encodeURIComponent(slug)}`;
+  return shell(
+    `${slug} — not yet tracked · stars.wavekat.com`,
+    user,
+    `<h1>${esc(slug)} isn't being tracked yet.</h1>
+<p>stars.wavekat.com plots cumulative GitHub star history for an entire org or user account, served as an embeddable SVG. <a href="${esc(adminUrl)}">${esc(slug)}</a> hasn't installed it yet.</p>
+${cta}
+<h2>Not an admin?</h2>
+<p class="muted">Forward this page to someone who is — once they install the webhook (one minute) and click "backfill all", the chart at <code>stars.wavekat.com/${esc(slug)}/chart.svg</code> will start working and any README that already embeds it will light up.</p>`,
   );
 }
 

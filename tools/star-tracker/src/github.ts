@@ -88,11 +88,14 @@ export async function listOwnerPublicRepos(slug: string, token?: string): Promis
   return out;
 }
 
-export async function fetchRepoMetadata(fullName: string, token?: string): Promise<{ stargazers_count: number }> {
+export async function fetchRepoMetadata(
+  fullName: string,
+  token?: string,
+): Promise<{ stargazers_count: number; private: boolean }> {
   const res = await ghFetch(`${API}/repos/${fullName}`, { token });
   if (!res.ok) throw new Error(`fetchRepoMetadata(${fullName}): ${res.status} ${await res.text()}`);
-  const data = (await res.json()) as { stargazers_count: number };
-  return { stargazers_count: data.stargazers_count ?? 0 };
+  const data = (await res.json()) as { stargazers_count: number; private?: boolean };
+  return { stargazers_count: data.stargazers_count ?? 0, private: data.private === true };
 }
 
 export type GithubUser = { id: number; login: string; avatar_url: string };

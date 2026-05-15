@@ -62,6 +62,8 @@ export type Tenant = {
   webhook_secret: string;
   display_name: string | null;
   created_at: string;
+  last_ping_at: string | null;
+  last_event_at: string | null;
 };
 
 export async function getTenant(db: D1Database, slug: string): Promise<Tenant | null> {
@@ -101,6 +103,8 @@ export type RepoRow = {
   sync_mode: 'exact' | 'sampled' | null;
   stargazers_count: number | null;
   last_synced_at: string | null;
+  private: number;                  // 0 = public, 1 = private
+  private_changed_at: string | null;
 };
 
 export async function ensureRepo(db: D1Database, tenant: string, fullName: string): Promise<void> {
@@ -117,10 +121,41 @@ export async function ensureRepo(db: D1Database, tenant: string, fullName: strin
 export async function getRepo(db: D1Database, fullName: string): Promise<RepoRow | null> {
   return (
     (await db
-      .prepare('SELECT full_name, sync_mode, stargazers_count, last_synced_at FROM repos WHERE full_name = ?')
+      .prepare(
+        'SELECT full_name, sync_mode, stargazers_count, last_synced_at, private, private_changed_at FROM repos WHERE full_name = ?',
+      )
       .bind(fullName)
       .first<RepoRow>()) ?? null
   );
+}
+
+// Flips a repo's visibility flag. Only updates `private_changed_at` when
+// the bit actually changes — star events fire this on every hit and we
+// don't want no-op writes invalidating the chart's ETag.
+export async function setRepoPrivacy(
+  db: D1Database,
+  fullName: string,
+  isPrivate: boolean,
+): Promise<void> {
+  const flag = isPrivate ? 1 : 0;
+  await db
+    .prepare(
+      `UPDATE repos SET private = ?, private_changed_at = ?
+       WHERE full_name = ? AND private != ?`,
+    )
+    .bind(flag, new Date().toISOString(), fullName, flag)
+    .run();
+}
+
+// Latest visibility flip across a tenant's repos, in ms-epoch. Folded
+// into the chart ETag so privatize/publicize events bust caches even
+// when the underlying star series hasn't moved.
+export async function latestPrivacyChangeMs(db: D1Database, tenant: string): Promise<number> {
+  const row = await db
+    .prepare(`SELECT MAX(private_changed_at) AS t FROM repos WHERE tenant_slug = ?`)
+    .bind(tenant)
+    .first<{ t: string | null }>();
+  return row?.t ? Date.parse(row.t) : 0;
 }
 
 export async function setRepoSyncMode(
@@ -141,17 +176,60 @@ export async function recordEvent(
   db: D1Database,
   tenant: string,
   repo: string,
-  action: 'created' | 'deleted',
+  eventType: 'star' | 'repository',
+  action: string,
   user: { id: number; login: string } | null,
   starredAt: string | null,
 ): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO events (tenant_slug, repo, action, user_login, user_id, starred_at, received_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO events (tenant_slug, repo, event_type, action, user_login, user_id, starred_at, received_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     )
-    .bind(tenant, repo, action, user?.login ?? null, user?.id ?? null, starredAt, new Date().toISOString())
+    .bind(tenant, repo, eventType, action, user?.login ?? null, user?.id ?? null, starredAt, new Date().toISOString())
     .run();
+}
+
+// Pings carry no repo, so they don't go in the events table — we just bump
+// a timestamp on the tenant. Used to drive the "webhook installed?" badge.
+export async function bumpTenantPing(db: D1Database, slug: string): Promise<void> {
+  await db
+    .prepare('UPDATE tenants SET last_ping_at = ? WHERE slug = ?')
+    .bind(new Date().toISOString(), slug)
+    .run();
+}
+
+export async function bumpTenantLastEvent(db: D1Database, slug: string): Promise<void> {
+  await db
+    .prepare('UPDATE tenants SET last_event_at = ? WHERE slug = ?')
+    .bind(new Date().toISOString(), slug)
+    .run();
+}
+
+export type EventCounts = {
+  star_created: number;
+  star_deleted: number;
+  repository_publicized: number;
+  repository_privatized: number;
+};
+
+// Aggregates the events table by (event_type, action) for a tenant. Used
+// to render the "what we've received" status block on the tenant page.
+export async function eventCountsByType(db: D1Database, tenant: string): Promise<EventCounts> {
+  const { results } = await db
+    .prepare(
+      `SELECT event_type, action, COUNT(*) AS n
+       FROM events WHERE tenant_slug = ?
+       GROUP BY event_type, action`,
+    )
+    .bind(tenant)
+    .all<{ event_type: string; action: string; n: number }>();
+  const out: EventCounts = { star_created: 0, star_deleted: 0, repository_publicized: 0, repository_privatized: 0 };
+  for (const row of results ?? []) {
+    const key = `${row.event_type}_${row.action}` as keyof EventCounts;
+    if (key in out) out[key] = row.n;
+  }
+  return out;
 }
 
 export async function applyStar(
@@ -257,9 +335,15 @@ export type TimelinePoint = { t: number; total: number };
 // into a single tenant-wide cumulative curve. For each event we update the
 // emitting repo's "latest total" and emit the new sum across all repos.
 export async function tenantTimeline(db: D1Database, tenant: string): Promise<TimelinePoint[]> {
+  // Both queries inner-join repos and filter `private = 0` so private repos
+  // never reach any chart consumer (owner stats included). Owners still see
+  // per-repo counts in the tracked-repos list on the tenant page.
   const { results: exactRows } = await db
     .prepare(
-      `SELECT repo, starred_at FROM stars WHERE tenant_slug = ? ORDER BY repo, starred_at ASC`,
+      `SELECT s.repo, s.starred_at FROM stars s
+       JOIN repos r ON r.full_name = s.repo
+       WHERE s.tenant_slug = ? AND r.private = 0
+       ORDER BY s.repo, s.starred_at ASC`,
     )
     .bind(tenant)
     .all<{ repo: string; starred_at: string }>();
@@ -268,7 +352,7 @@ export async function tenantTimeline(db: D1Database, tenant: string): Promise<Ti
     .prepare(
       `SELECT s.repo, s.starred_at, s.cumulative
        FROM samples s JOIN repos r ON r.full_name = s.repo
-       WHERE r.tenant_slug = ?
+       WHERE r.tenant_slug = ? AND r.private = 0
        ORDER BY s.repo, s.starred_at ASC`,
     )
     .bind(tenant)
@@ -312,7 +396,10 @@ export type RepoSeries = { repo: string; points: TimelinePoint[]; total: number 
 export async function tenantPerRepoTimelines(db: D1Database, tenant: string): Promise<RepoSeries[]> {
   const { results: exactRows } = await db
     .prepare(
-      `SELECT repo, starred_at FROM stars WHERE tenant_slug = ? ORDER BY repo, starred_at ASC`,
+      `SELECT s.repo, s.starred_at FROM stars s
+       JOIN repos r ON r.full_name = s.repo
+       WHERE s.tenant_slug = ? AND r.private = 0
+       ORDER BY s.repo, s.starred_at ASC`,
     )
     .bind(tenant)
     .all<{ repo: string; starred_at: string }>();
@@ -321,7 +408,7 @@ export async function tenantPerRepoTimelines(db: D1Database, tenant: string): Pr
     .prepare(
       `SELECT s.repo, s.starred_at, s.cumulative
        FROM samples s JOIN repos r ON r.full_name = s.repo
-       WHERE r.tenant_slug = ?
+       WHERE r.tenant_slug = ? AND r.private = 0
        ORDER BY s.repo, s.starred_at ASC`,
     )
     .bind(tenant)
@@ -365,7 +452,7 @@ export async function tenantPerRepoTimelines(db: D1Database, tenant: string): Pr
 export async function listTenantRepos(db: D1Database, tenant: string): Promise<RepoRow[]> {
   const { results } = await db
     .prepare(
-      `SELECT full_name, sync_mode, stargazers_count, last_synced_at
+      `SELECT full_name, sync_mode, stargazers_count, last_synced_at, private, private_changed_at
        FROM repos WHERE tenant_slug = ?
        ORDER BY stargazers_count IS NULL, stargazers_count DESC, full_name`,
     )
