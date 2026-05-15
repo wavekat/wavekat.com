@@ -84,7 +84,8 @@ Add a Worker route in `wrangler.toml` (or via the Cloudflare dashboard) for
 4. New star/unstar events flow into D1 immediately. They can backfill
    historical stars from the tenant page (uses the same OAuth token).
 5. Embed the chart anywhere: `https://stars.wavekat.com/<slug>/chart.svg`
-   (also `?theme=dark`, `?title=...`).
+   (also `?theme=dark`, `?title=...`, `?split=N` for a top-N per-repo
+   breakdown — N up to 8, default is one merged line).
 
 ## Security notes
 

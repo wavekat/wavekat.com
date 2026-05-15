@@ -19,7 +19,9 @@ import {
   issueSession,
   randomToken,
   readSession,
+  setFlash,
   setOAuthState,
+  takeFlash,
   takeOAuthState,
 } from './auth';
 
@@ -179,8 +181,8 @@ app.post('/tenants', async (c) => {
 
   const secret = randomToken(24);
   await db.createTenant(c.env.DB, slug, user.id, secret, slug);
-  const tenant = (await db.getTenant(c.env.DB, slug))!;
-  return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, [], 0, true));
+  setFlash(c, 'Tenant registered. Install the webhook below to start collecting events.', true);
+  return c.redirect(`/${slug}`, 303);
 });
 
 // -- Webhook ----------------------------------------------------------------
@@ -249,25 +251,57 @@ app.get('/:slug', async (c) => {
 
   const repos = await db.listTenantRepos(c.env.DB, slug);
   const timeline = await db.tenantTimeline(c.env.DB, slug);
-  return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length));
+  const flash = takeFlash(c);
+  return c.html(
+    pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, flash?.justCreated, flash?.msg),
+  );
 });
+
+// Max number of per-repo lines we'll render in split mode. Beyond this the
+// legend wraps to many rows and lines start crowding each other.
+const SPLIT_CAP = 8;
 
 app.get('/:slug/chart.svg', async (c) => {
   const slug = c.req.param('slug').toLowerCase();
   const tenant = await db.getTenant(c.env.DB, slug);
   if (!tenant) return c.text('unknown tenant', 404);
 
-  const points = await db.tenantTimeline(c.env.DB, slug);
   const repos = await db.listTenantRepos(c.env.DB, slug);
   const hasSampled = repos.some((r) => r.sync_mode === 'sampled');
   const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light';
-  const title = c.req.query('title') ?? `${tenant.display_name ?? slug} · stars over time`;
-  const svg = renderSVG(points, { title, theme, sampled: hasSampled });
+
+  const splitRaw = c.req.query('split');
+  const splitN = splitRaw ? Math.max(1, Math.min(SPLIT_CAP, parseInt(splitRaw, 10) || 0)) : 1;
+
+  let series: { label: string; points: db.TimelinePoint[] }[];
+  let defaultTitle: string;
+  if (splitN > 1) {
+    const perRepo = await db.tenantPerRepoTimelines(c.env.DB, slug);
+    const top = perRepo.slice(0, splitN);
+    // Strip the owner prefix — every repo shares it within a tenant.
+    series = top.map((r) => ({
+      label: r.repo.includes('/') ? r.repo.split('/')[1]! : r.repo,
+      points: r.points,
+    }));
+    defaultTitle = `${tenant.display_name ?? slug} · top ${top.length} repos`;
+  } else {
+    const points = await db.tenantTimeline(c.env.DB, slug);
+    series = [{ label: tenant.display_name ?? slug, points }];
+    defaultTitle = `${tenant.display_name ?? slug} · stars over time`;
+  }
+
+  const title = c.req.query('title') ?? defaultTitle;
+  const svg = renderSVG(series, { title, theme, sampled: hasSampled });
 
   return new Response(svg, {
     headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=60' },
   });
 });
+
+// GET handlers redirect to the tenant page so bookmarks / refreshes of a
+// previously-POSTed action URL don't 404.
+app.get('/:slug/backfill', (c) => c.redirect(`/${c.req.param('slug').toLowerCase()}`, 303));
+app.get('/:slug/backfill-all', (c) => c.redirect(`/${c.req.param('slug').toLowerCase()}`, 303));
 
 app.post('/:slug/backfill', async (c) => {
   const user = requireUser(c);
@@ -280,12 +314,8 @@ app.post('/:slug/backfill', async (c) => {
   const form = await c.req.parseBody();
   const repo = String(form.repo ?? '').trim();
   if (!repo.startsWith(`${slug}/`)) {
-    const repos = await db.listTenantRepos(c.env.DB, slug);
-    const timeline = await db.tenantTimeline(c.env.DB, slug);
-    return c.html(
-      pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, false, `repo must start with "${slug}/"`),
-      400,
-    );
+    setFlash(c, `repo must start with "${slug}/"`);
+    return c.redirect(`/${slug}`, 303);
   }
 
   let flash: string;
@@ -299,9 +329,8 @@ app.post('/:slug/backfill', async (c) => {
     flash = `Backfill failed: ${(err as Error).message}`;
   }
 
-  const repos = await db.listTenantRepos(c.env.DB, slug);
-  const timeline = await db.tenantTimeline(c.env.DB, slug);
-  return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, false, flash));
+  setFlash(c, flash);
+  return c.redirect(`/${slug}`, 303);
 });
 
 app.post('/:slug/backfill-all', async (c) => {
@@ -350,9 +379,8 @@ app.post('/:slug/backfill-all', async (c) => {
     flash = `Backfill failed: ${(err as Error).message}`;
   }
 
-  const repos = await db.listTenantRepos(c.env.DB, slug);
-  const timeline = await db.tenantTimeline(c.env.DB, slug);
-  return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, false, flash));
+  setFlash(c, flash);
+  return c.redirect(`/${slug}`, 303);
 });
 
 // -- Scheduled (nightly reconcile) -----------------------------------------

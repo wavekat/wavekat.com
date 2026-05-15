@@ -57,6 +57,34 @@ export function takeOAuthState(c: Context): string | null {
   return v;
 }
 
+// One-shot flash cookie — used to carry a message across a POST/redirect/GET
+// so reloading the tenant page doesn't re-POST the action.
+const FLASH_COOKIE = 'flash';
+
+export function setFlash(c: Context, msg: string, justCreated = false): void {
+  const payload = JSON.stringify({ msg, justCreated });
+  setCookie(c, FLASH_COOKIE, payload, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Lax',
+    path: '/',
+    maxAge: 60,
+  });
+}
+
+export function takeFlash(c: Context): { msg: string; justCreated: boolean } | null {
+  const raw = getCookie(c, FLASH_COOKIE);
+  if (!raw) return null;
+  deleteCookie(c, FLASH_COOKIE, { path: '/' });
+  try {
+    const parsed = JSON.parse(raw) as { msg?: string; justCreated?: boolean };
+    if (typeof parsed.msg !== 'string') return null;
+    return { msg: parsed.msg, justCreated: !!parsed.justCreated };
+  } catch {
+    return null;
+  }
+}
+
 export function randomToken(bytes = 24): string {
   const buf = new Uint8Array(bytes);
   crypto.getRandomValues(buf);

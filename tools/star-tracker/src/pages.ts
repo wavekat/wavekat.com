@@ -206,6 +206,8 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
   <dd><code>&lt;img src="${chartSvg}" alt="${esc(tenant.slug)} stars"&gt;</code></dd>
   <dt>Dark theme</dt>
   <dd>append <code>?theme=dark</code> to any chart URL</dd>
+  <dt>Top-N per repo</dt>
+  <dd>append <code>?split=5</code> (up to 8) to show one line per top repo instead of the merged total</dd>
 </dl>
 
 <h2>1. GitHub webhook</h2>

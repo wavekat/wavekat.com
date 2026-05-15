@@ -304,6 +304,64 @@ export async function tenantTimeline(db: D1Database, tenant: string): Promise<Ti
   return out;
 }
 
+export type RepoSeries = { repo: string; points: TimelinePoint[]; total: number };
+
+// Per-repo cumulative curves for a tenant, sorted by current total desc.
+// Same source data as tenantTimeline, but kept separated so callers can
+// render N lines (the ?split=N "top repos" chart) instead of merging.
+export async function tenantPerRepoTimelines(db: D1Database, tenant: string): Promise<RepoSeries[]> {
+  const { results: exactRows } = await db
+    .prepare(
+      `SELECT repo, starred_at FROM stars WHERE tenant_slug = ? ORDER BY repo, starred_at ASC`,
+    )
+    .bind(tenant)
+    .all<{ repo: string; starred_at: string }>();
+
+  const { results: sampledRows } = await db
+    .prepare(
+      `SELECT s.repo, s.starred_at, s.cumulative
+       FROM samples s JOIN repos r ON r.full_name = s.repo
+       WHERE r.tenant_slug = ?
+       ORDER BY s.repo, s.starred_at ASC`,
+    )
+    .bind(tenant)
+    .all<{ repo: string; starred_at: string; cumulative: number }>();
+
+  const byRepo = new Map<string, TimelinePoint[]>();
+
+  let curRepo = '';
+  let running = 0;
+  for (const row of exactRows ?? []) {
+    if (row.repo !== curRepo) {
+      curRepo = row.repo;
+      running = 0;
+    }
+    running += 1;
+    let arr = byRepo.get(row.repo);
+    if (!arr) {
+      arr = [];
+      byRepo.set(row.repo, arr);
+    }
+    arr.push({ t: Date.parse(row.starred_at), total: running });
+  }
+  for (const row of sampledRows ?? []) {
+    let arr = byRepo.get(row.repo);
+    if (!arr) {
+      arr = [];
+      byRepo.set(row.repo, arr);
+    }
+    arr.push({ t: Date.parse(row.starred_at), total: row.cumulative });
+  }
+
+  const out: RepoSeries[] = [];
+  for (const [repo, points] of byRepo) {
+    const total = points.length ? points[points.length - 1].total : 0;
+    out.push({ repo, points, total });
+  }
+  out.sort((a, b) => b.total - a.total);
+  return out;
+}
+
 export async function listTenantRepos(db: D1Database, tenant: string): Promise<RepoRow[]> {
   const { results } = await db
     .prepare(
