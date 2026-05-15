@@ -34,7 +34,7 @@ WaveKat builds open-source, AI-powered solutions that put enterprise-grade capab
 | [wavekat-sip](https://github.com/wavekat/wavekat-sip) | SIP signaling and RTP transport for voice pipelines | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-sip?style=flat-square)](https://github.com/wavekat/wavekat-sip) | [![Crates.io Total Downloads](https://img.shields.io/crates/d/wavekat-sip?style=flat-square)](https://crates.io/crates/wavekat-sip) |
 | [wavekat-asr](https://github.com/wavekat/wavekat-asr) | Streaming speech-to-text — unified Rust interface for multiple ASR backends | [![GitHub stars](https://img.shields.io/github/stars/wavekat/wavekat-asr?style=flat-square)](https://github.com/wavekat/wavekat-asr) | [![Crates.io Total Downloads](https://img.shields.io/crates/d/wavekat-asr?style=flat-square)](https://crates.io/crates/wavekat-asr) |
 
-![wavekat stars](https://stars.wavekat.com/wavekat/chart.svg?theme=dark&split=3)
+[![wavekat stars](https://stars.wavekat.com/wavekat/chart.svg?theme=dark&split=3)](https://stars.wavekat.com/wavekat)
 
 ## Tech Stack
 
