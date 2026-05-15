@@ -246,11 +246,20 @@ ${body}
       var base = embed.getAttribute('data-base');
       var link = embed.getAttribute('data-link') || '';
       var slug = embed.getAttribute('data-slug');
-      var url = base + buildQuery(currentTheme(), currentSplit(), currentStyle(), currentRange(), null);
+      var n = currentSplit();
+      var style = currentStyle();
+      var range = currentRange();
+      var url = base + buildQuery(currentTheme(), n, style, range, null);
+      // Picture snippet ignores the theme toggle — it serves both
+      // variants based on the viewer's prefers-color-scheme.
+      var darkUrl = base + buildQuery('dark', n, style, range, null);
+      var lightUrl = base + buildQuery('light', n, style, range, 'theme=light');
       var md = embed.querySelector('[data-embed-md]');
       var html = embed.querySelector('[data-embed-html]');
+      var picture = embed.querySelector('[data-embed-picture]');
       if (md) md.textContent = '[![' + slug + ' stars](' + url + ')](' + link + ')';
       if (html) html.textContent = '<a href="' + link + '"><img src="' + url + '" alt="' + slug + ' stars"></a>';
+      if (picture) picture.textContent = '<a href="' + link + '"><picture><source media="(prefers-color-scheme: dark)" srcset="' + darkUrl + '"><img alt="' + slug + ' stars" src="' + lightUrl + '"></picture></a>';
     }
     document.querySelectorAll('input[name=chart-split], input[name=chart-theme], input[name=chart-style], input[name=chart-range]').forEach(function (r) {
       r.addEventListener('change', function () {
@@ -424,8 +433,8 @@ function chartBlock(
     </div>`
     : '';
   const paramsHint = showSplit
-    ? `Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8), <code>?style=step</code>, <code>?range=30d|90d|1y</code>.`
-    : `Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?style=step</code>, <code>?range=30d|90d|1y</code>.`;
+    ? `Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8), <code>?style=step</code>, <code>?range=30d|90d|1y</code>. The <strong>Auto theme</strong> snippet uses <code>&lt;picture&gt;</code> with <code>prefers-color-scheme</code> so GitHub READMEs match the viewer's mode automatically.`
+    : `Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?style=step</code>, <code>?range=30d|90d|1y</code>. The <strong>Auto theme</strong> snippet uses <code>&lt;picture&gt;</code> with <code>prefers-color-scheme</code> so GitHub READMEs match the viewer's mode automatically.`;
   return `<div class="chart-section">
   <input type="radio" id="theme-light" name="chart-theme" checked />
   <input type="radio" id="theme-dark" name="chart-theme" />
@@ -465,6 +474,8 @@ function chartBlock(
     <dd><div class="embed-row"><code data-embed-md>[![${altText} stars](${chartSvg})](${linkTarget})</code>${copyBtn('Markdown snippet')}</div></dd>
     <dt>HTML</dt>
     <dd><div class="embed-row"><code data-embed-html>&lt;a href="${linkTarget}"&gt;&lt;img src="${chartSvg}" alt="${altText} stars"&gt;&lt;/a&gt;</code>${copyBtn('HTML snippet')}</div></dd>
+    <dt>Auto theme</dt>
+    <dd><div class="embed-row"><code data-embed-picture>&lt;a href="${linkTarget}"&gt;&lt;picture&gt;&lt;source media="(prefers-color-scheme: dark)" srcset="${chartSvg}?theme=dark"&gt;&lt;img alt="${altText} stars" src="${chartSvg}?theme=light"&gt;&lt;/picture&gt;&lt;/a&gt;</code>${copyBtn('Auto-theme HTML snippet')}</div></dd>
   </dl>
   <p class="muted" style="font-size:0.85em;margin-top:-.25rem">${paramsHint}</p>
 </div>`;
