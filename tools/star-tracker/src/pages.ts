@@ -44,7 +44,7 @@ function shell(title: string, user: User | null, body: string): string {
   @media (max-width: 600px) { header .muted { display: block; margin-top: 2px; } }
   h1 { font-size: 1.5rem; margin: 0 0 1rem; }
   h2 { font-size: 1.1rem; margin: 2rem 0 .5rem; }
-  code, pre { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  code, pre { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; overflow-wrap: anywhere; }
   pre { padding: 12px 14px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
   input[type=text] { padding: 8px 10px; font: inherit; width: 100%; max-width: 320px; border: 1px solid #cbd5e1; border-radius: 4px; background: transparent; color: inherit; }
   button { padding: 8px 16px; font: inherit; background: #2196f3; color: white; border: 0; border-radius: 4px; cursor: pointer; }
