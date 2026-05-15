@@ -42,11 +42,15 @@ function shell(title: string, user: User | null, body: string): string {
   dl.embed code { display: inline-block; max-width: 100%; }
   .secret-row { display: flex; align-items: stretch; gap: 8px; margin: .5rem 0 1rem; }
   .secret-row .secret { flex: 1; margin: 0; padding: 10px 12px; }
-  .eye-btn { background: transparent; color: inherit; border: 1px solid #cbd5e1; padding: 0 10px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-  @media (prefers-color-scheme: dark) { .eye-btn { border-color: #334155; } }
+  .icon-btn { background: transparent; color: inherit; border: 1px solid #cbd5e1; padding: 0 10px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  @media (prefers-color-scheme: dark) { .icon-btn { border-color: #334155; } }
   .eye-btn .eye-closed { display: none; }
   .eye-btn[data-revealed="true"] .eye-open { display: none; }
   .eye-btn[data-revealed="true"] .eye-closed { display: inline; }
+  .copy-btn .copy-check { display: none; }
+  .copy-btn[data-copied="true"] .copy-icon { display: none; }
+  .copy-btn[data-copied="true"] .copy-check { display: inline; color: #16a34a; }
+  @media (prefers-color-scheme: dark) { .copy-btn[data-copied="true"] .copy-check { color: #4ade80; } }
   .chart-section input[type=radio] { position: absolute; opacity: 0; pointer-events: none; }
   .chart-controls { display: flex; flex-wrap: wrap; gap: .5rem .75rem; margin-bottom: .75rem; align-items: center; }
   .seg-toggle { display: inline-flex; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; }
@@ -91,26 +95,53 @@ ${body}
 <script>
 (function () {
   document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.eye-btn');
-    if (!btn) return;
-    var row = btn.closest('.secret-row');
-    if (!row) return;
-    var secret = row.querySelector('.secret');
-    if (!secret) return;
-    var revealed = secret.dataset.revealed === 'true';
-    if (revealed) {
-      secret.textContent = '•'.repeat(secret.dataset.value.length);
-      secret.dataset.revealed = 'false';
-      btn.dataset.revealed = 'false';
-      btn.setAttribute('aria-label', 'Show secret');
+    var eye = e.target.closest('.eye-btn');
+    if (eye) {
+      var eyeRow = eye.closest('.secret-row');
+      var eyeSecret = eyeRow && eyeRow.querySelector('.secret');
+      if (!eyeSecret) return;
+      var revealed = eyeSecret.dataset.revealed === 'true';
+      if (revealed) {
+        eyeSecret.textContent = '•'.repeat(eyeSecret.dataset.value.length);
+        eyeSecret.dataset.revealed = 'false';
+        eye.dataset.revealed = 'false';
+        eye.setAttribute('aria-label', 'Show secret');
+      } else {
+        eyeSecret.textContent = eyeSecret.dataset.value;
+        eyeSecret.dataset.revealed = 'true';
+        eye.dataset.revealed = 'true';
+        eye.setAttribute('aria-label', 'Hide secret');
+      }
+      return;
+    }
+    var copy = e.target.closest('.copy-btn');
+    if (!copy) return;
+    var copyRow = copy.closest('.secret-row');
+    var copySecret = copyRow && copyRow.querySelector('.secret');
+    if (!copySecret) return;
+    var value = copySecret.dataset.value || '';
+    var done = function () {
+      copy.dataset.copied = 'true';
+      copy.setAttribute('aria-label', 'Copied');
+      setTimeout(function () {
+        copy.dataset.copied = 'false';
+        copy.setAttribute('aria-label', 'Copy secret');
+      }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(value).then(done, function () {});
     } else {
-      secret.textContent = secret.dataset.value;
-      secret.dataset.revealed = 'true';
-      btn.dataset.revealed = 'true';
-      btn.setAttribute('aria-label', 'Hide secret');
+      var ta = document.createElement('textarea');
+      ta.value = value;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (err) {}
+      document.body.removeChild(ta);
     }
   });
-  // Sync the button icon state to the initial render.
+  // Sync the eye button icon state to the initial render.
   document.querySelectorAll('.secret').forEach(function (s) {
     var row = s.closest('.secret-row');
     var btn = row && row.querySelector('.eye-btn');
@@ -238,10 +269,19 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
        <p>Webhook secret:</p>
        <div class="secret-row">
          <pre class="secret" data-value="${esc(tenant.webhook_secret)}" data-revealed="${justCreated ? 'true' : 'false'}">${justCreated ? esc(tenant.webhook_secret) : '•'.repeat(secretLen)}</pre>
-         <button type="button" class="eye-btn" aria-label="Toggle visibility" data-target-secret>
+         <button type="button" class="icon-btn eye-btn" aria-label="Show secret">
            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
              <path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
              <path class="eye-closed" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line class="eye-closed" x1="1" y1="1" x2="23" y2="23"/>
+           </svg>
+         </button>
+         <button type="button" class="icon-btn copy-btn" aria-label="Copy secret" data-copied="false">
+           <svg class="copy-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+           </svg>
+           <svg class="copy-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <polyline points="20 6 9 17 4 12"/>
            </svg>
          </button>
        </div>`;
