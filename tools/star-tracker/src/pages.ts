@@ -55,7 +55,7 @@ function shell(title: string, user: User | null, body: string): string {
   ul.tenants { list-style: none; padding: 0; }
   ul.tenants li { display: flex; justify-content: space-between; align-items: center; }
   .btn-github { display: inline-block; padding: 10px 18px; background: #24292f; color: white; border-radius: 4px; text-decoration: none; }
-  dl.embed { display: grid; grid-template-columns: 110px 1fr; gap: 6px 12px; align-items: start; margin: .75rem 0; }
+  dl.embed { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 6px 12px; align-items: start; margin: .75rem 0; }
   dl.embed dt { color: #64748b; font-size: 0.85em; padding-top: 4px; }
   dl.embed dd { margin: 0; }
   dl.embed code { display: inline-block; max-width: 100%; }
