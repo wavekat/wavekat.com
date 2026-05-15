@@ -1,4 +1,4 @@
-import type { Stargazer } from './github';
+import type { SamplePoint, Stargazer } from './github';
 
 // -- Users ------------------------------------------------------------------
 
@@ -96,6 +96,13 @@ export async function listTenantsByOwner(db: D1Database, ownerUserId: string): P
 
 // -- Repos + stars + events -------------------------------------------------
 
+export type RepoRow = {
+  full_name: string;
+  sync_mode: 'exact' | 'sampled' | null;
+  stargazers_count: number | null;
+  last_synced_at: string | null;
+};
+
 export async function ensureRepo(db: D1Database, tenant: string, fullName: string): Promise<void> {
   await db
     .prepare(
@@ -104,6 +111,29 @@ export async function ensureRepo(db: D1Database, tenant: string, fullName: strin
        ON CONFLICT(full_name) DO NOTHING`,
     )
     .bind(fullName, tenant, new Date().toISOString())
+    .run();
+}
+
+export async function getRepo(db: D1Database, fullName: string): Promise<RepoRow | null> {
+  return (
+    (await db
+      .prepare('SELECT full_name, sync_mode, stargazers_count, last_synced_at FROM repos WHERE full_name = ?')
+      .bind(fullName)
+      .first<RepoRow>()) ?? null
+  );
+}
+
+export async function setRepoSyncMode(
+  db: D1Database,
+  fullName: string,
+  mode: 'exact' | 'sampled',
+  stargazersCount: number,
+): Promise<void> {
+  await db
+    .prepare(
+      `UPDATE repos SET sync_mode = ?, stargazers_count = ?, last_synced_at = ? WHERE full_name = ?`,
+    )
+    .bind(mode, stargazersCount, new Date().toISOString(), fullName)
     .run();
 }
 
@@ -146,6 +176,8 @@ export async function removeStar(db: D1Database, repo: string, userId: number): 
   await db.prepare('DELETE FROM stars WHERE repo = ? AND user_id = ?').bind(repo, userId).run();
 }
 
+// Exact backfill: wipes per-user rows for the repo and replaces them.
+// Caller is responsible for setRepoSyncMode('exact', ...) afterwards.
 export async function replaceStargazers(
   db: D1Database,
   tenant: string,
@@ -153,7 +185,10 @@ export async function replaceStargazers(
   stargazers: Stargazer[],
 ): Promise<void> {
   const stmts: D1PreparedStatement[] = [];
+  // Clear both tables — switching exact/sampled is allowed, so wipe the
+  // sample side too in case this repo used to be sampled.
   stmts.push(db.prepare('DELETE FROM stars WHERE repo = ?').bind(repo));
+  stmts.push(db.prepare('DELETE FROM samples WHERE repo = ?').bind(repo));
   for (const s of stargazers) {
     stmts.push(
       db
@@ -163,36 +198,121 @@ export async function replaceStargazers(
         .bind(tenant, repo, s.user_id, s.user_login, s.starred_at),
     );
   }
-  stmts.push(
-    db
-      .prepare('UPDATE repos SET last_synced_at = ? WHERE full_name = ?')
-      .bind(new Date().toISOString(), repo),
-  );
   await db.batch(stmts);
+}
+
+// Sampled backfill: wipes both tables and writes the curve points to samples.
+// Caller is responsible for setRepoSyncMode('sampled', ...) afterwards.
+export async function replaceSamples(
+  db: D1Database,
+  repo: string,
+  points: SamplePoint[],
+): Promise<void> {
+  const stmts: D1PreparedStatement[] = [];
+  stmts.push(db.prepare('DELETE FROM stars WHERE repo = ?').bind(repo));
+  stmts.push(db.prepare('DELETE FROM samples WHERE repo = ?').bind(repo));
+  // Dedupe by starred_at (multiple samples can share a timestamp at second
+  // resolution); keep the higher cumulative which is the more recent index.
+  const byTs = new Map<string, number>();
+  for (const p of points) {
+    const prev = byTs.get(p.starred_at);
+    if (prev === undefined || p.cumulative > prev) byTs.set(p.starred_at, p.cumulative);
+  }
+  for (const [starredAt, cumulative] of byTs) {
+    stmts.push(
+      db
+        .prepare(`INSERT INTO samples (repo, starred_at, cumulative) VALUES (?, ?, ?)`)
+        .bind(repo, starredAt, cumulative),
+    );
+  }
+  await db.batch(stmts);
+}
+
+// Live webhook update for a sampled repo: append a new (timestamp,
+// cumulative ± 1) point so the curve continues past backfill time.
+export async function appendSampleDelta(
+  db: D1Database,
+  repo: string,
+  starredAt: string,
+  delta: 1 | -1,
+): Promise<void> {
+  const row = await db
+    .prepare('SELECT cumulative FROM samples WHERE repo = ? ORDER BY starred_at DESC LIMIT 1')
+    .bind(repo)
+    .first<{ cumulative: number }>();
+  const prev = row?.cumulative ?? 0;
+  const next = Math.max(0, prev + delta);
+  await db
+    .prepare(
+      `INSERT INTO samples (repo, starred_at, cumulative) VALUES (?, ?, ?)
+       ON CONFLICT(repo, starred_at) DO UPDATE SET cumulative = excluded.cumulative`,
+    )
+    .bind(repo, starredAt, next)
+    .run();
 }
 
 export type TimelinePoint = { t: number; total: number };
 
+// Merges per-repo series (exact = stars table, sampled = samples table)
+// into a single tenant-wide cumulative curve. For each event we update the
+// emitting repo's "latest total" and emit the new sum across all repos.
 export async function tenantTimeline(db: D1Database, tenant: string): Promise<TimelinePoint[]> {
-  const { results } = await db
-    .prepare('SELECT starred_at FROM stars WHERE tenant_slug = ? ORDER BY starred_at ASC')
+  const { results: exactRows } = await db
+    .prepare(
+      `SELECT repo, starred_at FROM stars WHERE tenant_slug = ? ORDER BY repo, starred_at ASC`,
+    )
     .bind(tenant)
-    .all<{ starred_at: string }>();
-  const points: TimelinePoint[] = [];
-  let total = 0;
-  for (const row of results ?? []) {
-    total += 1;
-    points.push({ t: Date.parse(row.starred_at), total });
+    .all<{ repo: string; starred_at: string }>();
+
+  const { results: sampledRows } = await db
+    .prepare(
+      `SELECT s.repo, s.starred_at, s.cumulative
+       FROM samples s JOIN repos r ON r.full_name = s.repo
+       WHERE r.tenant_slug = ?
+       ORDER BY s.repo, s.starred_at ASC`,
+    )
+    .bind(tenant)
+    .all<{ repo: string; starred_at: string; cumulative: number }>();
+
+  type Event = { t: number; repo: string; total: number };
+  const events: Event[] = [];
+
+  // Convert exact stars to per-repo cumulative.
+  const repoRunning = new Map<string, number>();
+  for (const row of exactRows ?? []) {
+    const next = (repoRunning.get(row.repo) ?? 0) + 1;
+    repoRunning.set(row.repo, next);
+    events.push({ t: Date.parse(row.starred_at), repo: row.repo, total: next });
   }
-  return points;
+
+  // Sample rows are already absolute cumulatives.
+  for (const row of sampledRows ?? []) {
+    events.push({ t: Date.parse(row.starred_at), repo: row.repo, total: row.cumulative });
+  }
+
+  events.sort((a, b) => a.t - b.t);
+
+  const latest = new Map<string, number>();
+  const out: TimelinePoint[] = [];
+  let sum = 0;
+  for (const e of events) {
+    const prev = latest.get(e.repo) ?? 0;
+    sum += e.total - prev;
+    latest.set(e.repo, e.total);
+    out.push({ t: e.t, total: sum });
+  }
+  return out;
 }
 
-export async function listTenantRepos(db: D1Database, tenant: string): Promise<string[]> {
+export async function listTenantRepos(db: D1Database, tenant: string): Promise<RepoRow[]> {
   const { results } = await db
-    .prepare('SELECT full_name FROM repos WHERE tenant_slug = ? ORDER BY full_name')
+    .prepare(
+      `SELECT full_name, sync_mode, stargazers_count, last_synced_at
+       FROM repos WHERE tenant_slug = ? ORDER BY full_name`,
+    )
     .bind(tenant)
-    .all<{ full_name: string }>();
-  return (results ?? []).map((r) => r.full_name);
+    .all<RepoRow>();
+  return results ?? [];
 }
 
 export async function listAllTenants(db: D1Database): Promise<Tenant[]> {

@@ -1,8 +1,12 @@
 import { Hono } from 'hono';
 import {
+  BACKFILL_ALL_REPO_CAP,
+  EXACT_THRESHOLD,
   exchangeOAuthCode,
   fetchAuthenticatedUser,
   fetchOrgRole,
+  fetchRepoMetadata,
+  fetchSampledStargazers,
   fetchStargazers,
   listOwnerPublicRepos,
   verifySignature,
@@ -50,6 +54,31 @@ function requireUser(c: any): db.User | Response {
   const u = c.get('user') as db.User | null;
   if (!u) return c.redirect('/auth/login');
   return u;
+}
+
+// Syncs one repo, choosing exact vs sampled based on stargazers_count.
+// Returns the chosen mode + counts so callers can build flash messages.
+async function backfillRepo(
+  database: D1Database,
+  tenantSlug: string,
+  fullName: string,
+  starsCountHint: number | null,
+  token: string | undefined,
+): Promise<{ mode: 'exact' | 'sampled'; stargazers_count: number }> {
+  await db.ensureRepo(database, tenantSlug, fullName);
+  const count = starsCountHint ?? (await fetchRepoMetadata(fullName, token)).stargazers_count;
+
+  if (count <= EXACT_THRESHOLD) {
+    const stars = await fetchStargazers(fullName, token);
+    await db.replaceStargazers(database, tenantSlug, fullName, stars);
+    await db.setRepoSyncMode(database, fullName, 'exact', count);
+    return { mode: 'exact', stargazers_count: count };
+  }
+
+  const samples = await fetchSampledStargazers(fullName, count, token);
+  await db.replaceSamples(database, fullName, samples);
+  await db.setRepoSyncMode(database, fullName, 'sampled', count);
+  return { mode: 'sampled', stargazers_count: count };
 }
 
 // -- Landing ----------------------------------------------------------------
@@ -188,10 +217,18 @@ app.post('/webhook', async (c) => {
   await db.ensureRepo(c.env.DB, slug, fullName);
   await db.recordEvent(c.env.DB, slug, fullName, payload.action, payload.sender, payload.starred_at);
 
-  if (payload.action === 'created' && payload.starred_at) {
-    await db.applyStar(c.env.DB, slug, fullName, payload.sender, payload.starred_at);
-  } else if (payload.action === 'deleted') {
-    await db.removeStar(c.env.DB, fullName, payload.sender.id);
+  // Live update strategy depends on how the repo was backfilled. Sampled
+  // repos don't keep per-user rows — they extend the curve via deltas.
+  const repo = await db.getRepo(c.env.DB, fullName);
+  if (repo?.sync_mode === 'sampled') {
+    const ts = payload.starred_at ?? new Date().toISOString();
+    await db.appendSampleDelta(c.env.DB, fullName, ts, payload.action === 'created' ? 1 : -1);
+  } else {
+    if (payload.action === 'created' && payload.starred_at) {
+      await db.applyStar(c.env.DB, slug, fullName, payload.sender, payload.starred_at);
+    } else if (payload.action === 'deleted') {
+      await db.removeStar(c.env.DB, fullName, payload.sender.id);
+    }
   }
   return c.json({ ok: true });
 });
@@ -221,9 +258,11 @@ app.get('/:slug/chart.svg', async (c) => {
   if (!tenant) return c.text('unknown tenant', 404);
 
   const points = await db.tenantTimeline(c.env.DB, slug);
+  const repos = await db.listTenantRepos(c.env.DB, slug);
+  const hasSampled = repos.some((r) => r.sync_mode === 'sampled');
   const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light';
   const title = c.req.query('title') ?? `${tenant.display_name ?? slug} · stars over time`;
-  const svg = renderSVG(points, { title, theme });
+  const svg = renderSVG(points, { title, theme, sampled: hasSampled });
 
   return new Response(svg, {
     headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=60' },
@@ -248,13 +287,21 @@ app.post('/:slug/backfill', async (c) => {
       400,
     );
   }
-  await db.ensureRepo(c.env.DB, slug, repo);
-  const stars = await fetchStargazers(repo, user.github_access_token ?? undefined);
-  await db.replaceStargazers(c.env.DB, slug, repo, stars);
+
+  let flash: string;
+  try {
+    const result = await backfillRepo(c.env.DB, slug, repo, null, user.github_access_token ?? undefined);
+    flash =
+      result.mode === 'exact'
+        ? `Backfilled ${repo} — ${result.stargazers_count} stars (exact).`
+        : `Backfilled ${repo} — ${result.stargazers_count} stars (sampled curve, >${EXACT_THRESHOLD}).`;
+  } catch (err) {
+    flash = `Backfill failed: ${(err as Error).message}`;
+  }
 
   const repos = await db.listTenantRepos(c.env.DB, slug);
   const timeline = await db.tenantTimeline(c.env.DB, slug);
-  return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, false, `Backfilled ${repo} — ${stars.length} stars.`));
+  return c.html(pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, false, flash));
 });
 
 app.post('/:slug/backfill-all', async (c) => {
@@ -268,14 +315,37 @@ app.post('/:slug/backfill-all', async (c) => {
   let flash: string;
   try {
     const allRepos = await listOwnerPublicRepos(slug, user.github_access_token ?? undefined);
-    let total = 0;
-    for (const repo of allRepos) {
-      await db.ensureRepo(c.env.DB, slug, repo);
-      const stars = await fetchStargazers(repo, user.github_access_token ?? undefined);
-      await db.replaceStargazers(c.env.DB, slug, repo, stars);
-      total += stars.length;
+    // Sort by star count desc and cap. Skipped repos are reported back so
+    // the user can manually backfill anything left out.
+    const sorted = [...allRepos].sort((a, b) => b.stargazers_count - a.stargazers_count);
+    const selected = sorted.slice(0, BACKFILL_ALL_REPO_CAP);
+    const skipped = sorted.slice(BACKFILL_ALL_REPO_CAP);
+
+    let exact = 0;
+    let sampled = 0;
+    let failures = 0;
+    for (const r of selected) {
+      try {
+        const result = await backfillRepo(
+          c.env.DB,
+          slug,
+          r.full_name,
+          r.stargazers_count,
+          user.github_access_token ?? undefined,
+        );
+        if (result.mode === 'exact') exact += 1;
+        else sampled += 1;
+      } catch {
+        failures += 1;
+      }
     }
-    flash = `Backfilled ${allRepos.length} ${allRepos.length === 1 ? 'repo' : 'repos'} — ${total} stars total.`;
+
+    const parts = [`Backfilled ${selected.length} of ${allRepos.length} repos`];
+    parts.push(`${exact} exact`);
+    parts.push(`${sampled} sampled`);
+    if (failures) parts.push(`${failures} failed`);
+    if (skipped.length) parts.push(`${skipped.length} skipped (over ${BACKFILL_ALL_REPO_CAP}-repo cap)`);
+    flash = `${parts.join(' · ')}.`;
   } catch (err) {
     flash = `Backfill failed: ${(err as Error).message}`;
   }
@@ -296,12 +366,13 @@ export default {
         const owner = await db.getUser(env.DB, t.owner_user_id);
         if (!owner?.github_access_token) continue;
         const repos = await db.listTenantRepos(env.DB, t.slug);
-        for (const repo of repos) {
+        for (const r of repos) {
           try {
-            const stars = await fetchStargazers(repo, owner.github_access_token);
-            await db.replaceStargazers(env.DB, t.slug, repo, stars);
+            // Re-detect mode each reconcile — a repo that crosses the
+            // threshold should flip from exact to sampled (or back).
+            await backfillRepo(env.DB, t.slug, r.full_name, null, owner.github_access_token);
           } catch (err) {
-            console.error(`reconcile ${repo}: ${(err as Error).message}`);
+            console.error(`reconcile ${r.full_name}: ${(err as Error).message}`);
           }
         }
       }

@@ -1,7 +1,7 @@
 // Server-rendered HTML pages. Inline CSS, no JS — keeps the bundle small and
 // the UX dependable inside a Worker.
 
-import type { Tenant, User } from './db';
+import type { RepoRow, Tenant, User } from './db';
 
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -58,6 +58,17 @@ function shell(title: string, user: User | null, body: string): string {
   .chart-section .chart-preview .dark { display: none; }
   .chart-section #theme-dark:checked ~ .chart-preview .light { display: none; }
   .chart-section #theme-dark:checked ~ .chart-preview .dark { display: block; }
+  .repo-list { list-style: none; padding: 0; margin: .5rem 0; display: flex; flex-direction: column; gap: 4px; }
+  .repo-list li { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
+  .badge { display: inline-block; font-size: 0.75em; padding: 2px 6px; border-radius: 3px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge-exact { background: #dcfce7; color: #166534; }
+  .badge-sampled { background: #fef3c7; color: #78350f; }
+  .badge-pending { background: #e2e8f0; color: #475569; }
+  @media (prefers-color-scheme: dark) {
+    .badge-exact { background: #14532d; color: #bbf7d0; }
+    .badge-sampled { background: #422006; color: #fde68a; }
+    .badge-pending { background: #1e293b; color: #94a3b8; }
+  }
 </style></head>
 <body>
 <header>
@@ -140,7 +151,13 @@ ${list}
   );
 }
 
-export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: string[], totalStars: number, justCreated?: boolean, flash?: string): string {
+function repoBadge(mode: RepoRow['sync_mode']): string {
+  if (mode === 'exact') return `<span class="badge badge-exact" title="Every star fetched per-user">exact</span>`;
+  if (mode === 'sampled') return `<span class="badge badge-sampled" title="Curve sampled across ~15 pages — accurate within a few %">sampled</span>`;
+  return `<span class="badge badge-pending" title="Not yet backfilled — only webhook events so far">pending</span>`;
+}
+
+export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, justCreated?: boolean, flash?: string): string {
   const webhookUrl = `${publicUrl}/webhook`;
   const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
   // Cache-bust the on-page preview when the star count changes — the chart
@@ -214,7 +231,8 @@ ${flash ? `<p class="warn">${esc(flash)}</p>` : ''}
     <p><button type="submit">Backfill repo</button></p>
   </form>
 </details>
-${repos.length > 0 ? `<p class="muted" style="margin-top: 1rem">Already tracking: ${repos.map((r) => `<code>${esc(r)}</code>`).join(', ')}</p>` : ''}`,
+${repos.length > 0 ? `<h2>Tracked repos</h2>
+<ul class="repo-list">${repos.map((r) => `<li>${repoBadge(r.sync_mode)}<code>${esc(r.full_name)}</code>${r.stargazers_count != null ? ` <span class="muted">— ${r.stargazers_count.toLocaleString('en-US')} stars</span>` : ''}</li>`).join('')}</ul>` : ''}`,
   );
 }
 

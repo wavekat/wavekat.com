@@ -7,6 +7,10 @@ export type ChartOptions = {
   theme: 'light' | 'dark';
   width?: number;
   height?: number;
+  // When true, the chart includes data from at least one curve-sampled
+  // repo. Renders a small disclosure next to the watermark so embedders
+  // know the curve isn't strictly per-star accurate.
+  sampled?: boolean;
 };
 
 const PALETTE = {
@@ -138,6 +142,7 @@ export function renderSVG(points: TimelinePoint[], opts: ChartOptions): string {
   ${chartBody}
   ${yLabels}
   ${xLabels}
+  ${opts.sampled ? `<text x="${M.left}" y="${H - 8}" fill="${p.muted}" font-size="10" text-anchor="start">≈ includes sampled data</text>` : ''}
   <text x="${M.left + PW}" y="${H - 8}" fill="${p.muted}" font-size="10" text-anchor="end">stars.wavekat.com</text>
 </svg>`;
 }
