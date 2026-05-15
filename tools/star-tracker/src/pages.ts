@@ -117,21 +117,51 @@ ${body}
     if (btn) btn.dataset.revealed = s.dataset.revealed || 'false';
   });
 
-  // Chart top-N selector: rewrite the preview img src on change. Theme is
-  // still handled by CSS (two pre-rendered imgs), so we update both.
+  // Chart controls: keep the preview imgs and the Markdown/HTML embed
+  // snippets in sync with the selected theme and top-N split.
   var preview = document.querySelector('.chart-preview[data-base]');
-  if (preview) {
-    var base = preview.getAttribute('data-base');
-    var version = preview.getAttribute('data-version');
-    document.querySelectorAll('input[name=chart-split]').forEach(function (r) {
+  var embed = document.querySelector('[data-embed]');
+  if (preview || embed) {
+    function currentSplit() {
+      var r = document.querySelector('input[name=chart-split]:checked');
+      return r ? parseInt(r.value, 10) : 1;
+    }
+    function currentTheme() {
+      var r = document.querySelector('input[name=chart-theme]:checked');
+      return r && r.id === 'theme-dark' ? 'dark' : 'light';
+    }
+    function buildQuery(theme, n, extra) {
+      var parts = [];
+      if (theme === 'dark') parts.push('theme=dark');
+      if (n > 1) parts.push('split=' + n);
+      if (extra) parts.push(extra);
+      return parts.length ? '?' + parts.join('&') : '';
+    }
+    function refreshPreview() {
+      if (!preview) return;
+      var base = preview.getAttribute('data-base');
+      var version = preview.getAttribute('data-version');
+      var n = currentSplit();
+      preview.querySelectorAll('img').forEach(function (img) {
+        var isDark = img.classList.contains('dark');
+        img.src = base + buildQuery(isDark ? 'dark' : 'light', n, 'v=' + version);
+      });
+    }
+    function refreshEmbed() {
+      if (!embed) return;
+      var base = embed.getAttribute('data-base');
+      var slug = embed.getAttribute('data-slug');
+      var url = base + buildQuery(currentTheme(), currentSplit(), null);
+      var md = embed.querySelector('[data-embed-md]');
+      var html = embed.querySelector('[data-embed-html]');
+      if (md) md.textContent = '![' + slug + ' stars](' + url + ')';
+      if (html) html.textContent = '<img src="' + url + '" alt="' + slug + ' stars">';
+    }
+    document.querySelectorAll('input[name=chart-split], input[name=chart-theme]').forEach(function (r) {
       r.addEventListener('change', function () {
         if (!r.checked) return;
-        var n = parseInt(r.value, 10);
-        var splitParam = n > 1 ? '&split=' + n : '';
-        preview.querySelectorAll('img').forEach(function (img) {
-          var isDark = img.classList.contains('dark');
-          img.src = base + '?v=' + version + (isDark ? '&theme=dark' : '') + splitParam;
-        });
+        refreshPreview();
+        refreshEmbed();
       });
     });
   }
@@ -249,17 +279,14 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
     <img class="light" src="${previewLight}" alt="${esc(tenant.slug)} star history (light)"/>
     <img class="dark" src="${previewDark}" alt="${esc(tenant.slug)} star history (dark)"/>
   </div>
+  <dl class="embed" data-embed data-base="${chartSvg}" data-slug="${esc(tenant.slug)}">
+    <dt>Markdown</dt>
+    <dd><code data-embed-md>![${esc(tenant.slug)} stars](${chartSvg})</code></dd>
+    <dt>HTML</dt>
+    <dd><code data-embed-html>&lt;img src="${chartSvg}" alt="${esc(tenant.slug)} stars"&gt;</code></dd>
+  </dl>
+  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8).</p>
 </div>
-<dl class="embed">
-  <dt>Markdown</dt>
-  <dd><code>![${esc(tenant.slug)} stars](${chartSvg})</code></dd>
-  <dt>HTML</dt>
-  <dd><code>&lt;img src="${chartSvg}" alt="${esc(tenant.slug)} stars"&gt;</code></dd>
-  <dt>Dark theme</dt>
-  <dd>append <code>?theme=dark</code> to any chart URL</dd>
-  <dt>Top-N per repo</dt>
-  <dd>append <code>?split=5</code> (up to 8) to show a stacked breakdown of the top repos plus an "others" bucket — the stack sums to the tenant total</dd>
-</dl>
 
 <h2>1. GitHub webhook</h2>
 ${secretBlock}
