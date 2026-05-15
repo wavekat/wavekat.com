@@ -58,6 +58,9 @@ function shell(title: string, user: User | null, body: string): string {
   dl.embed dt { color: #64748b; font-size: 0.85em; padding-top: 4px; }
   dl.embed dd { margin: 0; }
   dl.embed code { display: inline-block; max-width: 100%; }
+  .embed-row { display: flex; align-items: flex-start; gap: 6px; }
+  .embed-row code { flex: 1; min-width: 0; overflow-x: auto; }
+  .embed-row .icon-btn { padding: 0 8px; flex: 0 0 auto; height: 32px; }
   .secret-row { display: flex; align-items: stretch; gap: 8px; margin: .5rem 0 1rem; }
   .secret-row .secret { flex: 1; margin: 0; padding: 10px 12px; }
   .icon-btn { background: transparent; color: inherit; border: 1px solid #cbd5e1; padding: 0 10px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -79,7 +82,9 @@ function shell(title: string, user: User | null, body: string): string {
   .chart-section #split-1:checked ~ .chart-controls .seg-toggle label[for=split-1],
   .chart-section #split-3:checked ~ .chart-controls .seg-toggle label[for=split-3],
   .chart-section #split-5:checked ~ .chart-controls .seg-toggle label[for=split-5],
-  .chart-section #split-8:checked ~ .chart-controls .seg-toggle label[for=split-8] { background: #2196f3; color: white; }
+  .chart-section #split-8:checked ~ .chart-controls .seg-toggle label[for=split-8],
+  .chart-section #style-smooth:checked ~ .chart-controls .seg-toggle label[for=style-smooth],
+  .chart-section #style-step:checked ~ .chart-controls .seg-toggle label[for=style-step] { background: #2196f3; color: white; }
   .seg-toggle .seg-label { padding: 6px 10px 6px 12px; font-size: 0.75em; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-right: 1px solid #cbd5e1; }
   @media (prefers-color-scheme: dark) { .seg-toggle .seg-label { border-right-color: #334155; } }
   .chart-preview img { max-width: 100%; border-radius: 6px; display: block; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
@@ -136,16 +141,28 @@ ${body}
     }
     var copy = e.target.closest('.copy-btn');
     if (!copy) return;
-    var copyRow = copy.closest('.secret-row');
-    var copySecret = copyRow && copyRow.querySelector('.secret');
-    if (!copySecret) return;
-    var value = copySecret.dataset.value || '';
+    // Resolve the value source: secret rows store it on a dataset attr
+    // (so the dotted mask stays in the DOM), embed rows read live
+    // textContent (snippets get rewritten as the toggles change).
+    var value = '';
+    var secretRow = copy.closest('.secret-row');
+    if (secretRow) {
+      var copySecret = secretRow.querySelector('.secret');
+      if (!copySecret) return;
+      value = copySecret.dataset.value || '';
+    } else {
+      var embedRow = copy.closest('.embed-row');
+      var embedCode = embedRow && embedRow.querySelector('code');
+      if (!embedCode) return;
+      value = embedCode.textContent || '';
+    }
+    var origLabel = copy.getAttribute('aria-label') || 'Copy';
     var done = function () {
       copy.dataset.copied = 'true';
       copy.setAttribute('aria-label', 'Copied');
       setTimeout(function () {
         copy.dataset.copied = 'false';
-        copy.setAttribute('aria-label', 'Copy secret');
+        copy.setAttribute('aria-label', origLabel);
       }, 1500);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -181,10 +198,15 @@ ${body}
       var r = document.querySelector('input[name=chart-theme]:checked');
       return r && r.id === 'theme-dark' ? 'dark' : 'light';
     }
-    function buildQuery(theme, n, extra) {
+    function currentStyle() {
+      var r = document.querySelector('input[name=chart-style]:checked');
+      return r && r.id === 'style-step' ? 'step' : 'smooth';
+    }
+    function buildQuery(theme, n, style, extra) {
       var parts = [];
       if (theme === 'dark') parts.push('theme=dark');
       if (n > 1) parts.push('split=' + n);
+      if (style === 'step') parts.push('style=step');
       if (extra) parts.push(extra);
       return parts.length ? '?' + parts.join('&') : '';
     }
@@ -193,9 +215,10 @@ ${body}
       var base = preview.getAttribute('data-base');
       var version = preview.getAttribute('data-version');
       var n = currentSplit();
+      var style = currentStyle();
       preview.querySelectorAll('img').forEach(function (img) {
         var isDark = img.classList.contains('dark');
-        img.src = base + buildQuery(isDark ? 'dark' : 'light', n, 'v=' + version);
+        img.src = base + buildQuery(isDark ? 'dark' : 'light', n, style, 'v=' + version);
       });
     }
     function refreshEmbed() {
@@ -203,13 +226,13 @@ ${body}
       var base = embed.getAttribute('data-base');
       var link = embed.getAttribute('data-link') || '';
       var slug = embed.getAttribute('data-slug');
-      var url = base + buildQuery(currentTheme(), currentSplit(), null);
+      var url = base + buildQuery(currentTheme(), currentSplit(), currentStyle(), null);
       var md = embed.querySelector('[data-embed-md]');
       var html = embed.querySelector('[data-embed-html]');
       if (md) md.textContent = '[![' + slug + ' stars](' + url + ')](' + link + ')';
       if (html) html.textContent = '<a href="' + link + '"><img src="' + url + '" alt="' + slug + ' stars"></a>';
     }
-    document.querySelectorAll('input[name=chart-split], input[name=chart-theme]').forEach(function (r) {
+    document.querySelectorAll('input[name=chart-split], input[name=chart-theme], input[name=chart-style]').forEach(function (r) {
       r.addEventListener('change', function () {
         if (!r.checked) return;
         refreshPreview();
@@ -291,6 +314,15 @@ function chartBlock(slug: string, displayName: string | null, chartSvg: string, 
   const previewLight = `${chartSvg}?v=${totalStars}`;
   const previewDark = `${chartSvg}?v=${totalStars}&theme=dark`;
   const label = esc(displayName ?? slug);
+  const copyBtn = (kind: string) => `<button type="button" class="icon-btn copy-btn" aria-label="Copy ${kind}" data-copied="false">
+      <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <svg class="copy-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </button>`;
   return `<div class="chart-section">
   <input type="radio" id="theme-light" name="chart-theme" checked />
   <input type="radio" id="theme-dark" name="chart-theme" />
@@ -298,6 +330,8 @@ function chartBlock(slug: string, displayName: string | null, chartSvg: string, 
   <input type="radio" id="split-3" name="chart-split" value="3" />
   <input type="radio" id="split-5" name="chart-split" value="5" />
   <input type="radio" id="split-8" name="chart-split" value="8" />
+  <input type="radio" id="style-smooth" name="chart-style" checked />
+  <input type="radio" id="style-step" name="chart-style" />
   <div class="chart-controls">
     <div class="seg-toggle" role="group" aria-label="Preview theme">
       <span class="seg-label">Theme</span>
@@ -311,6 +345,11 @@ function chartBlock(slug: string, displayName: string | null, chartSvg: string, 
       <label for="split-5">5</label>
       <label for="split-8">8</label>
     </div>
+    <div class="seg-toggle" role="group" aria-label="Curve style">
+      <span class="seg-label">Curve</span>
+      <label for="style-smooth">Smooth</label>
+      <label for="style-step">Step</label>
+    </div>
   </div>
   <div class="chart-preview" data-base="${chartSvg}" data-version="${totalStars}">
     <img class="light" src="${previewLight}" alt="${label} star history (light)"/>
@@ -318,11 +357,11 @@ function chartBlock(slug: string, displayName: string | null, chartSvg: string, 
   </div>
   <dl class="embed" data-embed data-base="${chartSvg}" data-link="${orgPage}" data-slug="${esc(slug)}">
     <dt>Markdown</dt>
-    <dd><code data-embed-md>[![${esc(slug)} stars](${chartSvg})](${orgPage})</code></dd>
+    <dd><div class="embed-row"><code data-embed-md>[![${esc(slug)} stars](${chartSvg})](${orgPage})</code>${copyBtn('Markdown snippet')}</div></dd>
     <dt>HTML</dt>
-    <dd><code data-embed-html>&lt;a href="${orgPage}"&gt;&lt;img src="${chartSvg}" alt="${esc(slug)} stars"&gt;&lt;/a&gt;</code></dd>
+    <dd><div class="embed-row"><code data-embed-html>&lt;a href="${orgPage}"&gt;&lt;img src="${chartSvg}" alt="${esc(slug)} stars"&gt;&lt;/a&gt;</code>${copyBtn('HTML snippet')}</div></dd>
   </dl>
-  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8).</p>
+  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8), <code>?style=step</code>.</p>
 </div>`;
 }
 
