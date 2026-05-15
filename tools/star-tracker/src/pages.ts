@@ -65,6 +65,11 @@ function shell(title: string, user: User | null, body: string): string {
   .chart-section .chart-preview .dark { display: none; }
   .chart-section #theme-dark:checked ~ .chart-preview .light { display: none; }
   .chart-section #theme-dark:checked ~ .chart-preview .dark { display: block; }
+  .chart-preview-auto .dark { display: none; }
+  @media (prefers-color-scheme: dark) {
+    .chart-preview-auto .light { display: none; }
+    .chart-preview-auto .dark { display: block; }
+  }
   .repo-list { list-style: none; padding: 0; margin: .5rem 0; display: flex; flex-direction: column; gap: 4px; }
   .repo-list li { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
   .badge { display: inline-block; font-size: 0.75em; padding: 2px 6px; border-radius: 3px; font-weight: 600; letter-spacing: 0.02em; }
@@ -142,6 +147,12 @@ export function landing(user: User | null): string {
     `<h1>Cumulative GitHub star history, served as an image.</h1>
 <p>Track stars across all repos in your GitHub org or personal account. Install one org-level webhook and embed the chart anywhere.</p>
 <p>${user ? `<a class="btn-github" href="/dashboard">Go to dashboard →</a>` : `<a class="btn-github" href="/auth/login">Sign in with GitHub</a>`}</p>
+<h2>Live example</h2>
+<p>This site dogfoods the tool — here's the <a href="/wavekat">wavekat</a> org's own star history, split by top repo:</p>
+<div class="chart-preview chart-preview-auto">
+  <img class="light" src="/wavekat/chart.svg?split=5" alt="wavekat star history (light)"/>
+  <img class="dark" src="/wavekat/chart.svg?split=5&amp;theme=dark" alt="wavekat star history (dark)"/>
+</div>
 <h2>How it works</h2>
 <ol>
   <li>Sign in with GitHub.</li>
@@ -150,7 +161,7 @@ export function landing(user: User | null): string {
   <li>Embed <code>&lt;img src="https://stars.wavekat.com/&lt;slug&gt;/chart.svg"&gt;</code> in your README.</li>
 </ol>
 <h2>Free, open source</h2>
-<p>Source: <a href="https://github.com/wavekat/wavekat.com/tree/main/tools/star-tracker">github.com/wavekat/wavekat.com</a> · MIT.</p>`,
+<p>Source: <a href="https://github.com/wavekat/wavekat.com/tree/main/tools/star-tracker">github.com/wavekat/wavekat.com</a> · Apache-2.0.</p>`,
   );
 }
 
