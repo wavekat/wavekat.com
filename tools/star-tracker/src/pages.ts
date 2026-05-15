@@ -61,6 +61,9 @@ function shell(title: string, user: User | null, body: string): string {
   dl.embed code { display: inline-block; max-width: 100%; }
   .embed-row { display: flex; align-items: flex-start; gap: 6px; }
   .embed-row code { flex: 1; min-width: 0; overflow-x: auto; }
+  .embed-row pre { flex: 1; min-width: 0; margin: 0; padding: 8px 10px; background: rgba(15,23,42,0.04); border-radius: 4px; overflow-x: auto; }
+  @media (prefers-color-scheme: dark) { .embed-row pre { background: rgba(255,255,255,0.04); } }
+  .embed-row pre code { display: block; padding: 0; background: none; white-space: pre; }
   .embed-row .icon-btn { padding: 0 8px; flex: 0 0 auto; height: 32px; }
   .secret-row { display: flex; align-items: stretch; gap: 8px; margin: .5rem 0 1rem; }
   .secret-row .secret { flex: 1; margin: 0; padding: 10px 12px; }
@@ -258,8 +261,17 @@ ${body}
       var html = embed.querySelector('[data-embed-html]');
       var picture = embed.querySelector('[data-embed-picture]');
       if (md) md.textContent = '[![' + slug + ' stars](' + url + ')](' + link + ')';
-      if (html) html.textContent = '<a href="' + link + '"><img src="' + url + '" alt="' + slug + ' stars"></a>';
-      if (picture) picture.textContent = '<a href="' + link + '"><picture><source media="(prefers-color-scheme: dark)" srcset="' + darkUrl + '"><img alt="' + slug + ' stars" src="' + lightUrl + '"></picture></a>';
+      if (html) html.textContent =
+        '<a href="' + link + '">\n' +
+        '  <img src="' + url + '" alt="' + slug + ' stars">\n' +
+        '</a>';
+      if (picture) picture.textContent =
+        '<a href="' + link + '">\n' +
+        '  <picture>\n' +
+        '    <source media="(prefers-color-scheme: dark)" srcset="' + darkUrl + '">\n' +
+        '    <img alt="' + slug + ' stars" src="' + lightUrl + '">\n' +
+        '  </picture>\n' +
+        '</a>';
     }
     document.querySelectorAll('input[name=chart-split], input[name=chart-theme], input[name=chart-style], input[name=chart-range]').forEach(function (r) {
       r.addEventListener('change', function () {
@@ -473,9 +485,16 @@ function chartBlock(
     <dt>Markdown</dt>
     <dd><div class="embed-row"><code data-embed-md>[![${altText} stars](${chartSvg})](${linkTarget})</code>${copyBtn('Markdown snippet')}</div></dd>
     <dt>HTML</dt>
-    <dd><div class="embed-row"><code data-embed-html>&lt;a href="${linkTarget}"&gt;&lt;img src="${chartSvg}" alt="${altText} stars"&gt;&lt;/a&gt;</code>${copyBtn('HTML snippet')}</div></dd>
+    <dd><div class="embed-row"><pre><code data-embed-html>&lt;a href="${linkTarget}"&gt;
+  &lt;img src="${chartSvg}" alt="${altText} stars"&gt;
+&lt;/a&gt;</code></pre>${copyBtn('HTML snippet')}</div></dd>
     <dt>Auto theme</dt>
-    <dd><div class="embed-row"><code data-embed-picture>&lt;a href="${linkTarget}"&gt;&lt;picture&gt;&lt;source media="(prefers-color-scheme: dark)" srcset="${chartSvg}?theme=dark"&gt;&lt;img alt="${altText} stars" src="${chartSvg}?theme=light"&gt;&lt;/picture&gt;&lt;/a&gt;</code>${copyBtn('Auto-theme HTML snippet')}</div></dd>
+    <dd><div class="embed-row"><pre><code data-embed-picture>&lt;a href="${linkTarget}"&gt;
+  &lt;picture&gt;
+    &lt;source media="(prefers-color-scheme: dark)" srcset="${chartSvg}?theme=dark"&gt;
+    &lt;img alt="${altText} stars" src="${chartSvg}?theme=light"&gt;
+  &lt;/picture&gt;
+&lt;/a&gt;</code></pre>${copyBtn('Auto-theme HTML snippet')}</div></dd>
   </dl>
   <p class="muted" style="font-size:0.85em;margin-top:-.25rem">${paramsHint}</p>
 </div>`;
