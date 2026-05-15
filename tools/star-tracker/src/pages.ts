@@ -1,7 +1,7 @@
 // Server-rendered HTML pages. Inline CSS, no JS — keeps the bundle small and
 // the UX dependable inside a Worker.
 
-import type { EventCounts, RepoRow, Tenant, User } from './db';
+import type { EventCounts, RepoRecent, RepoRow, Tenant, User } from './db';
 
 // Human-friendly relative timestamp ("3 minutes ago"). Used for webhook
 // status — absolute UTC strings are precise but require mental math; "5
@@ -104,6 +104,15 @@ function shell(title: string, user: User | null, body: string): string {
   }
   .repo-list { list-style: none; padding: 0; margin: .5rem 0; display: flex; flex-direction: column; gap: 4px; }
   .repo-list li { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
+  .recent-list { list-style: none; padding: 0; margin: .5rem 0 1rem; display: flex; flex-direction: column; gap: 6px; }
+  .recent-list li { display: flex; align-items: center; gap: 10px; font-size: 0.9em; flex-wrap: wrap; }
+  .recent-list .gain { font-variant-numeric: tabular-nums; color: #166534; font-weight: 600; min-width: 3.5em; }
+  .recent-list .gain-30 { color: #475569; font-weight: 500; min-width: 4em; }
+  @media (prefers-color-scheme: dark) {
+    .recent-list .gain { color: #4ade80; }
+    .recent-list .gain-30 { color: #94a3b8; }
+  }
+  .recent-empty { color: #64748b; font-size: 0.9em; }
   .badge { display: inline-block; font-size: 0.75em; padding: 2px 6px; border-radius: 3px; font-weight: 600; letter-spacing: 0.02em; }
   .badge-exact { background: #dcfce7; color: #166534; }
   .badge-sampled { background: #fef3c7; color: #78350f; }
@@ -325,6 +334,39 @@ function repoListItem(repo: RepoRow, showBadges: boolean): string {
   return `<li>${badges}${link}${count}</li>`;
 }
 
+// "Which repos got stars recently?" block — surfaces the active repos
+// over the last 7 days, with 30-day numbers alongside for context.
+// Repos with zero 7-day gain are filtered out (they live in the
+// tracked-repos list below). Cap at 8 rows; deeper drill-downs are
+// available via the per-repo pages.
+function recentActivityBlock(recent: RepoRecent[]): string {
+  const active = recent.filter((r) => r.gained_7d > 0);
+  const total7 = active.reduce((s, r) => s + r.gained_7d, 0);
+  const total30 = recent.reduce((s, r) => s + r.gained_30d, 0);
+  if (active.length === 0) {
+    return `<h2>Recent activity</h2>
+<p class="recent-empty">No new stars in the last 7 days${total30 > 0 ? ` · <strong>+${total30.toLocaleString('en-US')}</strong> over the last 30 days.` : '.'}</p>`;
+  }
+  const top = active.slice(0, 8);
+  const remaining = active.length - top.length;
+  const rows = top.map((r) => {
+    const parts = r.repo.split('/');
+    const slug = parts[0] ?? r.repo;
+    const name = parts[1] ?? r.repo;
+    const repoLink = `<a href="/${esc(slug)}/${esc(name)}"><code>${esc(r.repo)}</code></a>`;
+    return `<li>
+      <span class="gain">+${r.gained_7d.toLocaleString('en-US')}</span>
+      ${repoLink}
+      <span class="gain-30">${r.gained_30d.toLocaleString('en-US')} / 30d</span>
+    </li>`;
+  }).join('');
+  const repoCount = active.length === 1 ? '1 repo' : `${active.length} repos`;
+  return `<h2>Recent activity</h2>
+<p class="muted" style="margin:.25rem 0 .5rem">+${total7.toLocaleString('en-US')} stars in the last 7 days across ${repoCount}${total30 > total7 ? ` · +${total30.toLocaleString('en-US')} over 30 days` : ''}.</p>
+<ul class="recent-list">${rows}</ul>
+${remaining > 0 ? `<p class="muted" style="font-size:0.85em">${remaining} more ${remaining === 1 ? 'repo' : 'repos'} with new stars — see the list below.</p>` : ''}`;
+}
+
 function repoBadges(repo: RepoRow): string {
   const mode =
     repo.sync_mode === 'exact'
@@ -462,7 +504,7 @@ function webhookStatusBlock(tenant: Tenant, counts: EventCounts): string {
 </div>`;
 }
 
-export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, counts: EventCounts, justCreated?: boolean, flash?: string): string {
+export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, counts: EventCounts, recent: RepoRecent[], justCreated?: boolean, flash?: string): string {
   const webhookUrl = `${publicUrl}/webhook`;
   const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
   // Embed snippets wrap the chart in a link back to the org's stars page
@@ -500,6 +542,8 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
 <h2>Live chart</h2>
 ${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars, tenant.slug, true)}
 
+${recentActivityBlock(recent)}
+
 <h2>1. GitHub webhook</h2>
 ${secretBlock}
 <p>Add at <code>https://github.com/organizations/${esc(tenant.slug)}/settings/hooks</code> (or per-repo settings for a personal account):</p>
@@ -534,7 +578,7 @@ ${repos.length > 0 ? `<h2>Tracked repos</h2>
 // for a tracked tenant. Shows the chart + embed snippets (no secrets, no
 // backfill controls), with a soft CTA to sign in if the viewer happens to
 // be the owner of another org.
-export function publicOrg(user: User | null, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number): string {
+export function publicOrg(user: User | null, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, recent: RepoRecent[]): string {
   const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
   const orgPage = `${publicUrl}/${tenant.slug}`;
   const visibleRepos = repos.filter((r) => !r.private);
@@ -546,6 +590,8 @@ export function publicOrg(user: User | null, tenant: Tenant, publicUrl: string, 
 <p class="muted"><a href="https://github.com/${esc(tenant.slug)}">github.com/${esc(tenant.slug)}</a> · ${visibleCount} ${visibleCount === 1 ? 'repo' : 'repos'} tracked · ${totalStars.toLocaleString('en-US')} total stars.</p>
 
 ${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars, tenant.slug, true)}
+
+${recentActivityBlock(recent)}
 
 ${visibleCount > 0 ? `<h2>Tracked repos</h2>
 <ul class="repo-list">${visibleRepos.map((r) => repoListItem(r, /* showBadges */ false)).join('')}</ul>` : ''}
@@ -589,6 +635,7 @@ export function repoDetail(
   tenant: Tenant,
   repo: RepoRow,
   totalStars: number,
+  gains: { gained_7d: number; gained_30d: number },
   publicUrl: string,
 ): string {
   const parts = repo.full_name.split('/');
@@ -597,12 +644,19 @@ export function repoDetail(
   const chartSvg = `${publicUrl}/${slug}/${name}/chart.svg`;
   const linkTarget = `${publicUrl}/${slug}/${name}`;
   const githubUrl = `https://github.com/${slug}/${name}`;
+  // Inline "+N this week" badges when either window is non-zero. The 7d
+  // value is the headline (matches the org-level Recent activity block);
+  // 30d follows in muted text so it's there for context without crowding.
+  const recentLine = gains.gained_7d > 0 || gains.gained_30d > 0
+    ? `<p class="muted" style="margin:.25rem 0 .75rem"><strong style="color:#16a34a">+${gains.gained_7d.toLocaleString('en-US')}</strong> in the last 7 days · <strong>+${gains.gained_30d.toLocaleString('en-US')}</strong> over 30 days.</p>`
+    : `<p class="recent-empty" style="margin:.25rem 0 .75rem">No new stars in the last 30 days.</p>`;
   return shell(
     `${repo.full_name} · stars.wavekat.com`,
     user,
     `<p><a href="/${esc(slug)}">← ${esc(tenant.display_name ?? slug)}</a></p>
 <h1>${esc(repo.full_name)}</h1>
 <p class="muted"><a href="${esc(githubUrl)}">github.com/${esc(repo.full_name)}</a>${repo.stargazers_count != null ? ` · ${repo.stargazers_count.toLocaleString('en-US')} stars on GitHub` : ''} · ${totalStars.toLocaleString('en-US')} recorded here.</p>
+${recentLine}
 
 ${chartBlock(slug, name, chartSvg, linkTarget, totalStars, repo.full_name, false)}
 

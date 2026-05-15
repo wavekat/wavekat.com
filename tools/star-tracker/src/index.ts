@@ -352,19 +352,22 @@ app.get('/:slug', async (c) => {
   }
 
   // Owner view: full controls + status. Public view: chart + light stats.
+  const now = Date.now();
   if (user && user.id === tenant.owner_user_id) {
     const repos = await db.listTenantRepos(c.env.DB, slug);
     const timeline = await db.tenantTimeline(c.env.DB, slug);
     const counts = await db.eventCountsByType(c.env.DB, slug);
+    const recent = await db.tenantRecentByRepo(c.env.DB, slug, now);
     const flash = takeFlash(c);
     return c.html(
-      pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, counts, flash?.justCreated, flash?.msg),
+      pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, counts, recent, flash?.justCreated, flash?.msg),
     );
   }
 
   const repos = await db.listTenantRepos(c.env.DB, slug);
   const timeline = await db.tenantTimeline(c.env.DB, slug);
-  return c.html(pages.publicOrg(user, tenant, c.env.PUBLIC_URL, repos, timeline.length));
+  const recent = await db.tenantRecentByRepo(c.env.DB, slug, now);
+  return c.html(pages.publicOrg(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, recent));
 });
 
 // Max number of per-repo lines we'll render in split mode. Beyond this the
@@ -554,7 +557,8 @@ app.get('/:slug/:repo', async (c) => {
   const all = await db.tenantPerRepoTimelines(c.env.DB, slug);
   const series = all.find((r) => r.repo === fullName);
   const total = series?.total ?? 0;
-  return c.html(pages.repoDetail(c.get('user'), tenant, repoRow, total, c.env.PUBLIC_URL));
+  const gains = db.recentForSeries(series?.points ?? [], total, Date.now());
+  return c.html(pages.repoDetail(c.get('user'), tenant, repoRow, total, gains, c.env.PUBLIC_URL));
 });
 
 function djb2(s: string): string {

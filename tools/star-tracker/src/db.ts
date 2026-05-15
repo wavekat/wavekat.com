@@ -449,6 +449,55 @@ export async function tenantPerRepoTimelines(db: D1Database, tenant: string): Pr
   return out;
 }
 
+export type RepoRecent = {
+  repo: string;
+  total: number;
+  gained_7d: number;
+  gained_30d: number;
+};
+
+// Walks a cumulative timeline and returns the gain over the trailing
+// 7-day and 30-day windows. Points are assumed sorted ascending in t;
+// we can break as soon as we pass the 7-day cutoff since both at7 and
+// at30 are then frozen. Sampled-mode timelines carry through with the
+// same algorithm — values are best-effort within the curve's resolution.
+export function recentForSeries(points: TimelinePoint[], total: number, now: number): { gained_7d: number; gained_30d: number } {
+  const cutoff7 = now - 7 * 86400_000;
+  const cutoff30 = now - 30 * 86400_000;
+  let at7 = 0;
+  let at30 = 0;
+  for (const p of points) {
+    if (p.t <= cutoff30) at30 = p.total;
+    if (p.t <= cutoff7) {
+      at7 = p.total;
+    } else {
+      break;
+    }
+  }
+  return {
+    gained_7d: Math.max(0, total - at7),
+    gained_30d: Math.max(0, total - at30),
+  };
+}
+
+// "Which repos got stars recently?" — per-repo gain summary for a tenant.
+// Sorted by gained_7d desc, then gained_30d desc, then total desc so a
+// repo with no recent activity but a big total ranks behind one that
+// picked up a single star this week.
+export async function tenantRecentByRepo(
+  db: D1Database,
+  tenant: string,
+  now: number,
+): Promise<RepoRecent[]> {
+  const perRepo = await tenantPerRepoTimelines(db, tenant);
+  const out: RepoRecent[] = perRepo.map((r) => {
+    const gains = recentForSeries(r.points, r.total, now);
+    return { repo: r.repo, total: r.total, ...gains };
+  });
+  out.sort((a, b) => b.gained_7d - a.gained_7d || b.gained_30d - a.gained_30d || b.total - a.total);
+  return out;
+}
+
 export async function listTenantRepos(db: D1Database, tenant: string): Promise<RepoRow[]> {
   const { results } = await db
     .prepare(
