@@ -38,6 +38,56 @@ export interface Env {
 
 const SLUG_RE = /^[a-z0-9](?:[a-z0-9-]{0,38})$/i;
 
+// Repo segment of /:slug/:repo paths. GitHub repo names allow letters,
+// digits, '.', '_', '-' and must not start with '-'. Length cap matches
+// GitHub's own (100 chars).
+const REPO_RE = /^[A-Za-z0-9_.][A-Za-z0-9_.-]{0,99}$/;
+
+// Recognised values for ?range=. Maps to a span in ms; missing/unknown
+// values fall back to "all" (no clipping). Kept short on purpose — every
+// option also needs a UI toggle.
+const RANGES: Record<string, number> = {
+  '7d': 7 * 86400_000,
+  '30d': 30 * 86400_000,
+  '90d': 90 * 86400_000,
+  '6m': 180 * 86400_000,
+  '1y': 365 * 86400_000,
+};
+
+// Bucket "now" to 5-minute boundaries so identical chart requests within
+// a cache window collapse to the same ETag. Matches the cache-control
+// max-age=300 used on chart responses.
+const NOW_BUCKET_MS = 300_000;
+function bucketedNow(): number {
+  return Math.floor(Date.now() / NOW_BUCKET_MS) * NOW_BUCKET_MS;
+}
+
+// Clip a cumulative series to [rangeStart, ∞). Inserts a synthetic anchor
+// at exactly rangeStart with the cumulative value as of that moment, so
+// the rendered curve begins at the window's left edge instead of leaving
+// a gap. Points before the window contribute only their final cumulative
+// to the anchor.
+function clipSeriesToRange(points: db.TimelinePoint[], rangeStart: number): db.TimelinePoint[] {
+  let anchorTotal = 0;
+  let firstIdx = points.length;
+  for (let i = 0; i < points.length; i++) {
+    if (points[i].t < rangeStart) {
+      anchorTotal = points[i].total;
+    } else {
+      firstIdx = i;
+      break;
+    }
+  }
+  const out: db.TimelinePoint[] = [{ t: rangeStart, total: anchorTotal }];
+  for (let i = firstIdx; i < points.length; i++) out.push(points[i]);
+  return out;
+}
+
+function parseRangeMs(raw: string | undefined): number | null {
+  if (!raw || raw === 'all') return null;
+  return RANGES[raw] ?? null;
+}
+
 const app = new Hono<Env>();
 
 // Resolve the current user (if any) from the session cookie on every request.
@@ -349,6 +399,10 @@ app.get('/:slug/chart.svg', async (c) => {
   const splitRaw = c.req.query('split');
   const splitN = splitRaw ? Math.max(1, Math.min(SPLIT_CAP, parseInt(splitRaw, 10) || 0)) : 1;
   const style = c.req.query('style') === 'step' ? 'step' : 'smooth';
+  const rangeRaw = c.req.query('range') ?? '';
+  const rangeMs = parseRangeMs(rangeRaw);
+  const now = bucketedNow();
+  const rangeStart = rangeMs ? now - rangeMs : null;
 
   let series: { label: string; points: db.TimelinePoint[] }[];
   let defaultTitle: string;
@@ -386,13 +440,18 @@ app.get('/:slug/chart.svg', async (c) => {
     defaultTitle = `${tenant.display_name ?? slug} · stars over time`;
   }
 
+  if (rangeStart !== null) {
+    series = series.map((s) => ({ label: s.label, points: clipSeriesToRange(s.points, rangeStart) }));
+  }
+
   const title = c.req.query('title') ?? defaultTitle;
 
   // ETag = hash of inputs that change the rendered output. Latest event
   // timestamp captures "did any star arrive since last render"; latest
   // privacy flip captures "did a repo just get hidden/revealed even
-  // though no new star arrived"; theme/split/title cover the URL-level
-  // variants. Clients send If-None-Match → 304.
+  // though no new star arrived"; the bucketed `now` extends the curve
+  // to today and rolls forward in 5-minute steps; theme/split/style/
+  // range/title cover the URL-level variants. Clients send If-None-Match → 304.
   let latestTs = 0;
   for (const s of series) {
     const last = s.points[s.points.length - 1];
@@ -400,12 +459,19 @@ app.get('/:slug/chart.svg', async (c) => {
   }
   const privTs = await db.latestPrivacyChangeMs(c.env.DB, slug);
   const reactiveTs = Math.max(latestTs, privTs);
-  const etag = `"${theme}.${splitN}.${style}.${reactiveTs}.${djb2(title)}"`;
+  const etag = `"${theme}.${splitN}.${style}.${rangeRaw || 'all'}.${reactiveTs}.${now}.${djb2(title)}"`;
   if (c.req.header('if-none-match') === etag) {
     return new Response(null, { status: 304, headers: { etag, 'cache-control': 'public, max-age=300' } });
   }
 
-  const svg = renderSVG(series, { title, theme, sampled: hasSampled, style });
+  const svg = renderSVG(series, {
+    title,
+    theme,
+    sampled: hasSampled,
+    style,
+    now,
+    tMinOverride: rangeStart ?? undefined,
+  });
 
   return new Response(svg, {
     headers: {
@@ -414,6 +480,81 @@ app.get('/:slug/chart.svg', async (c) => {
       etag,
     },
   });
+});
+
+// Per-repo chart. Same query params as the tenant chart (theme, style,
+// range, title) minus `split` — there's nothing to split when there's
+// only one repo. Returns 404 for private/untracked/unknown repos.
+app.get('/:slug/:repo/chart.svg', async (c) => {
+  const slug = c.req.param('slug').toLowerCase();
+  const repo = c.req.param('repo');
+  const theme = c.req.query('theme') === 'dark' ? 'dark' : 'light';
+  if (!SLUG_RE.test(slug) || !REPO_RE.test(repo)) return c.text('invalid', 400);
+  const fullName = `${slug}/${repo}`;
+
+  const tenant = await db.getTenant(c.env.DB, slug);
+  if (!tenant) return c.text('not found', 404);
+  const repoRow = await db.getRepo(c.env.DB, fullName);
+  if (!repoRow || repoRow.private) return c.text('not found', 404);
+
+  // tenantPerRepoTimelines already filters out private repos; finding
+  // by full_name gives us the cumulative curve for just this one.
+  const all = await db.tenantPerRepoTimelines(c.env.DB, slug);
+  const found = all.find((r) => r.repo === fullName);
+  let points: db.TimelinePoint[] = found?.points ?? [];
+
+  const style = c.req.query('style') === 'step' ? 'step' : 'smooth';
+  const rangeRaw = c.req.query('range') ?? '';
+  const rangeMs = parseRangeMs(rangeRaw);
+  const now = bucketedNow();
+  const rangeStart = rangeMs ? now - rangeMs : null;
+  if (rangeStart !== null) points = clipSeriesToRange(points, rangeStart);
+
+  const defaultTitle = `${fullName} · stars over time`;
+  const title = c.req.query('title') ?? defaultTitle;
+
+  const latestTs = points.length ? points[points.length - 1].t : 0;
+  const privTs = await db.latestPrivacyChangeMs(c.env.DB, slug);
+  const reactiveTs = Math.max(latestTs, privTs);
+  const etag = `"r1.${theme}.${style}.${rangeRaw || 'all'}.${reactiveTs}.${now}.${djb2(title)}"`;
+  if (c.req.header('if-none-match') === etag) {
+    return new Response(null, { status: 304, headers: { etag, 'cache-control': 'public, max-age=300' } });
+  }
+
+  const svg = renderSVG([{ label: repo, points }], {
+    title,
+    theme,
+    sampled: repoRow.sync_mode === 'sampled',
+    style,
+    now,
+    tMinOverride: rangeStart ?? undefined,
+  });
+
+  return new Response(svg, {
+    headers: {
+      'content-type': 'image/svg+xml; charset=utf-8',
+      'cache-control': 'public, max-age=300',
+      etag,
+    },
+  });
+});
+
+// Per-repo HTML page. Mirrors publicOrg but scoped to a single repo so
+// users can deep-link / embed the per-repo chart from a project README.
+app.get('/:slug/:repo', async (c) => {
+  const slug = c.req.param('slug').toLowerCase();
+  const repo = c.req.param('repo');
+  if (!SLUG_RE.test(slug) || !REPO_RE.test(repo)) return c.notFound();
+  const fullName = `${slug}/${repo}`;
+  const tenant = await db.getTenant(c.env.DB, slug);
+  if (!tenant) return c.redirect(`/${slug}`, 303);
+  const repoRow = await db.getRepo(c.env.DB, fullName);
+  if (!repoRow || repoRow.private) return c.redirect(`/${slug}`, 303);
+
+  const all = await db.tenantPerRepoTimelines(c.env.DB, slug);
+  const series = all.find((r) => r.repo === fullName);
+  const total = series?.total ?? 0;
+  return c.html(pages.repoDetail(c.get('user'), tenant, repoRow, total, c.env.PUBLIC_URL));
 });
 
 function djb2(s: string): string {

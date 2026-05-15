@@ -85,7 +85,11 @@ function shell(title: string, user: User | null, body: string): string {
   .chart-section #split-5:checked ~ .chart-controls .seg-toggle label[for=split-5],
   .chart-section #split-8:checked ~ .chart-controls .seg-toggle label[for=split-8],
   .chart-section #style-smooth:checked ~ .chart-controls .seg-toggle label[for=style-smooth],
-  .chart-section #style-step:checked ~ .chart-controls .seg-toggle label[for=style-step] { background: #2196f3; color: white; }
+  .chart-section #style-step:checked ~ .chart-controls .seg-toggle label[for=style-step],
+  .chart-section #range-all:checked ~ .chart-controls .seg-toggle label[for=range-all],
+  .chart-section #range-1y:checked ~ .chart-controls .seg-toggle label[for=range-1y],
+  .chart-section #range-90d:checked ~ .chart-controls .seg-toggle label[for=range-90d],
+  .chart-section #range-30d:checked ~ .chart-controls .seg-toggle label[for=range-30d] { background: #2196f3; color: white; }
   .seg-toggle .seg-label { padding: 6px 10px 6px 12px; font-size: 0.75em; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-right: 1px solid #cbd5e1; }
   @media (prefers-color-scheme: dark) { .seg-toggle .seg-label { border-right-color: #334155; } }
   .chart-preview img { max-width: 100%; border-radius: 6px; display: block; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
@@ -203,11 +207,16 @@ ${body}
       var r = document.querySelector('input[name=chart-style]:checked');
       return r && r.id === 'style-step' ? 'step' : 'smooth';
     }
-    function buildQuery(theme, n, style, extra) {
+    function currentRange() {
+      var r = document.querySelector('input[name=chart-range]:checked');
+      return r ? r.value : 'all';
+    }
+    function buildQuery(theme, n, style, range, extra) {
       var parts = [];
       if (theme === 'dark') parts.push('theme=dark');
       if (n > 1) parts.push('split=' + n);
       if (style === 'step') parts.push('style=step');
+      if (range && range !== 'all') parts.push('range=' + range);
       if (extra) parts.push(extra);
       return parts.length ? '?' + parts.join('&') : '';
     }
@@ -217,9 +226,10 @@ ${body}
       var version = preview.getAttribute('data-version');
       var n = currentSplit();
       var style = currentStyle();
+      var range = currentRange();
       preview.querySelectorAll('img').forEach(function (img) {
         var isDark = img.classList.contains('dark');
-        img.src = base + buildQuery(isDark ? 'dark' : 'light', n, style, 'v=' + version);
+        img.src = base + buildQuery(isDark ? 'dark' : 'light', n, style, range, 'v=' + version);
       });
     }
     function refreshEmbed() {
@@ -227,13 +237,13 @@ ${body}
       var base = embed.getAttribute('data-base');
       var link = embed.getAttribute('data-link') || '';
       var slug = embed.getAttribute('data-slug');
-      var url = base + buildQuery(currentTheme(), currentSplit(), currentStyle(), null);
+      var url = base + buildQuery(currentTheme(), currentSplit(), currentStyle(), currentRange(), null);
       var md = embed.querySelector('[data-embed-md]');
       var html = embed.querySelector('[data-embed-html]');
       if (md) md.textContent = '[![' + slug + ' stars](' + url + ')](' + link + ')';
       if (html) html.textContent = '<a href="' + link + '"><img src="' + url + '" alt="' + slug + ' stars"></a>';
     }
-    document.querySelectorAll('input[name=chart-split], input[name=chart-theme], input[name=chart-style]').forEach(function (r) {
+    document.querySelectorAll('input[name=chart-split], input[name=chart-theme], input[name=chart-style], input[name=chart-range]').forEach(function (r) {
       r.addEventListener('change', function () {
         if (!r.checked) return;
         refreshPreview();
@@ -294,6 +304,27 @@ ${list}
   );
 }
 
+// One row in a tracked-repos list. Links the repo name to its per-repo
+// chart page so visitors can drill down. Badges are owner-only (private
+// flags, sync mode) so we hide them on the public view.
+function repoListItem(repo: RepoRow, showBadges: boolean): string {
+  const parts = repo.full_name.split('/');
+  const slug = parts[0] ?? repo.full_name;
+  const name = parts[1] ?? repo.full_name;
+  const isPrivate = !!repo.private;
+  const labelCode = `<code>${esc(repo.full_name)}</code>`;
+  // Private repos have no per-repo chart page (we 404 them), so leave
+  // them as plain text. The 'private' badge already signals why.
+  const link = isPrivate
+    ? labelCode
+    : `<a href="/${esc(slug)}/${esc(name)}">${labelCode}</a>`;
+  const count = repo.stargazers_count != null
+    ? ` <span class="muted">— ${repo.stargazers_count.toLocaleString('en-US')} stars</span>`
+    : '';
+  const badges = showBadges ? `${repoBadges(repo)}` : '';
+  return `<li>${badges}${link}${count}</li>`;
+}
+
 function repoBadges(repo: RepoRow): string {
   const mode =
     repo.sync_mode === 'exact'
@@ -310,11 +341,22 @@ function repoBadges(repo: RepoRow): string {
 // Reusable chart preview block used by both the owner detail page and the
 // public org page. Self-contained: renders the radio inputs that drive
 // the seg-toggle CSS, the dual-theme img preview, and the embed snippets
-// (Markdown/HTML) wrapped in a link back to `orgPage`.
-function chartBlock(slug: string, displayName: string | null, chartSvg: string, orgPage: string, totalStars: number): string {
+// (Markdown/HTML) wrapped in a link back to `linkTarget`. `showSplit`
+// hides the top-N selector for contexts where stacking doesn't apply
+// (e.g. per-repo charts have only one series).
+function chartBlock(
+  slug: string,
+  displayName: string | null,
+  chartSvg: string,
+  linkTarget: string,
+  totalStars: number,
+  embedAlt: string,
+  showSplit: boolean,
+): string {
   const previewLight = `${chartSvg}?v=${totalStars}`;
   const previewDark = `${chartSvg}?v=${totalStars}&theme=dark`;
   const label = esc(displayName ?? slug);
+  const altText = esc(embedAlt);
   const copyBtn = (kind: string) => `<button type="button" class="icon-btn copy-btn" aria-label="Copy ${kind}" data-copied="false">
       <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -324,45 +366,65 @@ function chartBlock(slug: string, displayName: string | null, chartSvg: string, 
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </button>`;
+  const splitInputs = showSplit
+    ? `<input type="radio" id="split-1" name="chart-split" value="1" checked />
+  <input type="radio" id="split-3" name="chart-split" value="3" />
+  <input type="radio" id="split-5" name="chart-split" value="5" />
+  <input type="radio" id="split-8" name="chart-split" value="8" />`
+    : '';
+  const splitToggle = showSplit
+    ? `<div class="seg-toggle" role="group" aria-label="Top repos">
+      <span class="seg-label">Top</span>
+      <label for="split-1">Merged</label>
+      <label for="split-3">3</label>
+      <label for="split-5">5</label>
+      <label for="split-8">8</label>
+    </div>`
+    : '';
+  const paramsHint = showSplit
+    ? `Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8), <code>?style=step</code>, <code>?range=30d|90d|1y</code>.`
+    : `Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?style=step</code>, <code>?range=30d|90d|1y</code>.`;
   return `<div class="chart-section">
   <input type="radio" id="theme-light" name="chart-theme" checked />
   <input type="radio" id="theme-dark" name="chart-theme" />
-  <input type="radio" id="split-1" name="chart-split" value="1" checked />
-  <input type="radio" id="split-3" name="chart-split" value="3" />
-  <input type="radio" id="split-5" name="chart-split" value="5" />
-  <input type="radio" id="split-8" name="chart-split" value="8" />
+  ${splitInputs}
   <input type="radio" id="style-smooth" name="chart-style" checked />
   <input type="radio" id="style-step" name="chart-style" />
+  <input type="radio" id="range-all" name="chart-range" value="all" checked />
+  <input type="radio" id="range-1y" name="chart-range" value="1y" />
+  <input type="radio" id="range-90d" name="chart-range" value="90d" />
+  <input type="radio" id="range-30d" name="chart-range" value="30d" />
   <div class="chart-controls">
     <div class="seg-toggle" role="group" aria-label="Preview theme">
       <span class="seg-label">Theme</span>
       <label for="theme-light">Light</label>
       <label for="theme-dark">Dark</label>
     </div>
-    <div class="seg-toggle" role="group" aria-label="Top repos">
-      <span class="seg-label">Top</span>
-      <label for="split-1">Merged</label>
-      <label for="split-3">3</label>
-      <label for="split-5">5</label>
-      <label for="split-8">8</label>
-    </div>
+    ${splitToggle}
     <div class="seg-toggle" role="group" aria-label="Curve style">
       <span class="seg-label">Curve</span>
       <label for="style-smooth">Smooth</label>
       <label for="style-step">Step</label>
+    </div>
+    <div class="seg-toggle" role="group" aria-label="Time range">
+      <span class="seg-label">Range</span>
+      <label for="range-all">All</label>
+      <label for="range-1y">1y</label>
+      <label for="range-90d">90d</label>
+      <label for="range-30d">30d</label>
     </div>
   </div>
   <div class="chart-preview" data-base="${chartSvg}" data-version="${totalStars}">
     <img class="light" src="${previewLight}" alt="${label} star history (light)"/>
     <img class="dark" src="${previewDark}" alt="${label} star history (dark)"/>
   </div>
-  <dl class="embed" data-embed data-base="${chartSvg}" data-link="${orgPage}" data-slug="${esc(slug)}">
+  <dl class="embed" data-embed data-base="${chartSvg}" data-link="${linkTarget}" data-slug="${altText}">
     <dt>Markdown</dt>
-    <dd><div class="embed-row"><code data-embed-md>[![${esc(slug)} stars](${chartSvg})](${orgPage})</code>${copyBtn('Markdown snippet')}</div></dd>
+    <dd><div class="embed-row"><code data-embed-md>[![${altText} stars](${chartSvg})](${linkTarget})</code>${copyBtn('Markdown snippet')}</div></dd>
     <dt>HTML</dt>
-    <dd><div class="embed-row"><code data-embed-html>&lt;a href="${orgPage}"&gt;&lt;img src="${chartSvg}" alt="${esc(slug)} stars"&gt;&lt;/a&gt;</code>${copyBtn('HTML snippet')}</div></dd>
+    <dd><div class="embed-row"><code data-embed-html>&lt;a href="${linkTarget}"&gt;&lt;img src="${chartSvg}" alt="${altText} stars"&gt;&lt;/a&gt;</code>${copyBtn('HTML snippet')}</div></dd>
   </dl>
-  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">Snippets update as you change the controls above. Params: <code>?theme=dark</code>, <code>?split=N</code> (1–8), <code>?style=step</code>.</p>
+  <p class="muted" style="font-size:0.85em;margin-top:-.25rem">${paramsHint}</p>
 </div>`;
 }
 
@@ -436,7 +498,7 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
 <p class="muted">${repos.length} ${repos.length === 1 ? 'repo' : 'repos'} tracked · ${totalStars} total stars recorded.</p>
 
 <h2>Live chart</h2>
-${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars)}
+${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars, tenant.slug, true)}
 
 <h2>1. GitHub webhook</h2>
 ${secretBlock}
@@ -464,7 +526,7 @@ ${flash ? `<p class="warn">${esc(flash)}</p>` : ''}
   </form>
 </details>
 ${repos.length > 0 ? `<h2>Tracked repos</h2>
-<ul class="repo-list">${repos.map((r) => `<li>${repoBadges(r)}<code>${esc(r.full_name)}</code>${r.stargazers_count != null ? ` <span class="muted">— ${r.stargazers_count.toLocaleString('en-US')} stars</span>` : ''}</li>`).join('')}</ul>` : ''}`,
+<ul class="repo-list">${repos.map((r) => repoListItem(r, /* showBadges */ true)).join('')}</ul>` : ''}`,
   );
 }
 
@@ -483,10 +545,10 @@ export function publicOrg(user: User | null, tenant: Tenant, publicUrl: string, 
     `<h1>${esc(tenant.display_name ?? tenant.slug)}</h1>
 <p class="muted"><a href="https://github.com/${esc(tenant.slug)}">github.com/${esc(tenant.slug)}</a> · ${visibleCount} ${visibleCount === 1 ? 'repo' : 'repos'} tracked · ${totalStars.toLocaleString('en-US')} total stars.</p>
 
-${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars)}
+${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars, tenant.slug, true)}
 
 ${visibleCount > 0 ? `<h2>Tracked repos</h2>
-<ul class="repo-list">${visibleRepos.map((r) => `<li><code>${esc(r.full_name)}</code>${r.stargazers_count != null ? ` <span class="muted">— ${r.stargazers_count.toLocaleString('en-US')} stars</span>` : ''}</li>`).join('')}</ul>` : ''}
+<ul class="repo-list">${visibleRepos.map((r) => repoListItem(r, /* showBadges */ false)).join('')}</ul>` : ''}
 
 <h2>Track your own org</h2>
 <p>stars.wavekat.com is a free, open-source star-history service. ${user ? `<a href="/dashboard">Open your dashboard →</a>` : `<a href="/auth/login">Sign in with GitHub</a> to register a tracker for your org or personal account.`}</p>`,
@@ -516,6 +578,36 @@ export function notTrackedInvite(user: User | null, slug: string, _publicUrl: st
 ${cta}
 <h2>Not an admin?</h2>
 <p class="muted">Forward this page to someone who is — once they install the webhook (one minute) and click "backfill all", the chart at <code>stars.wavekat.com/${esc(slug)}/chart.svg</code> will start working and any README that already embeds it will light up.</p>`,
+  );
+}
+
+// Per-repo public page. Reuses the chart block (sans split toggle —
+// there's only one series) and points the embed snippets at this same
+// page so README readers click through to the live per-repo chart.
+export function repoDetail(
+  user: User | null,
+  tenant: Tenant,
+  repo: RepoRow,
+  totalStars: number,
+  publicUrl: string,
+): string {
+  const parts = repo.full_name.split('/');
+  const slug = parts[0] ?? tenant.slug;
+  const name = parts[1] ?? repo.full_name;
+  const chartSvg = `${publicUrl}/${slug}/${name}/chart.svg`;
+  const linkTarget = `${publicUrl}/${slug}/${name}`;
+  const githubUrl = `https://github.com/${slug}/${name}`;
+  return shell(
+    `${repo.full_name} · stars.wavekat.com`,
+    user,
+    `<p><a href="/${esc(slug)}">← ${esc(tenant.display_name ?? slug)}</a></p>
+<h1>${esc(repo.full_name)}</h1>
+<p class="muted"><a href="${esc(githubUrl)}">github.com/${esc(repo.full_name)}</a>${repo.stargazers_count != null ? ` · ${repo.stargazers_count.toLocaleString('en-US')} stars on GitHub` : ''} · ${totalStars.toLocaleString('en-US')} recorded here.</p>
+
+${chartBlock(slug, name, chartSvg, linkTarget, totalStars, repo.full_name, false)}
+
+<h2>Other repos in ${esc(slug)}</h2>
+<p>See the <a href="/${esc(slug)}">full ${esc(slug)} chart</a> for all tracked repos in this account.</p>`,
   );
 }
 

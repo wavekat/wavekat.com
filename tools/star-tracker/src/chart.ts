@@ -21,6 +21,18 @@ export type ChartOptions = {
   // corners (the old behavior). Stacked split mode always uses step
   // because the stacking math assumes flat segments between events.
   style?: 'smooth' | 'step';
+  // Effective "now" used to extend the right edge of the chart past the
+  // last data point. Without this the curve ends exactly at the latest
+  // event timestamp, hiding any stretch of "we've held at N stars from
+  // then until today." Callers bucket this (e.g. 5-minute boundaries) so
+  // identical inputs within the cache window hash to the same ETag.
+  now?: number;
+  // Optional left-edge override for the x-domain. When set, the chart's
+  // visible window starts at this timestamp instead of the earliest data
+  // point. Used by ?range= to zoom into recent activity. Callers are
+  // expected to anchor each series with a synthetic point at exactly
+  // tMinOverride so the rendered path begins at the boundary.
+  tMinOverride?: number;
 };
 
 const PALETTE = {
@@ -205,8 +217,9 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
   // -- Domain --------------------------------------------------------------
   const allPointsRaw = series.flatMap((s) => s.points);
   const hasData = allPointsRaw.length >= 1;
-  let tMin = Date.now() - 30 * 86400_000;
-  let tMax = Date.now();
+  const now = opts.now ?? Date.now();
+  let tMin = now - 30 * 86400_000;
+  let tMax = now;
   let yMax = 1;
   if (hasData) {
     tMin = Infinity;
@@ -215,7 +228,13 @@ export function renderSVG(series: Series[], opts: ChartOptions): string {
       if (pt.t < tMin) tMin = pt.t;
       if (pt.t > tMax) tMax = pt.t;
     }
+    // Stretch the right edge to "now" so the latest event creates a
+    // visible flat tail to today instead of being pinned to the right
+    // margin. The renderer's existing trailing-segment code (step and
+    // smooth modes both extend to tMax) then carries the value forward.
+    if (tMax < now) tMax = now;
   }
+  if (opts.tMinOverride !== undefined) tMin = opts.tMinOverride;
 
   // Downsample each series to ~one bucket per x-pixel. Above this resolution
   // extra points just bloat the SVG without changing any visible pixel.
