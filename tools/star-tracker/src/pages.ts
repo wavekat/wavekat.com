@@ -1,7 +1,7 @@
 // Server-rendered HTML pages. Inline CSS, no JS — keeps the bundle small and
 // the UX dependable inside a Worker.
 
-import type { EventCounts, RepoRecent, RepoRow, Tenant, User } from './db';
+import type { EventCounts, RepoRecent, RepoRow, Tenant, User, ViewsSummary } from './db';
 
 // Human-friendly relative timestamp ("3 minutes ago"). Used for webhook
 // status — absolute UTC strings are precise but require mental math; "5
@@ -544,7 +544,80 @@ function webhookStatusBlock(tenant: Tenant, counts: EventCounts): string {
 </div>`;
 }
 
-export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, counts: EventCounts, recent: RepoRecent[], justCreated?: boolean, flash?: string): string {
+// Owner-only audience panel. Aggregated daily counts of chart-svg and
+// HTML page requests, broken down by referer host, country, UA class,
+// and cache hit/miss. Pure HTML/SVG — no JS. Caveat at the top is
+// honest about Camo and our own 5-minute cache undercounting.
+function viewsPanel(views: ViewsSummary): string {
+  const total = views.totalChart + views.totalPage;
+  if (total === 0) {
+    return `<h2>Audience</h2>
+<div class="card">
+  <p class="muted" style="margin:0">No chart or page requests recorded in the last ${views.windowDays} days yet. Once your chart is embedded somewhere — a README, a blog post — accesses start appearing here.</p>
+</div>`;
+  }
+
+  // Sparkline: stacked bars, page below, chart above. SVG width fits 30 days.
+  const days = views.daily;
+  const maxDay = Math.max(1, ...days.map((d) => d.chart + d.page));
+  const barW = 8;
+  const barGap = 2;
+  const w = days.length * (barW + barGap);
+  const h = 40;
+  const bars = days.map((d, i) => {
+    const x = i * (barW + barGap);
+    const totalDay = d.chart + d.page;
+    const totalH = Math.round((totalDay / maxDay) * h);
+    const pageH = Math.round((d.page / maxDay) * h);
+    const chartH = totalH - pageH;
+    return `<g>
+      <title>${esc(d.day)}: ${d.chart.toLocaleString('en-US')} chart · ${d.page.toLocaleString('en-US')} page</title>
+      ${pageH > 0 ? `<rect x="${x}" y="${h - pageH}" width="${barW}" height="${pageH}" fill="#64748b" rx="1"/>` : ''}
+      ${chartH > 0 ? `<rect x="${x}" y="${h - totalH}" width="${barW}" height="${chartH}" fill="#2196f3" rx="1"/>` : ''}
+    </g>`;
+  }).join('');
+  const sparkline = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${views.windowDays}-day view trend">${bars}</svg>`;
+
+  const refRows = views.topReferers.length === 0
+    ? `<p class="muted" style="font-size:0.85em;margin:.25rem 0">No off-site referers yet — most embeds are fetched without a Referer header (GitHub Camo strips it).</p>`
+    : `<ul class="repo-list">${views.topReferers.map((r) => `<li><span class="muted" style="font-variant-numeric:tabular-nums;min-width:3.5em">${r.count.toLocaleString('en-US')}</span> <code>${esc(r.host)}</code></li>`).join('')}</ul>`;
+
+  const countryRows = views.topCountries.length === 0
+    ? `<p class="muted" style="font-size:0.85em;margin:.25rem 0">No country data yet.</p>`
+    : `<ul class="repo-list">${views.topCountries.map((cn) => `<li><span class="muted" style="font-variant-numeric:tabular-nums;min-width:3.5em">${cn.count.toLocaleString('en-US')}</span> <code>${esc(cn.country)}</code></li>`).join('')}</ul>`;
+
+  const uaLabels: Record<string, string> = {
+    camo: 'GitHub Camo (README embeds)',
+    browser: 'Browser',
+    bot: 'Bot / crawler',
+    other: 'Other',
+  };
+  const uaRows = views.uaBreakdown.length === 0
+    ? ''
+    : `<ul class="repo-list">${views.uaBreakdown.map((u) => `<li><span class="muted" style="font-variant-numeric:tabular-nums;min-width:3.5em">${u.count.toLocaleString('en-US')}</span> ${esc(uaLabels[u.ua_class] ?? u.ua_class)}</li>`).join('')}</ul>`;
+
+  const cacheLine = views.totalChart > 0
+    ? `<p class="muted" style="font-size:0.85em;margin:.25rem 0 0">${views.freshChart.toLocaleString('en-US')} fresh · ${views.cachedChart.toLocaleString('en-US')} cached (304). High 304 ratio means GitHub Camo or browsers re-validated the same image.</p>`
+    : '';
+
+  return `<h2>Audience <span class="muted" style="font-weight:normal;font-size:0.8em">· last ${views.windowDays} days</span></h2>
+<div class="card">
+  <p class="muted" style="font-size:0.85em;margin:0 0 .75rem">Approximate — chart SVGs are cached for 5 minutes at the edge, and GitHub's Camo proxy fronts most README embeds. Referer mix and country mix stay meaningful even when totals undercount.</p>
+  <dl class="embed" style="grid-template-columns: 140px 1fr; margin:0 0 1rem">
+    <dt>Chart views</dt><dd><strong>${views.totalChart.toLocaleString('en-US')}</strong>${cacheLine}</dd>
+    <dt>Page views</dt><dd><strong>${views.totalPage.toLocaleString('en-US')}</strong></dd>
+  </dl>
+  <div style="overflow-x:auto;margin:0 0 .25rem">${sparkline}</div>
+  <p class="muted" style="font-size:0.8em;margin:0 0 1rem"><span style="display:inline-block;width:8px;height:8px;background:#2196f3;border-radius:1px;vertical-align:middle"></span> chart · <span style="display:inline-block;width:8px;height:8px;background:#64748b;border-radius:1px;vertical-align:middle"></span> page · ${views.daily[0]?.day ?? ''} → ${views.daily[views.daily.length - 1]?.day ?? ''}</p>
+  <h3 style="font-size:0.95rem;margin:1rem 0 .25rem">Top referers</h3>
+  ${refRows}
+  <h3 style="font-size:0.95rem;margin:1rem 0 .25rem">Top countries</h3>
+  ${countryRows}
+  ${uaRows ? `<h3 style="font-size:0.95rem;margin:1rem 0 .25rem">Client mix</h3>${uaRows}` : ''}
+</div>`;
+}
+
+export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repos: RepoRow[], totalStars: number, counts: EventCounts, recent: RepoRecent[], views: ViewsSummary, justCreated?: boolean, flash?: string): string {
   const webhookUrl = `${publicUrl}/webhook`;
   const chartSvg = `${publicUrl}/${tenant.slug}/chart.svg`;
   // Embed snippets wrap the chart in a link back to the org's stars page
@@ -583,6 +656,8 @@ export function tenantDetail(user: User, tenant: Tenant, publicUrl: string, repo
 ${chartBlock(tenant.slug, tenant.display_name, chartSvg, orgPage, totalStars, tenant.slug, true)}
 
 ${recentActivityBlock(recent)}
+
+${viewsPanel(views)}
 
 <h2>1. GitHub webhook</h2>
 ${secretBlock}

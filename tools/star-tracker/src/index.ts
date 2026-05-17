@@ -108,6 +108,63 @@ function requireUser(c: any): db.User | Response {
   return u;
 }
 
+// Fire-and-forget view logger for chart-svg and HTML page requests.
+// Skips owner self-views so the owner's tenant page (which embeds the
+// chart preview) doesn't pollute their own analytics. We never store
+// IPs or raw user-agents — referer is reduced to hostname, UA to a
+// coarse class (camo/bot/browser/other), and country comes from
+// Cloudflare's edge metadata.
+function recordView(
+  c: any,
+  tenant: string,
+  repo: string,
+  kind: db.ViewKind,
+  cached: 0 | 1,
+  ownerUserId: string,
+): void {
+  const user = c.get('user') as db.User | null;
+  if (user && user.id === ownerUserId) return;
+
+  const ref = c.req.header('referer') ?? c.req.header('referrer') ?? '';
+  let host = '';
+  try { host = new URL(ref).hostname.toLowerCase(); } catch { /* no/invalid referer */ }
+  // Don't count our own pages as referers — only off-site embeds matter.
+  // Check both PUBLIC_URL (prod) and the current request host (covers
+  // localhost:8787 during wrangler dev, preview URLs, etc.).
+  if (host) {
+    try {
+      const ownHost = new URL(c.env.PUBLIC_URL).hostname.toLowerCase();
+      if (host === ownHost) host = '';
+    } catch { /* PUBLIC_URL missing */ }
+  }
+  if (host) {
+    try {
+      const reqHost = new URL(c.req.url).hostname.toLowerCase();
+      if (host === reqHost) host = '';
+    } catch { /* unreachable — c.req.url is always valid */ }
+  }
+
+  const country = (((c.req.raw as Request).cf as { country?: string } | undefined)?.country ?? '').toUpperCase();
+  const ua = (c.req.header('user-agent') ?? '').toLowerCase();
+  let uaClass: db.UAClass = 'other';
+  if (ua.includes('github-camo')) uaClass = 'camo';
+  else if (/bot|crawler|spider|preview|fetcher|monitor|slurp|facebookexternalhit|discordbot|telegrambot|whatsapp|twitterbot|linkedinbot/.test(ua)) uaClass = 'bot';
+  else if (ua.includes('mozilla')) uaClass = 'browser';
+
+  c.executionCtx.waitUntil(
+    db.logView(c.env.DB, {
+      tenant,
+      repo,
+      kind,
+      day: db.utcDay(Date.now()),
+      referer_host: host,
+      country,
+      ua_class: uaClass,
+      cached,
+    }),
+  );
+}
+
 // Syncs one repo, choosing exact vs sampled based on stargazers_count.
 // Returns the chosen mode + counts so callers can build flash messages.
 // Private repos return mode 'private' — we ensure the row exists and tag
@@ -382,15 +439,17 @@ app.get('/:slug', async (c) => {
     const timeline = await db.tenantTimeline(c.env.DB, slug);
     const counts = await db.eventCountsByType(c.env.DB, slug);
     const recent = await db.tenantRecentByRepo(c.env.DB, slug, now);
+    const views = await db.viewsSummary(c.env.DB, slug, 30, now);
     const flash = takeFlash(c);
     return c.html(
-      pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, counts, recent, flash?.justCreated, flash?.msg),
+      pages.tenantDetail(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, counts, recent, views, flash?.justCreated, flash?.msg),
     );
   }
 
   const repos = await db.listTenantRepos(c.env.DB, slug);
   const timeline = await db.tenantTimeline(c.env.DB, slug);
   const recent = await db.tenantRecentByRepo(c.env.DB, slug, now);
+  recordView(c, slug, '', 'page', 0, tenant.owner_user_id);
   return c.html(pages.publicOrg(user, tenant, c.env.PUBLIC_URL, repos, timeline.length, recent));
 });
 
@@ -488,6 +547,7 @@ app.get('/:slug/chart.svg', async (c) => {
   const reactiveTs = Math.max(latestTs, privTs);
   const etag = `"${theme}.${splitN}.${style}.${rangeRaw || 'all'}.${reactiveTs}.${now}.${djb2(title)}"`;
   if (c.req.header('if-none-match') === etag) {
+    recordView(c, slug, '', 'chart', 1, tenant.owner_user_id);
     return new Response(null, { status: 304, headers: { etag, 'cache-control': 'public, max-age=300' } });
   }
 
@@ -500,6 +560,7 @@ app.get('/:slug/chart.svg', async (c) => {
     tMinOverride: rangeStart ?? undefined,
   });
 
+  recordView(c, slug, '', 'chart', 0, tenant.owner_user_id);
   return new Response(svg, {
     headers: {
       'content-type': 'image/svg+xml; charset=utf-8',
@@ -545,6 +606,7 @@ app.get('/:slug/:repo/chart.svg', async (c) => {
   const reactiveTs = Math.max(latestTs, privTs);
   const etag = `"r1.${theme}.${style}.${rangeRaw || 'all'}.${reactiveTs}.${now}.${djb2(title)}"`;
   if (c.req.header('if-none-match') === etag) {
+    recordView(c, slug, fullName, 'chart', 1, tenant.owner_user_id);
     return new Response(null, { status: 304, headers: { etag, 'cache-control': 'public, max-age=300' } });
   }
 
@@ -557,6 +619,7 @@ app.get('/:slug/:repo/chart.svg', async (c) => {
     tMinOverride: rangeStart ?? undefined,
   });
 
+  recordView(c, slug, fullName, 'chart', 0, tenant.owner_user_id);
   return new Response(svg, {
     headers: {
       'content-type': 'image/svg+xml; charset=utf-8',
@@ -582,6 +645,7 @@ app.get('/:slug/:repo', async (c) => {
   const series = all.find((r) => r.repo === fullName);
   const total = series?.total ?? 0;
   const gains = db.recentForSeries(series?.points ?? [], total, Date.now());
+  recordView(c, slug, fullName, 'page', 0, tenant.owner_user_id);
   return c.html(pages.repoDetail(c.get('user'), tenant, repoRow, total, gains, c.env.PUBLIC_URL));
 });
 
