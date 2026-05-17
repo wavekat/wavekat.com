@@ -577,35 +577,51 @@ export type ViewsSummary = {
   topReferers: { host: string; count: number }[];   // chart + page combined
   topCountries: { country: string; count: number }[];
   daily: { day: string; chart: number; page: number }[]; // ascending day
+  // Per-destination breakdown. repo='' rows are the tenant-level
+  // (org-wide) chart/page; repo='<owner>/<name>' are per-repo. Sorted
+  // by total (chart+page) desc.
+  byDestination: { repo: string; chart: number; page: number }[];
 };
 
 // Compact analytics summary used by the owner's tenant page. One pass of
 // the day range pulls everything we need; the panel does no further work.
+// Pass `repo` (e.g. "owner/name") to scope the summary to a single repo's
+// rows — used by the per-repo owner view. Omit for the full tenant view.
 export async function viewsSummary(
   db: D1Database,
   tenant: string,
   windowDays: number,
   now: number,
+  repo?: string,
 ): Promise<ViewsSummary> {
   const cutoffDay = utcDay(now - (windowDays - 1) * 86400_000);
 
-  const { results } = await db
-    .prepare(
-      `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
-       FROM views_daily
-       WHERE tenant_slug = ? AND day >= ?`,
-    )
-    .bind(tenant, cutoffDay)
-    .all<{
-      repo: string;
-      kind: ViewKind;
-      day: string;
-      referer_host: string;
-      country: string;
-      ua_class: UAClass;
-      cached: number;
-      count: number;
-    }>();
+  const stmt = repo === undefined
+    ? db
+      .prepare(
+        `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
+         FROM views_daily
+         WHERE tenant_slug = ? AND day >= ?`,
+      )
+      .bind(tenant, cutoffDay)
+    : db
+      .prepare(
+        `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
+         FROM views_daily
+         WHERE tenant_slug = ? AND repo = ? AND day >= ?`,
+      )
+      .bind(tenant, repo, cutoffDay);
+
+  const { results } = await stmt.all<{
+    repo: string;
+    kind: ViewKind;
+    day: string;
+    referer_host: string;
+    country: string;
+    ua_class: UAClass;
+    cached: number;
+    count: number;
+  }>();
 
   let totalChart = 0;
   let totalPage = 0;
@@ -615,6 +631,7 @@ export async function viewsSummary(
   const refs = new Map<string, number>();
   const countries = new Map<string, number>();
   const dailyMap = new Map<string, { chart: number; page: number }>();
+  const destMap = new Map<string, { chart: number; page: number }>();
 
   for (const r of results ?? []) {
     if (r.kind === 'chart') {
@@ -631,6 +648,10 @@ export async function viewsSummary(
     if (r.kind === 'chart') d.chart += r.count;
     else d.page += r.count;
     dailyMap.set(r.day, d);
+    const dest = destMap.get(r.repo) ?? { chart: 0, page: 0 };
+    if (r.kind === 'chart') dest.chart += r.count;
+    else dest.page += r.count;
+    destMap.set(r.repo, dest);
   }
 
   // Fill in zero-days so the sparkline has a continuous baseline.
@@ -650,6 +671,10 @@ export async function viewsSummary(
   const refSorted = toSorted(refs).slice(0, 8).map((x) => ({ host: x.k, count: x.count }));
   const countrySorted = toSorted(countries).slice(0, 8).map((x) => ({ country: x.k, count: x.count }));
 
+  const byDestination = Array.from(destMap.entries())
+    .map(([repo, v]) => ({ repo, chart: v.chart, page: v.page }))
+    .sort((a, b) => (b.chart + b.page) - (a.chart + a.page));
+
   return {
     windowDays,
     totalChart,
@@ -660,5 +685,6 @@ export async function viewsSummary(
     topReferers: refSorted,
     topCountries: countrySorted,
     daily,
+    byDestination,
   };
 }
