@@ -577,6 +577,10 @@ export type ViewsSummary = {
   topReferers: { host: string; count: number }[];   // chart + page combined
   topCountries: { country: string; count: number }[];
   daily: { day: string; chart: number; page: number }[]; // ascending day
+  // Per-destination breakdown. repo='' rows are the tenant-level
+  // (org-wide) chart/page; repo='<owner>/<name>' are per-repo. Sorted
+  // by total (chart+page) desc.
+  byDestination: { repo: string; chart: number; page: number }[];
 };
 
 // Compact analytics summary used by the owner's tenant page. One pass of
@@ -615,6 +619,7 @@ export async function viewsSummary(
   const refs = new Map<string, number>();
   const countries = new Map<string, number>();
   const dailyMap = new Map<string, { chart: number; page: number }>();
+  const destMap = new Map<string, { chart: number; page: number }>();
 
   for (const r of results ?? []) {
     if (r.kind === 'chart') {
@@ -631,6 +636,10 @@ export async function viewsSummary(
     if (r.kind === 'chart') d.chart += r.count;
     else d.page += r.count;
     dailyMap.set(r.day, d);
+    const dest = destMap.get(r.repo) ?? { chart: 0, page: 0 };
+    if (r.kind === 'chart') dest.chart += r.count;
+    else dest.page += r.count;
+    destMap.set(r.repo, dest);
   }
 
   // Fill in zero-days so the sparkline has a continuous baseline.
@@ -650,6 +659,10 @@ export async function viewsSummary(
   const refSorted = toSorted(refs).slice(0, 8).map((x) => ({ host: x.k, count: x.count }));
   const countrySorted = toSorted(countries).slice(0, 8).map((x) => ({ country: x.k, count: x.count }));
 
+  const byDestination = Array.from(destMap.entries())
+    .map(([repo, v]) => ({ repo, chart: v.chart, page: v.page }))
+    .sort((a, b) => (b.chart + b.page) - (a.chart + a.page));
+
   return {
     windowDays,
     totalChart,
@@ -660,5 +673,6 @@ export async function viewsSummary(
     topReferers: refSorted,
     topCountries: countrySorted,
     daily,
+    byDestination,
   };
 }

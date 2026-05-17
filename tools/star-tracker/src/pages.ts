@@ -107,14 +107,6 @@ gtag('config', 'G-P2YBZ0W8HQ');
   @media (prefers-color-scheme: dark) { .seg-toggle .seg-label { border-right-color: #334155; } }
   .chart-preview img { max-width: 100%; border-radius: 6px; display: block; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
   @media (prefers-color-scheme: dark) { .chart-preview img { border-color: #1e293b; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); } }
-  .chart-section .chart-preview .dark { display: none; }
-  .chart-section #theme-dark:checked ~ .chart-preview .light { display: none; }
-  .chart-section #theme-dark:checked ~ .chart-preview .dark { display: block; }
-  .chart-preview-auto .dark { display: none; }
-  @media (prefers-color-scheme: dark) {
-    .chart-preview-auto .light { display: none; }
-    .chart-preview-auto .dark { display: block; }
-  }
   .repo-list { list-style: none; padding: 0; margin: .5rem 0; display: flex; flex-direction: column; gap: 4px; }
   .repo-list li { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
   .recent-list { list-style: none; padding: 0; margin: .5rem 0 1rem; display: flex; flex-direction: column; gap: 6px; }
@@ -249,9 +241,9 @@ ${body}
       var n = currentSplit();
       var style = currentStyle();
       var range = currentRange();
+      var theme = currentTheme();
       preview.querySelectorAll('img').forEach(function (img) {
-        var isDark = img.classList.contains('dark');
-        img.src = base + buildQuery(isDark ? 'dark' : 'light', n, style, range, 'v=' + version);
+        img.src = base + buildQuery(theme, n, style, range, 'v=' + version);
       });
     }
     function refreshEmbed() {
@@ -306,8 +298,10 @@ export function landing(user: User | null): string {
 <h2>Live example</h2>
 <p>This site dogfoods the tool — here's the <a href="/wavekat">wavekat</a> org's own star history, split by top repo:</p>
 <div class="chart-preview chart-preview-auto">
-  <img class="light" src="/wavekat/chart.svg?split=5" alt="wavekat star history (light)"/>
-  <img class="dark" src="/wavekat/chart.svg?split=5&amp;theme=dark" alt="wavekat star history (dark)"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/wavekat/chart.svg?split=5&amp;theme=dark"/>
+    <img src="/wavekat/chart.svg?split=5" alt="wavekat star history"/>
+  </picture>
 </div>
 <h2>How it works</h2>
 <ol>
@@ -426,8 +420,12 @@ function chartBlock(
   embedAlt: string,
   showSplit: boolean,
 ): string {
-  const previewLight = `${chartSvg}?v=${totalStars}`;
-  const previewDark = `${chartSvg}?v=${totalStars}&theme=dark`;
+  // Single preview img — JS swaps `src` on theme/split/style/range toggle.
+  // The previous dual <img class="light"/dark"> design fetched both
+  // variants on every page load (CSS only hid the off-theme one), which
+  // doubled chart-view counts in the analytics panel. One img halves
+  // that and still supports the full toggle UX as long as JS is on.
+  const previewSrc = `${chartSvg}?v=${totalStars}`;
   const label = esc(displayName ?? slug);
   const altText = esc(embedAlt);
   const copyBtn = (kind: string) => `<button type="button" class="icon-btn copy-btn" aria-label="Copy ${kind}" data-copied="false">
@@ -488,8 +486,7 @@ function chartBlock(
     </div>
   </div>
   <div class="chart-preview" data-base="${chartSvg}" data-version="${totalStars}">
-    <img class="light" src="${previewLight}" alt="${label} star history (light)"/>
-    <img class="dark" src="${previewDark}" alt="${label} star history (dark)"/>
+    <img src="${previewSrc}" alt="${label} star history"/>
   </div>
   <dl class="embed" data-embed data-base="${chartSvg}" data-link="${linkTarget}" data-slug="${altText}">
     <dt>Markdown</dt>
@@ -596,6 +593,30 @@ function viewsPanel(views: ViewsSummary): string {
     ? ''
     : `<ul class="repo-list">${views.uaBreakdown.map((u) => `<li><span class="muted" style="font-variant-numeric:tabular-nums;min-width:3.5em">${u.count.toLocaleString('en-US')}</span> ${esc(uaLabels[u.ua_class] ?? u.ua_class)}</li>`).join('')}</ul>`;
 
+  // Per-destination rows. repo='' → tenant-wide chart/page; others →
+  // per-repo. Tenant-wide is pinned first because it's always the
+  // headline embed; per-repo rows sort by total below it.
+  const destRows = views.byDestination.length === 0
+    ? ''
+    : (() => {
+      const tenantRow = views.byDestination.find((d) => d.repo === '');
+      const repoRows = views.byDestination.filter((d) => d.repo !== '');
+      const rows: { label: string; chart: number; page: number }[] = [];
+      if (tenantRow) rows.push({ label: 'org (all repos)', chart: tenantRow.chart, page: tenantRow.page });
+      for (const r of repoRows) {
+        const name = r.repo.includes('/') ? r.repo.split('/')[1]! : r.repo;
+        rows.push({ label: name, chart: r.chart, page: r.page });
+      }
+      return `<ul class="repo-list">${rows.map((r) => `<li>
+        <span class="muted" style="font-variant-numeric:tabular-nums;min-width:6em">
+          <strong style="color:#2196f3">${r.chart.toLocaleString('en-US')}</strong>
+          · <span>${r.page.toLocaleString('en-US')}</span>
+        </span>
+        <code>${esc(r.label)}</code>
+      </li>`).join('')}</ul>
+      <p class="muted" style="font-size:0.8em;margin:.25rem 0 0">chart · page views per destination over the window.</p>`;
+    })();
+
   const cacheLine = views.totalChart > 0
     ? `<p class="muted" style="font-size:0.85em;margin:.25rem 0 0">${views.freshChart.toLocaleString('en-US')} fresh · ${views.cachedChart.toLocaleString('en-US')} cached (304). High 304 ratio means GitHub Camo or browsers re-validated the same image.</p>`
     : '';
@@ -609,6 +630,7 @@ function viewsPanel(views: ViewsSummary): string {
   </dl>
   <div style="overflow-x:auto;margin:0 0 .25rem">${sparkline}</div>
   <p class="muted" style="font-size:0.8em;margin:0 0 1rem"><span style="display:inline-block;width:8px;height:8px;background:#2196f3;border-radius:1px;vertical-align:middle"></span> chart · <span style="display:inline-block;width:8px;height:8px;background:#64748b;border-radius:1px;vertical-align:middle"></span> page · ${views.daily[0]?.day ?? ''} → ${views.daily[views.daily.length - 1]?.day ?? ''}</p>
+  ${destRows ? `<h3 style="font-size:0.95rem;margin:1rem 0 .25rem">Views by destination</h3>${destRows}` : ''}
   <h3 style="font-size:0.95rem;margin:1rem 0 .25rem">Top referers</h3>
   ${refRows}
   <h3 style="font-size:0.95rem;margin:1rem 0 .25rem">Top countries</h3>
