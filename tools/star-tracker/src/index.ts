@@ -644,9 +644,15 @@ app.get('/:slug/:repo', async (c) => {
   const all = await db.tenantPerRepoTimelines(c.env.DB, slug);
   const series = all.find((r) => r.repo === fullName);
   const total = series?.total ?? 0;
-  const gains = db.recentForSeries(series?.points ?? [], total, Date.now());
+  const now = Date.now();
+  const gains = db.recentForSeries(series?.points ?? [], total, now);
+  const viewer = c.get('user');
+  // Per-repo analytics only for the owner. Scoped to this repo so they
+  // can see traffic to /:slug/:repo and its chart-svg in isolation.
+  const isOwner = !!(viewer && viewer.id === tenant.owner_user_id);
+  const views = isOwner ? await db.viewsSummary(c.env.DB, slug, 30, now, fullName) : undefined;
   recordView(c, slug, fullName, 'page', 0, tenant.owner_user_id);
-  return c.html(pages.repoDetail(c.get('user'), tenant, repoRow, total, gains, c.env.PUBLIC_URL));
+  return c.html(pages.repoDetail(viewer, tenant, repoRow, total, gains, c.env.PUBLIC_URL, views));
 });
 
 function djb2(s: string): string {

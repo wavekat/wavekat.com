@@ -585,31 +585,43 @@ export type ViewsSummary = {
 
 // Compact analytics summary used by the owner's tenant page. One pass of
 // the day range pulls everything we need; the panel does no further work.
+// Pass `repo` (e.g. "owner/name") to scope the summary to a single repo's
+// rows — used by the per-repo owner view. Omit for the full tenant view.
 export async function viewsSummary(
   db: D1Database,
   tenant: string,
   windowDays: number,
   now: number,
+  repo?: string,
 ): Promise<ViewsSummary> {
   const cutoffDay = utcDay(now - (windowDays - 1) * 86400_000);
 
-  const { results } = await db
-    .prepare(
-      `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
-       FROM views_daily
-       WHERE tenant_slug = ? AND day >= ?`,
-    )
-    .bind(tenant, cutoffDay)
-    .all<{
-      repo: string;
-      kind: ViewKind;
-      day: string;
-      referer_host: string;
-      country: string;
-      ua_class: UAClass;
-      cached: number;
-      count: number;
-    }>();
+  const stmt = repo === undefined
+    ? db
+      .prepare(
+        `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
+         FROM views_daily
+         WHERE tenant_slug = ? AND day >= ?`,
+      )
+      .bind(tenant, cutoffDay)
+    : db
+      .prepare(
+        `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
+         FROM views_daily
+         WHERE tenant_slug = ? AND repo = ? AND day >= ?`,
+      )
+      .bind(tenant, repo, cutoffDay);
+
+  const { results } = await stmt.all<{
+    repo: string;
+    kind: ViewKind;
+    day: string;
+    referer_host: string;
+    country: string;
+    ua_class: UAClass;
+    cached: number;
+    count: number;
+  }>();
 
   let totalChart = 0;
   let totalPage = 0;

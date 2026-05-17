@@ -595,8 +595,10 @@ function viewsPanel(views: ViewsSummary): string {
 
   // Per-destination rows. repo='' → tenant-wide chart/page; others →
   // per-repo. Tenant-wide is pinned first because it's always the
-  // headline embed; per-repo rows sort by total below it.
-  const destRows = views.byDestination.length === 0
+  // headline embed; per-repo rows sort by total below it. Skip rendering
+  // entirely when there's only one destination (e.g. the per-repo
+  // owner view, where the panel is already scoped).
+  const destRows = views.byDestination.length <= 1
     ? ''
     : (() => {
       const tenantRow = views.byDestination.find((d) => d.repo === '');
@@ -774,6 +776,7 @@ export function repoDetail(
   totalStars: number,
   gains: { gained_7d: number; gained_30d: number },
   publicUrl: string,
+  views?: ViewsSummary,
 ): string {
   const parts = repo.full_name.split('/');
   const slug = parts[0] ?? tenant.slug;
@@ -796,6 +799,8 @@ export function repoDetail(
 ${recentLine}
 
 ${chartBlock(slug, name, chartSvg, linkTarget, totalStars, repo.full_name, false)}
+
+${views ? viewsPanel(views) : ''}
 
 <h2>Other repos in ${esc(slug)}</h2>
 <p>See the <a href="/${esc(slug)}">full ${esc(slug)} chart</a> for all tracked repos in this account.</p>`,
