@@ -34,6 +34,13 @@ function shell(title: string, user: User | null, body: string): string {
 <html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>${esc(title)}</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P2YBZ0W8HQ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-P2YBZ0W8HQ');
+</script>
 <style>
   :root { color-scheme: light dark; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 760px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; line-height: 1.55; color: #0f172a; background: #ffffff; }
