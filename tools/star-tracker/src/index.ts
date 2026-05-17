@@ -142,6 +142,22 @@ async function backfillRepo(
   return { mode: 'sampled', stargazers_count: count };
 }
 
+// -- Favicon ----------------------------------------------------------------
+
+// Lucide `star` + `trending-up` combined: a gold star with a blue chart
+// line rising to meet it. Telegraphs "tracking stars over time" at favicon
+// scale. Inlined so it ships with the Worker — no static asset bucket needed.
+const FAVICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><polyline points="2,21 6,17 10,19 14,11" stroke="#2196f3"/><path d="M17 1.5 L18.1 4.95 L21.8 4.95 L18.8 7.1 L19.9 10.5 L17 8.4 L14.1 10.5 L15.2 7.1 L12.2 4.95 L15.9 4.95 Z" fill="#ffd740" stroke="#ffd740"/></svg>`;
+
+app.get('/favicon.svg', () => {
+  return new Response(FAVICON_SVG, {
+    headers: {
+      'content-type': 'image/svg+xml; charset=utf-8',
+      'cache-control': 'public, max-age=86400',
+    },
+  });
+});
+
 // -- Landing ----------------------------------------------------------------
 
 app.get('/', (c) => c.html(pages.landing(c.get('user'))));

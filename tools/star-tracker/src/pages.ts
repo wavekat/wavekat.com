@@ -34,6 +34,7 @@ function shell(title: string, user: User | null, body: string): string {
 <html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>${esc(title)}</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2YBZ0W8HQ"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -47,6 +48,8 @@ gtag('config', 'G-P2YBZ0W8HQ');
   @media (prefers-color-scheme: dark) { body { background: #0b0f17; color: #e2e8f0; } a { color: #38bdf8; } code, pre { background: #111827 !important; color: #e2e8f0 !important; } .warn { background: #422006 !important; color: #fde68a !important; } header { border-color: #1e293b !important; } .card { background: #111827 !important; border-color: #1e293b !important; } }
   header { display: flex; justify-content: space-between; align-items: center; gap: .5rem 1rem; flex-wrap: wrap; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.5rem; font-size: 0.95rem; }
   header a, header form { color: inherit; text-decoration: none; }
+  header a.brand { display: inline-flex; align-items: center; gap: 6px; }
+  header a.brand img { display: block; }
   header strong { font-weight: 700; }
   @media (max-width: 600px) { header .muted { display: block; margin-top: 2px; } }
   h1 { font-size: 1.5rem; margin: 0 0 1rem; }
@@ -137,7 +140,7 @@ gtag('config', 'G-P2YBZ0W8HQ');
 </style></head>
 <body>
 <header>
-  <span><strong><a href="/">stars.wavekat.com</a></strong> <span class="muted">— cumulative star history for any GitHub org</span></span>
+  <span><strong><a href="/" class="brand"><img src="/favicon.svg" alt="" width="18" height="18"/>stars.wavekat.com</a></strong> <span class="muted">— cumulative star history for any GitHub org</span></span>
   <span>${nav}</span>
 </header>
 ${body}
