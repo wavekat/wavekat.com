@@ -529,3 +529,136 @@ export async function listAllTenants(db: D1Database): Promise<Tenant[]> {
   const { results } = await db.prepare('SELECT * FROM tenants').all<Tenant>();
   return results ?? [];
 }
+
+// -- Lite analytics ---------------------------------------------------------
+
+export type ViewKind = 'chart' | 'page';
+export type UAClass = 'camo' | 'bot' | 'browser' | 'other';
+
+// Day bucket for the views_daily table — UTC YYYY-MM-DD.
+export function utcDay(ms: number): string {
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+// Increment-or-insert one view. Called via ctx.waitUntil so the response
+// goes out before the write completes — keeps chart-svg latency identical
+// to pre-analytics. Repo is '' for tenant-scoped requests.
+export async function logView(
+  db: D1Database,
+  v: {
+    tenant: string;
+    repo: string;
+    kind: ViewKind;
+    day: string;
+    referer_host: string;
+    country: string;
+    ua_class: UAClass;
+    cached: 0 | 1;
+  },
+): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO views_daily (tenant_slug, repo, kind, day, referer_host, country, ua_class, cached, count)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+       ON CONFLICT(tenant_slug, repo, kind, day, referer_host, country, ua_class, cached)
+       DO UPDATE SET count = count + 1`,
+    )
+    .bind(v.tenant, v.repo, v.kind, v.day, v.referer_host, v.country, v.ua_class, v.cached)
+    .run();
+}
+
+export type ViewsSummary = {
+  windowDays: number;
+  totalChart: number;
+  totalPage: number;
+  cachedChart: number;
+  freshChart: number;
+  uaBreakdown: { ua_class: UAClass; count: number }[];
+  topReferers: { host: string; count: number }[];   // chart + page combined
+  topCountries: { country: string; count: number }[];
+  daily: { day: string; chart: number; page: number }[]; // ascending day
+};
+
+// Compact analytics summary used by the owner's tenant page. One pass of
+// the day range pulls everything we need; the panel does no further work.
+export async function viewsSummary(
+  db: D1Database,
+  tenant: string,
+  windowDays: number,
+  now: number,
+): Promise<ViewsSummary> {
+  const cutoffDay = utcDay(now - (windowDays - 1) * 86400_000);
+
+  const { results } = await db
+    .prepare(
+      `SELECT repo, kind, day, referer_host, country, ua_class, cached, count
+       FROM views_daily
+       WHERE tenant_slug = ? AND day >= ?`,
+    )
+    .bind(tenant, cutoffDay)
+    .all<{
+      repo: string;
+      kind: ViewKind;
+      day: string;
+      referer_host: string;
+      country: string;
+      ua_class: UAClass;
+      cached: number;
+      count: number;
+    }>();
+
+  let totalChart = 0;
+  let totalPage = 0;
+  let cachedChart = 0;
+  let freshChart = 0;
+  const ua = new Map<UAClass, number>();
+  const refs = new Map<string, number>();
+  const countries = new Map<string, number>();
+  const dailyMap = new Map<string, { chart: number; page: number }>();
+
+  for (const r of results ?? []) {
+    if (r.kind === 'chart') {
+      totalChart += r.count;
+      if (r.cached) cachedChart += r.count;
+      else freshChart += r.count;
+    } else {
+      totalPage += r.count;
+    }
+    ua.set(r.ua_class, (ua.get(r.ua_class) ?? 0) + r.count);
+    if (r.referer_host) refs.set(r.referer_host, (refs.get(r.referer_host) ?? 0) + r.count);
+    if (r.country) countries.set(r.country, (countries.get(r.country) ?? 0) + r.count);
+    const d = dailyMap.get(r.day) ?? { chart: 0, page: 0 };
+    if (r.kind === 'chart') d.chart += r.count;
+    else d.page += r.count;
+    dailyMap.set(r.day, d);
+  }
+
+  // Fill in zero-days so the sparkline has a continuous baseline.
+  const daily: ViewsSummary['daily'] = [];
+  for (let i = windowDays - 1; i >= 0; i--) {
+    const day = utcDay(now - i * 86400_000);
+    const v = dailyMap.get(day) ?? { chart: 0, page: 0 };
+    daily.push({ day, ...v });
+  }
+
+  const toSorted = <T>(m: Map<T, number>) =>
+    Array.from(m.entries())
+      .map(([k, count]) => ({ k, count }))
+      .sort((a, b) => b.count - a.count);
+
+  const uaSorted = toSorted(ua).map((x) => ({ ua_class: x.k, count: x.count }));
+  const refSorted = toSorted(refs).slice(0, 8).map((x) => ({ host: x.k, count: x.count }));
+  const countrySorted = toSorted(countries).slice(0, 8).map((x) => ({ country: x.k, count: x.count }));
+
+  return {
+    windowDays,
+    totalChart,
+    totalPage,
+    cachedChart,
+    freshChart,
+    uaBreakdown: uaSorted,
+    topReferers: refSorted,
+    topCountries: countrySorted,
+    daily,
+  };
+}
