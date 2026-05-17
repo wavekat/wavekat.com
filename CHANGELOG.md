@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.22](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.21...wavekat-com-v0.0.22) (2026-05-17)
+
+
+### Features
+
+* add favicon to star-tracker ([#60](https://github.com/wavekat/wavekat.com/issues/60)) ([4075b41](https://github.com/wavekat/wavekat.com/commit/4075b417e7388c26e84d2e881d92b2f6d6acd4d9))
+* add gtag analytics to star-tracker ([#58](https://github.com/wavekat/wavekat.com/issues/58)) ([5441af3](https://github.com/wavekat/wavekat.com/commit/5441af3cb7639a484f12dac18966397f99617e43))
+* add lite audience analytics to star-tracker ([#61](https://github.com/wavekat/wavekat.com/issues/61)) ([2e4b975](https://github.com/wavekat/wavekat.com/commit/2e4b975a4f52c813b107c7db2a67c4f112e5a1f6))
+
 ## [0.0.21](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.20...wavekat-com-v0.0.21) (2026-05-15)
 
 
