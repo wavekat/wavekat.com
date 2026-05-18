@@ -30,7 +30,7 @@ COUNT="${RUNNER_COUNT:-4}"
 PREFIX="${RUNNER_PREFIX:-$(hostname -s)}"
 BASE_DIR="${RUNNER_BASE_DIR:-/opt/actions-runners}"
 RUNNER_USER="${RUNNER_USER:-$(id -un)}"
-EXTRA_LABELS="${RUNNER_LABELS:-${PREFIX}}"
+EXTRA_LABELS="${RUNNER_LABELS:-wavekat-ci,${PREFIX}}"
 RUNNER_VERSION="${RUNNER_VERSION:-}" # empty = latest
 
 log()  { printf '\033[1;36m==>\033[0m %s\n' "$*"; }

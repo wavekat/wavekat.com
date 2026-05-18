@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   release-please:
-    runs-on: [self-hosted, AOC-M3L]
+    runs-on: [self-hosted, wavekat-ci]
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
     steps:
@@ -22,7 +22,7 @@ jobs:
   deploy:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
-    runs-on: [self-hosted, AOC-M3L]
+    runs-on: [self-hosted, wavekat-ci]
     steps:
       - uses: actions/checkout@v4
         with:

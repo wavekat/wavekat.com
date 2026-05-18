@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, AOC-M3L]
+    runs-on: [self-hosted, wavekat-ci]
     steps:
       - uses: actions/checkout@v4
         with:
