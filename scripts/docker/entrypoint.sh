@@ -28,6 +28,16 @@ set -euo pipefail
 RUNNER_GROUP="${RUNNER_GROUP:-Default}"
 WORK_DIR="/home/runner/runner"
 
+# First-boot fix: Docker creates fresh named volumes owned by root:root,
+# so the `runner` user can't write into the mountpoint until we chown
+# it. Do that as root, then re-exec ourselves as `runner`.
+if [[ "$(id -u)" -eq 0 ]]; then
+  chown -R runner:runner "${WORK_DIR}"
+  exec sudo \
+    --preserve-env=RUNNER_ORG,RUNNER_NAME,RUNNER_LABELS,RUNNER_TOKEN,RUNNER_GROUP \
+    -u runner -H /usr/local/bin/entrypoint.sh "$@"
+fi
+
 if [[ ! -f "${WORK_DIR}/config.sh" ]]; then
   cp -a /opt/runner-template/. "${WORK_DIR}/"
 fi

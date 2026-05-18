@@ -59,10 +59,15 @@ RUN set -eux; \
     /opt/runner-template/bin/installdependencies.sh; \
     chown -R runner:runner /opt/runner-template
 
-COPY --chown=runner:runner entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    && mkdir -p /home/runner/runner \
+    && chown runner:runner /home/runner /home/runner/runner
 
-USER runner
+# Entrypoint starts as root so it can chown the named-volume mountpoint
+# (Docker creates fresh named volumes as root:root regardless of the
+# image's directory ownership). It then drops to the `runner` user
+# before exec'ing the GitHub Actions runner.
 WORKDIR /home/runner/runner
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

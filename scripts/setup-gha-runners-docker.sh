@@ -152,15 +152,11 @@ for i in $(seq 1 "${COUNT}"); do
   sudo systemctl enable --now "gha-runner@${i}.service"
 done
 
-# 7. After the first successful start, the registration token has been
-#    burned. Scrub it from the env files so a restart can't accidentally
-#    try to re-register with a dead token (the entrypoint skips config
-#    when .runner already exists in the volume).
-log "scrubbing one-shot registration tokens from env files"
-for i in $(seq 1 "${COUNT}"); do
-  ENV_FILE="/etc/gha-runner/${i}.env"
-  sudo sed -i 's/^RUNNER_TOKEN=.*/RUNNER_TOKEN=/' "${ENV_FILE}"
-done
+# NOTE: we intentionally do NOT scrub RUNNER_TOKEN from the env files
+# after start. The token is single-use and expires after 1h, so leaving
+# it in a root-owned 0600 file is harmless. Scrubbing it would make
+# systemd's auto-restart unable to recover if config.sh failed on the
+# first attempt (no token in the env file → no way to register).
 
 log "done — ${COUNT} runner(s) registered to ${ORG}"
 log "check status:  systemctl list-units 'gha-runner@*.service'"
