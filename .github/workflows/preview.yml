@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AOC-M3L]
     steps:
       - uses: actions/checkout@v4
         with:
