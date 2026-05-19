@@ -34,6 +34,19 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && corepack enable \
     && rm -rf /var/lib/apt/lists/*
 
+# GitHub CLI (`gh`) — required by actions that shell out to the GitHub
+# API (e.g. release-plz/git-config calls `gh api graphql` to derive the
+# commit identity). Not in the default Ubuntu archive, so we add the
+# official cli.github.com apt repo.
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+      -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod a+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+      > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh \
+    && rm -rf /var/lib/apt/lists/*
+
 # Non-root runner user. Passwordless sudo so workflows can still do
 # `sudo apt-get install ...` for one-off deps — safe inside the
 # container's isolated rootfs.
