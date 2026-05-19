@@ -34,6 +34,32 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && corepack enable \
     && rm -rf /var/lib/apt/lists/*
 
+# GitHub CLI (`gh`) — required by actions that shell out to the GitHub
+# API (e.g. release-plz/git-config calls `gh api graphql` to derive the
+# commit identity). Not in the default Ubuntu archive, so we add the
+# official cli.github.com apt repo.
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+      -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod a+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+      > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh \
+    && rm -rf /var/lib/apt/lists/*
+
+# Rust toolchain (stable) via rustup. Required by Rust-based workflows
+# and by actions like release-plz that shell out to `cargo`. Installed
+# system-wide under /usr/local so both root and the `runner` user can
+# use it without PATH gymnastics.
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+      | sh -s -- -y --no-modify-path --profile minimal --default-toolchain stable \
+    && chmod -R a+rwX "$RUSTUP_HOME" "$CARGO_HOME" \
+    && rustc --version \
+    && cargo --version
+
 # Non-root runner user. Passwordless sudo so workflows can still do
 # `sudo apt-get install ...` for one-off deps — safe inside the
 # container's isolated rootfs.
