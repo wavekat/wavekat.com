@@ -47,6 +47,19 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
+# Rust toolchain (stable) via rustup. Required by Rust-based workflows
+# and by actions like release-plz that shell out to `cargo`. Installed
+# system-wide under /usr/local so both root and the `runner` user can
+# use it without PATH gymnastics.
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+      | sh -s -- -y --no-modify-path --profile minimal --default-toolchain stable \
+    && chmod -R a+rwX "$RUSTUP_HOME" "$CARGO_HOME" \
+    && rustc --version \
+    && cargo --version
+
 # Non-root runner user. Passwordless sudo so workflows can still do
 # `sudo apt-get install ...` for one-off deps — safe inside the
 # container's isolated rootfs.
