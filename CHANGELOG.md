@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.23](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.22...wavekat-com-v0.0.23) (2026-05-19)
+
+
+### Features
+
+* **gha-runners:** dockerized self-hosted runner setup ([#65](https://github.com/wavekat/wavekat.com/issues/65)) ([120fd7e](https://github.com/wavekat/wavekat.com/commit/120fd7eb3bdb32fd78dfbc2c2a30b10adab2dc06))
+* self-hosted GHA runners on aoc-m3l + role-label workflow routing ([#64](https://github.com/wavekat/wavekat.com/issues/64)) ([d2d8415](https://github.com/wavekat/wavekat.com/commit/d2d8415c128d4455b44dcb482e4b1d48018f1cfc))
+
+
+### Bug Fixes
+
+* **gha-runners:** install gh CLI and Rust toolchain in docker image ([#66](https://github.com/wavekat/wavekat.com/issues/66)) ([9b167e7](https://github.com/wavekat/wavekat.com/commit/9b167e70cb55e04229fba8ae91a69eb891df56b5))
+* **star-tracker:** de-inflate chart-view counts + per-repo breakdown ([#62](https://github.com/wavekat/wavekat.com/issues/62)) ([954f9d4](https://github.com/wavekat/wavekat.com/commit/954f9d4d76105349c5afe55f68e61986e2c9cc8d))
+
 ## [0.0.22](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.21...wavekat-com-v0.0.22) (2026-05-17)
 
 
