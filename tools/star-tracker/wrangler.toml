@@ -25,5 +25,7 @@ custom_domain = true
 #   GITHUB_CLIENT_ID      — OAuth App client ID
 #   GITHUB_CLIENT_SECRET  — OAuth App client secret
 #   JWT_SECRET            — random 32+ byte string for signing session cookies
+#   ADMIN_USERNAMES       — comma-separated GitHub logins allowed to view /_admin (optional)
+#                           e.g. "octocat" or "octocat,hubot,monalisa"
 [vars]
 PUBLIC_URL = "https://stars.wavekat.com"

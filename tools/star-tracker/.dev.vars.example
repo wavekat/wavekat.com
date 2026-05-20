@@ -8,3 +8,10 @@ JWT_SECRET=replace-with-32-plus-bytes-of-randomness
 # Overrides the wrangler.toml [vars] value during local dev so the OAuth
 # redirect_uri matches your dev GitHub OAuth App's callback URL.
 PUBLIC_URL=http://localhost:8787
+
+# Comma-separated GitHub logins allowed to access /_admin (operator view of
+# every registered tenant). Leave unset to disable the page entirely.
+# Examples:
+#   ADMIN_USERNAMES=octocat
+#   ADMIN_USERNAMES=octocat,hubot,monalisa
+ADMIN_USERNAMES=your-github-login

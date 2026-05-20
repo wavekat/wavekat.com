@@ -1,7 +1,7 @@
 // Server-rendered HTML pages. Inline CSS, no JS — keeps the bundle small and
 // the UX dependable inside a Worker.
 
-import type { EventCounts, RepoRecent, RepoRow, Tenant, User, ViewsSummary } from './db';
+import type { EventCounts, RepoRecent, RepoRow, Tenant, TenantWithStats, User, ViewsSummary } from './db';
 
 // Human-friendly relative timestamp ("3 minutes ago"). Used for webhook
 // status — absolute UTC strings are precise but require mental math; "5
@@ -804,6 +804,63 @@ ${views ? viewsPanel(views) : ''}
 
 <h2>Other repos in ${esc(slug)}</h2>
 <p>See the <a href="/${esc(slug)}">full ${esc(slug)} chart</a> for all tracked repos in this account.</p>`,
+  );
+}
+
+// Operator admin: every registered tenant, newest first. Reached only by
+// users listed in ADMIN_USERNAMES; non-admins 404 before this renders.
+export function adminTenants(user: User, tenants: TenantWithStats[]): string {
+  const sevenDays = 7 * 86400_000;
+  const now = Date.now();
+  const active7d = tenants.filter((t) => t.last_event_at && now - Date.parse(t.last_event_at) <= sevenDays).length;
+  const pinged = tenants.filter((t) => t.last_ping_at).length;
+  const totalRepos = tenants.reduce((s, t) => s + t.public_repos + t.private_repos, 0);
+  const totalStars = tenants.reduce((s, t) => s + t.total_stars, 0);
+
+  const summary = `
+<div class="card">
+  <div style="display:flex; flex-wrap:wrap; gap:1.25rem 2rem;">
+    <div><strong>${tenants.length}</strong> <span class="muted">tenants</span></div>
+    <div><strong>${pinged}</strong> <span class="muted">with ping</span></div>
+    <div><strong>${active7d}</strong> <span class="muted">active 7d</span></div>
+    <div><strong>${totalRepos.toLocaleString('en-US')}</strong> <span class="muted">repos</span></div>
+    <div><strong>${totalStars.toLocaleString('en-US')}</strong> <span class="muted">stars tracked</span></div>
+  </div>
+</div>`;
+
+  const rows = tenants.length === 0
+    ? `<p class="muted">No tenants registered yet.</p>`
+    : `<ul class="tenants">${tenants.map((t) => {
+        const owner = t.owner_username
+          ? `<a href="https://github.com/${esc(t.owner_username)}" target="_blank" rel="noopener">@${esc(t.owner_username)}</a>`
+          : `<span class="muted">unknown owner</span>`;
+        const repoBits: string[] = [];
+        if (t.public_repos) repoBits.push(`${t.public_repos} public`);
+        if (t.private_repos) repoBits.push(`${t.private_repos} private`);
+        const repoLine = repoBits.length ? repoBits.join(' · ') : 'no repos';
+        const stars = t.total_stars > 0 ? ` · ${t.total_stars.toLocaleString('en-US')}★` : '';
+        const created = new Date(t.created_at).toISOString().slice(0, 10);
+        return `<li class="card" style="display:block;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; gap:1rem; flex-wrap:wrap;">
+            <span>
+              <strong><a href="/${esc(t.slug)}">${esc(t.slug)}</a></strong>
+              <span class="muted"> — ${owner}</span>
+            </span>
+            <span class="muted" style="font-size:0.85em;">registered ${created}</span>
+          </div>
+          <div class="muted" style="font-size:0.9em; margin-top:4px;">
+            ${esc(repoLine)}${stars} · last event ${esc(relTime(t.last_event_at))} · last ping ${esc(relTime(t.last_ping_at))}
+          </div>
+        </li>`;
+      }).join('')}</ul>`;
+
+  return shell(
+    'Admin · tenants',
+    user,
+    `<h1>All tenants</h1>
+<p class="muted">Operator view — every org/user that's registered a tracker, newest first.</p>
+${summary}
+${rows}`,
   );
 }
 

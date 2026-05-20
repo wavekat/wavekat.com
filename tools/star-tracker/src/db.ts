@@ -530,6 +530,36 @@ export async function listAllTenants(db: D1Database): Promise<Tenant[]> {
   return results ?? [];
 }
 
+export type TenantWithStats = Tenant & {
+  owner_username: string | null;
+  owner_avatar: string | null;
+  public_repos: number;
+  private_repos: number;
+  total_stars: number;
+};
+
+// Cross-tenant rollup for the operator admin view. One SQL pass joins the
+// owner, counts public/private repos, and sums public stargazers so the
+// page can render without per-tenant fan-out queries.
+export async function listAllTenantsWithStats(db: D1Database): Promise<TenantWithStats[]> {
+  const { results } = await db
+    .prepare(
+      `SELECT t.slug, t.owner_user_id, t.webhook_secret, t.display_name,
+              t.created_at, t.last_ping_at, t.last_event_at,
+              u.username AS owner_username, u.avatar_url AS owner_avatar,
+              COALESCE(SUM(CASE WHEN r.private = 0 THEN 1 ELSE 0 END), 0) AS public_repos,
+              COALESCE(SUM(CASE WHEN r.private = 1 THEN 1 ELSE 0 END), 0) AS private_repos,
+              COALESCE(SUM(CASE WHEN r.private = 0 THEN r.stargazers_count ELSE 0 END), 0) AS total_stars
+         FROM tenants t
+         LEFT JOIN users u ON u.id = t.owner_user_id
+         LEFT JOIN repos r ON r.tenant_slug = t.slug
+        GROUP BY t.slug
+        ORDER BY t.created_at DESC`,
+    )
+    .all<TenantWithStats>();
+  return results ?? [];
+}
+
 // -- Lite analytics ---------------------------------------------------------
 
 export type ViewKind = 'chart' | 'page';

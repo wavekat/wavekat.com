@@ -32,6 +32,7 @@ export interface Env {
     GITHUB_CLIENT_SECRET: string;
     JWT_SECRET: string;
     PUBLIC_URL: string;
+    ADMIN_USERNAMES?: string;
   };
   Variables: { user: db.User | null };
 }
@@ -268,6 +269,27 @@ app.get('/dashboard', async (c) => {
   if (user instanceof Response) return user;
   const tenants = await db.listTenantsByOwner(c.env.DB, user.id);
   return c.html(pages.dashboard(user, tenants, c.env.PUBLIC_URL));
+});
+
+// -- Admin ------------------------------------------------------------------
+
+// Parses ADMIN_USERNAMES (comma-separated GitHub logins) and returns true
+// if the signed-in user is on the list. Case-insensitive match.
+function isAdmin(user: db.User | null, raw: string | undefined): boolean {
+  if (!user || !raw) return false;
+  const allow = raw.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+  return allow.includes(user.username.toLowerCase());
+}
+
+// Operator-only cross-tenant view: every registered tenant, newest first,
+// with repo counts + total stars. Path uses an underscore prefix so it
+// can't collide with a tenant slug (SLUG_RE requires [a-z0-9] first char).
+// Non-admins get 404 rather than 403 — no need to advertise the page.
+app.get('/_admin', async (c) => {
+  const user = c.get('user');
+  if (!isAdmin(user, c.env.ADMIN_USERNAMES)) return c.notFound();
+  const tenants = await db.listAllTenantsWithStats(c.env.DB);
+  return c.html(pages.adminTenants(user!, tenants));
 });
 
 // -- Tenant creation --------------------------------------------------------
