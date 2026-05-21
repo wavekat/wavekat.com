@@ -38,6 +38,13 @@ if [[ "$(id -u)" -eq 0 ]]; then
     -u runner -H /usr/local/bin/entrypoint.sh "$@"
 fi
 
+# Restore PATH entries that sudo's `secure_path` strips on re-exec.
+# The image installs Rust system-wide under /usr/local/cargo, but
+# sudo replaces PATH with sudoers' `secure_path`, so the runner —
+# and every workflow step it spawns — would lose `cargo`/`rustc`
+# without this. Prepend so user-provided PATH still wins.
+export PATH="/usr/local/cargo/bin:${PATH}"
+
 if [[ ! -f "${WORK_DIR}/config.sh" ]]; then
   cp -a /opt/runner-template/. "${WORK_DIR}/"
 fi
