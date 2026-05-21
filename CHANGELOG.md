@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.24](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.23...wavekat-com-v0.0.24) (2026-05-21)
+
+
+### Features
+
+* **star-tracker:** operator /_admin tenant list ([#67](https://github.com/wavekat/wavekat.com/issues/67)) ([2663192](https://github.com/wavekat/wavekat.com/commit/2663192a4e65b9c1721d8a3d3def5a5a23b07c3f))
+
+
+### Bug Fixes
+
+* **gha-runners:** restore cargo PATH after sudo re-exec ([#69](https://github.com/wavekat/wavekat.com/issues/69)) ([15f8f2c](https://github.com/wavekat/wavekat.com/commit/15f8f2c67998c9b6fbc2da149cbf5ae1f2ef3314))
+
 ## [0.0.23](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.22...wavekat-com-v0.0.23) (2026-05-19)
 
 
