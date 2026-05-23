@@ -37,7 +37,7 @@ jobs:
 
       - run: npm run cf:build
         env:
-          GITHUB_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+          SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
 
       - run: npm run cf:deploy
         env:
