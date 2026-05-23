@@ -19,9 +19,9 @@
 //                    instead of cloning (no GitHub token required). Falls
 //                    through to clone if a local copy is missing.
 //
-// Auth note: cloning private repos on Cloudflare Pages requires GITHUB_TOKEN
-// to be set in the Pages environment to a fine-grained PAT with read access
-// to the relevant repos.
+// Auth note: cloning private repos requires SYNC_DOCS_TOKEN to be set to a
+// fine-grained PAT with read access to the relevant repos. In CI it's
+// passed in from the SYNC_DOCS_TOKEN repo secret.
 
 import { existsSync, mkdirSync, rmSync, cpSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
@@ -35,13 +35,12 @@ const tmpDir = join(root, ".sync-docs-tmp");
 // Edit this list as new product docs come online. `docsPath` is the path
 // inside each product repo where publishable docs live (relative to repo
 // root). Default is "docs/site" — keeps repo /docs/ free for internal
-// planning. wavekat-voice (when re-enabled) uses "docs" since it predates
-// the convention.
+// planning.
 const sources = [
-  { slug: "cli",  repo: "wavekat/wavekat-cli",  docsPath: "docs/site", private: false },
+  { slug: "cli",   repo: "wavekat/wavekat-cli",   docsPath: "docs/site", private: false },
+  { slug: "voice", repo: "wavekat/wavekat-voice", docsPath: "docs/site", private: true  },
   // { slug: "vad",   repo: "wavekat/wavekat-vad",   docsPath: "docs/site", private: false },
   // { slug: "turn",  repo: "wavekat/wavekat-turn",  docsPath: "docs/site", private: false },
-  // { slug: "voice", repo: "wavekat/wavekat-voice", docsPath: "docs",      private: true  },
   // { slug: "lab",   repo: "wavekat/wavekat-lab",   docsPath: "docs/site", private: false },
   // { slug: "core",  repo: "wavekat/wavekat-core",  docsPath: "docs/site", private: false },
   // { slug: "tts",   repo: "wavekat/wavekat-tts",   docsPath: "docs/site", private: false },
@@ -53,12 +52,12 @@ const enabled = process.env.SYNC_DOCS === "1";
 const localBase = process.env.WAVEKAT_LOCAL_REPOS;
 
 function repoUrl({ repo, private: isPrivate }) {
-  const token = process.env.GITHUB_TOKEN;
+  const token = process.env.SYNC_DOCS_TOKEN;
   if (isPrivate) {
     if (!token) {
       throw new Error(
-        `GITHUB_TOKEN required to clone private repo ${repo}. ` +
-          `Set it in the Cloudflare Pages environment (fine-grained PAT, read access).`
+        `SYNC_DOCS_TOKEN required to clone private repo ${repo}. ` +
+          `Set it to a fine-grained PAT with read access to the repo.`
       );
     }
     return `https://x-access-token:${token}@github.com/${repo}.git`;
