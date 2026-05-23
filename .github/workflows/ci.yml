@@ -20,6 +20,17 @@ jobs:
 
       - run: npm ci
 
+      - name: Debug token reach
+        env:
+          GITHUB_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+        run: |
+          echo "token set: ${GITHUB_TOKEN:+yes}, length: ${#GITHUB_TOKEN}"
+          echo "--- global git config ---"
+          git config --global --list || true
+          echo "--- ls-remote with URL token ---"
+          git ls-remote --tags --refs "https://x-access-token:${GITHUB_TOKEN}@github.com/wavekat/wavekat-voice.git" | head -5 \
+            || echo "ls-remote FAILED"
+
       - run: npm run cf:build
         env:
           GITHUB_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
