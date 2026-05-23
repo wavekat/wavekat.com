@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
@@ -19,51 +20,6 @@ jobs:
           cache: npm
 
       - run: npm ci
-
-      - name: Debug SYNC_DOCS_TOKEN
-        env:
-          SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
-        run: |
-          if [ -z "$SYNC_DOCS_TOKEN" ]; then
-            echo "SYNC_DOCS_TOKEN is EMPTY or UNSET"
-            exit 0
-          fi
-          HASH=$(printf '%s' "$SYNC_DOCS_TOKEN" | sha256sum | cut -c1-16)
-          echo "sha256-16: $HASH (expect bb73f9330ae3aa1b)"
-          echo
-          echo "--- git --version ---"
-          git --version
-          echo
-          echo "--- git config --system --list ---"
-          git config --system --list 2>&1 || echo "(none)"
-          echo
-          echo "--- git config --global --list ---"
-          git config --global --list 2>&1 || echo "(none)"
-          echo
-          echo "--- public egress IP ---"
-          curl -fsS https://api.ipify.org && echo
-          echo
-          echo "--- REST API with token (curl) ---"
-          curl -sS -o /dev/null -w "HTTP %{http_code}\n" \
-            -H "Authorization: Bearer $SYNC_DOCS_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/wavekat/wavekat-voice
-          echo
-          echo "--- git ls-remote with x-access-token: ---"
-          GIT_TRACE=1 GIT_CURL_VERBOSE=1 git ls-remote --tags --refs \
-            "https://x-access-token:${SYNC_DOCS_TOKEN}@github.com/wavekat/wavekat-voice.git" \
-            2>&1 | grep -Ev "(SYNC_DOCS_TOKEN|x-access-token|github_pat_)" | head -40 || true
-          echo
-          echo "--- git ls-remote with oauth2: ---"
-          git ls-remote --tags --refs \
-            "https://oauth2:${SYNC_DOCS_TOKEN}@github.com/wavekat/wavekat-voice.git" \
-            2>&1 | head -3 || echo "(exit $?)"
-          echo
-          echo "--- git ls-remote with Bearer extraheader (no URL creds) ---"
-          git -c http.https://github.com/.extraheader="Authorization: Bearer ${SYNC_DOCS_TOKEN}" \
-            ls-remote --tags --refs \
-            https://github.com/wavekat/wavekat-voice.git \
-            2>&1 | head -5 || echo "(exit $?)"
 
       - run: npm run cf:build
         env:
