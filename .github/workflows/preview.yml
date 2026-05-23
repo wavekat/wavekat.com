@@ -4,6 +4,15 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      voice_ref:
+        description: "wavekat-voice ref (branch/tag/sha) to pull docs from. Empty = default (latest tag)."
+        required: false
+        default: ""
+      cli_ref:
+        description: "wavekat-cli ref. Empty = default (latest tag)."
+        required: false
+        default: ""
 
 permissions:
   pull-requests: write
@@ -27,6 +36,8 @@ jobs:
       - run: npm run cf:build
         env:
           SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+          SYNC_DOCS_REF_VOICE: ${{ inputs.voice_ref }}
+          SYNC_DOCS_REF_CLI: ${{ inputs.cli_ref }}
 
       - name: Deploy preview
         id: deploy

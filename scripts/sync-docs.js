@@ -18,6 +18,11 @@
 //                  — copy from sibling working trees at <path>/<repo-name>
 //                    instead of cloning (no GitHub token required). Falls
 //                    through to clone if a local copy is missing.
+//   SYNC_DOCS_REF_<SLUG>=<ref>
+//                  — pin a specific source to a branch/tag/sha instead of
+//                    the default "latest tag, fallback to main" logic. E.g.
+//                    SYNC_DOCS_REF_VOICE=feat/onboarding-v2 to preview an
+//                    in-flight branch of wavekat-voice's docs.
 //
 // Auth note: cloning private repos requires SYNC_DOCS_TOKEN to be set to a
 // fine-grained PAT with read access to the relevant repos. In CI it's
@@ -167,8 +172,19 @@ function tryRemote(source) {
   const { slug, repo } = source;
   const docsPath = source.docsPath ?? "docs/site";
   const url = repoUrl(source);
-  const tag = latestTagRemote(url);
-  const refs = [tag, "main"].filter(Boolean);
+
+  // Per-source ref override via env var, e.g. SYNC_DOCS_REF_VOICE=feat/onboarding-v2.
+  // When set, the override is the only ref tried — no tag/main fallback —
+  // so a typo surfaces as a build error instead of silently shipping main.
+  const overrideEnv = `SYNC_DOCS_REF_${slug.toUpperCase()}`;
+  const override = process.env[overrideEnv];
+  const refs = override
+    ? [override]
+    : [latestTagRemote(url), "main"].filter(Boolean);
+
+  if (override) {
+    console.log(`  (override ${overrideEnv}=${override})`);
+  }
 
   for (const ref of refs) {
     const cloneDir = join(tmpDir, `${slug}__${ref}`);
