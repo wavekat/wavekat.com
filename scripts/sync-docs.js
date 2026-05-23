@@ -18,6 +18,11 @@
 //                  — copy from sibling working trees at <path>/<repo-name>
 //                    instead of cloning (no GitHub token required). Falls
 //                    through to clone if a local copy is missing.
+//   SYNC_DOCS_REF_<SLUG>=<ref>
+//                  — pin a specific source to a branch/tag/sha instead of
+//                    the default "latest tag, fallback to main" logic. E.g.
+//                    SYNC_DOCS_REF_VOICE=feat/onboarding-v2 to preview an
+//                    in-flight branch of wavekat-voice's docs.
 //
 // Auth note: cloning private repos requires SYNC_DOCS_TOKEN to be set to a
 // fine-grained PAT with read access to the relevant repos. In CI it's
@@ -127,6 +132,35 @@ function tryLocal(source) {
 
   const destDir = join(contentDocsDir, source.slug);
   const docsPath = source.docsPath ?? "docs/site";
+
+  // Honor SYNC_DOCS_REF_<SLUG> override in local mode too — extracts via
+  // git archive from that ref (branch/tag/sha). No fallback to main on
+  // failure, matching the remote-mode behavior.
+  const overrideEnv = `SYNC_DOCS_REF_${source.slug.toUpperCase()}`;
+  const override = process.env[overrideEnv];
+  if (override) {
+    console.log(`  (override ${overrideEnv}=${override})`);
+    try {
+      const tmp = join(tmpDir, `${source.slug}__override`);
+      rmSync(tmp, { recursive: true, force: true });
+      mkdirSync(tmp, { recursive: true });
+      execSync(`git archive --format=tar ${override} ${docsPath} | tar -x -C ${tmp}`, {
+        cwd: repoPath,
+        stdio: ["ignore", "ignore", "pipe"],
+      });
+      if (existsSync(join(tmp, docsPath))) {
+        copyDocs(join(tmp, docsPath), destDir);
+        rmSync(tmp, { recursive: true, force: true });
+        console.log(`  ✓ ${source.slug} @ ${override} (local, ${docsPath})`);
+        return { version: override };
+      }
+      rmSync(tmp, { recursive: true, force: true });
+    } catch (err) {
+      console.log(`  ✗ ${overrideEnv}=${override}: ${err.stderr?.toString().trim() || err.message}`);
+    }
+    return null;
+  }
+
   const tag = latestTagLocal(repoPath);
 
   // Try latest tag first.
@@ -167,11 +201,25 @@ function tryRemote(source) {
   const { slug, repo } = source;
   const docsPath = source.docsPath ?? "docs/site";
   const url = repoUrl(source);
-  const tag = latestTagRemote(url);
-  const refs = [tag, "main"].filter(Boolean);
+
+  // Per-source ref override via env var, e.g. SYNC_DOCS_REF_VOICE=feat/onboarding-v2.
+  // When set, the override is the only ref tried — no tag/main fallback —
+  // so a typo surfaces as a build error instead of silently shipping main.
+  const overrideEnv = `SYNC_DOCS_REF_${slug.toUpperCase()}`;
+  const override = process.env[overrideEnv];
+  const refs = override
+    ? [override]
+    : [latestTagRemote(url), "main"].filter(Boolean);
+
+  if (override) {
+    console.log(`  (override ${overrideEnv}=${override})`);
+  }
 
   for (const ref of refs) {
-    const cloneDir = join(tmpDir, `${slug}__${ref}`);
+    // Slashes in ref names (e.g. feat/onboarding-v2) need to be flattened so
+    // they don't turn into nested tmp directories.
+    const safeRef = ref.replace(/\//g, "__");
+    const cloneDir = join(tmpDir, `${slug}__${safeRef}`);
     rmSync(cloneDir, { recursive: true, force: true });
     mkdirSync(cloneDir, { recursive: true });
     try {
@@ -179,7 +227,10 @@ function tryRemote(source) {
         `git clone --depth 1 --branch ${ref} --filter=blob:none --sparse ${url} .`,
         { cwd: cloneDir, stdio: ["ignore", "ignore", "pipe"] }
       );
-      execSync(`git sparse-checkout set ${docsPath}`, { cwd: cloneDir, stdio: "ignore" });
+      execSync(`git sparse-checkout set ${docsPath}`, {
+        cwd: cloneDir,
+        stdio: ["ignore", "ignore", "pipe"],
+      });
       const docsSrc = join(cloneDir, docsPath);
       if (existsSync(docsSrc)) {
         copyDocs(docsSrc, join(contentDocsDir, slug));
@@ -187,8 +238,9 @@ function tryRemote(source) {
         console.log(`  ✓ ${slug} @ ${ref} (remote, ${docsPath})`);
         return { version: ref };
       }
-    } catch {
-      // try next ref
+      console.log(`  ✗ ${ref}: clone ok but ${docsPath}/ missing on that ref`);
+    } catch (err) {
+      console.log(`  ✗ ${ref}: ${err.stderr?.toString().trim().split("\n").slice(-2).join(" | ") || err.message}`);
     }
     rmSync(cloneDir, { recursive: true, force: true });
   }
