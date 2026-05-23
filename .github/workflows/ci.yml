@@ -20,6 +20,29 @@ jobs:
 
       - run: npm ci
 
+      - name: Debug SYNC_DOCS_TOKEN
+        env:
+          SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+        run: |
+          if [ -z "$SYNC_DOCS_TOKEN" ]; then
+            echo "SYNC_DOCS_TOKEN is EMPTY or UNSET"
+            exit 0
+          fi
+          LEN=${#SYNC_DOCS_TOKEN}
+          PREFIX="${SYNC_DOCS_TOKEN:0:12}"
+          SUFFIX="${SYNC_DOCS_TOKEN: -4}"
+          # SHA256 of the token — full hash is irreversible, lets you fingerprint
+          # against the local value (echo -n "$YOUR_TOKEN" | sha256sum).
+          HASH=$(printf '%s' "$SYNC_DOCS_TOKEN" | sha256sum | cut -c1-16)
+          echo "length: $LEN"
+          echo "prefix: $PREFIX..."
+          echo "suffix: ...$SUFFIX"
+          echo "sha256-16: $HASH"
+          echo "--- git ls-remote direct test ---"
+          git ls-remote --tags --refs \
+            "https://x-access-token:${SYNC_DOCS_TOKEN}@github.com/wavekat/wavekat-voice.git" \
+            2>&1 | head -3 || echo "ls-remote exit: $?"
+
       - run: npm run cf:build
         env:
           SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
