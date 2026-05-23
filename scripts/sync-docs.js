@@ -35,13 +35,12 @@ const tmpDir = join(root, ".sync-docs-tmp");
 // Edit this list as new product docs come online. `docsPath` is the path
 // inside each product repo where publishable docs live (relative to repo
 // root). Default is "docs/site" — keeps repo /docs/ free for internal
-// planning. wavekat-voice (when re-enabled) uses "docs" since it predates
-// the convention.
+// planning.
 const sources = [
-  { slug: "cli",  repo: "wavekat/wavekat-cli",  docsPath: "docs/site", private: false },
+  { slug: "cli",   repo: "wavekat/wavekat-cli",   docsPath: "docs/site", private: false },
+  { slug: "voice", repo: "wavekat/wavekat-voice", docsPath: "docs/site", private: true  },
   // { slug: "vad",   repo: "wavekat/wavekat-vad",   docsPath: "docs/site", private: false },
   // { slug: "turn",  repo: "wavekat/wavekat-turn",  docsPath: "docs/site", private: false },
-  // { slug: "voice", repo: "wavekat/wavekat-voice", docsPath: "docs",      private: true  },
   // { slug: "lab",   repo: "wavekat/wavekat-lab",   docsPath: "docs/site", private: false },
   // { slug: "core",  repo: "wavekat/wavekat-core",  docsPath: "docs/site", private: false },
   // { slug: "tts",   repo: "wavekat/wavekat-tts",   docsPath: "docs/site", private: false },
