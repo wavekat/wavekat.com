@@ -24,6 +24,8 @@ jobs:
       - run: npm ci
 
       - run: npm run cf:build
+        env:
+          GITHUB_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
 
       - name: Deploy preview
         id: deploy
