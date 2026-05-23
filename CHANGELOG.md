@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.25](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.24...wavekat-com-v0.0.25) (2026-05-23)
+
+
+### Features
+
+* enable voice docs sync from wavekat-voice ([#70](https://github.com/wavekat/wavekat.com/issues/70)) ([7353fa3](https://github.com/wavekat/wavekat.com/commit/7353fa3980cc1a95f867a2177429dd2daf1d25c3))
+* **sync-docs:** ref override for previewing branches ([#73](https://github.com/wavekat/wavekat.com/issues/73)) ([94eeadf](https://github.com/wavekat/wavekat.com/commit/94eeadf5e4f0c2b447d84d4526f3967b2fb05c6d))
+
+
+### Bug Fixes
+
+* **ci:** unblock private docs sync from runner ([#72](https://github.com/wavekat/wavekat.com/issues/72)) ([a82b0ee](https://github.com/wavekat/wavekat.com/commit/a82b0eebd19088cbce53ef170990c0e99f67d8b5))
+
 ## [0.0.24](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.23...wavekat-com-v0.0.24) (2026-05-21)
 
 
