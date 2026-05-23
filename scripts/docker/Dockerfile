@@ -60,6 +60,20 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     && rustc --version \
     && cargo --version
 
+# Relocate cargo's caches onto the runner's persistent volume (mounted at
+# /home/runner/runner) for runtime. The toolchain binaries stay baked in
+# the image at /usr/local/cargo/bin (still first on PATH, set above) and
+# rustup resolves toolchains via RUSTUP_HOME — only the registry/git
+# cache (CARGO_HOME) and compiled artifacts (CARGO_TARGET_DIR) move.
+#
+# Why this matters: workflows run `actions/checkout`, which `git clean`s
+# the checkout's `target/` every run. With these dirs OUTSIDE the checkout
+# (siblings of `_work` on the same volume), build output survives both the
+# git-clean and container recreation — so CI stays warm without uploading
+# a cache to GitHub's cloud on every run.
+ENV CARGO_HOME=/home/runner/runner/cargo-home \
+    CARGO_TARGET_DIR=/home/runner/runner/cargo-target
+
 # Non-root runner user. Passwordless sudo so workflows can still do
 # `sudo apt-get install ...` for one-off deps — safe inside the
 # container's isolated rootfs.
