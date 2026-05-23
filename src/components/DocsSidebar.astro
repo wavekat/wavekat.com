@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { getDocsVersions } from '../lib/docs-versions';
-import { productLabel } from '../lib/docs-products';
+import { productLabel, isProductHidden } from '../lib/docs-products';
 
 interface Props {
   activeId?: string;
@@ -14,6 +14,11 @@ type Item = { id: string; title: string; order: number; href: string };
 type Section = { key: string; label: string; items: Item[] };
 
 const entries = await getCollection('docs');
+// Hidden products (e.g. private/pre-launch) are dropped from the sidebar so
+// they don't appear in any listing. If the reader is already on a hidden
+// product's page (via a direct URL), keep its section visible so they can
+// navigate within it.
+const activeProduct = activeId?.split('/')[0];
 
 const idToHref = (id: string) => {
   const stripped = id.replace(/\/index$/, '');
@@ -34,6 +39,7 @@ for (const entry of entries) {
 }
 
 const sections: Section[] = Array.from(sectionMap.entries())
+  .filter(([key]) => !isProductHidden(key) || key === activeProduct)
   .map(([key, items]) => ({
     key,
     label: productLabel(key, 'short'),
