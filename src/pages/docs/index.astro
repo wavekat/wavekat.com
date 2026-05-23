@@ -5,6 +5,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import DocsSidebar from '../../components/DocsSidebar.astro';
 import { getDocsVersions } from '../../lib/docs-versions';
+import { isProductHidden } from '../../lib/docs-products';
 
 type Product = {
   slug: string;
@@ -23,7 +24,7 @@ const liveSlugs = new Set(entries.map((e) => e.id.split('/')[0]));
 const versions = getDocsVersions();
 
 const products = PRODUCTS
-  .filter((p) => liveSlugs.has(p.slug))
+  .filter((p) => liveSlugs.has(p.slug) && !isProductHidden(p.slug))
   .map((p) => ({ ...p, version: versions[p.slug] }));
 ---
 

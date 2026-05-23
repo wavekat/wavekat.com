@@ -1,10 +1,13 @@
 // Display labels for each product slug. Keep in sync with sync-docs.js `sources`.
 // `short` is used in tight UI (sidebar section header).
 // `long` is used where the full product name reads better (back link, etc.).
-type ProductLabels = { short: string; long: string };
+// `hidden: true` keeps the product's docs reachable by direct URL but excludes
+// them from the /docs/ index and the sidebar — used while a product is still
+// private/pre-launch.
+type ProductLabels = { short: string; long: string; hidden?: boolean };
 
 const LABELS: Record<string, ProductLabels> = {
-  voice: { short: 'Voice', long: 'WaveKat Voice' },
+  voice: { short: 'Voice', long: 'WaveKat Voice', hidden: true },
   cli:   { short: 'CLI',   long: 'WaveKat CLI' },
   lab:   { short: 'Lab',   long: 'WaveKat Lab' },
   vad:   { short: 'VAD',   long: 'WaveKat VAD' },
@@ -17,4 +20,8 @@ const LABELS: Record<string, ProductLabels> = {
 
 export function productLabel(slug: string, form: 'short' | 'long' = 'long'): string {
   return LABELS[slug]?.[form] ?? slug;
+}
+
+export function isProductHidden(slug: string): boolean {
+  return LABELS[slug]?.hidden ?? false;
 }
