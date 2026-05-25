@@ -264,15 +264,15 @@ ${body}
       var picture = embed.querySelector('[data-embed-picture]');
       if (md) md.textContent = '[![' + slug + ' stars](' + url + ')](' + link + ')';
       if (html) html.textContent =
-        '<a href="' + link + '">\n' +
-        '  <img src="' + url + '" alt="' + slug + ' stars">\n' +
+        '<a href="' + link + '">\\n' +
+        '  <img src="' + url + '" alt="' + slug + ' stars">\\n' +
         '</a>';
       if (picture) picture.textContent =
-        '<a href="' + link + '">\n' +
-        '  <picture>\n' +
-        '    <source media="(prefers-color-scheme: dark)" srcset="' + darkUrl + '">\n' +
-        '    <img alt="' + slug + ' stars" src="' + lightUrl + '">\n' +
-        '  </picture>\n' +
+        '<a href="' + link + '">\\n' +
+        '  <picture>\\n' +
+        '    <source media="(prefers-color-scheme: dark)" srcset="' + darkUrl + '">\\n' +
+        '    <img alt="' + slug + ' stars" src="' + lightUrl + '">\\n' +
+        '  </picture>\\n' +
         '</a>';
     }
     document.querySelectorAll('input[name=chart-split], input[name=chart-theme], input[name=chart-style], input[name=chart-range]').forEach(function (r) {
