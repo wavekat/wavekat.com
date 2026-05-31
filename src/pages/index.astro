@@ -2,10 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { Apple, ArrowRight } from '@lucide/astro';
-import { getMacDownload } from '../lib/voice-download';
-
-const macDownload = await getMacDownload();
+import { ArrowRight } from '@lucide/astro';
 
 const voicePipeline = [
   {
@@ -103,47 +100,16 @@ const toolsAndClients = [
             A phone app for your Mac. Answer and place calls from your laptop, with every
             conversation recorded and written down for you — using the phone provider you already have.
           </p>
-          <div class="flex flex-wrap items-center gap-4">
-            <a
-              href={macDownload.url}
-              class="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
-              style="background-color: #ff6d00"
-            >
-              <Apple class="w-4 h-4" />
-              {macDownload.label}
-            </a>
-            <a
-              href="/voice/"
-              class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              Learn more
-              <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-            </a>
-          </div>
+          <a
+            href="/voice/"
+            class="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
+            style="background-color: #ff6d00"
+          >
+            Learn more &amp; download
+            <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+          </a>
         </div>
       </div>
-    </section>
-
-    <!-- Tools -->
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Tools</h2>
-      <a
-        href="https://commonvoice-explorer.wavekat.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
-        style="border-color: #ffd74040"
-      >
-        <div class="flex items-center gap-2 mb-1.5">
-          <span class="text-sm font-bold" style="color: #ffd740">Common Voice Explorer</span>
-        </div>
-        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-          Browse, filter, and review audio clips from Mozilla's Common Voice dataset — with waveform playback, demographic filters, and sentence search.
-        </p>
-        <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
-          commonvoice-explorer.wavekat.com →
-        </span>
-      </a>
     </section>
 
     <!-- Libraries -->
