@@ -92,6 +92,11 @@ const faqs = [
     a: `It's a Mac app — it runs on macOS 12 and later, on ${macDownload.arch}.`,
   },
   {
+    q: 'Why Mac only — will you support Windows or other devices?',
+    a: 'We started with Mac so we could make one version genuinely great before spreading ourselves thin. Other platforms are absolutely on the table — we just build them when there\'s real demand. So if you\'d use WaveKat Voice on Windows or somewhere else, please tell us. The more people who ask, the sooner it happens.',
+    link: { href: '/voice/talk/', label: 'Tell us what you need' },
+  },
+  {
     q: 'Will it slow down or interfere with my computer?',
     a: 'It\'s a lightweight menu-bar app that stays out of your way until a call comes in, and it updates itself quietly in the background. You install it once and forget it\'s there.',
   },
@@ -237,6 +242,16 @@ const faqs = [
           </summary>
           <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
             {f.a}
+            {f.link && (
+              <a
+                href={f.link.href}
+                class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
+                style="color: #ff6d00"
+              >
+                {f.link.label}
+                <ArrowRight class="w-3 h-3" />
+              </a>
+            )}
           </p>
         </details>
       ))}
