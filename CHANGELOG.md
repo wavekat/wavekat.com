@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.26](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.25...wavekat-com-v0.0.26) (2026-05-31)
+
+
+### Features
+
+* **voice:** product landing + macOS download ([#78](https://github.com/wavekat/wavekat.com/issues/78)) ([112ff45](https://github.com/wavekat/wavekat.com/commit/112ff451c50050a4103808b011d3914583388447))
+
+
+### Bug Fixes
+
+* **star-tracker:** unbreak chart controls ([#76](https://github.com/wavekat/wavekat.com/issues/76)) ([e11c0e0](https://github.com/wavekat/wavekat.com/commit/e11c0e04c94c6c205ed48b9a087a308f4ceab2b0))
+
 ## [0.0.25](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.24...wavekat-com-v0.0.25) (2026-05-23)
 
 
