@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { Apple, ArrowRight } from '@lucide/astro';
+import { macDownload } from '../lib/voice-download';
 
 const voicePipeline = [
   {
@@ -69,9 +71,55 @@ const toolsAndClients = [
         Give every small business<br />the voice of a big one.
       </h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
-        WaveKat builds open-source, AI-powered tools that put enterprise-grade capabilities in the hands of everyone.
-        We start with voice — answering phones, handling conversations, being present 24/7.
+        WaveKat builds AI-powered tools that put enterprise-grade capabilities in the hands of everyone,
+        on top of an open-source audio stack. We start with voice — a desktop app that turns your Mac
+        into your business line, recording and transcribing every call.
       </p>
+    </section>
+
+    <!-- Featured product: WaveKat Voice -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Our app</h2>
+      <div
+        class="relative overflow-hidden rounded-lg border p-6 dark:bg-wk-surface bg-gray-50"
+        style="border-color: #ff6d0040"
+      >
+        <div
+          class="pointer-events-none absolute -top-20 -right-16 w-72 h-72 rounded-full opacity-20 blur-3xl"
+          style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="relative">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-sm font-bold" style="color: #ff6d00">WaveKat Voice</span>
+            <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+              free public beta
+            </span>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-lg">
+            A desktop softphone for your Mac. Answer and place calls from your laptop, with every
+            conversation recorded and transcribed automatically — connect the phone provider you already use.
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              href={macDownload.url}
+              class="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
+              style="background-color: #ff6d00"
+            >
+              <Apple class="w-4 h-4" />
+              {macDownload.label}
+            </a>
+            <a
+              href="/voice/"
+              class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              Learn more
+              <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Tools -->
