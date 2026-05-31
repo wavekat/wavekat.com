@@ -1,32 +1,84 @@
-// WaveKat Voice — desktop app download metadata.
+// WaveKat Voice — macOS download metadata, read live from the release feed.
 //
 // The installers live on Cloudflare R2, served at https://dl.wavekat.com/voice/
-// (the same origin electron-updater polls). Filenames are version-stamped and
-// cached `immutable`, so there is no stable "latest" filename — this module is
-// the single place the marketing site records which build is current.
+// (the same origin the app polls for updates). Rather than hard-code a version
+// that goes stale every release, we read the current one from the macOS release
+// feed at BUILD TIME and derive the download link from it. Bump a release in
+// wavekat-voice and the next site build picks it up automatically — nothing to
+// edit here.
 //
-// ⚠️ Bump `version` here on every wavekat-voice release. The matching commands:
-//     curl -s https://dl.wavekat.com/voice/latest-mac.yml
-//   shows the live macOS version + exact artifact names. The dmg URL is derived
-//   from `version` below; keep it in sync with that file.
+// `latest-mac.yml` looks like:
+//   version: 0.0.21
+//   files:
+//     - url: WaveKat Voice-0.0.21-arm64-mac.zip   (the in-app update payload)
+//       size: 120567410
+//     - url: WaveKat Voice-0.0.21-arm64.dmg        (the human download)
+//       size: 125294046
+// We want the .dmg entry — the .zip is what the app uses to update itself.
 //
-// macOS only on the site for now — that's the only platform we surface or
-// mention. (Other platform builds may exist on R2, but the site stays macOS-only
-// until they're ready to show.)
+// macOS only for now — that's the only platform the site surfaces.
 
-export const VOICE_VERSION = '0.0.21';
-
+const FEED = 'https://dl.wavekat.com/voice/latest-mac.yml';
 const DL_BASE = 'https://dl.wavekat.com/voice';
 
-// electron-builder's default dmg artifactName is
-//   `${productName}-${version}-${arch}.dmg` → "WaveKat Voice-<v>-arm64.dmg".
-// The space is percent-encoded for the href.
-export const macDownload = {
-  label: 'Download for Mac',
-  // arm64-only: the bundled Rust daemon is built for Apple Silicon, so an Intel
-  // Mac can't launch it. State the requirement plainly on the page.
-  arch: 'Apple Silicon (M1 or later)',
-  ext: '.dmg',
-  size: '120 MB',
-  url: `${DL_BASE}/WaveKat%20Voice-${VOICE_VERSION}-arm64.dmg`,
+// Used only if the feed can't be reached during a build, so a network blip
+// never breaks the site. Reflects the last known-good release.
+const FALLBACK = {
+  version: '0.0.21',
+  fileName: 'WaveKat Voice-0.0.21-arm64.dmg',
+  sizeBytes: 125294046,
 };
+
+export interface MacDownload {
+  /** Button label. */
+  label: string;
+  /** Human-friendly hardware requirement. */
+  arch: string;
+  /** Current version, e.g. "0.0.21". */
+  version: string;
+  /** Human-friendly size, e.g. "120 MB". */
+  size: string;
+  /** Full download URL (spaces percent-encoded). */
+  url: string;
+}
+
+function mb(bytes: number): string {
+  return `${Math.round(bytes / 1024 / 1024)} MB`;
+}
+
+// Memoize across pages so a single build does one fetch, not one per page.
+let cache: Promise<MacDownload> | null = null;
+
+export function getMacDownload(): Promise<MacDownload> {
+  if (!cache) cache = load();
+  return cache;
+}
+
+async function load(): Promise<MacDownload> {
+  let { version, fileName, sizeBytes } = FALLBACK;
+
+  try {
+    const res = await fetch(FEED, { signal: AbortSignal.timeout(8000) });
+    if (res.ok) {
+      const yml = await res.text();
+      const v = yml.match(/^version:\s*(.+)$/m);
+      if (v) version = v[1].trim();
+      // The .dmg file entry, plus the `size:` line that follows it.
+      const dmg = yml.match(/url:\s*(.+\.dmg)\s*\n\s*sha512:[^\n]*\n\s*size:\s*(\d+)/);
+      if (dmg) {
+        fileName = dmg[1].trim();
+        sizeBytes = parseInt(dmg[2], 10);
+      }
+    }
+  } catch {
+    // Network unavailable at build time — fall back to the constants above.
+  }
+
+  return {
+    label: 'Download for Mac',
+    arch: 'Macs with Apple chip (M1 or newer)',
+    version,
+    size: mb(sizeBytes),
+    url: `${DL_BASE}/${encodeURIComponent(fileName)}`,
+  };
+}

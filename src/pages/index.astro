@@ -3,7 +3,9 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { Apple, ArrowRight } from '@lucide/astro';
-import { macDownload } from '../lib/voice-download';
+import { getMacDownload } from '../lib/voice-download';
+
+const macDownload = await getMacDownload();
 
 const voicePipeline = [
   {
@@ -71,9 +73,9 @@ const toolsAndClients = [
         Give every small business<br />the voice of a big one.
       </h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
-        WaveKat builds AI-powered tools that put enterprise-grade capabilities in the hands of everyone,
-        on top of an open-source audio stack. We start with voice — a desktop app that turns your Mac
-        into your business line, recording and transcribing every call.
+        WaveKat builds AI-powered tools that give small businesses the kind of capabilities only big
+        companies used to afford. We start with voice — a Mac app that turns your computer into your
+        business line, recording and writing down every call.
       </p>
     </section>
 
@@ -98,8 +100,8 @@ const toolsAndClients = [
             </span>
           </div>
           <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-lg">
-            A desktop softphone for your Mac. Answer and place calls from your laptop, with every
-            conversation recorded and transcribed automatically — connect the phone provider you already use.
+            A phone app for your Mac. Answer and place calls from your laptop, with every
+            conversation recorded and written down for you — using the phone provider you already have.
           </p>
           <div class="flex flex-wrap items-center gap-4">
             <a

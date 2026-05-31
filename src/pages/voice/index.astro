@@ -11,7 +11,9 @@ import {
   Lock,
   ArrowRight,
 } from '@lucide/astro';
-import { macDownload, VOICE_VERSION } from '../../lib/voice-download';
+import { getMacDownload } from '../../lib/voice-download';
+
+const macDownload = await getMacDownload();
 
 const features = [
   {
@@ -22,7 +24,7 @@ const features = [
   {
     icon: Mic,
     title: 'Every call recorded',
-    body: 'Each conversation is recorded to your machine automatically and finalized the moment you hang up. Play it back, split by speaker, whenever you need it.',
+    body: 'Each conversation is recorded automatically and saved the moment you hang up. Play it back whenever you need it — no setup, nothing to remember to switch on.',
   },
   {
     icon: FileText,
@@ -32,17 +34,17 @@ const features = [
   {
     icon: Server,
     title: 'Works with your provider',
-    body: 'Bring the SIP account you already have — Twilio, Telnyx, 2talk, Plivo, OnSIP, or your own PBX. Pick it from the list and we pre-fill the technical bits.',
+    body: 'Bring the phone provider you already use — Twilio, Telnyx, 2talk, and more. Pick it from the list and the setup is filled in for you.',
   },
   {
     icon: Cloud,
-    title: 'Optional cloud sync',
-    body: 'Sign in to your WaveKat account and recordings and transcripts sync up for storage and review on the web. Don\'t sign in, and nothing leaves your Mac.',
+    title: 'Sync if you want',
+    body: 'Sign in to your WaveKat account and your recordings and transcripts sync up so you can review them on the web. Don\'t sign in, and everything simply stays on your Mac.',
   },
   {
     icon: Lock,
     title: 'Yours by default',
-    body: 'Calls, recordings, and transcripts live on your machine first. No black-box vendor sits between you and your customers — built on our open-source voice engine.',
+    body: 'Your calls, recordings, and transcripts live on your own computer first. Nothing is uploaded unless you choose to — no mystery company sitting between you and your customers.',
   },
 ];
 
@@ -50,12 +52,12 @@ const steps = [
   {
     n: '1',
     title: 'Connect your number',
-    body: 'Add your SIP account on first launch. Choose your provider and the settings are filled in for you.',
+    body: 'Sign in to your phone provider when you first open the app. Choose it from the list and the settings are filled in for you.',
   },
   {
     n: '2',
     title: 'Take the call',
-    body: 'A green dot means you\'re online and reachable. Answer, dial out, mute, send touch tones — all from your Mac.',
+    body: 'A green dot means you\'re online and reachable. Answer, dial out, mute, use the keypad — all from your Mac.',
   },
   {
     n: '3',
@@ -67,27 +69,27 @@ const steps = [
 const faqs = [
   {
     q: 'What exactly is WaveKat Voice?',
-    a: 'A desktop app that turns your Mac into your business phone. You sign in to your phone provider (your SIP account), and from then on you can answer and place calls from your laptop — with each call recorded and transcribed for you.',
+    a: 'A Mac app that turns your computer into your business phone. You sign in with your phone provider, and from then on you can answer and place calls right from your laptop — with each call recorded and written down for you.',
   },
   {
     q: 'Do I need any special hardware?',
-    a: 'No. If you have a Mac and a SIP account from a phone provider, you have everything you need. No desk phone, no headset required (though a headset is nice), no on-site equipment.',
+    a: 'No. If you have a Mac and an account with a phone provider, you have everything you need. No desk phone, no extra equipment — a headset is nice but not required.',
   },
   {
     q: 'Which phone providers does it work with?',
-    a: 'Any provider that gives you a SIP account — Twilio, Telnyx, 2talk, Plivo, OnSIP, your own PBX, and others. We pre-fill the setup for the common ones; for anything else you can enter the details by hand.',
+    a: 'Most of the common ones — Twilio, Telnyx, 2talk, and more. We fill in the setup for the providers we know; for anything else you can enter the details yourself. If you already make business calls over the internet, your provider almost certainly works.',
   },
   {
-    q: 'Where are my recordings and transcripts stored?',
-    a: 'On your Mac, by default — nothing is uploaded unless you choose to. If you sign in to a WaveKat account, recordings and transcripts can sync up so you can review them on the web; otherwise everything stays local to your machine.',
+    q: 'Where are my recordings and transcripts kept?',
+    a: 'On your Mac. Nothing is uploaded unless you decide to. If you sign in to a WaveKat account, your recordings and transcripts can sync so you can review them on the web — otherwise they never leave your computer.',
   },
   {
     q: 'Is it free?',
-    a: 'It\'s free to use during the public beta while we polish it with real businesses. WaveKat Voice will become a paid product — beta users will get plenty of notice before that changes.',
+    a: 'It\'s free to use during the beta while we polish it with real businesses. WaveKat Voice will become a paid product later — beta users will get plenty of notice before that changes.',
   },
   {
     q: 'What does it run on?',
-    a: `WaveKat Voice is a Mac app. It runs on macOS 12 and later on ${macDownload.arch}.`,
+    a: `It's a Mac app — it runs on macOS 12 and later, on ${macDownload.arch}.`,
   },
   {
     q: 'Will it slow down or interfere with my computer?',
@@ -97,8 +99,8 @@ const faqs = [
 ---
 
 <Voice
-  title="WaveKat Voice — desktop softphone for Mac"
-  description="WaveKat Voice is a desktop softphone for your Mac — answer and place calls, with every conversation recorded and transcribed automatically. Free public beta."
+  title="WaveKat Voice — your business phone, on your Mac"
+  description="WaveKat Voice is a Mac app that turns your computer into your business phone — answer and place calls, with every call recorded and written down for you. Free public beta."
 >
   <!-- Hero -->
   <section class="relative mb-20 pt-4">
@@ -121,9 +123,9 @@ const faqs = [
       <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">Recorded and transcribed.</span>
     </h1>
     <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
-      WaveKat Voice is a desktop softphone. Connect the phone provider you already use, and answer
-      and place calls from your laptop — with every conversation recorded and transcribed automatically,
-      and nothing leaving your Mac unless you want it to.
+      WaveKat Voice is a phone app for your Mac. Connect the phone provider you already use, and
+      answer and place calls right from your laptop — with every conversation recorded and written
+      down for you automatically, and nothing leaving your Mac unless you want it to.
     </p>
 
     <div class="flex flex-wrap items-center gap-4">
@@ -145,7 +147,7 @@ const faqs = [
       </a>
     </div>
     <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
-      macOS 12+ · {macDownload.arch} · v{VOICE_VERSION} · free during beta
+      macOS 12+ · {macDownload.arch} · v{macDownload.version} · free during beta
     </p>
   </section>
 
