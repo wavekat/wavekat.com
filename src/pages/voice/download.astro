@@ -1,0 +1,152 @@
+---
+import Voice from '../../layouts/Voice.astro';
+import { Apple, PhoneCall, Mic, FileText, ShieldCheck } from '@lucide/astro';
+import { getMacDownload } from '../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+
+const steps = [
+  {
+    n: '1',
+    title: 'Open the download',
+    body: 'Double-click the .dmg, then drag WaveKat Voice into your Applications folder.',
+  },
+  {
+    n: '2',
+    title: 'Launch it',
+    body: 'Open WaveKat Voice from Applications. It lives in your menu bar, ready whenever the phone rings.',
+  },
+  {
+    n: '3',
+    title: 'Connect your number',
+    body: 'A short setup walks you through signing in with your phone provider — pick it from the list and we fill in the rest.',
+  },
+];
+
+const highlights = [
+  { icon: PhoneCall, text: 'Place and answer calls from your Mac' },
+  { icon: Mic, text: 'Every call recorded to your machine' },
+  { icon: FileText, text: 'Live transcripts as you talk' },
+];
+---
+
+<Voice
+  title="Download WaveKat Voice"
+  description="Download WaveKat Voice for Mac — a phone app that records and writes down every call. Approved by Apple and free to try."
+>
+  <!-- Hero / download -->
+  <section class="relative mb-16 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        free public beta
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      Download <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">WaveKat Voice</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      Your business line on your Mac — answer and place calls, with every conversation recorded
+      and written down for you. Connect your phone provider and you're live in a couple of minutes.
+    </p>
+
+    <a
+      href={macDownload.url}
+      data-conversion="download_mac"
+      class="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
+      style="background-color: #ff6d00"
+    >
+      <Apple class="w-5 h-5" />
+      {macDownload.label}
+    </a>
+
+    <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
+      macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}
+    </p>
+
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-4 max-w-xl">
+      <span class="inline-flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
+        <ShieldCheck class="w-3.5 h-3.5" style="color: #00e676" />
+        Approved by Apple
+      </span>
+      — it opens with a click, no scary security warnings to get past.
+    </p>
+  </section>
+
+  <!-- What you get -->
+  <section class="mb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {highlights.map((h) => (
+        <div class="rounded p-4 bg-gray-50 dark:bg-wk-surface flex items-start gap-3">
+          <h.icon class="w-4 h-4 mt-0.5 shrink-0" style="color: #ff6d00" />
+          <span class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{h.text}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Getting set up -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Getting set up</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- What you'll need -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">What you'll need</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
+      An account with a phone provider — Twilio, Telnyx, 2talk, and more. It's the same login
+      you'd use for any internet phone, and if you already make business calls online, your
+      provider almost certainly works.
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Not sure where to start? Our
+      <a href="/docs/voice/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">setup guides</a>
+      walk you through choosing a provider and getting your first call connected.
+    </p>
+  </section>
+
+  <!-- Updates -->
+  <section class="mb-4">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Staying up to date</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      WaveKat Voice keeps itself up to date. Once installed, it quietly checks for new versions and
+      updates in the background — you'll never have to come back here to download a newer one.
+    </p>
+  </section>
+</Voice>
+
+<script is:inline>
+  // Fire the Google Ads download conversion (label shares the AW account in
+  // Base.astro). No-op if gtag isn't loaded.
+  document.querySelectorAll('a[data-conversion="download_mac"]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', { send_to: 'AW-18128547216' });
+      }
+    });
+  });
+</script>

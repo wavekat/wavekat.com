@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ArrowRight } from '@lucide/astro';
 
 const voicePipeline = [
   {
@@ -69,31 +70,46 @@ const toolsAndClients = [
         Give every small business<br />the voice of a big one.
       </h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
-        WaveKat builds open-source, AI-powered tools that put enterprise-grade capabilities in the hands of everyone.
-        We start with voice — answering phones, handling conversations, being present 24/7.
+        WaveKat builds AI-powered tools that give small businesses the kind of capabilities only big
+        companies used to afford. We start with voice — a Mac app that turns your computer into your
+        business line, recording and writing down every call.
       </p>
     </section>
 
-    <!-- Tools -->
+    <!-- Featured product: WaveKat Voice -->
     <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Tools</h2>
-      <a
-        href="https://commonvoice-explorer.wavekat.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
-        style="border-color: #ffd74040"
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Our app</h2>
+      <div
+        class="relative overflow-hidden rounded-lg border p-6 dark:bg-wk-surface bg-gray-50"
+        style="border-color: #ff6d0040"
       >
-        <div class="flex items-center gap-2 mb-1.5">
-          <span class="text-sm font-bold" style="color: #ffd740">Common Voice Explorer</span>
+        <div
+          class="pointer-events-none absolute -top-20 -right-16 w-72 h-72 rounded-full opacity-20 blur-3xl"
+          style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+          aria-hidden="true"
+        >
         </div>
-        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-          Browse, filter, and review audio clips from Mozilla's Common Voice dataset — with waveform playback, demographic filters, and sentence search.
-        </p>
-        <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
-          commonvoice-explorer.wavekat.com →
-        </span>
-      </a>
+        <div class="relative">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-sm font-bold" style="color: #ff6d00">WaveKat Voice</span>
+            <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+              free public beta
+            </span>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-lg">
+            A phone app for your Mac. Answer and place calls from your laptop, with every
+            conversation recorded and written down for you — using the phone provider you already have.
+          </p>
+          <a
+            href="/voice/"
+            class="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
+            style="background-color: #ff6d00"
+          >
+            Learn more &amp; download
+            <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- Libraries -->
