@@ -19,6 +19,7 @@ const pillClass = (isActive: boolean) =>
     <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
   </a>
   <div class="flex items-center gap-3">
+    <a href="/voice" class={pillClass(active === 'voice')}>voice</a>
     <a href="/docs" class={pillClass(active === 'docs')}>docs</a>
     <a href="/blog" class={pillClass(active === 'blog')}>blog</a>
     <button
