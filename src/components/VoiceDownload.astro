@@ -54,19 +54,22 @@ const primaryCls =
       other platforms
       <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
     </summary>
-    <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[14rem] flex-col gap-1 rounded-lg border border-gray-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-wk-surface">
+    <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-lg border border-gray-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-wk-surface">
       {platforms.map((p) => (
         <a
           href={p.dl.url}
           data-conversion={p.conversion}
           data-dl-alt={p.key}
           class:list={[
-            'items-center gap-2.5 rounded px-3 py-2 text-sm font-bold text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-white/5',
+            'items-center gap-2.5 rounded px-3 py-2 transition-colors hover:bg-gray-100 dark:hover:bg-white/5',
             p.key === DEFAULT ? 'hidden' : 'inline-flex',
           ]}
         >
-          <p.icon class="h-4 w-4" style="color: #ff6d00" />
-          {p.dl.label}
+          <p.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
+          <span class="flex flex-col">
+            <span class="text-sm font-bold text-gray-900 dark:text-white">{p.dl.label}</span>
+            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.dl.arch} · {p.dl.size}</span>
+          </span>
         </a>
       ))}
     </div>
