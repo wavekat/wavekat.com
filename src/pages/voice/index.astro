@@ -2,7 +2,6 @@
 import Voice from '../../layouts/Voice.astro';
 import TalkCTA from '../../components/TalkCTA.astro';
 import {
-  Apple,
   PhoneCall,
   Mic,
   FileText,
@@ -11,9 +10,11 @@ import {
   Lock,
   ArrowRight,
 } from '@lucide/astro';
-import { getMacDownload } from '../../lib/voice-download';
+import VoiceDownload from '../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 
 const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
 
 const features = [
   {
@@ -89,11 +90,11 @@ const faqs = [
   },
   {
     q: 'What does it run on?',
-    a: `It's a Mac app — it runs on macOS 12 and later, on ${macDownload.arch}.`,
+    a: `Mac and Linux. On macOS it runs on version 12 and later (${macDownload.arch}); on Linux it's a .deb package for ${linuxDownload.arch}.`,
   },
   {
-    q: 'Why Mac only — will you support Windows or other devices?',
-    a: 'We started with Mac so we could make one version genuinely great before spreading ourselves thin. Other platforms are absolutely on the table — we just build them when there\'s real demand. So if you\'d use WaveKat Voice on Windows or somewhere else, please tell us. The more people who ask, the sooner it happens.',
+    q: 'Will you support Windows or other devices?',
+    a: 'WaveKat Voice runs on Mac and Linux today. Windows and other platforms are absolutely on the table — we just build them when there\'s real demand. So if you\'d use WaveKat Voice on Windows or somewhere else, please tell us. The more people who ask, the sooner it happens.',
     link: { href: '/voice/talk/', label: 'Tell us what you need' },
   },
   {
@@ -134,15 +135,7 @@ const faqs = [
     </p>
 
     <div class="flex flex-wrap items-center gap-4">
-      <a
-        href={macDownload.url}
-        data-conversion="download_mac"
-        class="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
-        style="background-color: #ff6d00"
-      >
-        <Apple class="w-5 h-5" />
-        {macDownload.label}
-      </a>
+      <VoiceDownload />
       <a
         href="/voice/download/"
         class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -151,9 +144,10 @@ const faqs = [
         <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
       </a>
     </div>
-    <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
-      macOS 12+ · {macDownload.arch} · v{macDownload.version} · free during beta
-    </p>
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · v{macDownload.version} · free during beta</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · v{linuxDownload.version} · free during beta</p>
+    </div>
   </section>
 
   <!-- Features -->
@@ -218,15 +212,9 @@ const faqs = [
       <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
         Free during the public beta. Install in a minute, connect your number, and take your next call from your Mac.
       </p>
-      <a
-        href={macDownload.url}
-        data-conversion="download_mac"
-        class="inline-flex items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
-        style="background-color: #ff6d00"
-      >
-        <Apple class="w-5 h-5" />
-        {macDownload.label}
-      </a>
+      <div class="flex justify-center">
+        <VoiceDownload variant="cta" />
+      </div>
     </div>
   </section>
 

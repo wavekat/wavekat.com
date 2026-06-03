@@ -1,15 +1,17 @@
 ---
 import Voice from '../../layouts/Voice.astro';
-import { Apple, PhoneCall, Mic, FileText, ShieldCheck } from '@lucide/astro';
-import { getMacDownload } from '../../lib/voice-download';
+import { PhoneCall, Mic, FileText } from '@lucide/astro';
+import VoiceDownload from '../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 
 const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
 
 const steps = [
   {
     n: '1',
     title: 'Open the download',
-    body: 'Double-click the .dmg, then drag WaveKat Voice into your Applications folder.',
+    body: 'On a Mac, double-click the .dmg and drag WaveKat Voice into Applications. On Linux, open the .deb in your software installer, or install it from a terminal with apt or dpkg.',
   },
   {
     n: '2',
@@ -32,7 +34,7 @@ const highlights = [
 
 <Voice
   title="Download WaveKat Voice"
-  description="Download WaveKat Voice for Mac — a phone app that records and writes down every call. Approved by Apple and free to try."
+  description="Download WaveKat Voice for Mac or Linux — a phone app that records and writes down every call. Free to try."
 >
   <!-- Hero / download -->
   <section class="relative mb-16 pt-4">
@@ -58,27 +60,12 @@ const highlights = [
       and written down for you. Connect your phone provider and you're live in a couple of minutes.
     </p>
 
-    <a
-      href={macDownload.url}
-      data-conversion="download_mac"
-      class="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
-      style="background-color: #ff6d00"
-    >
-      <Apple class="w-5 h-5" />
-      {macDownload.label}
-    </a>
+    <VoiceDownload />
 
-    <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
-      macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}
-    </p>
-
-    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-4 max-w-xl">
-      <span class="inline-flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
-        <ShieldCheck class="w-3.5 h-3.5" style="color: #00e676" />
-        Approved by Apple
-      </span>
-      — it opens with a click, no scary security warnings to get past.
-    </p>
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · v{linuxDownload.version} · {linuxDownload.size}</p>
+    </div>
   </section>
 
   <!-- What you get -->
@@ -142,7 +129,7 @@ const highlights = [
 <script is:inline>
   // Fire the Google Ads download conversion (label shares the AW account in
   // Base.astro). No-op if gtag isn't loaded.
-  document.querySelectorAll('a[data-conversion="download_mac"]').forEach((el) => {
+  document.querySelectorAll('a[data-conversion^="download_"]').forEach((el) => {
     el.addEventListener('click', () => {
       if (typeof gtag === 'function') {
         gtag('event', 'conversion', { send_to: 'AW-18128547216' });

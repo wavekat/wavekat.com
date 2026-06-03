@@ -1,0 +1,116 @@
+---
+// Smart download control for WaveKat Voice.
+//
+// Shows ONE primary button for the visitor's platform, with the other
+// platform(s) tucked behind an "other platforms" disclosure. The site is
+// statically built (no server to sniff the OS), so this is progressive
+// enhancement: the server renders Mac as the default primary, and a tiny
+// inline script promotes Linux when it detects a Linux user-agent. With JS
+// off, the native <details> still lets anyone reach the other build.
+import { Apple, Package, ChevronDown } from '@lucide/astro';
+import { getMacDownload, getLinuxDownload } from '../lib/voice-download';
+
+interface Props {
+  /** 'hero' = elevated pill (default), 'cta' = flatter button for cards. */
+  variant?: 'hero' | 'cta';
+}
+const { variant = 'hero' } = Astro.props;
+
+const platforms = [
+  { key: 'mac', icon: Apple, conversion: 'download_mac', dl: await getMacDownload() },
+  { key: 'linux', icon: Package, conversion: 'download_linux', dl: await getLinuxDownload() },
+];
+
+// Mac is the SSR default primary; the script swaps to Linux when detected.
+const DEFAULT = 'mac';
+
+// Display utility is toggled separately from the rest: an element gets EITHER
+// `inline-flex` (shown) or `hidden`, never both — putting both on one element
+// lets `inline-flex` win the `display` race and `hidden` silently does nothing.
+const primaryCls =
+  variant === 'cta'
+    ? 'items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90'
+    : 'group items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5';
+---
+
+<div class="inline-flex flex-wrap items-center gap-3" data-voice-download>
+  {/* Primary button — one per platform, only the active one is shown. */}
+  {platforms.map((p) => (
+    <a
+      href={p.dl.url}
+      data-conversion={p.conversion}
+      data-dl-primary={p.key}
+      class:list={[primaryCls, p.key === DEFAULT ? 'inline-flex' : 'hidden']}
+      style="background-color: #ff6d00"
+    >
+      <p.icon class="w-5 h-5" />
+      {p.dl.label}
+    </a>
+  ))}
+
+  {/* Other platforms — native <details> so it works without JS. */}
+  <details class="group relative" data-dl-more>
+    <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
+      other platforms
+      <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
+    </summary>
+    <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-lg border border-gray-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-wk-surface">
+      {platforms.map((p) => (
+        <a
+          href={p.dl.url}
+          data-conversion={p.conversion}
+          data-dl-alt={p.key}
+          class:list={[
+            'items-center gap-2.5 rounded px-3 py-2 transition-colors hover:bg-gray-100 dark:hover:bg-white/5',
+            p.key === DEFAULT ? 'hidden' : 'inline-flex',
+          ]}
+        >
+          <p.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
+          <span class="flex flex-col">
+            <span class="text-sm font-bold text-gray-900 dark:text-white">{p.dl.label}</span>
+            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.dl.arch} · {p.dl.size}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </details>
+</div>
+
+<script is:inline>
+  // Promote the visitor's platform to the primary button. Runs synchronously
+  // as the markup is parsed, so there's no flash of the wrong default. Only
+  // Linux changes anything; Mac/Windows/iOS/Android keep the Mac default
+  // (Mac is the only desktop build besides Linux).
+  (function () {
+    var ua = navigator.userAgent || '';
+    var plat = navigator.platform || '';
+    var isLinux = /Linux/i.test(plat + ' ' + ua) && !/Android/i.test(ua);
+    if (!isLinux) return;
+    // Show/hide by swapping the single display class, never stacking both.
+    function setShown(el, shown) {
+      el.classList.toggle('inline-flex', shown);
+      el.classList.toggle('hidden', !shown);
+    }
+    function resolve() {
+      document.querySelectorAll('[data-voice-download]').forEach(function (root) {
+        if (root.dataset.dlResolved) return;
+        root.dataset.dlResolved = '1';
+        root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
+          setShown(el, el.dataset.dlPrimary === 'linux');
+        });
+        root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
+          setShown(el, el.dataset.dlAlt !== 'linux');
+        });
+      });
+      // Show only the active platform's caption, matching the single button.
+      // These <p> have no display utility, so toggling `hidden` alone is safe.
+      // Caption lines can sit after this script in the page, so DOMContentLoaded
+      // catches them — buttons swap synchronously (no flicker).
+      document.querySelectorAll('[data-dl-meta]').forEach(function (el) {
+        el.classList.toggle('hidden', el.dataset.dlMeta !== 'linux');
+      });
+    }
+    resolve();
+    document.addEventListener('DOMContentLoaded', resolve);
+  })();
+</script>
