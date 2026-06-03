@@ -99,15 +99,12 @@ const primaryCls =
           setShown(el, el.dataset.dlAlt !== 'linux');
         });
       });
-      // Move the matching-OS caption first so the text order tracks the button.
-      // Caption groups can sit after this script in the page, so also retry
-      // once the document is parsed — buttons swap synchronously (no flicker),
-      // captions settle on DOMContentLoaded at worst.
-      document.querySelectorAll('[data-dl-meta-group]').forEach(function (g) {
-        if (g.dataset.dlResolved) return;
-        g.dataset.dlResolved = '1';
-        var line = g.querySelector('[data-dl-meta="linux"]');
-        if (line) g.insertBefore(line, g.firstElementChild);
+      // Show only the active platform's caption, matching the single button.
+      // These <p> have no display utility, so toggling `hidden` alone is safe.
+      // Caption lines can sit after this script in the page, so DOMContentLoaded
+      // catches them — buttons swap synchronously (no flicker).
+      document.querySelectorAll('[data-dl-meta]').forEach(function (el) {
+        el.classList.toggle('hidden', el.dataset.dlMeta !== 'linux');
       });
     }
     resolve();
