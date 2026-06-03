@@ -144,12 +144,10 @@ const faqs = [
         <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
       </a>
     </div>
-    <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
-      macOS 12+ · {macDownload.arch} · v{macDownload.version}
-    </p>
-    <p class="text-xs text-gray-400 dark:text-gray-600 mt-1.5">
-      Linux · {linuxDownload.arch} · free during beta
-    </p>
+    <div class="mt-4 space-y-1.5 text-xs text-gray-400 dark:text-gray-600" data-dl-meta-group>
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · v{macDownload.version} · free during beta</p>
+      <p data-dl-meta="linux">Linux · {linuxDownload.arch} · v{linuxDownload.version} · free during beta</p>
+    </div>
   </section>
 
   <!-- Features -->

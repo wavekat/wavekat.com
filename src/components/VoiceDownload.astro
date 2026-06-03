@@ -88,15 +88,29 @@ const primaryCls =
       el.classList.toggle('inline-flex', shown);
       el.classList.toggle('hidden', !shown);
     }
-    document.querySelectorAll('[data-voice-download]').forEach(function (root) {
-      if (root.dataset.dlResolved) return;
-      root.dataset.dlResolved = '1';
-      root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
-        setShown(el, el.dataset.dlPrimary === 'linux');
+    function resolve() {
+      document.querySelectorAll('[data-voice-download]').forEach(function (root) {
+        if (root.dataset.dlResolved) return;
+        root.dataset.dlResolved = '1';
+        root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
+          setShown(el, el.dataset.dlPrimary === 'linux');
+        });
+        root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
+          setShown(el, el.dataset.dlAlt !== 'linux');
+        });
       });
-      root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
-        setShown(el, el.dataset.dlAlt !== 'linux');
+      // Move the matching-OS caption first so the text order tracks the button.
+      // Caption groups can sit after this script in the page, so also retry
+      // once the document is parsed — buttons swap synchronously (no flicker),
+      // captions settle on DOMContentLoaded at worst.
+      document.querySelectorAll('[data-dl-meta-group]').forEach(function (g) {
+        if (g.dataset.dlResolved) return;
+        g.dataset.dlResolved = '1';
+        var line = g.querySelector('[data-dl-meta="linux"]');
+        if (line) g.insertBefore(line, g.firstElementChild);
       });
-    });
+    }
+    resolve();
+    document.addEventListener('DOMContentLoaded', resolve);
   })();
 </script>

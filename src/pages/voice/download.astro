@@ -62,12 +62,10 @@ const highlights = [
 
     <VoiceDownload />
 
-    <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
-      macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}
-    </p>
-    <p class="text-xs text-gray-400 dark:text-gray-600 mt-1.5">
-      Linux · {linuxDownload.arch} · v{linuxDownload.version} · {linuxDownload.size}
-    </p>
+    <div class="mt-4 space-y-1.5 text-xs text-gray-400 dark:text-gray-600" data-dl-meta-group>
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}</p>
+      <p data-dl-meta="linux">Linux · {linuxDownload.arch} · v{linuxDownload.version} · {linuxDownload.size}</p>
+    </div>
 
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-4 max-w-xl">
       <span class="inline-flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
