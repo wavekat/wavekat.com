@@ -1,6 +1,6 @@
 ---
 import Voice from '../../layouts/Voice.astro';
-import { PhoneCall, Mic, FileText, ShieldCheck } from '@lucide/astro';
+import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
 import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 
@@ -66,14 +66,6 @@ const highlights = [
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · v{linuxDownload.version} · {linuxDownload.size}</p>
     </div>
-
-    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-4 max-w-xl">
-      <span class="inline-flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
-        <ShieldCheck class="w-3.5 h-3.5" style="color: #00e676" />
-        Approved by Apple
-      </span>
-      — it opens with a click, no scary security warnings to get past.
-    </p>
   </section>
 
   <!-- What you get -->
