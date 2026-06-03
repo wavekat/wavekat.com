@@ -3,6 +3,7 @@ import Voice from '../../layouts/Voice.astro';
 import TalkCTA from '../../components/TalkCTA.astro';
 import {
   Apple,
+  Package,
   PhoneCall,
   Mic,
   FileText,
@@ -11,9 +12,10 @@ import {
   Lock,
   ArrowRight,
 } from '@lucide/astro';
-import { getMacDownload } from '../../lib/voice-download';
+import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 
 const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
 
 const features = [
   {
@@ -89,11 +91,11 @@ const faqs = [
   },
   {
     q: 'What does it run on?',
-    a: `It's a Mac app — it runs on macOS 12 and later, on ${macDownload.arch}.`,
+    a: `Mac and Linux. On macOS it runs on version 12 and later (${macDownload.arch}); on Linux it's a .deb package for ${linuxDownload.arch}.`,
   },
   {
-    q: 'Why Mac only — will you support Windows or other devices?',
-    a: 'We started with Mac so we could make one version genuinely great before spreading ourselves thin. Other platforms are absolutely on the table — we just build them when there\'s real demand. So if you\'d use WaveKat Voice on Windows or somewhere else, please tell us. The more people who ask, the sooner it happens.',
+    q: 'Will you support Windows or other devices?',
+    a: 'WaveKat Voice runs on Mac and Linux today. Windows and other platforms are absolutely on the table — we just build them when there\'s real demand. So if you\'d use WaveKat Voice on Windows or somewhere else, please tell us. The more people who ask, the sooner it happens.',
     link: { href: '/voice/talk/', label: 'Tell us what you need' },
   },
   {
@@ -144,6 +146,14 @@ const faqs = [
         {macDownload.label}
       </a>
       <a
+        href={linuxDownload.url}
+        data-conversion="download_linux"
+        class="group inline-flex items-center gap-2.5 rounded-lg border border-gray-300 dark:border-white/15 px-5 py-3 text-sm font-bold text-gray-900 dark:text-white transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/50"
+      >
+        <Package class="w-5 h-5" />
+        {linuxDownload.label}
+      </a>
+      <a
         href="/voice/download/"
         class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
@@ -152,7 +162,10 @@ const faqs = [
       </a>
     </div>
     <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
-      macOS 12+ · {macDownload.arch} · v{macDownload.version} · free during beta
+      macOS 12+ · {macDownload.arch} · v{macDownload.version}
+    </p>
+    <p class="text-xs text-gray-400 dark:text-gray-600 mt-1.5">
+      Linux · {linuxDownload.arch} · free during beta
     </p>
   </section>
 
@@ -218,15 +231,25 @@ const faqs = [
       <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
         Free during the public beta. Install in a minute, connect your number, and take your next call from your Mac.
       </p>
-      <a
-        href={macDownload.url}
-        data-conversion="download_mac"
-        class="inline-flex items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
-        style="background-color: #ff6d00"
-      >
-        <Apple class="w-5 h-5" />
-        {macDownload.label}
-      </a>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={macDownload.url}
+          data-conversion="download_mac"
+          class="inline-flex items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
+          style="background-color: #ff6d00"
+        >
+          <Apple class="w-5 h-5" />
+          {macDownload.label}
+        </a>
+        <a
+          href={linuxDownload.url}
+          data-conversion="download_linux"
+          class="inline-flex items-center gap-2.5 rounded border border-gray-300 dark:border-white/15 px-5 py-3 text-sm font-bold text-gray-900 dark:text-white transition-colors hover:border-[#ff6d00]/50"
+        >
+          <Package class="w-5 h-5" />
+          {linuxDownload.label}
+        </a>
+      </div>
     </div>
   </section>
 
