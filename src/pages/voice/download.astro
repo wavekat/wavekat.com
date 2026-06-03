@@ -1,6 +1,7 @@
 ---
 import Voice from '../../layouts/Voice.astro';
-import { Apple, Package, PhoneCall, Mic, FileText, ShieldCheck } from '@lucide/astro';
+import { PhoneCall, Mic, FileText, ShieldCheck } from '@lucide/astro';
+import VoiceDownload from '../../components/VoiceDownload.astro';
 import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 
 const macDownload = await getMacDownload();
@@ -59,25 +60,7 @@ const highlights = [
       and written down for you. Connect your phone provider and you're live in a couple of minutes.
     </p>
 
-    <div class="flex flex-wrap items-center gap-3">
-      <a
-        href={macDownload.url}
-        data-conversion="download_mac"
-        class="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
-        style="background-color: #ff6d00"
-      >
-        <Apple class="w-5 h-5" />
-        {macDownload.label}
-      </a>
-      <a
-        href={linuxDownload.url}
-        data-conversion="download_linux"
-        class="group inline-flex items-center gap-2.5 rounded-lg border border-gray-300 dark:border-white/15 px-5 py-3 text-sm font-bold text-gray-900 dark:text-white transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/50"
-      >
-        <Package class="w-5 h-5" />
-        {linuxDownload.label}
-      </a>
-    </div>
+    <VoiceDownload />
 
     <p class="text-xs text-gray-400 dark:text-gray-600 mt-4">
       macOS 12+ · {macDownload.arch} · v{macDownload.version} · {macDownload.size}

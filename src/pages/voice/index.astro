@@ -2,8 +2,6 @@
 import Voice from '../../layouts/Voice.astro';
 import TalkCTA from '../../components/TalkCTA.astro';
 import {
-  Apple,
-  Package,
   PhoneCall,
   Mic,
   FileText,
@@ -12,6 +10,7 @@ import {
   Lock,
   ArrowRight,
 } from '@lucide/astro';
+import VoiceDownload from '../../components/VoiceDownload.astro';
 import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 
 const macDownload = await getMacDownload();
@@ -136,23 +135,7 @@ const faqs = [
     </p>
 
     <div class="flex flex-wrap items-center gap-4">
-      <a
-        href={macDownload.url}
-        data-conversion="download_mac"
-        class="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
-        style="background-color: #ff6d00"
-      >
-        <Apple class="w-5 h-5" />
-        {macDownload.label}
-      </a>
-      <a
-        href={linuxDownload.url}
-        data-conversion="download_linux"
-        class="group inline-flex items-center gap-2.5 rounded-lg border border-gray-300 dark:border-white/15 px-5 py-3 text-sm font-bold text-gray-900 dark:text-white transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/50"
-      >
-        <Package class="w-5 h-5" />
-        {linuxDownload.label}
-      </a>
+      <VoiceDownload />
       <a
         href="/voice/download/"
         class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -231,24 +214,8 @@ const faqs = [
       <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
         Free during the public beta. Install in a minute, connect your number, and take your next call from your Mac.
       </p>
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <a
-          href={macDownload.url}
-          data-conversion="download_mac"
-          class="inline-flex items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
-          style="background-color: #ff6d00"
-        >
-          <Apple class="w-5 h-5" />
-          {macDownload.label}
-        </a>
-        <a
-          href={linuxDownload.url}
-          data-conversion="download_linux"
-          class="inline-flex items-center gap-2.5 rounded border border-gray-300 dark:border-white/15 px-5 py-3 text-sm font-bold text-gray-900 dark:text-white transition-colors hover:border-[#ff6d00]/50"
-        >
-          <Package class="w-5 h-5" />
-          {linuxDownload.label}
-        </a>
+      <div class="flex justify-center">
+        <VoiceDownload variant="cta" />
       </div>
     </div>
   </section>
