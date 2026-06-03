@@ -24,10 +24,13 @@ const platforms = [
 // Mac is the SSR default primary; the script swaps to Linux when detected.
 const DEFAULT = 'mac';
 
+// Display utility is toggled separately from the rest: an element gets EITHER
+// `inline-flex` (shown) or `hidden`, never both — putting both on one element
+// lets `inline-flex` win the `display` race and `hidden` silently does nothing.
 const primaryCls =
   variant === 'cta'
-    ? 'inline-flex items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90'
-    : 'group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5';
+    ? 'items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90'
+    : 'group items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5';
 ---
 
 <div class="inline-flex flex-wrap items-center gap-3" data-voice-download>
@@ -37,7 +40,7 @@ const primaryCls =
       href={p.dl.url}
       data-conversion={p.conversion}
       data-dl-primary={p.key}
-      class:list={[primaryCls, p.key !== DEFAULT && 'hidden']}
+      class:list={[primaryCls, p.key === DEFAULT ? 'inline-flex' : 'hidden']}
       style="background-color: #ff6d00"
     >
       <p.icon class="w-5 h-5" />
@@ -58,8 +61,8 @@ const primaryCls =
           data-conversion={p.conversion}
           data-dl-alt={p.key}
           class:list={[
-            'inline-flex items-center gap-2.5 rounded px-3 py-2 text-sm font-bold text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-white/5',
-            p.key === DEFAULT && 'hidden',
+            'items-center gap-2.5 rounded px-3 py-2 text-sm font-bold text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-white/5',
+            p.key === DEFAULT ? 'hidden' : 'inline-flex',
           ]}
         >
           <p.icon class="h-4 w-4" style="color: #ff6d00" />
@@ -80,14 +83,19 @@ const primaryCls =
     var plat = navigator.platform || '';
     var isLinux = /Linux/i.test(plat + ' ' + ua) && !/Android/i.test(ua);
     if (!isLinux) return;
+    // Show/hide by swapping the single display class, never stacking both.
+    function setShown(el, shown) {
+      el.classList.toggle('inline-flex', shown);
+      el.classList.toggle('hidden', !shown);
+    }
     document.querySelectorAll('[data-voice-download]').forEach(function (root) {
       if (root.dataset.dlResolved) return;
       root.dataset.dlResolved = '1';
       root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
-        el.classList.toggle('hidden', el.dataset.dlPrimary !== 'linux');
+        setShown(el, el.dataset.dlPrimary === 'linux');
       });
       root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
-        el.classList.toggle('hidden', el.dataset.dlAlt === 'linux');
+        setShown(el, el.dataset.dlAlt !== 'linux');
       });
     });
   })();
