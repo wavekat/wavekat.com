@@ -114,3 +114,22 @@ const primaryCls =
     document.addEventListener('DOMContentLoaded', resolve);
   })();
 </script>
+
+<script is:inline>
+  // Native <details> only toggles via its <summary>, so the "other platforms"
+  // dropdown stays open when you click elsewhere. Close any open one on an
+  // outside click or the Escape key, the way a menu is expected to behave.
+  (function () {
+    document.addEventListener('click', function (e) {
+      document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {
+        if (!d.contains(e.target)) d.removeAttribute('open');
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {
+        d.removeAttribute('open');
+      });
+    });
+  })();
+</script>
