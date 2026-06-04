@@ -17,9 +17,18 @@ const { title, description, date, updated, author, tags = [], ogImage } = Astro.
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<Base title={`${title} — WaveKat`} description={description} ogImage={ogImage}>
+<Base
+  title={`${title} — WaveKat`}
+  description={description}
+  ogImage={ogImage}
+  ogImageAlt={title}
+  ogType="article"
+  article={{ publishedTime: date, modifiedTime: updated, author: author || 'WaveKat', tags }}
+>
   <div class="max-w-3xl mx-auto px-6 py-12">
 
     <Header active="blog" />
@@ -80,11 +89,15 @@ const formatDate = (d: Date) =>
     type="application/ld+json"
     set:html={JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'Article',
+      '@type': 'BlogPosting',
       headline: title,
       description,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.href },
+      url: canonicalURL.href,
+      ...(ogImage && { image: new URL(ogImage, Astro.site).href }),
+      ...(tags.length && { keywords: tags.join(', ') }),
       datePublished: date.toISOString(),
-      ...(updated && { dateModified: updated.toISOString() }),
+      dateModified: (updated || date).toISOString(),
       author: {
         '@type': 'Organization',
         name: author || 'WaveKat',
@@ -94,6 +107,10 @@ const formatDate = (d: Date) =>
         '@type': 'Organization',
         name: 'WaveKat',
         url: 'https://wavekat.com',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://wavekat.com/og.png',
+        },
       },
     })}
   />
