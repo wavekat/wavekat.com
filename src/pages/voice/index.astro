@@ -102,6 +102,38 @@ const faqs = [
     a: 'It\'s a lightweight menu-bar app that stays out of your way until a call comes in, and it updates itself quietly in the background. You install it once and forget it\'s there.',
   },
 ];
+
+// Structured data: the app itself (eligible for software rich results) and the
+// on-page FAQ. Strip apostrophe-escapes from the FAQ copy is unnecessary — the
+// strings are already plain text.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'WaveKat Voice',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'macOS, Linux',
+  url: 'https://wavekat.com/voice/',
+  softwareVersion: macDownload.version,
+  downloadUrl: 'https://wavekat.com/voice/download/',
+  description:
+    'A desktop app that turns your computer into your business phone — answer and place calls, with every call recorded and transcribed. Works with the phone provider you already have.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
 
 <Voice
@@ -247,4 +279,7 @@ const faqs = [
   </section>
 
   <TalkCTA />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Voice>

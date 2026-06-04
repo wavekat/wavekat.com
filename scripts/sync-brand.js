@@ -20,6 +20,7 @@ const logos = [
   "wavekat-tight-light.svg",
   "wavekat-tight-dark.svg",
   "wavekat-icon-light.svg",
+  "wavekat-icon-dark.svg",
 ];
 
 // Initialise submodule if vendor directory is empty (Cloudflare Pages shallow clone)

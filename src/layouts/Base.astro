@@ -6,16 +6,58 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  article?: {
+    publishedTime?: Date;
+    modifiedTime?: Date;
+    author?: string;
+    tags?: string[];
+  };
 }
 
 const {
   title = 'WaveKat — Open-Source AI Voice Tools for Small Business',
   description = 'WaveKat builds open-source, AI-powered tools that give small businesses enterprise-grade voice capabilities — phone answering, conversations, and 24/7 presence.',
   ogImage = '/og.png',
+  ogImageAlt = 'WaveKat — open-source AI voice tools for small business',
+  ogType = 'website',
+  noindex = false,
+  article,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
+
+// Sitewide Organization + WebSite structured data. Emitted on every page so
+// search engines can build a consistent entity for WaveKat (logo, social
+// profiles) and surface the site name in results.
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://wavekat.com/#organization',
+      name: 'WaveKat',
+      url: 'https://wavekat.com',
+      logo: 'https://wavekat.com/og.png',
+      description:
+        'WaveKat builds open-source, AI-powered voice tools that give small businesses enterprise-grade phone capabilities.',
+      sameAs: [
+        'https://github.com/wavekat',
+        'https://www.linkedin.com/company/wavekat/',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://wavekat.com/#website',
+      name: 'WaveKat',
+      url: 'https://wavekat.com',
+      publisher: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -24,6 +66,9 @@ const ogImageURL = new URL(ogImage, Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/logos/wavekat-icon-light.svg" />
     <link rel="icon" type="image/svg+xml" href="/logos/wavekat-icon-light.svg" media="(prefers-color-scheme: light)" />
@@ -32,19 +77,34 @@ const ogImageURL = new URL(ogImage, Astro.site);
     <link rel="alternate" type="application/rss+xml" title="WaveKat Blog" href="/rss.xml" />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="WaveKat" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    {article?.publishedTime && (
+      <meta property="article:published_time" content={article.publishedTime.toISOString()} />
+    )}
+    {article?.modifiedTime && (
+      <meta property="article:modified_time" content={article.modifiedTime.toISOString()} />
+    )}
+    {article?.author && <meta property="article:author" content={article.author} />}
+    {article?.tags?.map((tag) => <meta property="article:tag" content={tag} />)}
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <!-- Organization + WebSite structured data (sitewide) -->
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
