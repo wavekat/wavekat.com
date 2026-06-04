@@ -1,3 +1,5 @@
+# We welcome AI crawlers — being quoted by AI answer engines is a goal.
+# Keep this open; do not add Disallow for GPTBot/ClaudeBot/etc. See CLAUDE.md "SEO & GEO".
 User-agent: *
 Allow: /
 
