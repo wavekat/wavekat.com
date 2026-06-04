@@ -13,11 +13,18 @@ const { title, description } = Astro.props;
 const subNav = [
   { href: '/voice/', label: 'overview' },
   { href: '/voice/use-cases/', label: 'use cases' },
+  { href: '/voice/alternatives/', label: 'alternatives' },
   { href: '/voice/download/', label: 'download' },
   { href: '/voice/talk/', label: 'talk to us' },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') + '/';
+
+// A nav item is active on its own page and on any page beneath it (e.g. the
+// per-competitor /voice/alternatives/<slug>/ pages keep "alternatives" lit).
+// The overview href is everyone's prefix, so it only matches exactly.
+const isActive = (href: string) =>
+  currentPath === href || (href !== '/voice/' && currentPath.startsWith(href));
 ---
 
 <Base title={`${title} — WaveKat`} description={description}>
@@ -28,7 +35,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') + '/';
     <!-- Sub-nav -->
     <nav class="flex flex-wrap items-center gap-3 mb-12">
       {subNav.map((item) => {
-        const active = currentPath === item.href;
+        const active = isActive(item.href);
         return (
           <a
             href={item.href}

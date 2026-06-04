@@ -55,6 +55,39 @@ This repo uses **release-please**. Since GitHub squash-merges use the PR title a
 - **Deployment**: Cloudflare Pages (consistent with rest of org)
 - **Domain**: `wavekat.com` — DNS to be pointed at Cloudflare Pages once site is ready
 
+## SEO & GEO — every new page must be both
+
+This site is optimized for classic search (SEO) **and** generative answer engines (GEO — being quoted by ChatGPT, Perplexity, Google AI Overviews, Claude). The two overlap but aren't identical: SEO wants crawlable, well-described, linkable pages; GEO wants self-contained, factual, extractable passages an LLM can lift verbatim. Build for both on every page.
+
+### What's already wired (don't reinvent it)
+
+- **`Base.astro` is the SEO baseline** (established in #81, `feat(seo)`). It emits the canonical URL, `<meta name="description">`, the `robots` directive (with a `noindex` prop to opt a page out of indexing), the full Open Graph + Twitter card set, light/dark `theme-color`, and the sitewide `Organization` + `WebSite` JSON-LD graph (`@id`s `https://wavekat.com/#organization` and `#website`). It also takes `ogType` / `article` props so child layouts can emit article semantics. Every layout (`Voice`, `Post`, `Docs`) wraps `Base`, so every page gets this for free.
+- **Sitemap + robots are automatic.** `@astrojs/sitemap` generates `sitemap-index.xml` at build from the `site` in `astro.config.mjs`; `public/robots.txt` allows all crawlers (including AI crawlers — keep it open for GEO) and points at the sitemap. A new page under `src/pages/` is in the sitemap with zero extra work.
+- **`og.png`** is generated 1200×630 from the brand SVG by `make sync`. Pages share it unless they pass their own `ogImage`.
+
+### Rules for every new page
+
+1. **Always pass a real `title` and `description`** to the layout — they drive `<title>`, the meta description, OG/Twitter, and (in `Base`) the canonical. Description: one sentence, ~150–160 chars, leads with the concrete value, names the product. Never ship the layout default.
+2. **Add page-type JSON-LD** as a `<script type="application/ld+json" set:html={JSON.stringify(...)} />` at the end of the page. Pick the type that fits and reference the org by `@id` (`{ '@id': 'https://wavekat.com/#organization' }`) rather than re-declaring it:
+   - Product/app page → `SoftwareApplication` (see `voice/index.astro`).
+   - Any page with a Q&A section → `FAQPage` built from the same array you render, so the on-page text and the schema never drift.
+   - Comparison / detail pages reached through a hierarchy → `BreadcrumbList`.
+   - Hub/listing pages → `ItemList` of the child URLs.
+   - Blog posts → `BlogPosting` (handled by `Post.astro`).
+3. **Trailing-slash, absolute internal URLs** (`/voice/alternatives/linphone/`). The sub-nav active-state and the build both assume them.
+4. **One `<h1>` per page**, then a descriptive `<h2>` per section. Headings are ranking *and* extraction signals — write them as the thing the section answers, not as labels.
+
+### GEO: write so an LLM can quote you
+
+- **Lead with a self-contained answer.** The first sentence under a heading should stand alone if lifted out of context — name the subject, state the fact. Don't make the reader (or the model) assemble the answer from three paragraphs.
+- **Q&A blocks earn their keep twice** — they render as a human FAQ *and* feed `FAQPage` schema *and* are the single most-quoted structure in AI answers. Phrase questions the way a user would type them ("Can WaveKat Voice connect to the same SIP provider as Linphone?"), and answer in 1–3 plain sentences.
+- **Comparison tables are extractable gold.** Keep cells short, factual, and parallel across rows; models lift table rows almost verbatim into "X vs Y" answers.
+- **Be specific and honest.** Concrete specifics (platforms, versions, prices, "records every call automatically") get quoted; vague superlatives get skipped. On comparison pages, name what the competitor is genuinely good at — fair framing reads as a trustworthy source to both readers and models, and avoids the "marketing fluff" discount.
+- **Keep entity naming consistent.** Always "WaveKat Voice" (not "the app", "Voice", "WaveKat" interchangeably) so engines bind the facts to one entity. Same for platform claims — match the truth in `voice/index.astro` (Mac and Linux today; Windows when there's demand).
+- **Don't target a single platform in copy.** Voice is Mac + Linux today; write "your computer" / "desktop" in body copy and put the platforms in a table row or a "Mac & Linux" qualifier. Titles may still include "Mac" to catch the high-volume "… for Mac" queries, but never *exclude* Linux.
+
+When you add a page that doesn't fit the patterns above, mirror the closest existing one (`voice/alternatives/[slug].astro` is the current best example: clear `<h1>`, self-contained intro, comparison table, fair "what it is", Q&A, and `FAQPage` + `BreadcrumbList` schema).
+
 ## Brand assets
 
 Logo SVGs come from `vendor/wavekat-brand` (git submodule — source of truth, never edit here).
