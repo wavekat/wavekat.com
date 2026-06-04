@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.27](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.26...wavekat-com-v0.0.27) (2026-06-04)
+
+
+### Features
+
+* **seo:** structured data + social metadata (+ favicon & download dropdown fixes) ([#81](https://github.com/wavekat/wavekat.com/issues/81)) ([d8fb369](https://github.com/wavekat/wavekat.com/commit/d8fb369dc8e7d9d43f669c8986f9317979453855))
+* **voice:** add alternatives comparison pages ([#82](https://github.com/wavekat/wavekat.com/issues/82)) ([6d01545](https://github.com/wavekat/wavekat.com/commit/6d015457a559a1cb12480d6045d03299d74f71c3))
+* **voice:** Linux download & OS-aware buttons ([#79](https://github.com/wavekat/wavekat.com/issues/79)) ([590219d](https://github.com/wavekat/wavekat.com/commit/590219d206efd56b4624c635dd7baf9eb5a77576))
+
 ## [0.0.26](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.25...wavekat-com-v0.0.26) (2026-05-31)
 
 
