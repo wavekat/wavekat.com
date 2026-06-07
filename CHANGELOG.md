@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.28](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.27...wavekat-com-v0.0.28) (2026-06-07)
+
+
+### Features
+
+* **docs:** list Voice on the docs index ([#84](https://github.com/wavekat/wavekat.com/issues/84)) ([939dca2](https://github.com/wavekat/wavekat.com/commit/939dca252b0fa79315db26e9db8f2315c808412e))
+
 ## [0.0.27](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.26...wavekat-com-v0.0.27) (2026-06-04)
 
 
