@@ -7,7 +7,7 @@
 type ProductLabels = { short: string; long: string; hidden?: boolean };
 
 const LABELS: Record<string, ProductLabels> = {
-  voice: { short: 'Voice', long: 'WaveKat Voice', hidden: true },
+  voice: { short: 'Voice', long: 'WaveKat Voice' },
   cli:   { short: 'CLI',   long: 'WaveKat CLI' },
   lab:   { short: 'Lab',   long: 'WaveKat Lab' },
   vad:   { short: 'VAD',   long: 'WaveKat VAD' },
