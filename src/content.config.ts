@@ -17,8 +17,12 @@ const blog = defineCollection({
 
 const docs = defineCollection({
   // README.md files in each product repo are contributor-facing, not published.
+  // changelog.md is synced from each product's docs/site/ too, but it isn't a
+  // doc — it gets its own product page (e.g. /voice/changelog), rendered from
+  // the synced markdown directly. Excluding it here keeps it out of the /docs
+  // routes and the docs sidebar so it isn't published twice.
   loader: glob({
-    pattern: ['**/*.md', '!**/README.md'],
+    pattern: ['**/*.md', '!**/README.md', '!**/changelog.md'],
     base: './src/content/docs',
   }),
   schema: z.object({
