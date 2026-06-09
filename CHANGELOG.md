@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.30](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.29...wavekat-com-v0.0.30) (2026-06-09)
+
+
+### Bug Fixes
+
+* **voice:** h3 larger than h2 on changelog ([#88](https://github.com/wavekat/wavekat.com/issues/88)) ([38aed8e](https://github.com/wavekat/wavekat.com/commit/38aed8e6dad7c5863c8b10fe05e0cacf7d8b4097))
+
 ## [0.0.29](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.28...wavekat-com-v0.0.29) (2026-06-08)
 
 
