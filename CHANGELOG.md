@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.31](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.30...wavekat-com-v0.0.31) (2026-06-09)
+
+
+### Features
+
+* **voice:** link version to changelog ([#90](https://github.com/wavekat/wavekat.com/issues/90)) ([8a9adf1](https://github.com/wavekat/wavekat.com/commit/8a9adf1a57779933782843fe6d38259dd48d887b))
+
 ## [0.0.30](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.29...wavekat-com-v0.0.30) (2026-06-09)
 
 
