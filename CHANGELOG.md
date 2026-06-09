@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.32](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.31...wavekat-com-v0.0.32) (2026-06-09)
+
+
+### Bug Fixes
+
+* **voice:** don't exclude Linux in body copy ([#92](https://github.com/wavekat/wavekat.com/issues/92)) ([e36d005](https://github.com/wavekat/wavekat.com/commit/e36d00542b93664f5a4609cb53aad197b40e5b25))
+
 ## [0.0.31](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.30...wavekat-com-v0.0.31) (2026-06-09)
 
 
