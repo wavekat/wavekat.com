@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.33](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.32...wavekat-com-v0.0.33) (2026-06-16)
+
+
+### Features
+
+* **blog:** post on placing calls from the command line ([#94](https://github.com/wavekat/wavekat.com/issues/94)) ([df34f86](https://github.com/wavekat/wavekat.com/commit/df34f863957a26feb6e9beb48253b61db7367b17))
+
 ## [0.0.32](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.31...wavekat-com-v0.0.32) (2026-06-09)
 
 
