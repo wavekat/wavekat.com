@@ -1,0 +1,70 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+
+const cases = [
+  {
+    title: 'Cliniche e studi dentistici',
+    pain: 'Ricevi le chiamate per gli appuntamenti dal portatile della reception e conserva una traccia registrata e trascritta di ciò che ha chiesto ogni paziente.',
+  },
+  {
+    title: 'Saloni e centri benessere',
+    pain: 'Rispondi tra un cliente e l’altro senza telefono da scrivania, e non perdere mai i dettagli di una prenotazione per un appunto saltato.',
+  },
+  {
+    title: 'Artigiani — idraulici, elettricisti, climatizzazione',
+    pain: 'Rispondi dal portatile in cantiere, con l’indirizzo e la descrizione del lavoro catturati nella trascrizione.',
+  },
+  {
+    title: 'Studi legali (primo contatto)',
+    pain: 'Gestisci le chiamate di primo contatto con una trascrizione fedele accanto, così nulla di ciò che viene detto in quei primi minuti decisivi va perso.',
+  },
+  {
+    title: 'Ristoranti e asporto',
+    pain: 'Gestisci prenotazioni e ordini da un’unica schermata nel pieno del lavoro — la registrazione è lì se un dettaglio è in dubbio.',
+  },
+  {
+    title: 'Amministrazione immobiliare',
+    pain: 'Gestisci le chiamate di inquilini e manutenzione da ovunque, con una cronologia ricercabile di chi ha chiamato e di cosa aveva bisogno.',
+  },
+];
+---
+
+<Voice
+  title="Casi d’uso"
+  description="A chi si addice meglio WaveKat Voice — piccole imprese che vivono al telefono e hanno bisogno di chiamate, registrazioni e trascrizioni in un unico posto."
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      Per chi è
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      WaveKat Voice si addice a qualsiasi piccola impresa che vive al telefono. Trasforma il tuo
+      computer nella tua linea aziendale, registra e trascrive ogni chiamata e tiene tutto in
+      un’unica cronologia ricercabile. Ecco dove aiuta di più.
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Esempi</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {cases.map((c) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{c.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{c.pain}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Non vedi la tua attività?</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+      Questo elenco è il nostro punto di partenza — non il nostro limite. Se la tua attività vive al
+      telefono, WaveKat Voice probabilmente ti sembrerà perfetto. Scaricalo e provalo, oppure
+      raccontaci la tua configurazione.
+    </p>
+  </section>
+
+  <TalkCTA />
+</Voice>

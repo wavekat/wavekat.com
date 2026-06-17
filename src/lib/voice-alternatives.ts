@@ -237,10 +237,27 @@ export const alternativesZhHans: Alternative[] = [
   },
 ];
 
+// The other fully-translated locales keep their comparison copy in their own
+// files (src/lib/alternatives/<slug>.ts) so each can be authored independently.
+import { alternatives as altZhHant } from './alternatives/zh-hant';
+import { alternatives as altJa } from './alternatives/ja';
+import { alternatives as altKo } from './alternatives/ko';
+import { alternatives as altDe } from './alternatives/de';
+import { alternatives as altEs } from './alternatives/es';
+import { alternatives as altFr } from './alternatives/fr';
+import { alternatives as altIt } from './alternatives/it';
+
 // Locale-keyed datasets so the /zh/ comparison pages reuse the same templates.
 const altByLocale: Record<string, Alternative[]> = {
   en: alternatives,
   'zh-Hans': alternativesZhHans,
+  'zh-Hant': altZhHant,
+  ja: altJa,
+  ko: altKo,
+  de: altDe,
+  es: altEs,
+  fr: altFr,
+  it: altIt,
 };
 
 export function getAlternatives(locale: string): Alternative[] {

@@ -1,0 +1,102 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import { Mail } from '@lucide/astro';
+
+const emailHref =
+  "mailto:eason@wavekat.com?subject=wavekat-voice&body=Hi%20%E2%80%94%20a%20bit%20about%20my%20business%3A%0A%0A-%20What%20we%20do%3A%0A-%20How%20the%20phone%20works%20today%3A%0A-%20What's%20missing%20for%20you%3A%0A%0AThanks!";
+---
+
+<Voice
+  title="문의하기"
+  description="WaveKat 팀에 연락하는 가장 좋은 방법은 이메일입니다 — 질문, 피드백, 또는 지원받고 싶은 기기를 알려주세요."
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      문의하기
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      여러분의 이야기를 듣고 싶습니다 — WaveKat Voice에 대한 질문, 여러분의 비즈니스에서 전화가
+      실제로 어떻게 쓰이는지, 무엇이 부족한지, 또는 지원받고 싶은 기기까지요.
+    </p>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mt-3">
+      이메일이 저희에게 연락하는 가장 좋은 방법입니다. 모든 메시지를 읽고 가능한 한 빨리 답장드립니다.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">이메일 보내기</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-xl">
+      시작에 도움이 되도록 짧은 템플릿을 미리 채워두었습니다 — 그냥 무시하고 여러분의 비즈니스를
+      몇 문장으로 적어주셔도 좋습니다.
+    </p>
+    <a
+      href={emailHref}
+      data-conversion="mailto_click"
+      class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+      style="background-color: #ff6d00"
+    >
+      <Mail class="w-4 h-4" />
+      이메일 보내기
+    </a>
+    <p class="text-xs text-gray-400 dark:text-gray-600 mt-4 leading-relaxed">
+      또는{' '}
+      <a
+        href={emailHref}
+        data-conversion="mailto_click"
+        class="text-gray-600 dark:text-gray-300 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        eason@wavekat.com
+      </a>{' '}
+      으로 직접 연락주세요.
+    </p>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">아직 준비되지 않으셨나요?</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-xl">
+      이메일을 남겨주시면 WaveKat Voice가 발전해 가는 소식을 계속 전해드립니다 — 새로운 기능,
+      그리고 다른 기기에 출시되는 시점까지요.
+    </p>
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/wavekat"
+      method="post"
+      target="popupwindow"
+      onsubmit="window.open('https://buttondown.com/wavekat', 'popupwindow')"
+      class="flex flex-col sm:flex-row gap-2 max-w-xl"
+    >
+      <input type="hidden" name="tag" value="voice-interest" />
+      <label for="talk-email" class="sr-only">이메일 주소</label>
+      <input
+        type="email"
+        name="email"
+        id="talk-email"
+        required
+        placeholder="you@example.com"
+        class="flex-1 min-w-0 rounded border border-gray-200 dark:border-white/10 bg-white dark:bg-black px-3 py-2 text-xs text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:outline-none focus:border-gray-400 dark:focus:border-white/30 transition-colors"
+      />
+      <button
+        type="submit"
+        class="rounded border border-gray-300 dark:border-white/20 bg-white dark:bg-black px-4 py-2 text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+      >
+        소식 받기
+      </button>
+    </form>
+  </section>
+</Voice>
+
+<script is:inline>
+  // Google Ads conversion label for an email click (matches TalkCTA.astro).
+  const CONVERSIONS = {
+    mailto_click: 'AW-18128547216/wIcbCOfc66QcEJDbrsRD',
+  };
+
+  function fireConversion(name) {
+    const sendTo = CONVERSIONS[name];
+    if (!sendTo || sendTo.includes('REPLACE_WITH_') || typeof gtag !== 'function') return;
+    gtag('event', 'conversion', { send_to: sendTo });
+  }
+
+  document.querySelectorAll('a[data-conversion]').forEach((el) => {
+    el.addEventListener('click', () => fireConversion(el.dataset.conversion));
+  });
+</script>

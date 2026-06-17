@@ -1,0 +1,30 @@
+import type { UIStrings } from '../i18n';
+
+export const ui: UIStrings = {
+  navVoice: '보이스',
+  navDocs: '문서',
+  navBlog: '블로그',
+  switcherLabel: '언어 변경',
+  bannerText: '이 페이지는 한국어로 제공됩니다.',
+  bannerView: '보기',
+  bannerDismiss: '닫기',
+  subOverview: '개요',
+  subUseCases: '활용 사례',
+  subAlternatives: '대안',
+  subDownload: '다운로드',
+  subChangelog: '새로운 기능',
+  subTalk: '문의하기',
+  dlMac: 'Mac용 다운로드',
+  dlLinux: 'Linux용 다운로드',
+  dlOther: '다른 플랫폼',
+  talkHeading: '문의하기',
+  talkBody:
+    '궁금한 점이나 의견이 있으신가요? 지원했으면 하는 기기가 있으신가요? 이메일이 저희에게 연락하는 가장 좋은 방법입니다. 모든 메시지를 읽고 가능한 한 빨리 답변드립니다.',
+  talkButton: '이메일 보내기',
+  talkWritePre: '또는 ',
+  talkWritePost: '(으)로 직접 메일을 보내셔도 됩니다.',
+  footerEmail: '이메일 보내기',
+  footerSource: 'GitHub에서 소스 보기',
+  postBack: '← 블로그로 돌아가기',
+  postUpdated: '업데이트됨',
+};

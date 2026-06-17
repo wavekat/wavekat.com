@@ -1,0 +1,30 @@
+import type { UIStrings } from '../i18n';
+
+export const ui: UIStrings = {
+  navVoice: 'voz',
+  navDocs: 'docs',
+  navBlog: 'blog',
+  switcherLabel: 'Cambiar idioma',
+  bannerText: 'Esta página está disponible en español.',
+  bannerView: 'Ver',
+  bannerDismiss: 'Descartar',
+  subOverview: 'visión general',
+  subUseCases: 'casos de uso',
+  subAlternatives: 'alternativas',
+  subDownload: 'descargar',
+  subChangelog: 'novedades',
+  subTalk: 'contacto',
+  dlMac: 'Descargar para Mac',
+  dlLinux: 'Descargar para Linux',
+  dlOther: 'otras plataformas',
+  talkHeading: 'Contacto',
+  talkBody:
+    '¿Preguntas, comentarios o un dispositivo que le gustaría que admitiéramos? El correo electrónico es la mejor forma de contactarnos: leemos cada mensaje y respondemos en cuanto podemos.',
+  talkButton: 'Escríbanos',
+  talkWritePre: 'O escriba directamente a ',
+  talkWritePost: '.',
+  footerEmail: 'Escríbanos',
+  footerSource: 'Ver el código en GitHub',
+  postBack: '← volver al blog',
+  postUpdated: 'actualizado',
+};

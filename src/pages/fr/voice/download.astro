@@ -1,0 +1,142 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import { PhoneCall, Mic, FileText } from '@lucide/astro';
+import VoiceDownload from '../../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
+
+const steps = [
+  {
+    n: '1',
+    title: 'Ouvrez le téléchargement',
+    body: 'Sur un Mac, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications. Sur Linux, ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
+  },
+  {
+    n: '2',
+    title: 'Lancez-le',
+    body: 'Ouvrez WaveKat Voice une fois installé. Il reste discrètement en retrait, prêt dès que le téléphone sonne.',
+  },
+  {
+    n: '3',
+    title: 'Connectez votre numéro',
+    body: 'Une courte configuration vous guide pour vous connecter à votre opérateur téléphonique — choisissez-le dans la liste et nous remplissons le reste.',
+  },
+];
+
+const highlights = [
+  { icon: PhoneCall, text: 'Passez et recevez des appels depuis votre ordinateur' },
+  { icon: Mic, text: 'Chaque appel enregistré sur votre machine' },
+  { icon: FileText, text: 'Transcriptions en direct pendant que vous parlez' },
+];
+---
+
+<Voice
+  title="Télécharger WaveKat Voice"
+  description="Téléchargez WaveKat Voice pour Mac ou Linux — une application téléphonique qui enregistre et retranscrit chaque appel. Gratuit à l’essai."
+>
+  <!-- Hero / download -->
+  <section class="relative mb-16 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        bêta publique gratuite
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      Télécharger <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">WaveKat Voice</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      Votre ligne professionnelle sur votre ordinateur — recevez et passez des appels, chaque conversation
+      étant enregistrée et retranscrite pour vous. Connectez votre opérateur téléphonique et vous êtes opérationnel en quelques minutes.
+    </p>
+
+    <VoiceDownload />
+
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {macDownload.size}</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {linuxDownload.size}</p>
+    </div>
+  </section>
+
+  <!-- What you get -->
+  <section class="mb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {highlights.map((h) => (
+        <div class="rounded p-4 bg-gray-50 dark:bg-wk-surface flex items-start gap-3">
+          <h.icon class="w-4 h-4 mt-0.5 shrink-0" style="color: #ff6d00" />
+          <span class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{h.text}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Getting set up -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Mise en route</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- What you'll need -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Ce dont vous aurez besoin</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
+      Un compte chez un opérateur téléphonique — Twilio, Telnyx, 2talk, et bien d’autres. C’est le même identifiant
+      que vous utiliseriez pour n’importe quel téléphone par Internet, et si vous passez déjà des appels professionnels
+      en ligne, votre opérateur est presque certainement compatible.
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Vous ne savez pas par où commencer ? Nos
+      <a href="/docs/voice/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">guides de configuration</a>
+      vous accompagnent pour choisir un opérateur et établir votre premier appel.
+    </p>
+  </section>
+
+  <!-- Updates -->
+  <section class="mb-4">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Rester à jour</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
+      WaveKat Voice se maintient à jour tout seul. Une fois installé, il vérifie discrètement les nouvelles versions
+      et se met à jour en arrière-plan — vous n’aurez jamais à revenir ici pour en télécharger une plus récente.
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      <a href="/voice/changelog/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">Découvrez les nouveautés de chaque version →</a>
+    </p>
+  </section>
+</Voice>
+
+<script is:inline>
+  // Fire the Google Ads download conversion (label shares the AW account in
+  // Base.astro). No-op if gtag isn't loaded.
+  document.querySelectorAll('a[data-conversion^="download_"]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', { send_to: 'AW-18128547216' });
+      }
+    });
+  });
+</script>

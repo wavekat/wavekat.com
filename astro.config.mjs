@@ -46,7 +46,17 @@ export default defineConfig({
   // prefixDefaultLocale:false = don't redirect / to /en/.
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', { path: 'zh', codes: ['zh-Hans', 'zh-CN'] }],
+    locales: [
+      'en',
+      { path: 'zh', codes: ['zh-Hans', 'zh-CN'] },
+      { path: 'zh-hant', codes: ['zh-Hant', 'zh-TW'] },
+      { path: 'ja', codes: ['ja'] },
+      { path: 'ko', codes: ['ko'] },
+      { path: 'de', codes: ['de'] },
+      { path: 'es', codes: ['es'] },
+      { path: 'fr', codes: ['fr'] },
+      { path: 'it', codes: ['it'] },
+    ],
     routing: {
       prefixDefaultLocale: false,
     },
@@ -58,7 +68,17 @@ export default defineConfig({
     sitemap({
       i18n: {
         defaultLocale: 'en',
-        locales: { en: 'en', zh: 'zh-Hans' },
+        locales: {
+          en: 'en',
+          zh: 'zh-Hans',
+          'zh-hant': 'zh-Hant',
+          ja: 'ja',
+          ko: 'ko',
+          de: 'de',
+          es: 'es',
+          fr: 'fr',
+          it: 'it',
+        },
       },
     }),
   ],

@@ -1,0 +1,141 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import { PhoneCall, Mic, FileText } from '@lucide/astro';
+import VoiceDownload from '../../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
+
+const steps = [
+  {
+    n: '1',
+    title: 'ダウンロードしたファイルを開く',
+    body: 'Mac では .dmg をダブルクリックし、WaveKat Voice を「アプリケーション」フォルダにドラッグします。Linux ではソフトウェアインストーラーで .deb を開くか、ターミナルから apt または dpkg でインストールします。',
+  },
+  {
+    n: '2',
+    title: '起動する',
+    body: 'インストールできたら WaveKat Voice を開きます。邪魔にならず静かに待機し、電話が鳴ればいつでも応答できます。',
+  },
+  {
+    n: '3',
+    title: '番号をつなぐ',
+    body: '短いセットアップが電話事業者へのサインインを案内します——リストから選ぶだけで、残りは私たちが入力します。',
+  },
+];
+
+const highlights = [
+  { icon: PhoneCall, text: 'パソコンから電話の応答と発信' },
+  { icon: Mic, text: 'すべての通話を自分のパソコンに録音' },
+  { icon: FileText, text: '話しながらリアルタイムで文字起こし' },
+];
+---
+
+<Voice
+  title="WaveKat Voice をダウンロード"
+  description="Mac または Linux 向けの WaveKat Voice をダウンロード——すべての通話を録音し、文字に書き起こす電話アプリです。無料でお試しいただけます。"
+>
+  <!-- Hero / download -->
+  <section class="relative mb-16 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        無料パブリックベータ
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">WaveKat Voice</span> をダウンロード
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      あなたのビジネス回線をデスクトップに——電話の応答も発信もでき、すべての会話を録音し、
+      文字に書き起こします。電話事業者をつなげば、数分で利用を開始できます。
+    </p>
+
+    <VoiceDownload />
+
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {macDownload.size}</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {linuxDownload.size}</p>
+    </div>
+  </section>
+
+  <!-- What you get -->
+  <section class="mb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {highlights.map((h) => (
+        <div class="rounded p-4 bg-gray-50 dark:bg-wk-surface flex items-start gap-3">
+          <h.icon class="w-4 h-4 mt-0.5 shrink-0" style="color: #ff6d00" />
+          <span class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{h.text}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Getting set up -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">セットアップ</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- What you'll need -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">必要なもの</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
+      電話事業者のアカウント——Twilio、Telnyx、2talk など。インターネット電話を使うときと同じログインで、
+      すでにオンラインでビジネス通話をしているなら、お使いの事業者はほぼ確実に利用できます。
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      どこから始めればいいか分からない場合は、
+      <a href="/docs/voice/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">セットアップガイド</a>
+      が事業者選びから最初の一本を接続するところまで案内します。
+    </p>
+  </section>
+
+  <!-- Updates -->
+  <section class="mb-4">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">最新の状態を保つ</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
+      WaveKat Voice は自動で最新の状態を保ちます。インストール後はバックグラウンドで静かに新しいバージョンを確認し、
+      更新します——新しいものをダウンロードするためにここへ戻る必要はもうありません。
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      <a href="/voice/changelog/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">各バージョンの更新内容を見る →</a>
+    </p>
+  </section>
+</Voice>
+
+<script is:inline>
+  // Fire the Google Ads download conversion (label shares the AW account in
+  // Base.astro). No-op if gtag isn't loaded.
+  document.querySelectorAll('a[data-conversion^="download_"]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', { send_to: 'AW-18128547216' });
+      }
+    });
+  });
+</script>

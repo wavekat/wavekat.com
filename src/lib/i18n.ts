@@ -42,34 +42,53 @@ export const localeDefs: LocaleDef[] = [
     ogLocale: 'zh_CN',
     hreflangAliases: ['zh-Hans-SG'],
   },
-  // Traditional Chinese — infra is ready. To ship: uncomment, add /zh-hant/
-  // pages, and register routes in `translatedRoutes`. TW/HK/MO all read this.
-  // {
-  //   code: 'zh-Hant',
-  //   slug: 'zh-hant',
-  //   label: '繁體中文',
-  //   ogLocale: 'zh_TW',
-  //   hreflangAliases: ['zh-Hant-TW', 'zh-Hant-HK', 'zh-Hant-MO'],
-  // },
+  // Traditional Chinese splits by script, not country: this one page serves
+  // TW/HK/MO via the region aliases below — no per-country Chinese pages.
+  {
+    code: 'zh-Hant',
+    slug: 'zh-hant',
+    label: '繁體中文',
+    ogLocale: 'zh_TW',
+    hreflangAliases: ['zh-Hant-TW', 'zh-Hant-HK', 'zh-Hant-MO'],
+  },
+  { code: 'ja', slug: 'ja', label: '日本語', ogLocale: 'ja_JP' },
+  { code: 'ko', slug: 'ko', label: '한국어', ogLocale: 'ko_KR' },
+  { code: 'de', slug: 'de', label: 'Deutsch', ogLocale: 'de_DE' },
+  { code: 'es', slug: 'es', label: 'Español', ogLocale: 'es_ES' },
+  { code: 'fr', slug: 'fr', label: 'Français', ogLocale: 'fr_FR' },
+  { code: 'it', slug: 'it', label: 'Italiano', ogLocale: 'it_IT' },
+];
+
+// The full set of in-repo pages. Every fully-translated locale covers all of
+// them; partial locales would list only what they actually ship. (docs/* and
+// the changelog *body* are synced from the private wavekat-voice repo and must
+// be localized there, so they are not in this list.)
+const fullSite = [
+  '/',
+  '/voice/',
+  '/voice/use-cases/',
+  '/voice/download/',
+  '/voice/talk/',
+  '/voice/changelog/',
+  '/voice/alternatives/',
+  '/voice/alternatives/linphone/',
+  '/blog/',
+  '/blog/hello-world/',
+  '/blog/common-voice-explorer/',
+  '/blog/place-calls-from-the-command-line/',
 ];
 
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
 export const translatedRoutes: Record<string, string[]> = {
-  'zh-Hans': [
-    '/',
-    '/voice/',
-    '/voice/use-cases/',
-    '/voice/download/',
-    '/voice/talk/',
-    '/voice/changelog/',
-    '/voice/alternatives/',
-    '/voice/alternatives/linphone/',
-    '/blog/',
-    '/blog/hello-world/',
-    '/blog/common-voice-explorer/',
-    '/blog/place-calls-from-the-command-line/',
-  ],
+  'zh-Hans': fullSite,
+  'zh-Hant': fullSite,
+  ja: fullSite,
+  ko: fullSite,
+  de: fullSite,
+  es: fullSite,
+  fr: fullSite,
+  it: fullSite,
 };
 
 const byCode = new Map(localeDefs.map((l) => [l.code, l]));
@@ -191,7 +210,25 @@ export interface UIStrings {
   postUpdated: string;
 }
 
+// Per-locale chrome strings for the fully-translated locales live in their own
+// files (src/lib/ui/<slug>.ts) so each can be authored independently. en and
+// zh-Hans stay inline as the reference pair.
+import { ui as uiZhHant } from './ui/zh-hant';
+import { ui as uiJa } from './ui/ja';
+import { ui as uiKo } from './ui/ko';
+import { ui as uiDe } from './ui/de';
+import { ui as uiEs } from './ui/es';
+import { ui as uiFr } from './ui/fr';
+import { ui as uiIt } from './ui/it';
+
 const strings: Record<string, UIStrings> = {
+  'zh-Hant': uiZhHant,
+  ja: uiJa,
+  ko: uiKo,
+  de: uiDe,
+  es: uiEs,
+  fr: uiFr,
+  it: uiIt,
   en: {
     navVoice: 'voice',
     navDocs: 'docs',

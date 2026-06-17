@@ -1,0 +1,30 @@
+import type { UIStrings } from '../i18n';
+
+export const ui: UIStrings = {
+  navVoice: '語音',
+  navDocs: '文件',
+  navBlog: '部落格',
+  switcherLabel: '切換語言',
+  bannerText: '本頁面有繁體中文版本。',
+  bannerView: '查看',
+  bannerDismiss: '關閉',
+  subOverview: '概覽',
+  subUseCases: '應用情境',
+  subAlternatives: '替代方案',
+  subDownload: '下載',
+  subChangelog: '更新內容',
+  subTalk: '聯絡我們',
+  dlMac: '下載 Mac 版',
+  dlLinux: '下載 Linux 版',
+  dlOther: '其他平台',
+  talkHeading: '聯絡我們',
+  talkBody:
+    '有疑問、建議，或希望我們支援某款裝置？電子郵件是聯絡我們的最佳方式——我們會閱讀每一則訊息，並盡快回覆。',
+  talkButton: '寄信給我們',
+  talkWritePre: '或直接寫信至 ',
+  talkWritePost: '。',
+  footerEmail: '寄信給我們',
+  footerSource: '在 GitHub 上查看原始碼',
+  postBack: '← 返回部落格',
+  postUpdated: '更新於',
+};

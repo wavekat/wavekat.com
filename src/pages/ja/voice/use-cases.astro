@@ -1,0 +1,69 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+
+const cases = [
+  {
+    title: 'クリニック・歯科医院',
+    pain: '受付のノートパソコンで予約の電話に応答し、各患者の要望を録音と文字起こしで記録に残します。',
+  },
+  {
+    title: 'サロン・スパ',
+    pain: '固定電話なしで、お客様の合間にさっと応答。メモを取り忘れて予約の詳細を失う心配もありません。',
+  },
+  {
+    title: '職人——配管工、電気工事、空調設備',
+    pain: '現場のノートパソコンから電話を取り、住所や作業の内容が文字起こしに残ります。',
+  },
+  {
+    title: '法律事務所（受任時の聞き取り）',
+    pain: '聞き取りの通話の横で逐語の文字起こしが進むので、その最も重要な最初の数分で話された一言も漏らしません。',
+  },
+  {
+    title: 'レストラン・テイクアウト',
+    pain: '繁忙時でも一つの画面で予約と注文に対応——もし細部に疑問が出ても、録音がそこにあります。',
+  },
+  {
+    title: '不動産管理',
+    pain: 'どこからでも入居者や修繕の電話に対応。誰がいつ何の用件で電話してきたかを検索できる履歴とともに残ります。',
+  },
+];
+---
+
+<Voice
+  title="活用シーン"
+  description="WaveKat Voice が最も役立つのは——電話で回り、通話・録音・文字起こしを一か所にまとめたい小規模ビジネスです。"
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      こんな方に
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      WaveKat Voice は、電話で回るあらゆる小規模ビジネスに合います。あなたのパソコンをビジネス回線に変え、
+      すべての通話を録音・文字起こしし、それらを検索できる一つの履歴にまとめます。
+      とりわけ役立つのが、次のような場面です。
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">事例</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {cases.map((c) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{c.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{c.pain}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">あなたの業種が見当たりませんか？</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+      このリストはあくまで出発点であり——対応範囲の限界ではありません。あなたのビジネスが電話で回っているなら、
+      WaveKat Voice はきっとしっくりくるはずです。ダウンロードして試すか、あなたの状況を教えてください。
+    </p>
+  </section>
+
+  <TalkCTA />
+</Voice>

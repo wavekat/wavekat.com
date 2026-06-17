@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PostCard from '../../../components/PostCard.astro';
+
+// Traditional-Chinese posts live under src/content/blog/zh-hant/ (id "zh-hant/<slug>").
+// Strip the locale prefix so the cards link to /zh-hant/blog/<slug>/.
+const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === 'zh-Hant'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const slugOf = (id: string) => id.replace(/^zh-hant\//, '');
+---
+
+<Base title="部落格 — WaveKat" description="來自 WaveKat 團隊的工程筆記、產品公告與技術深度文章。">
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header active="blog" />
+
+    <!-- Blog listing -->
+    <section class="mb-20">
+      <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">部落格</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10">
+        來自 WaveKat 團隊的工程筆記、產品公告與技術深度文章。
+      </p>
+
+      {posts.length === 0 ? (
+        <p class="text-sm text-gray-400 dark:text-gray-600">還沒有文章，請稍後再來看看。</p>
+      ) : (
+        <div class="grid gap-3">
+          {posts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              tags={post.data.tags}
+              slug={slugOf(post.id)}
+              hrefBase="/zh-hant/blog/"
+              dateLocale="zh-Hant"
+            />
+          ))}
+        </div>
+      )}
+    </section>
+
+    <Footer />
+
+  </div>
+</Base>

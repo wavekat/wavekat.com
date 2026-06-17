@@ -1,0 +1,68 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+
+const cases = [
+  {
+    title: '診所與牙科診所',
+    pain: '在櫃台的筆記型電腦上接聽預約來電，並為每位病患的需求保留一份錄音與逐字記錄。',
+  },
+  {
+    title: '美容院與水療中心',
+    pain: '在兩位客人之間隨手接聽，不必專門的話機，也絕不會因為漏記一筆而遺失預約細節。',
+  },
+  {
+    title: '師傅——水電工、電工、空調',
+    pain: '在現場用筆記型電腦接起電話，地址與工作內容的描述都會寫進逐字稿裡。',
+  },
+  {
+    title: '律師事務所（接案）',
+    pain: '接案通話時旁邊同步產生逐字稿，讓那最關鍵的頭幾分鐘裡說的每一句話都不會漏掉。',
+  },
+  {
+    title: '餐廳與外帶',
+    pain: '尖峰時段在一個畫面上處理訂位與點餐——萬一某個細節有疑問，錄音都在那兒。',
+  },
+  {
+    title: '物業管理',
+    pain: '隨時隨地接聽住戶與維修來電，並附帶可搜尋的歷史記錄，知道誰打來過、需要什麼。',
+  },
+];
+---
+
+<Voice
+  title="適用情境"
+  description="WaveKat Voice 最適合誰——那些靠電話運轉、需要把通話、錄音與逐字稿集中在一處的小生意。"
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      適合誰用
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      WaveKat Voice 適合任何靠電話運轉的小生意。它把你的電腦變成辦公電話，為每通電話錄音並轉寫成文字，
+      把這一切都收進一份可搜尋的歷史記錄裡。下面是它最能幫上忙的地方。
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">範例</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {cases.map((c) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{c.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{c.pain}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">沒看到你的行業？</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+      這份清單只是我們的起點——並不是我們的邊界。只要你的生意靠電話運轉，
+      WaveKat Voice 多半會讓你用得很順手。下載試試看，或者把你的情況告訴我們。
+    </p>
+  </section>
+
+  <TalkCTA />
+</Voice>
