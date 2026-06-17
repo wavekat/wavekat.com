@@ -102,7 +102,7 @@ const faqs = [
   {
     q: '會支援 Windows 或其他裝置嗎？',
     a: 'WaveKat Voice 目前在 Mac 和 Linux 上執行。Windows 和其他平台完全在考慮之內——我們只是會在有真實需求時才去做。所以如果你願意在 Windows 或其他地方使用 WaveKat Voice，請告訴我們。呼聲越高，它來得越快。',
-    link: { href: '/voice/talk/', label: '告訴我們你的需求' },
+    link: { href: '/zh-hant/voice/talk/', label: '告訴我們你的需求' },
   },
   {
     q: '它會拖慢或干擾我的電腦嗎？',
@@ -121,7 +121,7 @@ const appSchema = {
   url: 'https://wavekat.com/zh-hant/voice/',
   inLanguage: 'zh-Hant',
   softwareVersion: macDownload.version,
-  downloadUrl: 'https://wavekat.com/voice/download/',
+  downloadUrl: 'https://wavekat.com/zh-hant/voice/download/',
   description:
     '一款把你的電腦變成辦公電話的桌面應用程式——接聽和撥打電話，每通電話都自動錄音並轉寫。相容你已經在用的電話電信業者。',
   offers: {
@@ -176,7 +176,7 @@ const faqSchema = {
     <div class="flex flex-wrap items-center gap-4">
       <VoiceDownload />
       <a
-        href="/voice/download/"
+        href="/zh-hant/voice/download/"
         class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         安裝詳情
@@ -184,8 +184,8 @@ const faqSchema = {
       </a>
     </div>
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 公測期間免費</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 公測期間免費</p>
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 公測期間免費</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 公測期間免費</p>
     </div>
   </section>
 
@@ -230,7 +230,7 @@ const faqSchema = {
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">適合誰用</h2>
     <a
-      href="/voice/use-cases/"
+      href="/zh-hant/voice/use-cases/"
       class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
     >
       <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">靠電話運轉的生意</span>
