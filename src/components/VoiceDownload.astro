@@ -9,12 +9,19 @@
 // off, the native <details> still lets anyone reach the other build.
 import { Apple, Package, ChevronDown } from '@lucide/astro';
 import { getMacDownload, getLinuxDownload } from '../lib/voice-download';
+import { resolveLocale, t } from '../lib/i18n';
 
 interface Props {
   /** 'hero' = elevated pill (default), 'cta' = flatter button for cards. */
   variant?: 'hero' | 'cta';
 }
 const { variant = 'hero' } = Astro.props;
+
+const { code: lang } = resolveLocale(Astro.url.pathname);
+const ui = t(lang);
+
+// Button labels are localised here (the download lib stays language-agnostic).
+const dlLabel: Record<string, string> = { mac: ui.dlMac, linux: ui.dlLinux };
 
 const platforms = [
   { key: 'mac', icon: Apple, conversion: 'download_mac', dl: await getMacDownload() },
@@ -44,14 +51,14 @@ const primaryCls =
       style="background-color: #ff6d00"
     >
       <p.icon class="w-5 h-5" />
-      {p.dl.label}
+      {dlLabel[p.key] ?? p.dl.label}
     </a>
   ))}
 
   {/* Other platforms — native <details> so it works without JS. */}
   <details class="group relative" data-dl-more>
     <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
-      other platforms
+      {ui.dlOther}
       <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
     </summary>
     <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-lg border border-gray-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-wk-surface">
@@ -67,7 +74,7 @@ const primaryCls =
         >
           <p.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
           <span class="flex flex-col">
-            <span class="text-sm font-bold text-gray-900 dark:text-white">{p.dl.label}</span>
+            <span class="text-sm font-bold text-gray-900 dark:text-white">{dlLabel[p.key] ?? p.dl.label}</span>
             <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.dl.arch} · {p.dl.size}</span>
           </span>
         </a>

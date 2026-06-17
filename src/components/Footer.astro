@@ -2,6 +2,10 @@
 import { execSync } from 'child_process';
 import { Mail } from '@lucide/astro';
 import { version } from '../../package.json';
+import { resolveLocale, t } from '../lib/i18n';
+
+const { code: lang } = resolveLocale(Astro.url.pathname);
+const ui = t(lang);
 
 let siteVersion: string;
 try {
@@ -35,18 +39,18 @@ try {
     </a>
     <a
       href="mailto:eason@wavekat.com"
-      title="Email us"
+      title={ui.footerEmail}
       class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
     >
       <Mail class="w-5 h-5" />
-      <span class="sr-only">Email us</span>
+      <span class="sr-only">{ui.footerEmail}</span>
     </a>
   </div>
   <a
     href="https://github.com/wavekat/wavekat.com"
     target="_blank"
     rel="noopener noreferrer"
-    title="View source on GitHub"
+    title={ui.footerSource}
     class="hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
   >
     {siteVersion}

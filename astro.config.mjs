@@ -39,7 +39,29 @@ function rehypeRewriteDocLinks() {
 export default defineConfig({
   site: 'https://wavekat.com',
   output: 'static',
-  integrations: [sitemap()],
+  // i18n: English is the default locale and keeps unprefixed URLs (/voice/),
+  // so existing pages and their canonicals are unchanged. Localised pages live
+  // under a short slug (/zh/voice/) whose hreflang stays standards-correct
+  // (zh-Hans). Keep this in sync with src/lib/i18n.ts (slug ↔ code mapping).
+  // prefixDefaultLocale:false = don't redirect / to /en/.
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', { path: 'zh', codes: ['zh-Hans', 'zh-CN'] }],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+  integrations: [
+    // Emit <xhtml:link rel="alternate" hreflang> entries in the sitemap for
+    // pages that exist in multiple locales. Keys are URL slugs, values are the
+    // hreflang codes — so /zh/ is advertised as zh-Hans.
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en', zh: 'zh-Hans' },
+      },
+    }),
+  ],
   markdown: {
     rehypePlugins: [rehypeRewriteDocLinks()],
   },

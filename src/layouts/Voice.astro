@@ -2,6 +2,7 @@
 import Base from './Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { resolveLocale, localesForPath, localizedPath, t } from '../lib/i18n';
 
 interface Props {
   title: string;
@@ -10,22 +11,29 @@ interface Props {
 
 const { title, description } = Astro.props;
 
+// Locale comes from the URL; the sub-nav is localised and each link stays in
+// the current locale where that page is translated, else falls back to English.
+const { code: lang, basePath } = resolveLocale(Astro.url.pathname);
+const ui = t(lang);
+
 const subNav = [
-  { href: '/voice/', label: 'overview' },
-  { href: '/voice/use-cases/', label: 'use cases' },
-  { href: '/voice/alternatives/', label: 'alternatives' },
-  { href: '/voice/download/', label: 'download' },
-  { href: '/voice/changelog/', label: "what's new" },
-  { href: '/voice/talk/', label: 'talk to us' },
+  { href: '/voice/', label: ui.subOverview },
+  { href: '/voice/use-cases/', label: ui.subUseCases },
+  { href: '/voice/alternatives/', label: ui.subAlternatives },
+  { href: '/voice/download/', label: ui.subDownload },
+  { href: '/voice/changelog/', label: ui.subChangelog },
+  { href: '/voice/talk/', label: ui.subTalk },
 ];
 
-const currentPath = Astro.url.pathname.replace(/\/$/, '') + '/';
+const localeHref = (href: string) =>
+  localesForPath(href).includes(lang) ? localizedPath(href, lang) : href;
 
 // A nav item is active on its own page and on any page beneath it (e.g. the
 // per-competitor /voice/alternatives/<slug>/ pages keep "alternatives" lit).
-// The overview href is everyone's prefix, so it only matches exactly.
+// The overview href is everyone's prefix, so it only matches exactly. Compare
+// against the locale-stripped basePath so it works under /zh/ too.
 const isActive = (href: string) =>
-  currentPath === href || (href !== '/voice/' && currentPath.startsWith(href));
+  basePath === href || (href !== '/voice/' && basePath.startsWith(href));
 ---
 
 <Base title={`${title} — WaveKat`} description={description}>
@@ -39,7 +47,7 @@ const isActive = (href: string) =>
         const active = isActive(item.href);
         return (
           <a
-            href={item.href}
+            href={localeHref(item.href)}
             class={
               active
                 ? 'text-xs font-bold rounded px-3 py-1 transition-colors'
