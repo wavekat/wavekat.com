@@ -115,7 +115,9 @@ i18n is **global, URL-driven infrastructure**, not a per-section feature. `src/l
 3. Add any new chrome strings to the `strings` dict in `i18n.ts` (keep every locale's `UIStrings` complete — page body copy lives in the page, only shared chrome lives in the dict).
 4. Keep localized JSON-LD in sync: set the localized `url` and add `inLanguage` (see `zh/voice/index.astro`).
 
-To add a whole new language, uncomment/add its `localeDefs` entry (with `slug` and `hreflangAliases`), add its `UIStrings`, register its routes, and create the pages. Currently translated: `/` and `/voice/` in `zh-Hans`. `zh-Hant` is stubbed-ready in `localeDefs`.
+**Blog posts** are localized via the content collection: English posts live at `src/content/blog/*.md`; translations live under `src/content/blog/<lang>/*.md` with a `lang:` frontmatter field (schema in `content.config.ts`). The default-locale blog routes filter to `data.lang === 'en'`; the `/zh/blog/` routes filter to their own language and strip the `zh/` id prefix for the URL. **Data-driven pages** (e.g. `voice/alternatives/`) keep one template per locale and read locale-keyed datasets from the lib (`getAlternatives(locale)` in `voice-alternatives.ts`).
+
+To add a whole new language, uncomment/add its `localeDefs` entry (with `slug` and `hreflangAliases`), add its `UIStrings`, register its routes, and create the pages. **`zh-Hans` is fully translated**: the homepage, the entire `voice/*` section (overview, use-cases, download, talk, changelog chrome, alternatives hub + each comparison), and the blog (listing + every post). `zh-Hant` is stubbed-ready in `localeDefs`. **Not translated** (synced from the private `wavekat-voice` upstream at build, so they must be localized there, not here): `docs/*` and the changelog *body* (`/voice/changelog/` chrome is localized; its release notes come from the synced markdown).
 
 ## Brand assets
 

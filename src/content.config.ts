@@ -12,6 +12,10 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     ogImage: z.string().optional(),
+    // BCP-47 code of the post's language. English posts live at the collection
+    // root; translations live under a locale subdir (e.g. zh/<slug>.md) and set
+    // this so the per-locale blog routes can filter to their own language.
+    lang: z.string().default('en'),
   }),
 });
 

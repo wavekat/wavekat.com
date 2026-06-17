@@ -56,7 +56,20 @@ export const localeDefs: LocaleDef[] = [
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
 export const translatedRoutes: Record<string, string[]> = {
-  'zh-Hans': ['/', '/voice/'],
+  'zh-Hans': [
+    '/',
+    '/voice/',
+    '/voice/use-cases/',
+    '/voice/download/',
+    '/voice/talk/',
+    '/voice/changelog/',
+    '/voice/alternatives/',
+    '/voice/alternatives/linphone/',
+    '/blog/',
+    '/blog/hello-world/',
+    '/blog/common-voice-explorer/',
+    '/blog/place-calls-from-the-command-line/',
+  ],
 };
 
 const byCode = new Map(localeDefs.map((l) => [l.code, l]));
@@ -174,6 +187,8 @@ export interface UIStrings {
   talkWritePost: string;
   footerEmail: string;
   footerSource: string;
+  postBack: string;
+  postUpdated: string;
 }
 
 const strings: Record<string, UIStrings> = {
@@ -202,6 +217,8 @@ const strings: Record<string, UIStrings> = {
     talkWritePost: ' directly.',
     footerEmail: 'Email us',
     footerSource: 'View source on GitHub',
+    postBack: '← back to blog',
+    postUpdated: 'updated',
   },
   'zh-Hans': {
     navVoice: '语音',
@@ -228,6 +245,8 @@ const strings: Record<string, UIStrings> = {
     talkWritePost: '。',
     footerEmail: '给我们发邮件',
     footerSource: '在 GitHub 上查看源码',
+    postBack: '← 返回博客',
+    postUpdated: '更新于',
   },
 };
 
