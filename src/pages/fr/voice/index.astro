@@ -102,7 +102,7 @@ const faqs = [
   {
     q: 'Prendrez-vous en charge Windows ou d’autres appareils ?',
     a: 'WaveKat Voice fonctionne aujourd’hui sur Mac et Linux. Windows et d’autres plateformes sont tout à fait envisageables — nous les développons simplement lorsqu’il y a une réelle demande. Donc si vous utiliseriez WaveKat Voice sur Windows ou ailleurs, dites-le-nous. Plus les demandes sont nombreuses, plus cela arrivera vite.',
-    link: { href: '/voice/talk/', label: 'Dites-nous ce qu’il vous faut' },
+    link: { href: '/fr/voice/talk/', label: 'Dites-nous ce qu’il vous faut' },
   },
   {
     q: 'Va-t-il ralentir ou perturber mon ordinateur ?',
@@ -121,7 +121,7 @@ const appSchema = {
   url: 'https://wavekat.com/fr/voice/',
   inLanguage: 'fr',
   softwareVersion: macDownload.version,
-  downloadUrl: 'https://wavekat.com/voice/download/',
+  downloadUrl: 'https://wavekat.com/fr/voice/download/',
   description:
     'Une application de bureau qui transforme votre ordinateur en téléphone professionnel — recevez et passez des appels, chaque appel étant enregistré et retranscrit. Compatible avec l’opérateur téléphonique que vous utilisez déjà.',
   offers: {
@@ -177,7 +177,7 @@ const faqSchema = {
     <div class="flex flex-wrap items-center gap-4">
       <VoiceDownload />
       <a
-        href="/voice/download/"
+        href="/fr/voice/download/"
         class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         Détails d’installation
@@ -185,8 +185,8 @@ const faqSchema = {
       </a>
     </div>
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · gratuit pendant la bêta</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · gratuit pendant la bêta</p>
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · gratuit pendant la bêta</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · gratuit pendant la bêta</p>
     </div>
   </section>
 
@@ -231,7 +231,7 @@ const faqSchema = {
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">À qui ça s’adresse</h2>
     <a
-      href="/voice/use-cases/"
+      href="/fr/voice/use-cases/"
       class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
     >
       <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">Les entreprises qui vivent au téléphone</span>

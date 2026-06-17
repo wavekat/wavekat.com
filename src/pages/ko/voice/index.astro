@@ -102,7 +102,7 @@ const faqs = [
   {
     q: 'Windows나 다른 기기도 지원하나요?',
     a: 'WaveKat Voice는 현재 Mac과 Linux에서 실행됩니다. Windows를 비롯한 다른 플랫폼도 충분히 고려하고 있습니다 — 다만 실제 수요가 있을 때 만듭니다. 그러니 Windows나 다른 곳에서 WaveKat Voice를 쓰고 싶다면 알려 주세요. 요청하는 분이 많을수록 더 빨리 이뤄집니다.',
-    link: { href: '/voice/talk/', label: '필요한 점을 알려 주세요' },
+    link: { href: '/ko/voice/talk/', label: '필요한 점을 알려 주세요' },
   },
   {
     q: '제 컴퓨터를 느리게 하거나 방해하지 않나요?',
@@ -121,7 +121,7 @@ const appSchema = {
   url: 'https://wavekat.com/ko/voice/',
   inLanguage: 'ko',
   softwareVersion: macDownload.version,
-  downloadUrl: 'https://wavekat.com/voice/download/',
+  downloadUrl: 'https://wavekat.com/ko/voice/download/',
   description:
     '당신의 컴퓨터를 업무 전화로 바꿔 주는 데스크톱 앱 — 전화를 받고 걸며, 모든 통화를 자동으로 녹음하고 전사합니다. 이미 쓰고 있는 전화 사업자와 호환됩니다.',
   offers: {
@@ -177,7 +177,7 @@ const faqSchema = {
     <div class="flex flex-wrap items-center gap-4">
       <VoiceDownload />
       <a
-        href="/voice/download/"
+        href="/ko/voice/download/"
         class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         설치 안내
@@ -185,8 +185,8 @@ const faqSchema = {
       </a>
     </div>
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 베타 기간 무료</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 베타 기간 무료</p>
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/ko/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 베타 기간 무료</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/ko/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 베타 기간 무료</p>
     </div>
   </section>
 
@@ -231,7 +231,7 @@ const faqSchema = {
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">누구를 위한 앱인가</h2>
     <a
-      href="/voice/use-cases/"
+      href="/ko/voice/use-cases/"
       class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
     >
       <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">전화로 굴러가는 사업</span>
