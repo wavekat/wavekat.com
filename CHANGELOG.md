@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.34](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.33...wavekat-com-v0.0.34) (2026-06-17)
+
+
+### Features
+
+* **i18n:** global internationalization with 9 fully-translated locales ([#96](https://github.com/wavekat/wavekat.com/issues/96)) ([9d0c791](https://github.com/wavekat/wavekat.com/commit/9d0c791a9c38a13e27418d18abed64ff81b7429c))
+
 ## [0.0.33](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.32...wavekat-com-v0.0.33) (2026-06-16)
 
 
