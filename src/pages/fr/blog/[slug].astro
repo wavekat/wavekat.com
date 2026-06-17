@@ -1,0 +1,30 @@
+---
+import { getCollection, render } from 'astro:content';
+import Post from '../../../layouts/Post.astro';
+
+// One route per French post. Posts live under src/content/blog/fr/
+// (id "fr/<slug>"); the route param is the bare slug so URLs are /fr/blog/<slug>/.
+// The Post layout localises its chrome from the /fr/ URL automatically.
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'fr');
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/^fr\//, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Post
+  title={post.data.title}
+  description={post.data.description}
+  date={post.data.date}
+  updated={post.data.updated}
+  author={post.data.author}
+  tags={post.data.tags}
+  ogImage={post.data.ogImage}
+>
+  <Content />
+</Post>

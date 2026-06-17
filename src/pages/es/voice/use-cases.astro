@@ -1,0 +1,70 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+
+const cases = [
+  {
+    title: 'Clínicas y consultorios dentales',
+    pain: 'Atienda las llamadas de citas desde el portátil de recepción y conserve un registro grabado y transcrito de lo que pidió cada paciente.',
+  },
+  {
+    title: 'Peluquerías y spas',
+    pain: 'Responda entre un cliente y otro sin necesidad de un teléfono fijo, y no pierda nunca los detalles de una reserva por una nota olvidada.',
+  },
+  {
+    title: 'Oficios — fontaneros, electricistas, climatización',
+    pain: 'Atienda desde el portátil estando en obra, con la dirección y la descripción del trabajo recogidas en la transcripción.',
+  },
+  {
+    title: 'Despachos de abogados (recepción de casos)',
+    pain: 'Lleve las llamadas iniciales con una transcripción literal al lado, para que nada de lo dicho en esos primeros minutos decisivos se pierda.',
+  },
+  {
+    title: 'Restaurantes y comida para llevar',
+    pain: 'Gestione reservas y pedidos desde una sola pantalla en plena hora punta — la grabación está ahí si algún detalle queda en duda.',
+  },
+  {
+    title: 'Administración de propiedades',
+    pain: 'Atienda las llamadas de inquilinos y de mantenimiento desde cualquier lugar, con un historial que se puede buscar sobre quién llamó y qué necesitaba.',
+  },
+];
+---
+
+<Voice
+  title="Casos de uso"
+  description="A quién le conviene más WaveKat Voice — pequeños negocios que viven del teléfono y necesitan llamadas, grabaciones y transcripciones en un solo lugar."
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      Para quién es
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      WaveKat Voice le sirve a cualquier pequeño negocio que funcione a base de teléfono. Convierte su
+      computadora en la línea de su negocio, graba y transcribe cada llamada y lo guarda todo en un
+      historial que se puede buscar. Aquí es donde más ayuda.
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Ejemplos</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {cases.map((c) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{c.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{c.pain}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">¿No ve el suyo?</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+      Esta lista es por donde empezamos — no a quién nos limitamos. Si su negocio funciona a base de
+      teléfono, lo más probable es que WaveKat Voice le siente de maravilla. Descárguelo y compruébelo,
+      o cuéntenos cómo trabaja.
+    </p>
+  </section>
+
+  <TalkCTA />
+</Voice>

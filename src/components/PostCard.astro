@@ -5,16 +5,19 @@ interface Props {
   date: Date;
   tags?: string[];
   slug: string;
+  /** Link base + Intl date locale, so localized blog listings link in-locale. */
+  hrefBase?: string;
+  dateLocale?: string;
 }
 
-const { title, description, date, tags = [], slug } = Astro.props;
+const { title, description, date, tags = [], slug, hrefBase = '/blog/', dateLocale = 'en-US' } = Astro.props;
 
 const formatDate = (d: Date) =>
-  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  d.toLocaleDateString(dateLocale, { year: 'numeric', month: 'short', day: 'numeric' });
 ---
 
 <a
-  href={`/blog/${slug}`}
+  href={`${hrefBase}${slug}`}
   class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
 >
   <time datetime={date.toISOString()} class="text-[10px] text-gray-400 dark:text-gray-600 tracking-wide uppercase">

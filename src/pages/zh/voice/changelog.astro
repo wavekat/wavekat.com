@@ -1,0 +1,52 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+
+// The changelog lives in the voice repo at docs/site/changelog.md and is
+// synced into src/content/docs/voice/ by scripts/sync-docs.js (pinned to the
+// latest Voice release tag), same as every other doc. It's deliberately
+// *excluded* from the docs content collection (see content.config.ts) so it
+// doesn't appear under /docs — instead we render the synced markdown here, as
+// a first-class Voice product page at /voice/changelog.
+//
+// import.meta.glob resolves at build time against whatever the sync left on
+// disk. Before the first sync (or in local dev without one) it matches
+// nothing, so `entry` is undefined and we fall back to a "coming soon" note
+// rather than failing the build.
+const modules = import.meta.glob('../../../content/docs/voice/changelog.md', {
+  eager: true,
+});
+const entry = Object.values(modules)[0] as
+  | { Content: any; frontmatter: { title?: string; description?: string } }
+  | undefined;
+
+const Content = entry?.Content;
+const title = entry?.frontmatter?.title ?? '更新日志';
+const description =
+  entry?.frontmatter?.description ??
+  'WaveKat Voice 每个版本的更新内容。';
+---
+
+<Voice title={title} description={description}>
+  {
+    Content ? (
+      <article
+        class="prose prose-sm dark:prose-invert prose-gray max-w-none dark:text-gray-400
+          prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+          prose-h1:text-2xl prose-h1:leading-snug prose-h1:mb-3
+          prose-h2:text-base prose-h2:mt-8
+          prose-h3:text-sm prose-h3:mt-4 prose-h3:mb-2
+          prose-a:text-gray-600 dark:prose-a:text-gray-400 prose-a:underline prose-a:underline-offset-2
+          prose-strong:text-gray-900 dark:prose-strong:text-gray-200
+          prose-code:text-gray-800 dark:prose-code:text-gray-200 prose-code:bg-gray-100 dark:prose-code:bg-white/10
+          prose-code:font-normal prose-code:rounded prose-code:px-1.5 prose-code:py-0.5
+          prose-code:before:content-none prose-code:after:content-none"
+      >
+        <Content />
+      </article>
+    ) : (
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+        版本说明即将上线——请在下次更新后再来查看。
+      </p>
+    )
+  }
+</Voice>

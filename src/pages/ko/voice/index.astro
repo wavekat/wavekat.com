@@ -1,0 +1,293 @@
+---
+// Korean version of the WaveKat Voice landing page. Mirrors
+// src/pages/voice/index.astro section-for-section so the two never drift
+// structurally. Body copy is translated here; the surrounding chrome (header
+// nav, sub-nav, download control, talk CTA) is localised by the shared
+// components via the URL-derived locale, so the page is fully Korean. hreflang
+// and the language switcher are wired automatically in Base/Header from the
+// route registry in src/lib/i18n.ts — this page declares no i18n props.
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+import {
+  PhoneCall,
+  Mic,
+  FileText,
+  Server,
+  Cloud,
+  Lock,
+  ArrowRight,
+} from '@lucide/astro';
+import VoiceDownload from '../../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
+
+const features = [
+  {
+    icon: PhoneCall,
+    title: '데스크톱에서 통화',
+    body: '컴퓨터에서 바로 전화를 받고 걸 수 있습니다 — 탁상 전화기도, 별도 장비도, 신경 써야 할 브라우저 탭도 필요 없습니다. 전화가 울릴 때까지 조용히 한쪽에서 기다립니다.',
+  },
+  {
+    icon: Mic,
+    title: '모든 통화 자동 녹음',
+    body: '모든 대화가 자동으로 녹음되어, 전화를 끊는 순간 저장됩니다. 필요할 때 언제든 다시 들을 수 있습니다 — 설정도, 켜 두어야 한다는 기억도 필요 없습니다.',
+  },
+  {
+    icon: FileText,
+    title: '실시간 받아쓰기',
+    body: '말하는 대로 글자가 보입니다. 통화 옆에서 실시간 전사가 흘러가, 메모를 휘갈기는 대신 중요한 내용에 집중할 수 있습니다.',
+  },
+  {
+    icon: Server,
+    title: '쓰던 사업자 그대로',
+    body: '이미 쓰고 있는 전화 사업자를 그대로 가져오세요 — Twilio, Telnyx, 2talk 등. 목록에서 고르면 설정이 자동으로 채워집니다.',
+  },
+  {
+    icon: Cloud,
+    title: '원할 때만 동기화',
+    body: 'WaveKat 계정에 로그인하면 녹음과 전사가 동기화되어 웹에서 다시 볼 수 있습니다. 로그인하지 않으면 모든 것이 당신의 컴퓨터에만 남습니다.',
+  },
+  {
+    icon: Lock,
+    title: '기본은 당신의 것',
+    body: '당신의 통화, 녹음, 전사는 우선 당신의 컴퓨터에 저장됩니다. 당신이 선택하지 않는 한 아무것도 업로드되지 않습니다 — 당신과 고객 사이에 끼어드는 정체불명의 회사도 없습니다.',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    title: '번호 연결하기',
+    body: '앱을 처음 열 때 전화 사업자에 로그인하세요. 목록에서 고르면 설정이 자동으로 채워집니다.',
+  },
+  {
+    n: '2',
+    title: '전화 받기',
+    body: '초록색 점은 온라인 상태이며 연결 가능하다는 뜻입니다. 받기, 걸기, 음소거, 키패드 사용 — 모두 데스크톱에서 처리합니다.',
+  },
+  {
+    n: '3',
+    title: '나중에 다시 보기',
+    body: '모든 통화가 녹음과 전사와 함께 통화 기록에 들어가, 언제든 다시 보거나 웹에 동기화할 수 있습니다.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'WaveKat Voice가 정확히 무엇인가요?',
+    a: '당신의 컴퓨터를 업무 전화로 바꿔 주는 데스크톱 앱입니다. 전화 사업자 계정으로 로그인하면, 그때부터 컴퓨터에서 바로 전화를 받고 걸 수 있습니다 — 모든 통화는 자동으로 녹음되고 글로 기록됩니다.',
+  },
+  {
+    q: '특별한 장비가 필요한가요?',
+    a: '아니요. 컴퓨터 한 대와 전화 사업자 계정만 있으면 필요한 것은 다 갖춰진 셈입니다. 탁상 전화기도, 별도 장비도 필요 없습니다 — 헤드셋이 있으면 좋지만 필수는 아닙니다.',
+  },
+  {
+    q: '어떤 전화 사업자와 호환되나요?',
+    a: '대부분의 흔한 사업자들 — Twilio, Telnyx, 2talk 등입니다. 우리가 아는 사업자는 설정을 자동으로 채워 드리고, 그 외에는 직접 정보를 입력할 수 있습니다. 이미 인터넷으로 업무 전화를 걸고 있다면, 당신의 사업자는 거의 틀림없이 호환됩니다.',
+  },
+  {
+    q: '녹음과 전사는 어디에 보관되나요?',
+    a: '당신의 컴퓨터에 보관됩니다. 당신이 결정하지 않는 한 아무것도 업로드되지 않습니다. WaveKat 계정에 로그인하면 녹음과 전사가 동기화되어 웹에서 다시 볼 수 있습니다 — 그렇지 않으면 결코 당신의 컴퓨터를 떠나지 않습니다.',
+  },
+  {
+    q: '무료인가요?',
+    a: '실제 업체들과 함께 다듬어 가는 베타 기간 동안 무료로 사용할 수 있습니다. WaveKat Voice는 이후 유료 제품이 될 예정입니다 — 그렇게 바뀌기 전에 베타 사용자에게 충분히 미리 알려 드립니다.',
+  },
+  {
+    q: '어떤 환경에서 실행되나요?',
+    a: `Mac과 Linux입니다. macOS에서는 12 버전 이상에서 실행됩니다(${macDownload.arch}). Linux에서는 ${linuxDownload.arch}용 .deb 패키지로 제공됩니다.`,
+  },
+  {
+    q: 'Windows나 다른 기기도 지원하나요?',
+    a: 'WaveKat Voice는 현재 Mac과 Linux에서 실행됩니다. Windows를 비롯한 다른 플랫폼도 충분히 고려하고 있습니다 — 다만 실제 수요가 있을 때 만듭니다. 그러니 Windows나 다른 곳에서 WaveKat Voice를 쓰고 싶다면 알려 주세요. 요청하는 분이 많을수록 더 빨리 이뤄집니다.',
+    link: { href: '/voice/talk/', label: '필요한 점을 알려 주세요' },
+  },
+  {
+    q: '제 컴퓨터를 느리게 하거나 방해하지 않나요?',
+    a: '전화가 올 때까지 한쪽에서 조용히 기다리는 가벼운 데스크톱 앱이며, 백그라운드에서 알아서 조용히 업데이트됩니다. 한 번 설치하면 있는 줄도 모르게 됩니다.',
+  },
+];
+
+// Localised structured data: same shape as the English page, but with the
+// Korean URL and inLanguage so engines bind this variant to ko.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'WaveKat Voice',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'macOS, Linux',
+  url: 'https://wavekat.com/ko/voice/',
+  inLanguage: 'ko',
+  softwareVersion: macDownload.version,
+  downloadUrl: 'https://wavekat.com/voice/download/',
+  description:
+    '당신의 컴퓨터를 업무 전화로 바꿔 주는 데스크톱 앱 — 전화를 받고 걸며, 모든 통화를 자동으로 녹음하고 전사합니다. 이미 쓰고 있는 전화 사업자와 호환됩니다.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'ko',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Voice
+  title="WaveKat Voice — 컴퓨터를 당신의 업무 전화로"
+  description="WaveKat Voice는 Mac과 Linux용 데스크톱 앱으로, 당신의 컴퓨터를 업무 전화로 바꿉니다 — 전화를 받고 걸며, 모든 대화를 자동으로 녹음하고 글로 기록해 드립니다. 무료 공개 베타."
+>
+  <!-- Hero -->
+  <section class="relative mb-20 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        무료 공개 베타
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      당신의 업무 전화,<br />데스크톱에서.<br />
+      <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">녹음하고, 전사합니다.</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      WaveKat Voice는 당신의 컴퓨터에서 돌아가는 전화 앱입니다. 이미 쓰고 있는 전화 사업자를 연결하면,
+      데스크톱에서 바로 전화를 받고 걸 수 있습니다 — 모든 대화는 자동으로 녹음되고 글로 기록되며,
+      당신이 원하지 않는 한 데이터는 컴퓨터를 떠나지 않습니다.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <VoiceDownload />
+      <a
+        href="/voice/download/"
+        class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        설치 안내
+        <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 베타 기간 무료</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 베타 기간 무료</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">주요 기능</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {features.map((f) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+            <f.icon class="w-4 h-4" style="color: #ff6d00" />
+          </span>
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">작동 방식</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">누구를 위한 앱인가</h2>
+    <a
+      href="/voice/use-cases/"
+      class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+    >
+      <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">전화로 굴러가는 사업</span>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
+        병의원, 미용실, 각종 기술직, 법률사무소, 식당, 부동산 관리 — 한 통의 전화가 곧 한 명의 고객인
+        모든 분들을 위해. WaveKat Voice가 어디에 잘 맞는지 살펴보세요.
+      </p>
+      <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+        wavekat.com/voice/use-cases →
+      </span>
+    </a>
+  </section>
+
+  <!-- Download CTA -->
+  <section class="mb-16">
+    <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
+      <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">한번 써 보시겠어요?</h2>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
+        공개 베타 기간 동안 무료입니다. 1분이면 설치하고, 번호를 연결한 뒤, 다음 전화를 데스크톱에서 받아 보세요.
+      </p>
+      <div class="flex justify-center">
+        <VoiceDownload variant="cta" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">질문과 답변</h2>
+    <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+      {faqs.map((f) => (
+        <details class="group">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+            {f.q}
+            <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+          </summary>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+            {f.a}
+            {f.link && (
+              <a
+                href={f.link.href}
+                class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
+                style="color: #ff6d00"
+              >
+                {f.link.label}
+                <ArrowRight class="w-3 h-3" />
+              </a>
+            )}
+          </p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <TalkCTA />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Voice>

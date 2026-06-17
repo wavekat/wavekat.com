@@ -89,6 +89,38 @@ This site is optimized for classic search (SEO) **and** generative answer engine
 
 When you add a page that doesn't fit the patterns above, mirror the closest existing one (`voice/alternatives/[slug].astro` is the current best example: clear `<h1>`, self-contained intro, comparison table, fair "what it is", Q&A, and `FAQPage` + `BreadcrumbList` schema).
 
+## Internationalization (i18n)
+
+i18n is **global, URL-driven infrastructure**, not a per-section feature. `src/lib/i18n.ts` is the single source of truth; the layouts and shared chrome read from it automatically. Don't reinvent any of this per page.
+
+### How it works (don't reinvent it)
+
+- **Locale is derived from the URL, never passed as a prop.** Every layout calls `resolveLocale(Astro.url.pathname)` → `{ code, basePath }`. `/zh/voice/` → `code: 'zh-Hans'`, `basePath: '/voice/'`. Because of this, `Base.astro` (hreflang, `<html lang>`, `og:locale`, the suggestion banner), `Header.astro` (localized nav + `LanguageSwitcher`), `Voice.astro` (sub-nav), and `Footer`/`VoiceDownload`/`TalkCTA` are all locale-aware with zero per-page wiring.
+- **Two registries drive everything**, both in `src/lib/i18n.ts`:
+  - `localeDefs` — each locale's `code` (BCP-47, for hreflang/`<html lang>`), `slug` (URL segment), `label` (endonym for the switcher), `ogLocale`, and optional `hreflangAliases` (region fan-out).
+  - `translatedRoutes` — which base paths exist in which non-default locale. This is what makes a page "translated": `hreflang`, the sitemap alternates, and the switcher targets all read from it.
+- **hreflang, the switcher, and the sitemap are automatic.** `buildAlternates()` emits the reciprocal set (+ region aliases + `x-default`) only for pages in `translatedRoutes`; untranslated pages get **no** hreflang (so we never claim a translation that doesn't exist) but **still show the switcher** (it falls back to the locale home, never a 404). The sitemap `i18n` map in `astro.config.mjs` mirrors the slug↔code mapping.
+- **A "suggest, don't force" banner** (in `Base.astro`) offers the visitor's browser language when this page has it, in the target language, and remembers dismissal in `localStorage`. Never auto-redirect — it breaks SEO/crawling and traps shared-machine users.
+
+### Naming rules (these are deliberate — follow them)
+
+1. **Slug = the shortest *correct* language code.** Use the bare code (`/ja/`, `/es/`, `/fr/`) and add a qualifier *only* when a language ships more than one variant we serve (`/zh/` Simplified vs `/zh-hant/` Traditional). The visible slug stays short; the `code`/hreflang underneath stays standards-correct, so they can differ but never drift.
+2. **`jp`/`cn` are *country* codes, not languages.** Japanese is `ja`, not `jp`. Chinese is split by **script** (`zh-Hans`/`zh-Hant`), never by region — Traditional (`zh-Hant`) serves TW/HK/MO, Simplified serves CN/SG, and region targeting is done with `hreflangAliases` (`zh-Hant-TW`, `zh-Hans-SG`, …) pointing at the one script page. Don't create per-country Chinese pages.
+3. **`en` is the default locale and stays unprefixed** (`/voice/`), so existing URLs and canonicals are unchanged. `prefixDefaultLocale: false`.
+
+### Adding a translation
+
+1. Create the page under the slug dir, mirroring the English page **section-for-section** (e.g. `src/pages/zh/voice/index.astro` mirrors `voice/index.astro`). Translate the *body* copy in the page; the chrome localizes itself via the shared components.
+2. Add the base path to that locale's list in `translatedRoutes`. That one line lights up hreflang, the sitemap, and the switcher.
+3. Add the locale's chrome strings. `en` and `zh-Hans` live inline in the `strings` dict in `i18n.ts`; every other locale keeps its `UIStrings` in its own file `src/lib/ui/<slug>.ts` (imported into the dict) so locales can be authored independently without colliding on one file. Keep each locale's `UIStrings` complete — page body copy lives in the page, only shared chrome lives here.
+4. Keep localized JSON-LD in sync: set the localized `url` and add `inLanguage` (see `zh/voice/index.astro`).
+
+**Blog posts** are localized via the content collection: English posts live at `src/content/blog/*.md`; translations live under `src/content/blog/<lang>/*.md` with a `lang:` frontmatter field (schema in `content.config.ts`). The default-locale blog routes filter to `data.lang === 'en'`; each `/​<slug>/blog/` route filters to its own language and strips the `<slug>/` id prefix for the URL. **Data-driven pages** (e.g. `voice/alternatives/`) keep one template per locale and read locale-keyed datasets via `getAlternatives(locale)` in `voice-alternatives.ts`; `en` and `zh-Hans` are inline there, every other locale's dataset lives in `src/lib/alternatives/<slug>.ts` and is imported (same per-locale-file pattern as the UI strings).
+
+To add a whole new language: add its `localeDefs` entry (with `slug` and any `hreflangAliases`), add its base paths to `translatedRoutes`, add its slug↔code to both the `i18n` and `sitemap` maps in `astro.config.mjs`, create `src/lib/ui/<slug>.ts` + `src/lib/alternatives/<slug>.ts`, and create the `src/pages/<slug>/**` page tree + `src/content/blog/<slug>/*.md` posts.
+
+**Nine locales ship, all fully translated** — `en` (default) plus `zh-Hans`, `zh-Hant`, `ja`, `ko`, `de`, `es`, `fr`, `it`, matching the languages the WaveKat Voice app supports. "Fully translated" = the homepage, the entire `voice/*` section (overview, use-cases, download, talk, changelog chrome, alternatives hub + each comparison), and the blog (listing + every post). **Nav-label convention:** the lowercase `voice`/`docs`/`blog` nav is localized per `UIStrings` (`navVoice`/`navDocs`/`navBlog`); the *product* word "voice" becomes the local common noun (语音/語音/音声/보이스/voz/voix/voce/stimme) while the full product name **WaveKat Voice** is never translated anywhere. **Not translatable from this repo** (synced from the private `wavekat-voice` upstream at build, so they must be localized there): `docs/*` and the changelog *body* — `/​<slug>/voice/changelog/` chrome is localized, but its release notes come from the synced markdown.
+
 ## Brand assets
 
 Logo SVGs come from `vendor/wavekat-brand` (git submodule — source of truth, never edit here).

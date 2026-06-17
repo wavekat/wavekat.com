@@ -1,0 +1,64 @@
+---
+import Voice from '../../../../layouts/Voice.astro';
+import TalkCTA from '../../../../components/TalkCTA.astro';
+import { ArrowRight } from '@lucide/astro';
+import { getAlternatives } from '../../../../lib/voice-alternatives';
+
+const alternatives = getAlternatives('es');
+
+// ItemList of the comparison pages — helps search engines see the hub as the
+// parent of the individual "<name> alternative" pages.
+const listSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  inLanguage: 'es',
+  itemListElement: alternatives.map((alt, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: `WaveKat Voice frente a ${alt.name}`,
+    url: `https://wavekat.com/es/voice/alternatives/${alt.slug}/`,
+  })),
+};
+---
+
+<Voice
+  title="Alternativas de softphone"
+  description="Comparativa de WaveKat Voice con otros softphones de escritorio en Mac y Linux: cómo se mide frente a Linphone y otros. Un teléfono de empresa enfocado que graba y transcribe cada llamada."
+>
+  <section class="mb-12">
+    <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+      Un vistazo a las alternativas
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Hay muchas maneras de hacer una llamada desde su computadora. La mayoría son clientes SIP de
+      uso general. WaveKat Voice es más acotado a propósito: un teléfono de empresa que graba y
+      transcribe cada llamada automáticamente, y que se configura eligiendo su proveedor de una
+      lista. Hoy funciona en Mac y Linux, con Windows en camino. Así es como se compara.
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Comparar</h2>
+    <div class="grid grid-cols-1 gap-3">
+      {alternatives.map((alt) => (
+        <a
+          href={`/es/voice/alternatives/${alt.slug}/`}
+          class="group block rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5"
+        >
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">
+            WaveKat Voice frente a {alt.name}
+          </span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{alt.tagline}</p>
+          <span class="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+            Ver la comparativa
+            <ArrowRight class="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <TalkCTA />
+
+  <script type="application/ld+json" set:html={JSON.stringify(listSchema)} />
+</Voice>

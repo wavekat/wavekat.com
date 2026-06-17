@@ -1,11 +1,22 @@
 ---
 import { Sun, Moon } from '@lucide/astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { resolveLocale, localesForPath, localizedPath, t } from '../lib/i18n';
 
 interface Props {
   active?: 'voice' | 'blog' | 'docs' | null;
 }
 
 const { active = null } = Astro.props;
+
+// Localise nav labels and keep links within the current locale where the page
+// exists (else fall back to the default-locale page). The home logo always
+// returns to the current locale's home.
+const { code: lang } = resolveLocale(Astro.url.pathname);
+const ui = t(lang);
+const homeHref = localizedPath('/', lang);
+const localeHref = (path: string) =>
+  localesForPath(path).includes(lang) ? localizedPath(path, lang) : path;
 
 const pillClass = (isActive: boolean) =>
   isActive
@@ -14,14 +25,15 @@ const pillClass = (isActive: boolean) =>
 ---
 
 <header class="flex items-center justify-between mb-12">
-  <a href="/" class="block">
+  <a href={homeHref} class="block">
     <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
     <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
   </a>
   <div class="flex items-center gap-3">
-    <a href="/voice" class={pillClass(active === 'voice')}>voice</a>
-    <a href="/docs" class={pillClass(active === 'docs')}>docs</a>
-    <a href="/blog" class={pillClass(active === 'blog')}>blog</a>
+    <a href={localeHref('/voice/')} class={pillClass(active === 'voice')}>{ui.navVoice}</a>
+    <a href="/docs" class={pillClass(active === 'docs')}>{ui.navDocs}</a>
+    <a href={localeHref('/blog/')} class={pillClass(active === 'blog')}>{ui.navBlog}</a>
+    <LanguageSwitcher />
     <button
       id="theme-toggle"
       aria-label="Toggle theme"

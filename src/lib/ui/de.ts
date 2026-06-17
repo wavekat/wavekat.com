@@ -1,0 +1,30 @@
+import type { UIStrings } from '../i18n';
+
+export const ui: UIStrings = {
+  navVoice: 'stimme',
+  navDocs: 'docs',
+  navBlog: 'blog',
+  switcherLabel: 'Sprache wechseln',
+  bannerText: 'Diese Seite ist auf Deutsch verfügbar.',
+  bannerView: 'Ansehen',
+  bannerDismiss: 'Schließen',
+  subOverview: 'überblick',
+  subUseCases: 'anwendungsfälle',
+  subAlternatives: 'alternativen',
+  subDownload: 'download',
+  subChangelog: 'neuigkeiten',
+  subTalk: 'kontakt',
+  dlMac: 'Für Mac herunterladen',
+  dlLinux: 'Für Linux herunterladen',
+  dlOther: 'andere Plattformen',
+  talkHeading: 'Kontakt',
+  talkBody:
+    'Fragen, Feedback oder ein Gerät, das Sie sich von uns wünschen? Am besten erreichen Sie uns per E-Mail — wir lesen jede Nachricht und antworten, so schnell wir können.',
+  talkButton: 'Schreiben Sie uns',
+  talkWritePre: 'Oder schreiben Sie direkt an ',
+  talkWritePost: '.',
+  footerEmail: 'Schreiben Sie uns',
+  footerSource: 'Quellcode auf GitHub ansehen',
+  postBack: '← zurück zum Blog',
+  postUpdated: 'aktualisiert',
+};

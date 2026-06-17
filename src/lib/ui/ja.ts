@@ -1,0 +1,30 @@
+import type { UIStrings } from '../i18n';
+
+export const ui: UIStrings = {
+  navVoice: '音声',
+  navDocs: 'ドキュメント',
+  navBlog: 'ブログ',
+  switcherLabel: '言語を切り替える',
+  bannerText: 'このページは日本語でご覧いただけます。',
+  bannerView: '表示',
+  bannerDismiss: '閉じる',
+  subOverview: '概要',
+  subUseCases: '活用例',
+  subAlternatives: '代替ツール',
+  subDownload: 'ダウンロード',
+  subChangelog: '更新情報',
+  subTalk: 'お問い合わせ',
+  dlMac: 'Mac 版をダウンロード',
+  dlLinux: 'Linux 版をダウンロード',
+  dlOther: 'その他のプラットフォーム',
+  talkHeading: 'お問い合わせ',
+  talkBody:
+    'ご質問やご意見、対応してほしいデバイスはありますか？メールが一番確実な連絡方法です。いただいたメッセージはすべて読み、できる限り早くお返事します。',
+  talkButton: 'メールを送る',
+  talkWritePre: 'または ',
+  talkWritePost: ' まで直接ご連絡ください。',
+  footerEmail: 'メールを送る',
+  footerSource: 'GitHub でソースを見る',
+  postBack: '← ブログに戻る',
+  postUpdated: '更新日',
+};

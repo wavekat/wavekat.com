@@ -1,5 +1,6 @@
 ---
 import { Mail } from '@lucide/astro';
+import { resolveLocale, t } from '../lib/i18n';
 
 interface Props {
   marginTop?: string;
@@ -8,14 +9,16 @@ interface Props {
 const { marginTop = 'mt-16' } = Astro.props;
 
 const emailHref = 'mailto:eason@wavekat.com?subject=wavekat-voice';
+
+const { code: lang } = resolveLocale(Astro.url.pathname);
+const ui = t(lang);
 ---
 
 <section class={marginTop}>
-  <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Talk to us</h2>
+  <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{ui.talkHeading}</h2>
   <div class="rounded p-5 bg-gray-50 dark:bg-wk-surface">
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-xl">
-      Questions, feedback, or a device you wish we supported? Email is the best way to reach us —
-      we read every message and reply as soon as we can.
+      {ui.talkBody}
     </p>
 
     <a
@@ -25,19 +28,18 @@ const emailHref = 'mailto:eason@wavekat.com?subject=wavekat-voice';
       style="background-color: #ff6d00"
     >
       <Mail class="w-4 h-4" />
-      Email us
+      {ui.talkButton}
     </a>
 
     <p class="text-xs text-gray-400 dark:text-gray-600 mt-4 leading-relaxed">
-      Or write to{' '}
+      {ui.talkWritePre}
       <a
         href={emailHref}
         data-conversion="mailto_click"
         class="text-gray-600 dark:text-gray-300 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         eason@wavekat.com
-      </a>{' '}
-      directly.
+      </a>{ui.talkWritePost}
     </p>
   </div>
 </section>

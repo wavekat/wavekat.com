@@ -1,0 +1,293 @@
+---
+// German version of the WaveKat Voice landing page. Mirrors
+// src/pages/voice/index.astro section-for-section so the two never drift
+// structurally. Body copy is translated here; the surrounding chrome (header
+// nav, sub-nav, download control, talk CTA) is localised by the shared
+// components via the URL-derived locale, so the page is fully German. hreflang
+// and the language switcher are wired automatically in Base/Header from the
+// route registry in src/lib/i18n.ts — this page declares no i18n props.
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+import {
+  PhoneCall,
+  Mic,
+  FileText,
+  Server,
+  Cloud,
+  Lock,
+  ArrowRight,
+} from '@lucide/astro';
+import VoiceDownload from '../../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
+
+const features = [
+  {
+    icon: PhoneCall,
+    title: 'Anrufe direkt vom Desktop',
+    body: 'Nehmen Sie Anrufe entgegen und tätigen Sie sie direkt von Ihrem Computer aus — kein Tischtelefon, keine zusätzliche Hardware, kein Browser-Tab, das Sie im Auge behalten müssen. Es wartet unauffällig im Hintergrund, bis das Telefon klingelt.',
+  },
+  {
+    icon: Mic,
+    title: 'Jeder Anruf aufgezeichnet',
+    body: 'Jedes Gespräch wird automatisch aufgezeichnet und in dem Moment gespeichert, in dem Sie auflegen. Spielen Sie es ab, wann immer Sie es brauchen — keine Einrichtung, nichts, was Sie aktivieren müssten.',
+  },
+  {
+    icon: FileText,
+    title: 'Live-Transkription',
+    body: 'Sehen Sie die Wörter, während sie gesprochen werden. Ein laufendes Transkript läuft neben dem Anruf mit, sodass Sie das Wesentliche aufnehmen, statt mitzuschreiben.',
+  },
+  {
+    icon: Server,
+    title: 'Funktioniert mit Ihrem Anbieter',
+    body: 'Bringen Sie den Telefonanbieter mit, den Sie bereits nutzen — Twilio, Telnyx, 2talk und weitere. Wählen Sie ihn aus der Liste, und die Einrichtung wird für Sie ausgefüllt.',
+  },
+  {
+    icon: Cloud,
+    title: 'Synchronisieren, wenn Sie möchten',
+    body: 'Melden Sie sich bei Ihrem WaveKat-Konto an, und Ihre Aufzeichnungen und Transkripte werden synchronisiert, sodass Sie sie im Web durchsehen können. Melden Sie sich nicht an, bleibt einfach alles auf Ihrem Computer.',
+  },
+  {
+    icon: Lock,
+    title: 'Standardmäßig gehört es Ihnen',
+    body: 'Ihre Anrufe, Aufzeichnungen und Transkripte liegen zuerst auf Ihrem eigenen Computer. Nichts wird hochgeladen, es sei denn, Sie entscheiden sich dafür — keine ominöse Firma zwischen Ihnen und Ihren Kunden.',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    title: 'Nummer verbinden',
+    body: 'Melden Sie sich beim ersten Öffnen der App bei Ihrem Telefonanbieter an. Wählen Sie ihn aus der Liste, und die Einstellungen werden für Sie ausgefüllt.',
+  },
+  {
+    n: '2',
+    title: 'Anruf annehmen',
+    body: 'Ein grüner Punkt bedeutet, dass Sie online und erreichbar sind. Annehmen, anrufen, stummschalten, das Tastenfeld nutzen — alles von Ihrem Desktop aus.',
+  },
+  {
+    n: '3',
+    title: 'Später nachsehen',
+    body: 'Jeder Anruf landet mit Aufzeichnung und Transkript in Ihrem Verlauf, bereit zum erneuten Anhören oder zum Synchronisieren ins Web.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Was genau ist WaveKat Voice?',
+    a: 'Eine Desktop-App, die Ihren Computer zu Ihrem Geschäftstelefon macht. Sie melden sich mit Ihrem Telefonanbieter an und können von da an Anrufe direkt von Ihrem Computer aus entgegennehmen und tätigen — wobei jeder Anruf für Sie aufgezeichnet und mitgeschrieben wird.',
+  },
+  {
+    q: 'Brauche ich spezielle Hardware?',
+    a: 'Nein. Wenn Sie einen Computer und ein Konto bei einem Telefonanbieter haben, haben Sie alles, was Sie brauchen. Kein Tischtelefon, keine zusätzliche Ausrüstung — ein Headset ist schön, aber nicht erforderlich.',
+  },
+  {
+    q: 'Mit welchen Telefonanbietern funktioniert es?',
+    a: 'Mit den meisten gängigen — Twilio, Telnyx, 2talk und weitere. Für die Anbieter, die wir kennen, füllen wir die Einrichtung aus; für alle anderen können Sie die Daten selbst eingeben. Wenn Sie bereits geschäftliche Anrufe über das Internet führen, funktioniert Ihr Anbieter mit ziemlicher Sicherheit.',
+  },
+  {
+    q: 'Wo werden meine Aufzeichnungen und Transkripte gespeichert?',
+    a: 'Auf Ihrem Computer. Nichts wird hochgeladen, es sei denn, Sie entscheiden sich dafür. Wenn Sie sich bei einem WaveKat-Konto anmelden, können Ihre Aufzeichnungen und Transkripte synchronisiert werden, sodass Sie sie im Web durchsehen können — andernfalls verlassen sie nie Ihren Computer.',
+  },
+  {
+    q: 'Ist es kostenlos?',
+    a: 'Während der Beta ist die Nutzung kostenlos, solange wir es mit echten Unternehmen verfeinern. WaveKat Voice wird später ein kostenpflichtiges Produkt — Beta-Nutzer werden lange vorher informiert, bevor sich das ändert.',
+  },
+  {
+    q: 'Worauf läuft es?',
+    a: `Mac und Linux. Unter macOS läuft es ab Version 12 (${macDownload.arch}); unter Linux ist es ein .deb-Paket für ${linuxDownload.arch}.`,
+  },
+  {
+    q: 'Werden Sie Windows oder andere Geräte unterstützen?',
+    a: 'WaveKat Voice läuft heute auf Mac und Linux. Windows und andere Plattformen stehen durchaus zur Debatte — wir bauen sie einfach, wenn es echte Nachfrage gibt. Wenn Sie WaveKat Voice also unter Windows oder anderswo nutzen würden, sagen Sie es uns bitte. Je mehr Leute danach fragen, desto schneller passiert es.',
+    link: { href: '/voice/talk/', label: 'Sagen Sie uns, was Sie brauchen' },
+  },
+  {
+    q: 'Wird es meinen Computer verlangsamen oder stören?',
+    a: 'Es ist eine schlanke Desktop-App, die sich im Hintergrund hält, bis ein Anruf kommt, und sich leise im Hintergrund selbst aktualisiert. Einmal installiert, vergessen Sie, dass sie da ist.',
+  },
+];
+
+// Localised structured data: same shape as the English page, but with the
+// German URL and inLanguage so engines bind this variant to de.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'WaveKat Voice',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'macOS, Linux',
+  url: 'https://wavekat.com/de/voice/',
+  inLanguage: 'de',
+  softwareVersion: macDownload.version,
+  downloadUrl: 'https://wavekat.com/voice/download/',
+  description:
+    'Eine Desktop-App, die Ihren Computer zu Ihrem Geschäftstelefon macht — Anrufe entgegennehmen und tätigen, wobei jeder Anruf automatisch aufgezeichnet und transkribiert wird. Funktioniert mit dem Telefonanbieter, den Sie bereits haben.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'de',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Voice
+  title="WaveKat Voice — Ihr Geschäftstelefon, auf Ihrem Desktop"
+  description="WaveKat Voice ist eine Desktop-App für Mac und Linux, die Ihren Computer zu Ihrem Geschäftstelefon macht — Anrufe entgegennehmen und tätigen, wobei jeder Anruf für Sie aufgezeichnet und mitgeschrieben wird. Kostenlose öffentliche Beta."
+>
+  <!-- Hero -->
+  <section class="relative mb-20 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        kostenlose öffentliche Beta
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      Ihre Geschäftsnummer,<br />auf Ihrem Desktop.<br />
+      <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">Aufgezeichnet und transkribiert.</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      WaveKat Voice ist eine Telefon-App für Ihren Computer. Verbinden Sie den Telefonanbieter, den Sie bereits nutzen, und
+      nehmen Sie Anrufe direkt von Ihrem Desktop aus entgegen und tätigen Sie sie — wobei jedes Gespräch automatisch für Sie aufgezeichnet und
+      mitgeschrieben wird und nichts Ihren Computer verlässt, es sei denn, Sie möchten es.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <VoiceDownload />
+      <a
+        href="/voice/download/"
+        class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        Installationsdetails
+        <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · kostenlos während der Beta</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · kostenlos während der Beta</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Was es kann</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {features.map((f) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+            <f.icon class="w-4 h-4" style="color: #ff6d00" />
+          </span>
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">So funktioniert es</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Für wen es gedacht ist</h2>
+    <a
+      href="/voice/use-cases/"
+      class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+    >
+      <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">Unternehmen, die vom Telefon leben</span>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
+        Praxen, Salons, Handwerk, Kanzleien, Restaurants, Hausverwaltungen — alle, für die ein Anruf
+        ein Kunde ist. Sehen Sie, wo WaveKat Voice passt.
+      </p>
+      <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+        wavekat.com/voice/use-cases →
+      </span>
+    </a>
+  </section>
+
+  <!-- Download CTA -->
+  <section class="mb-16">
+    <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
+      <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">Bereit, es auszuprobieren?</h2>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
+        Kostenlos während der öffentlichen Beta. In einer Minute installiert, Nummer verbinden, und Ihren nächsten Anruf nehmen Sie vom Desktop aus entgegen.
+      </p>
+      <div class="flex justify-center">
+        <VoiceDownload variant="cta" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Fragen &amp; Antworten</h2>
+    <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+      {faqs.map((f) => (
+        <details class="group">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+            {f.q}
+            <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+          </summary>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+            {f.a}
+            {f.link && (
+              <a
+                href={f.link.href}
+                class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
+                style="color: #ff6d00"
+              >
+                {f.link.label}
+                <ArrowRight class="w-3 h-3" />
+              </a>
+            )}
+          </p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <TalkCTA />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Voice>

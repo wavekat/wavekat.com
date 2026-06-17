@@ -1,0 +1,168 @@
+---
+// Korean homepage. Mirrors src/pages/index.astro; body copy is
+// translated, repo names/colors/links are shared. Locale, hreflang, the
+// language switcher and localised header/footer are all derived from the /ko/
+// URL by Base/Header — this page just passes its Korean title/description.
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { ArrowRight } from '@lucide/astro';
+
+const voicePipeline = [
+  {
+    name: 'wavekat-vad',
+    description: '음성 활동 감지 — WebRTC, Silero, TEN-VAD, FireRedVAD 지원.',
+    color: '#00bcd4',
+    href: 'https://github.com/wavekat/wavekat-vad',
+  },
+  {
+    name: 'wavekat-turn',
+    description: '발화 차례 감지 — 화자가 말을 마쳤는지 판단합니다.',
+    color: '#7c4dff',
+    href: 'https://github.com/wavekat/wavekat-turn',
+  },
+  {
+    name: 'wavekat-asr',
+    description: '스트리밍 음성 인식 — 여러 ASR 백엔드를 하나의 Rust 인터페이스로 통합.',
+    color: '#f44336',
+    href: 'https://github.com/wavekat/wavekat-asr',
+  },
+  {
+    name: 'wavekat-tts',
+    description: '음성 합성 — 여러 TTS 백엔드를 하나의 Rust 인터페이스로 통합.',
+    color: '#ff4081',
+    href: 'https://github.com/wavekat/wavekat-tts',
+  },
+  {
+    name: 'wavekat-core',
+    description: '공유 오디오 기본 요소 — AudioFrame, 샘플 포맷 변환.',
+    color: '#00e676',
+    href: 'https://github.com/wavekat/wavekat-core',
+  },
+  {
+    name: 'wavekat-sip',
+    description: 'SIP 시그널링과 RTP 전송 — REGISTER, INVITE, SDP, 세션 추적.',
+    color: '#3f51b5',
+    href: 'https://github.com/wavekat/wavekat-sip',
+  },
+];
+
+const toolsAndClients = [
+  {
+    name: 'wavekat-lab',
+    description: '다양한 오디오 백엔드를 테스트하고 비교하는 인터랙티브 대시보드.',
+    color: '#ffd740',
+    href: 'https://github.com/wavekat/wavekat-lab',
+  },
+  {
+    name: 'wavekat-cli',
+    description: 'WaveKat 플랫폼용 커맨드라인 클라이언트(wk).',
+    color: '#2196f3',
+    href: 'https://github.com/wavekat/wavekat-cli',
+  },
+];
+---
+
+<Base
+  title="WaveKat — 소상공인을 위한 오픈소스 AI 음성 도구"
+  description="WaveKat은 오픈소스 AI 도구를 만들어, 예전에는 대기업만 누릴 수 있던 역량을 소상공인에게도 제공합니다 — 음성에서 시작합니다: 컴퓨터를 업무 전화로 바꾸고 모든 통화를 자동으로 녹음·기록하는 데스크톱 앱입니다."
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header />
+
+    <!-- Hero -->
+    <section class="mb-20">
+      <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+        모든 소상공인에게,<br />대기업의 목소리를.
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
+        WaveKat은 AI 기반 도구를 만들어, 예전에는 대기업만 누릴 수 있던 역량을 소상공인에게도 제공합니다.
+        우리는 음성에서 시작합니다 — 당신의 컴퓨터를 업무 전화로 바꾸고, 모든 통화를 자동으로 녹음하고 기록하는
+        데스크톱 앱입니다.
+      </p>
+    </section>
+
+    <!-- Featured product: WaveKat Voice -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">우리 앱</h2>
+      <div
+        class="relative overflow-hidden rounded-lg border p-6 dark:bg-wk-surface bg-gray-50"
+        style="border-color: #ff6d0040"
+      >
+        <div
+          class="pointer-events-none absolute -top-20 -right-16 w-72 h-72 rounded-full opacity-20 blur-3xl"
+          style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="relative">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-sm font-bold" style="color: #ff6d00">WaveKat Voice</span>
+            <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+              무료 공개 베타
+            </span>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-lg">
+            당신의 컴퓨터에서 돌아가는 전화 앱입니다. 이미 쓰고 있는 전화 사업자를 그대로 이용해,
+            데스크톱에서 바로 전화를 받고 걸 수 있습니다 — 모든 대화는 자동으로 녹음되고 글로 기록됩니다.
+          </p>
+          <a
+            href="/ko/voice/"
+            class="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
+            style="background-color: #ff6d00"
+          >
+            자세히 보기 및 다운로드
+            <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Libraries -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">오픈소스 라이브러리</h2>
+
+      <h3 class="text-[11px] font-semibold tracking-wider text-gray-500 dark:text-gray-500 uppercase mb-3">음성 파이프라인</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {voicePipeline.map((lib) => (
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+            style={`border-color: ${lib.color}40`}
+          >
+            <span class="text-sm font-bold block mb-1.5" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{lib.description}</p>
+            <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+              github.com/wavekat/{lib.name} →
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <h3 class="text-[11px] font-semibold tracking-wider text-gray-500 dark:text-gray-500 uppercase mb-3 mt-8">도구와 클라이언트</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {toolsAndClients.map((lib) => (
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+            style={`border-color: ${lib.color}40`}
+          >
+            <span class="text-sm font-bold block mb-1.5" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{lib.description}</p>
+            <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+              github.com/wavekat/{lib.name} →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <Footer />
+
+  </div>
+</Base>

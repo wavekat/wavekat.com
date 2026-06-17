@@ -1,0 +1,293 @@
+---
+// Japanese version of the WaveKat Voice landing page. Mirrors
+// src/pages/voice/index.astro section-for-section so the two never drift
+// structurally. Body copy is translated here; the surrounding chrome (header
+// nav, sub-nav, download control, talk CTA) is localised by the shared
+// components via the URL-derived locale, so the page is fully Japanese. hreflang
+// and the language switcher are wired automatically in Base/Header from the
+// route registry in src/lib/i18n.ts — this page declares no i18n props.
+import Voice from '../../../layouts/Voice.astro';
+import TalkCTA from '../../../components/TalkCTA.astro';
+import {
+  PhoneCall,
+  Mic,
+  FileText,
+  Server,
+  Cloud,
+  Lock,
+  ArrowRight,
+} from '@lucide/astro';
+import VoiceDownload from '../../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
+
+const features = [
+  {
+    icon: PhoneCall,
+    title: 'パソコンから通話',
+    body: 'パソコンから直接、電話の応答も発信もできます。固定電話も追加のハードウェアも、見張っておくブラウザのタブも不要です。電話が鳴るまでは、邪魔にならず静かに待機しています。',
+  },
+  {
+    icon: Mic,
+    title: 'すべての通話を録音',
+    body: '一つひとつの会話が自動で録音され、電話を切った瞬間に保存されます。必要なときにいつでも再生可能。設定も、オンにし忘れる心配もありません。',
+  },
+  {
+    icon: FileText,
+    title: 'リアルタイム文字起こし',
+    body: '話した言葉がその場で文字になります。通話の横にリアルタイムの文字起こしが流れるので、メモを取るのに追われず、大事な内容に集中できます。',
+  },
+  {
+    icon: Server,
+    title: '今お使いの事業者に対応',
+    body: 'すでに使っている電話事業者をそのまま利用できます——Twilio、Telnyx、2talk など。リストから選ぶだけで、設定は自動で入力されます。',
+  },
+  {
+    icon: Cloud,
+    title: '必要なときだけ同期',
+    body: 'WaveKat アカウントにサインインすると、録音と文字起こしが同期され、ウェブでも確認できます。サインインしなければ、すべてはあなたのパソコンの中だけにとどまります。',
+  },
+  {
+    icon: Lock,
+    title: 'データは初めからあなたのもの',
+    body: '通話・録音・文字起こしは、まずあなた自身のパソコンに保存されます。あなたが選ばない限りアップロードされることはありません——あなたと顧客の間に得体の知れない第三者が入り込むこともありません。',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    title: '番号をつなぐ',
+    body: 'アプリを初めて開いたときに電話事業者へサインインします。リストから選ぶだけで、設定は自動で入力されます。',
+  },
+  {
+    n: '2',
+    title: '電話に出る',
+    body: '緑のドットは、オンラインで着信を受けられる状態を表します。応答、発信、ミュート、ダイヤルパッドの操作——すべてパソコン上で完結します。',
+  },
+  {
+    n: '3',
+    title: 'あとで振り返る',
+    body: 'すべての通話が録音と文字起こしとともに履歴に残り、いつでも見返したり、ウェブに同期したりできます。',
+  },
+];
+
+const faqs = [
+  {
+    q: 'WaveKat Voice とは一体どんなものですか？',
+    a: 'あなたのパソコンをビジネス用の電話に変えるデスクトップアプリです。電話事業者のアカウントでサインインすれば、それ以降はパソコンから直接、電話の応答も発信もできます——しかも各通話は録音され、文字に書き起こされます。',
+  },
+  {
+    q: '特別なハードウェアは必要ですか？',
+    a: 'いいえ。パソコンと電話事業者のアカウントさえあれば、必要なものはすべて揃っています。固定電話も追加の機材も不要です——ヘッドセットがあれば便利ですが、必須ではありません。',
+  },
+  {
+    q: 'どの電話事業者に対応していますか？',
+    a: 'よく使われている事業者のほとんど——Twilio、Telnyx、2talk など。私たちが把握している事業者については設定を自動で入力します。それ以外でも、詳細を自分で入力できます。すでにインターネット経由でビジネス通話をしているなら、お使いの事業者はほぼ確実に利用できます。',
+  },
+  {
+    q: '録音と文字起こしはどこに保存されますか？',
+    a: 'あなた自身のパソコンの中です。あなたが決めない限り、何もアップロードされません。WaveKat アカウントにサインインすれば、録音と文字起こしを同期してウェブで確認できます——そうしなければ、それらがパソコンの外に出ることは決してありません。',
+  },
+  {
+    q: '無料ですか？',
+    a: '私たちが実際の事業者とともに磨き上げているベータ期間中は無料でお使いいただけます。WaveKat Voice はいずれ有料の製品になりますが——そうなる前に、ベータユーザーには十分な事前のお知らせをします。',
+  },
+  {
+    q: 'どの環境で動きますか？',
+    a: `Mac と Linux です。macOS ではバージョン 12 以降に対応しています（${macDownload.arch}）。Linux では ${linuxDownload.arch} 向けの .deb パッケージです。`,
+  },
+  {
+    q: 'Windows や他のデバイスには対応しますか？',
+    a: 'WaveKat Voice は現在 Mac と Linux で動作します。Windows やその他のプラットフォームももちろん検討の対象です——ただ、実際の需要があるときに作るというだけです。ですから、Windows や他の環境で WaveKat Voice を使いたい方は、ぜひ教えてください。声が多いほど、実現は早くなります。',
+    link: { href: '/voice/talk/', label: 'ご要望をお聞かせください' },
+  },
+  {
+    q: 'パソコンが重くなったり、干渉したりしませんか？',
+    a: '軽量なデスクトップアプリで、着信があるまでは邪魔にならず待機し、バックグラウンドで静かに自動更新します。一度インストールすれば、その存在をほとんど意識せずに済みます。',
+  },
+];
+
+// Localised structured data: same shape as the English page, but with the
+// Japanese URL and inLanguage so engines bind this variant to ja.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'WaveKat Voice',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'macOS, Linux',
+  url: 'https://wavekat.com/ja/voice/',
+  inLanguage: 'ja',
+  softwareVersion: macDownload.version,
+  downloadUrl: 'https://wavekat.com/voice/download/',
+  description:
+    'あなたのパソコンをビジネス用の電話に変えるデスクトップアプリ——電話の応答も発信もでき、各通話は自動で録音・文字起こしされます。すでにお使いの電話事業者に対応します。',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'ja',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Voice
+  title="WaveKat Voice — パソコンをビジネス用の電話に"
+  description="WaveKat Voice は Mac と Linux 向けのデスクトップアプリで、あなたのパソコンをビジネス用の電話に変えます——電話の応答も発信もでき、すべての会話を自動で録音・文字起こしします。パブリックベータは無料。"
+>
+  <!-- Hero -->
+  <section class="relative mb-20 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        無料パブリックベータ
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      あなたのビジネス回線を、<br />パソコンの上に。<br />
+      <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">自動で録音、自動で文字起こし。</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      WaveKat Voice はパソコンで動く電話アプリです。すでにお使いの電話事業者をつなげば、
+      デスクトップから直接、電話の応答も発信もできます——すべての会話は自動で録音され、文字に
+      書き起こされ、あなたが望まない限りデータがパソコンの外に出ることはありません。
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <VoiceDownload />
+      <a
+        href="/voice/download/"
+        class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        インストールの詳細
+        <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · ベータ期間中は無料</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · ベータ期間中は無料</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">主な機能</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {features.map((f) => (
+        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+            <f.icon class="w-4 h-4" style="color: #ff6d00" />
+          </span>
+          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">使い方</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">こんな方に</h2>
+    <a
+      href="/voice/use-cases/"
+      class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+    >
+      <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">電話で回るビジネス</span>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
+        クリニック、サロン、職人・工事業者、法律事務所、レストラン、不動産管理——一本の電話を
+        一人の顧客として大切にするすべての人へ。WaveKat Voice がどんな場面で役立つかをご覧ください。
+      </p>
+      <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+        wavekat.com/voice/use-cases →
+      </span>
+    </a>
+  </section>
+
+  <!-- Download CTA -->
+  <section class="mb-16">
+    <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
+      <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">試してみませんか？</h2>
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
+        パブリックベータ期間中は無料。1分でインストールし、番号をつなげば、次の電話からデスクトップで応答できます。
+      </p>
+      <div class="flex justify-center">
+        <VoiceDownload variant="cta" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">よくある質問</h2>
+    <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+      {faqs.map((f) => (
+        <details class="group">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+            {f.q}
+            <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+          </summary>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+            {f.a}
+            {f.link && (
+              <a
+                href={f.link.href}
+                class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
+                style="color: #ff6d00"
+              >
+                {f.link.label}
+                <ArrowRight class="w-3 h-3" />
+              </a>
+            )}
+          </p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <TalkCTA />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Voice>

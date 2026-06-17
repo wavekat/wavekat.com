@@ -1,0 +1,168 @@
+---
+// Spanish homepage. Mirrors src/pages/index.astro; body copy is
+// translated, repo names/colors/links are shared. Locale, hreflang, the
+// language switcher and localised header/footer are all derived from the /es/
+// URL by Base/Header — this page just passes its Spanish title/description.
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { ArrowRight } from '@lucide/astro';
+
+const voicePipeline = [
+  {
+    name: 'wavekat-vad',
+    description: 'Detección de actividad de voz — WebRTC, Silero, TEN-VAD, FireRedVAD.',
+    color: '#00bcd4',
+    href: 'https://github.com/wavekat/wavekat-vad',
+  },
+  {
+    name: 'wavekat-turn',
+    description: 'Detección de turnos — sabe cuándo el interlocutor ha terminado de hablar.',
+    color: '#7c4dff',
+    href: 'https://github.com/wavekat/wavekat-turn',
+  },
+  {
+    name: 'wavekat-asr',
+    description: 'Voz a texto en streaming — una interfaz Rust unificada sobre varios motores de ASR.',
+    color: '#f44336',
+    href: 'https://github.com/wavekat/wavekat-asr',
+  },
+  {
+    name: 'wavekat-tts',
+    description: 'Síntesis de texto a voz — una interfaz Rust unificada para varios motores de TTS.',
+    color: '#ff4081',
+    href: 'https://github.com/wavekat/wavekat-tts',
+  },
+  {
+    name: 'wavekat-core',
+    description: 'Primitivas de audio compartidas — AudioFrame, conversión de formatos de muestreo.',
+    color: '#00e676',
+    href: 'https://github.com/wavekat/wavekat-core',
+  },
+  {
+    name: 'wavekat-sip',
+    description: 'Señalización SIP y transporte RTP — REGISTER, INVITE, SDP, seguimiento de diálogos.',
+    color: '#3f51b5',
+    href: 'https://github.com/wavekat/wavekat-sip',
+  },
+];
+
+const toolsAndClients = [
+  {
+    name: 'wavekat-lab',
+    description: 'Panel interactivo para probar y comparar distintos motores de audio.',
+    color: '#ffd740',
+    href: 'https://github.com/wavekat/wavekat-lab',
+  },
+  {
+    name: 'wavekat-cli',
+    description: 'Cliente de línea de comandos (wk) para la plataforma WaveKat.',
+    color: '#2196f3',
+    href: 'https://github.com/wavekat/wavekat-cli',
+  },
+];
+---
+
+<Base
+  title="WaveKat — herramientas de voz de IA, de código abierto, para pequeñas empresas"
+  description="WaveKat crea herramientas de código abierto e impulsadas por IA que dan a las pequeñas empresas capacidades que antes solo las grandes podían permitirse. Empezamos por la voz: una app de escritorio que convierte su computadora en su línea de empresa y graba y transcribe cada llamada."
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header />
+
+    <!-- Hero -->
+    <section class="mb-20">
+      <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+        Dele a cada pequeña empresa<br />la voz de una grande.
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg">
+        WaveKat crea herramientas impulsadas por IA que dan a las pequeñas empresas el tipo de
+        capacidades que antes solo las grandes podían permitirse. Empezamos por la voz: una app de
+        escritorio que convierte su computadora en su línea de empresa y graba y transcribe cada llamada.
+      </p>
+    </section>
+
+    <!-- Featured product: WaveKat Voice -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Nuestra app</h2>
+      <div
+        class="relative overflow-hidden rounded-lg border p-6 dark:bg-wk-surface bg-gray-50"
+        style="border-color: #ff6d0040"
+      >
+        <div
+          class="pointer-events-none absolute -top-20 -right-16 w-72 h-72 rounded-full opacity-20 blur-3xl"
+          style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="relative">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-sm font-bold" style="color: #ff6d00">WaveKat Voice</span>
+            <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+              beta pública gratuita
+            </span>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-lg">
+            Una app de teléfono para su computadora. Conteste y haga llamadas desde su escritorio,
+            con cada conversación grabada y transcrita por usted, usando el proveedor de telefonía que ya tiene.
+          </p>
+          <a
+            href="/es/voice/"
+            class="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5"
+            style="background-color: #ff6d00"
+          >
+            Más información y descarga
+            <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Libraries -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Librerías</h2>
+
+      <h3 class="text-[11px] font-semibold tracking-wider text-gray-500 dark:text-gray-500 uppercase mb-3">Pipeline de voz</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {voicePipeline.map((lib) => (
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+            style={`border-color: ${lib.color}40`}
+          >
+            <span class="text-sm font-bold block mb-1.5" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{lib.description}</p>
+            <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+              github.com/wavekat/{lib.name} →
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <h3 class="text-[11px] font-semibold tracking-wider text-gray-500 dark:text-gray-500 uppercase mb-3 mt-8">Herramientas y clientes</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {toolsAndClients.map((lib) => (
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block rounded border p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
+            style={`border-color: ${lib.color}40`}
+          >
+            <span class="text-sm font-bold block mb-1.5" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{lib.description}</p>
+            <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+              github.com/wavekat/{lib.name} →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <Footer />
+
+  </div>
+</Base>

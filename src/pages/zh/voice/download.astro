@@ -1,0 +1,141 @@
+---
+import Voice from '../../../layouts/Voice.astro';
+import { PhoneCall, Mic, FileText } from '@lucide/astro';
+import VoiceDownload from '../../../components/VoiceDownload.astro';
+import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+
+const macDownload = await getMacDownload();
+const linuxDownload = await getLinuxDownload();
+
+const steps = [
+  {
+    n: '1',
+    title: '打开下载文件',
+    body: '在 Mac 上，双击 .dmg 文件，把 WaveKat Voice 拖进“应用程序”文件夹。在 Linux 上，用你的软件安装器打开 .deb 文件，或在终端里用 apt 或 dpkg 安装。',
+  },
+  {
+    n: '2',
+    title: '启动它',
+    body: '安装好后打开 WaveKat Voice。它会安静地待在一旁，电话响起时随时就绪。',
+  },
+  {
+    n: '3',
+    title: '连接你的号码',
+    body: '一段简短的设置会带你登录电话运营商——从列表中选择，剩下的我们为你填好。',
+  },
+];
+
+const highlights = [
+  { icon: PhoneCall, text: '在电脑上接听和拨打电话' },
+  { icon: Mic, text: '每通电话都录音保存到你的电脑' },
+  { icon: FileText, text: '边说边生成实时文字稿' },
+];
+---
+
+<Voice
+  title="下载 WaveKat Voice"
+  description="为 Mac 或 Linux 下载 WaveKat Voice——一款会为你录音并写下每通电话的电话应用。免费试用。"
+>
+  <!-- Hero / download -->
+  <section class="relative mb-16 pt-4">
+    <!-- brand-orange glow -->
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+        免费公测
+      </span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+      下载 <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">WaveKat Voice</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      把你的办公电话搬到桌面上——接听和拨打电话，每通对话都为你录音并写成文字。
+      连接你的电话运营商，几分钟就能上线。
+    </p>
+
+    <VoiceDownload />
+
+    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {macDownload.size}</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {linuxDownload.size}</p>
+    </div>
+  </section>
+
+  <!-- What you get -->
+  <section class="mb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {highlights.map((h) => (
+        <div class="rounded p-4 bg-gray-50 dark:bg-wk-surface flex items-start gap-3">
+          <h.icon class="w-4 h-4 mt-0.5 shrink-0" style="color: #ff6d00" />
+          <span class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{h.text}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Getting set up -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">开始设置</h2>
+    <ol class="space-y-4">
+      {steps.map((s) => (
+        <li class="flex gap-4">
+          <span
+            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {s.n}
+          </span>
+          <div>
+            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- What you'll need -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">你需要准备什么</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
+      一个电话运营商账户——Twilio、Telnyx、2talk 等等。这和你用任何网络电话时的登录方式一样，
+      如果你已经在网上拨打商务电话，你的运营商几乎一定可用。
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      不知道从哪里开始？我们的
+      <a href="/docs/voice/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">设置指南</a>
+      会带你挑选运营商，并接通你的第一通电话。
+    </p>
+  </section>
+
+  <!-- Updates -->
+  <section class="mb-4">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">保持最新</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
+      WaveKat Voice 会自动保持最新。安装之后，它会在后台安静地检查并更新到新版本——
+      你再也不用回到这里下载更新的版本。
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      <a href="/voice/changelog/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">查看每个版本的更新内容 →</a>
+    </p>
+  </section>
+</Voice>
+
+<script is:inline>
+  // Fire the Google Ads download conversion (label shares the AW account in
+  // Base.astro). No-op if gtag isn't loaded.
+  document.querySelectorAll('a[data-conversion^="download_"]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', { send_to: 'AW-18128547216' });
+      }
+    });
+  });
+</script>
