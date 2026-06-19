@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.35](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.34...wavekat-com-v0.0.35) (2026-06-17)
+
+
+### Bug Fixes
+
+* **i18n:** keep in-page links within the active locale ([#98](https://github.com/wavekat/wavekat.com/issues/98)) ([7e2c6b0](https://github.com/wavekat/wavekat.com/commit/7e2c6b039ef0e86e28bd4f8d736c664987d65613))
+
 ## [0.0.34](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.33...wavekat-com-v0.0.34) (2026-06-17)
 
 
