@@ -141,6 +141,7 @@ Real, localized app screenshots are shown across the site via `<AppScreenshot sc
 - **Refreshing.** Run `make screenshots` in a local wavekat-voice checkout, then `make screenshots` here (`npm run sync:screenshots`) — `scripts/sync-screenshots.js` copies the curated scenes for all 9 locales × light/dark, downscales to 1366px, and writes WebP (~4.5 MB total). `npm run check:screenshots` asserts the committed set is complete. The committed scene list lives in that script; keep it in sync with the `scene="…"` usages.
 - **Locale + theme are automatic.** The component reads the page locale (`resolveLocale`), picks `…/<code>-<theme>.webp` (falling back to `en`), and renders both light and dark variants swapped by the site's `dark:` class — no JS, no per-page wiring. Filenames use the locale `code` (`en`, `zh-Hans`, `zh-Hant`, `ja`, `ko`, `de`, `es`, `fr`, `it`), which is exactly what wavekat-voice writes.
 - **Captions/alt** are localized in `src/lib/screenshots.ts` (one entry per scene, all 9 locales, English fallback) — used as `alt` (a11y + GEO) and the optional visible `<figcaption>` (`showCaption`). Pass `priority` for an above-the-fold hero shot.
+- **Display UX.** Shots sit inline at a modest size (control width/centering via the `class` prop, e.g. `mx-auto max-w-xl`; keep them narrow so they read as figures, not full-bleed) and are **click-to-zoom** — one delegated handler opens a full-size lightbox in the page's current theme (ESC or click closes). Don't bolt a heavier image library on top.
 
 ## Current state
 

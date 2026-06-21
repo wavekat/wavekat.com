@@ -191,7 +191,7 @@ const faqSchema = {
   </section>
 
   <!-- A look at the app: the call in progress, recorded and transcribed -->
-  <AppScreenshot scene="in-call" priority class="mb-16 mt-0" />
+  <AppScreenshot scene="in-call" priority class="mb-16 mt-0 mx-auto max-w-2xl" />
 
   <!-- Features -->
   <section class="mb-16">
@@ -226,7 +226,7 @@ const faqSchema = {
             <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
             <AppScreenshot
               scene={["add-account", "incoming-call", "history"][i]}
-              class="mt-4 mb-0"
+              class="mt-5 mb-0 max-w-sm"
             />
           </div>
         </li>
