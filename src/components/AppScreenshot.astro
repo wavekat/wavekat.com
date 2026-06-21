@@ -142,8 +142,13 @@ if (!light && import.meta.env.DEV) {
 
 <script>
   // One delegated handler for every <AppScreenshot> on the page. The dialog is
-  // created lazily on first use, and the variant shown matches the page theme
-  // at click time.
+  // created lazily on first use; the image AND its window frame match the page
+  // theme at click time, so the zoomed view looks just like the inline shot.
+  const FRAME = {
+    light: { bg: "#f9fafb", border: "#e5e7eb", dot: "#d1d5db" },
+    dark: { bg: "#0a1018", border: "rgba(255,255,255,0.10)", dot: "rgba(255,255,255,0.15)" },
+  };
+
   function ensureDialog(): HTMLDialogElement {
     let dlg = document.getElementById(
       "screenshot-lightbox",
@@ -151,16 +156,19 @@ if (!light && import.meta.env.DEV) {
     if (dlg) return dlg;
     dlg = document.createElement("dialog");
     dlg.id = "screenshot-lightbox";
-    const wrap = document.createElement("div");
-    wrap.style.cssText =
-      "width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:clamp(1rem,4vw,3rem);cursor:zoom-out;";
-    const img = document.createElement("img");
-    img.style.cssText =
-      "max-width:100%;max-height:100%;object-fit:contain;border-radius:0.75rem;box-shadow:0 25px 50px -12px rgba(0,0,0,0.6);";
-    wrap.appendChild(img);
-    dlg.appendChild(wrap);
+    dlg.innerHTML = `
+      <div data-wrap style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:clamp(1rem,4vw,3rem);cursor:zoom-out;">
+        <figure data-window style="margin:0;max-width:min(1100px,92vw);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;border-radius:12px;border:1px solid;box-shadow:0 25px 50px -12px rgba(0,0,0,0.6);">
+          <div data-bar style="display:flex;align-items:center;gap:6px;height:32px;padding:0 14px;flex:none;border-bottom:1px solid;">
+            <span data-dot style="width:10px;height:10px;border-radius:9999px;"></span>
+            <span data-dot style="width:10px;height:10px;border-radius:9999px;"></span>
+            <span data-dot style="width:10px;height:10px;border-radius:9999px;"></span>
+          </div>
+          <img alt="" style="display:block;min-height:0;max-width:100%;object-fit:contain;" />
+        </figure>
+      </div>`;
     document.body.appendChild(dlg);
-    // Click anywhere (backdrop or image) closes.
+    // Click anywhere (backdrop, frame, or image) closes.
     dlg.addEventListener("click", () => dlg!.close());
     return dlg;
   }
@@ -171,7 +179,16 @@ if (!light && import.meta.env.DEV) {
     const dark = document.documentElement.classList.contains("dark");
     const src = dark ? trigger.dataset.zoomDark : trigger.dataset.zoomLight;
     if (!src) return;
+    const c = dark ? FRAME.dark : FRAME.light;
     const dlg = ensureDialog();
+    const win = dlg.querySelector<HTMLElement>("[data-window]")!;
+    const bar = dlg.querySelector<HTMLElement>("[data-bar]")!;
+    win.style.background = c.bg;
+    win.style.borderColor = c.border;
+    bar.style.borderBottomColor = c.border;
+    dlg.querySelectorAll<HTMLElement>("[data-dot]").forEach((d) => {
+      d.style.background = c.dot;
+    });
     const img = dlg.querySelector("img")!;
     img.src = src;
     img.alt = trigger.dataset.zoomAlt || "";
