@@ -1,0 +1,107 @@
+---
+// A locale- and theme-aware product screenshot.
+//
+// Picks the screenshot for the page's current language (falling back to English
+// when a locale is missing) and renders both the light and dark variants,
+// swapped with the site's existing `dark:` class — so the shot always matches
+// the page theme with no JS. Wrapped in a lightweight, OS-neutral window frame
+// the site draws itself (consistent with the rest of the page, and right for a
+// Mac + Linux product).
+//
+// Source images are committed under src/assets/screenshots/<scene>/<code>-<theme>.webp
+// by scripts/sync-screenshots.js; Astro re-encodes responsive WebP at build.
+//
+//   <AppScreenshot scene="in-call" priority />          // hero
+//   <AppScreenshot scene="history" showCaption />        // with visible caption
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { resolveLocale } from "../lib/i18n";
+import { screenshotCaption } from "../lib/screenshots";
+
+interface Props {
+  /** Scene id, e.g. "in-call" — matches a folder under src/assets/screenshots/. */
+  scene: string;
+  /** Override the localized alt/caption text. */
+  caption?: string;
+  /** Render the caption visibly under the frame (it's always the alt text). */
+  showCaption?: boolean;
+  /** Eager-load + above-the-fold hint, for a hero shot. */
+  priority?: boolean;
+  /** Extra classes on the <figure>. */
+  class?: string;
+}
+
+const {
+  scene,
+  caption,
+  showCaption = false,
+  priority = false,
+  class: className = "",
+} = Astro.props;
+
+const { code } = resolveLocale(Astro.url.pathname);
+
+// Eager glob so we can index by path and pick the right (scene, locale, theme).
+const all = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/screenshots/**/*.webp",
+  { eager: true },
+);
+
+function pick(theme: "light" | "dark"): ImageMetadata | undefined {
+  for (const c of [code, "en"]) {
+    const hit = all[`../assets/screenshots/${scene}/${c}-${theme}.webp`];
+    if (hit) return hit.default;
+  }
+  return undefined;
+}
+
+const light = pick("light");
+const dark = pick("dark");
+const alt = caption ?? screenshotCaption(scene, code);
+
+// Shown in a ~720px content column; give the browser sensible responsive steps.
+const widths = [480, 720, 1080, 1366];
+const sizes = "(min-width: 768px) 720px, 100vw";
+
+if (!light && import.meta.env.DEV) {
+  console.warn(`[AppScreenshot] no image for scene "${scene}" (locale ${code})`);
+}
+---
+
+{
+  light && (
+    <figure class={`not-prose ${className}`}>
+      <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-xl shadow-black/5 dark:shadow-black/40">
+        {/* OS-neutral title bar */}
+        <div class="flex items-center gap-1.5 h-8 px-3.5 border-b border-gray-200 dark:border-white/10">
+          <span class="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/15" />
+          <span class="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/15" />
+          <span class="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/15" />
+        </div>
+        <Image
+          src={light}
+          alt={alt}
+          widths={widths}
+          sizes={sizes}
+          loading={priority ? "eager" : "lazy"}
+          class="block dark:hidden w-full h-auto"
+        />
+        {dark && (
+          <Image
+            src={dark}
+            alt={alt}
+            widths={widths}
+            sizes={sizes}
+            loading={priority ? "eager" : "lazy"}
+            class="hidden dark:block w-full h-auto"
+          />
+        )}
+      </div>
+      {showCaption && (
+        <figcaption class="mt-3 text-center text-xs text-gray-400 dark:text-gray-600">
+          {alt}
+        </figcaption>
+      )}
+    </figure>
+  )
+}
