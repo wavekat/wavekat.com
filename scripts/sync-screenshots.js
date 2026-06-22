@@ -40,12 +40,10 @@ const destRoot = join(root, "src/assets/screenshots");
 // <AppScreenshot scene="…"> usages; only these are committed (not the full
 // matrix wavekat-voice produces) to keep the repo light.
 const SCENES = [
-  "home",
-  "incoming-call",
-  "in-call",
-  "history",
-  "call-details",
-  "add-account",
+  "in-call", // /voice/ hero — proves "recorded and transcribed"
+  "add-account", // /voice/ step 1 — connect your number
+  "incoming-call", // /voice/ step 2 — take the call
+  "history", // /voice/ step 3 — review it later
 ];
 
 // The nine shipped interface languages, by wavekat.com locale `code` — which

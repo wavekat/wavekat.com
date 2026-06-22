@@ -8,27 +8,14 @@
 // fallback when a locale is missing a string.
 
 export type SceneId =
-  | "home"
-  | "incoming-call"
   | "in-call"
-  | "history"
-  | "call-details"
-  | "add-account";
+  | "add-account"
+  | "incoming-call"
+  | "history";
 
 type CaptionSet = Record<string, string>; // locale code → caption
 
 const CAPTIONS: Record<SceneId, CaptionSet> = {
-  home: {
-    en: "The WaveKat Voice home screen, with your connected lines and recent calls.",
-    "zh-Hans": "WaveKat Voice 的主界面，显示已连接的线路和最近的通话。",
-    "zh-Hant": "WaveKat Voice 的主畫面，顯示已連線的線路與近期通話。",
-    ja: "WaveKat Voice のホーム画面。接続中の回線と最近の通話を表示。",
-    ko: "WaveKat Voice 홈 화면 — 연결된 회선과 최근 통화를 보여줍니다.",
-    de: "Der Startbildschirm von WaveKat Voice mit verbundenen Leitungen und letzten Anrufen.",
-    es: "La pantalla de inicio de WaveKat Voice, con tus líneas conectadas y las llamadas recientes.",
-    fr: "L'écran d'accueil de WaveKat Voice, avec vos lignes connectées et les appels récents.",
-    it: "La schermata iniziale di WaveKat Voice, con le linee collegate e le chiamate recenti.",
-  },
   "incoming-call": {
     en: "An incoming call ringing in WaveKat Voice.",
     "zh-Hans": "WaveKat Voice 中正在响铃的来电。",
@@ -61,17 +48,6 @@ const CAPTIONS: Record<SceneId, CaptionSet> = {
     es: "El historial de llamadas en WaveKat Voice: cada llamada con su grabación y transcripción.",
     fr: "L'historique des appels dans WaveKat Voice — chaque appel avec son enregistrement et sa transcription.",
     it: "La cronologia delle chiamate in WaveKat Voice: ogni chiamata con la sua registrazione e trascrizione.",
-  },
-  "call-details": {
-    en: "A recorded call in WaveKat Voice, with playback and the saved transcript.",
-    "zh-Hans": "WaveKat Voice 中的一通已录音通话，可回放并查看保存的文字记录。",
-    "zh-Hant": "WaveKat Voice 中的一通已錄音通話，可回放並檢視已儲存的逐字稿。",
-    ja: "WaveKat Voice に録音された通話。再生と保存された文字起こしを表示。",
-    ko: "WaveKat Voice에 녹음된 통화 — 재생과 저장된 전사를 함께 제공합니다.",
-    de: "Ein aufgezeichneter Anruf in WaveKat Voice mit Wiedergabe und gespeichertem Transkript.",
-    es: "Una llamada grabada en WaveKat Voice, con reproducción y la transcripción guardada.",
-    fr: "Un appel enregistré dans WaveKat Voice, avec lecture et transcription enregistrée.",
-    it: "Una chiamata registrata in WaveKat Voice, con riproduzione e trascrizione salvata.",
   },
   "add-account": {
     en: "Connecting a phone provider in WaveKat Voice.",
