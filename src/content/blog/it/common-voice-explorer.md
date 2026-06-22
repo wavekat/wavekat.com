@@ -49,7 +49,7 @@ Non serve essere tecnici per usarlo. Se sai usare una barra di ricerca e cliccar
 
 ## Perché è importante per noi
 
-In WaveKat stiamo costruendo [strumenti di AI vocale per le piccole imprese](/blog/hello-world). Quel lavoro dipende da dati vocali di alta qualità. Common Voice è una delle risorse aperte più importanti in questo ambito e crediamo che renderlo più accessibile vada a vantaggio di tutti — non solo degli ingegneri.
+In WaveKat stiamo costruendo [strumenti di AI vocale per le piccole imprese](/it/blog/hello-world/). Quel lavoro dipende da dati vocali di alta qualità. Common Voice è una delle risorse aperte più importanti in questo ambito e crediamo che renderlo più accessibile vada a vantaggio di tutti — non solo degli ingegneri.
 
 I dati aperti hanno valore solo se le persone possono davvero esplorarli. È questo il divario che volevamo colmare.
 

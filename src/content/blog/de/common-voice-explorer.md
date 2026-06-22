@@ -49,7 +49,7 @@ Sie müssen kein technisches Wissen mitbringen, um es zu nutzen. Wenn Sie eine S
 
 ## Warum es uns wichtig ist
 
-Bei WaveKat bauen wir [Sprach-KI-Werkzeuge für kleine Unternehmen](/blog/hello-world). Diese Arbeit hängt von hochwertigen Sprachdaten ab. Common Voice ist eine der wichtigsten offenen Ressourcen in diesem Bereich, und wir sind überzeugt, dass es allen zugutekommt, sie zugänglicher zu machen — nicht nur den Entwicklerinnen und Entwicklern.
+Bei WaveKat bauen wir [Sprach-KI-Werkzeuge für kleine Unternehmen](/de/blog/hello-world/). Diese Arbeit hängt von hochwertigen Sprachdaten ab. Common Voice ist eine der wichtigsten offenen Ressourcen in diesem Bereich, und wir sind überzeugt, dass es allen zugutekommt, sie zugänglicher zu machen — nicht nur den Entwicklerinnen und Entwicklern.
 
 Offene Daten haben nur dann einen Wert, wenn Menschen sie tatsächlich erkunden können. Genau diese Lücke wollten wir schließen.
 

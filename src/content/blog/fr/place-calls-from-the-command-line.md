@@ -9,7 +9,7 @@ lang: "fr"
 
 WaveKat Voice est désormais livré avec un outil en ligne de commande, pour qu'un programme en qui vous avez confiance — y compris un assistant IA comme Claude — puisse passer et gérer de vrais appels téléphoniques à votre place. Demandez à votre assistant d'« appeler le dentiste et d'attendre que quelqu'un décroche », et il compose le numéro via l'application que vous avez déjà ouverte, suit l'appel et vous dit comment il s'est déroulé. C'est intégré à l'application dès aujourd'hui sur Mac et Linux, et c'est désactivé jusqu'à ce que vous l'activiez.
 
-C'est la prochaine étape vers ce à quoi nous revenons sans cesse : [donner à chaque petite entreprise la voix d'une grande](/blog/hello-world). Une grande entreprise dispose d'un standard téléphonique et d'un logiciel qui le pilote. Désormais, votre ordinateur — et l'assistant qui s'y exécute — peut être ce standard.
+C'est la prochaine étape vers ce à quoi nous revenons sans cesse : [donner à chaque petite entreprise la voix d'une grande](/fr/blog/hello-world/). Une grande entreprise dispose d'un standard téléphonique et d'un logiciel qui le pilote. Désormais, votre ordinateur — et l'assistant qui s'y exécute — peut être ce standard.
 
 ## Ce qu'il fait réellement
 
@@ -101,6 +101,6 @@ WaveKat Voice fonctionne aujourd'hui sur Mac et Linux, avec Windows à venir qua
 
 ## Essayez-le
 
-[Téléchargez WaveKat Voice](/voice/download/), ouvrez **Réglages → Automatisation** et connectez votre assistant. La référence complète des commandes — chaque commande, sa sortie JSON et les codes de sortie — se trouve dans la [documentation sur l'automatisation](/voice/automation/).
+[Téléchargez WaveKat Voice](/fr/voice/download/), ouvrez **Réglages → Automatisation** et connectez votre assistant. La référence complète des commandes — chaque commande, sa sortie JSON et les codes de sortie — se trouve dans la [documentation sur l'automatisation](/docs/voice/automation/).
 
 Nous ne faisons que commencer ici. Piloter les appels est la fondation ; un assistant capable aussi de tenir la conversation, c'est là où cela ira ensuite.

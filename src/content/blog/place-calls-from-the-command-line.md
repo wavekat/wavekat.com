@@ -8,7 +8,7 @@ tags: [voice-ai, automation, ai-agents]
 
 WaveKat Voice now ships with a command-line tool, so a program you trust — including an AI assistant like Claude — can place and manage real phone calls for you. Ask your assistant to "call the dentist and wait until someone picks up," and it dials through the app you already have open, follows the call, and tells you how it went. It's built into the app today on Mac and Linux, and it's off until you switch it on.
 
-This is the next step toward the thing we keep coming back to: [giving every small business the voice of a big one](/blog/hello-world). A big company has a switchboard and software that drives it. Now your computer — and the assistant running on it — can be that switchboard.
+This is the next step toward the thing we keep coming back to: [giving every small business the voice of a big one](/blog/hello-world/). A big company has a switchboard and software that drives it. Now your computer — and the assistant running on it — can be that switchboard.
 
 ## What it actually does
 
@@ -100,6 +100,6 @@ WaveKat Voice runs on Mac and Linux today, with Windows coming when there's dema
 
 ## Try it
 
-[Download WaveKat Voice](/voice/download/), open **Settings → Automation**, and connect your assistant. The full command reference — every command, its JSON output, and the exit codes — lives in the [automation docs](/voice/automation/).
+[Download WaveKat Voice](/voice/download/), open **Settings → Automation**, and connect your assistant. The full command reference — every command, its JSON output, and the exit codes — lives in the [automation docs](/docs/voice/automation/).
 
 We're just getting started here. Driving calls is the foundation; an assistant that can also hold the conversation is where this goes next.

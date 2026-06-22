@@ -9,7 +9,7 @@ lang: "de"
 
 WaveKat Voice liefert jetzt ein Kommandozeilenwerkzeug, sodass ein Programm, dem Sie vertrauen — darunter ein KI-Assistent wie Claude — echte Telefonanrufe für Sie tätigen und verwalten kann. Bitten Sie Ihren Assistenten, „die Zahnarztpraxis anzurufen und zu warten, bis jemand abnimmt", und er wählt über die App, die Sie bereits geöffnet haben, verfolgt den Anruf und teilt Ihnen mit, wie er verlaufen ist. Es ist heute auf Mac und Linux in die App eingebaut und bleibt ausgeschaltet, bis Sie es aktivieren.
 
-Das ist der nächste Schritt hin zu dem, worauf wir immer wieder zurückkommen: [jedem kleinen Unternehmen die Stimme eines großen zu geben](/blog/hello-world). Ein großes Unternehmen hat eine Telefonzentrale und Software, die sie steuert. Jetzt können Ihr Computer — und der darauf laufende Assistent — diese Telefonzentrale sein.
+Das ist der nächste Schritt hin zu dem, worauf wir immer wieder zurückkommen: [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Ein großes Unternehmen hat eine Telefonzentrale und Software, die sie steuert. Jetzt können Ihr Computer — und der darauf laufende Assistent — diese Telefonzentrale sein.
 
 ## Was es tatsächlich tut
 
@@ -101,6 +101,6 @@ WaveKat Voice läuft heute auf Mac und Linux, Windows folgt, sobald die Nachfrag
 
 ## Probieren Sie es aus
 
-[Laden Sie WaveKat Voice herunter](/voice/download/), öffnen Sie **Einstellungen → Automatisierung** und verbinden Sie Ihren Assistenten. Die vollständige Befehlsreferenz — jeder Befehl, seine JSON-Ausgabe und die Exit-Codes — finden Sie in der [Automatisierungsdokumentation](/voice/automation/).
+[Laden Sie WaveKat Voice herunter](/de/voice/download/), öffnen Sie **Einstellungen → Automatisierung** und verbinden Sie Ihren Assistenten. Die vollständige Befehlsreferenz — jeder Befehl, seine JSON-Ausgabe und die Exit-Codes — finden Sie in der [Automatisierungsdokumentation](/docs/voice/automation/).
 
 Wir stehen hier erst am Anfang. Anrufe zu steuern ist die Grundlage; ein Assistent, der auch das Gespräch selbst führen kann, ist der nächste Schritt.

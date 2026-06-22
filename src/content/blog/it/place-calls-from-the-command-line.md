@@ -9,7 +9,7 @@ lang: "it"
 
 WaveKat Voice ora include uno strumento da riga di comando, così un programma di cui ti fidi — incluso un assistente AI come Claude — può effettuare e gestire vere telefonate per te. Chiedi al tuo assistente di "chiamare il dentista e aspettare finché qualcuno non risponde", e comporrà il numero attraverso l’app che hai già aperta, seguirà la chiamata e ti dirà com’è andata. Oggi è integrato nell’app su Mac e Linux, ed è disattivato finché non lo attivi.
 
-Questo è il passo successivo verso ciò a cui torniamo sempre: [dare a ogni piccola impresa la voce di una grande](/blog/hello-world). Una grande azienda ha un centralino e il software che lo guida. Ora il tuo computer — e l’assistente che ci gira sopra — può essere quel centralino.
+Questo è il passo successivo verso ciò a cui torniamo sempre: [dare a ogni piccola impresa la voce di una grande](/it/blog/hello-world/). Una grande azienda ha un centralino e il software che lo guida. Ora il tuo computer — e l’assistente che ci gira sopra — può essere quel centralino.
 
 ## Cosa fa davvero
 
@@ -101,6 +101,6 @@ WaveKat Voice oggi gira su Mac e Linux, con Windows in arrivo quando ci sarà ri
 
 ## Provalo
 
-[Scarica WaveKat Voice](/voice/download/), apri **Impostazioni → Automazione** e collega il tuo assistente. Il riferimento completo dei comandi — ogni comando, il suo output JSON e i codici di uscita — si trova nella [documentazione sull’automazione](/voice/automation/).
+[Scarica WaveKat Voice](/it/voice/download/), apri **Impostazioni → Automazione** e collega il tuo assistente. Il riferimento completo dei comandi — ogni comando, il suo output JSON e i codici di uscita — si trova nella [documentazione sull’automazione](/docs/voice/automation/).
 
 Qui stiamo solo iniziando. Guidare le chiamate è la base; un assistente capace anche di sostenere la conversazione è dove tutto questo andrà a finire.

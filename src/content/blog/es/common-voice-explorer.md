@@ -49,7 +49,7 @@ No hace falta tener conocimientos técnicos para usarlo. Si sabe usar una barra 
 
 ## Por qué nos importa
 
-En WaveKat estamos construyendo [herramientas de IA de voz para pequeñas empresas](/blog/hello-world). Ese trabajo depende de datos de voz de alta calidad. Common Voice es uno de los recursos abiertos más importantes en este ámbito, y creemos que hacerlo más accesible beneficia a todos, no solo a los ingenieros.
+En WaveKat estamos construyendo [herramientas de IA de voz para pequeñas empresas](/es/blog/hello-world/). Ese trabajo depende de datos de voz de alta calidad. Common Voice es uno de los recursos abiertos más importantes en este ámbito, y creemos que hacerlo más accesible beneficia a todos, no solo a los ingenieros.
 
 Los datos abiertos solo tienen valor si las personas pueden explorarlos de verdad. Esa es la brecha que quisimos cerrar.
 

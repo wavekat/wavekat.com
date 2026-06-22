@@ -49,7 +49,7 @@ Nul besoin d'être technique pour l'utiliser. Si vous savez vous servir d'une ba
 
 ## Pourquoi cela compte pour nous
 
-Chez WaveKat, nous construisons des [outils d'IA vocale pour les petites entreprises](/blog/hello-world). Ce travail dépend de données vocales de haute qualité. Common Voice est l'une des ressources ouvertes les plus importantes dans ce domaine, et nous pensons que la rendre plus accessible profite à tout le monde — pas seulement aux ingénieurs.
+Chez WaveKat, nous construisons des [outils d'IA vocale pour les petites entreprises](/fr/blog/hello-world/). Ce travail dépend de données vocales de haute qualité. Common Voice est l'une des ressources ouvertes les plus importantes dans ce domaine, et nous pensons que la rendre plus accessible profite à tout le monde — pas seulement aux ingénieurs.
 
 Les données ouvertes n'ont de valeur que si les gens peuvent réellement les explorer. C'est le fossé que nous voulions combler.
 
