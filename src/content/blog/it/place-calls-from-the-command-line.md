@@ -22,11 +22,15 @@ Per essere precisi sul confine, perché è importante:
 
 Quindi l’assistente è la mano sul tastierino, non una voce sulla linea. È una distinzione deliberata e onesta — e per le incombenze quotidiane del tipo "mettimi in contatto con una persona", è gran parte di ciò che vuoi davvero.
 
+![WaveKat Voice su Ubuntu — una chiamata avviata dall'assistente, in corso, con la trascrizione dal vivo a fianco.](/screenshots/in-call/it.webp)
+
 ## Non c’è nulla da installare
 
 Il comando `wavekat-voice` è lo stesso programma che fa girare l’app — è già sul tuo disco nel momento in cui installi WaveKat Voice. Nessun secondo download, nessun pacchetto separato, nessuna versione che possa disallinearsi dall’app.
 
 È **disattivato per impostazione predefinita**. Mentre l’automazione è attiva, qualsiasi programma tu esegua sul computer può effettuare chiamate tramite il tuo account — e le chiamate possono costare denaro — quindi lasciamo a te questa decisione. Attivala in **Settings → Automation**, dove c’è anche un pulsante in un clic per aggiungere `wavekat-voice` al tuo PATH, così qualsiasi terminale possa trovarlo.
+
+![WaveKat Voice su Ubuntu — le impostazioni di Automazione con l'accesso da riga di comando attivato e il pulsante per installare lo strumento da riga di comando.](/screenshots/settings-automation/it.webp)
 
 ## Collega un assistente AI in un clic
 
@@ -38,6 +42,8 @@ Il percorso più veloce è la pagina **Settings → Automation** stessa. Cerca g
 | Claude Code, Codex, Gemini | Tramite una nota gestita nel loro file di istruzioni |
 
 Un clic completa il collegamento — nulla da copiare o incollare. Dopodiché, basta chiedere all’assistente di effettuare una chiamata. Due cose da sapere: alcuni assistenti richiedono un riavvio completo (chiudere e riaprire) per riconoscere i nuovi strumenti, e la connessione si mantiene aggiornata da sola — quando WaveKat Voice si aggiorna in background, qualsiasi assistente che hai collegato viene tenuto silenziosamente in sincronia, così non devi mai ricollegarlo.
+
+![WaveKat Voice su Ubuntu — collegare assistenti AI come Claude e Cursor, ciascuno con un pulsante Connetti con un clic.](/screenshots/settings-automation-agents/it.webp)
 
 ## Come appare da un terminale
 

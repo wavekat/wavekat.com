@@ -21,11 +21,15 @@ To be precise about the boundary, because it matters:
 
 So the assistant is the hands on the dialpad, not a voice on the line. That's a deliberate, honest line — and for the everyday "get me through to a human" chores, it's most of what you actually want.
 
+![WaveKat Voice on Ubuntu — a call the assistant placed, in progress, with a live transcript alongside.](/screenshots/in-call/en.webp)
+
 ## There's nothing to install
 
 The `wavekat-voice` command is the same program that runs the app — it's already on your disk the moment you install WaveKat Voice. There's no second download, no separate package, no version that can drift out of sync with the app.
 
 It is **off by default**. While automation is on, any program you run on your computer can place calls through your account — and calls may cost money — so we leave that decision to you. Turn it on in **Settings → Automation**, where there's also a one-click button to add `wavekat-voice` to your PATH so any terminal can find it.
+
+![WaveKat Voice on Ubuntu — Settings → Automation, with command-line access turned on and the Install command-line tool button.](/screenshots/settings-automation/en.webp)
 
 ## Connect an AI assistant in one click
 
@@ -37,6 +41,8 @@ The fastest path is the **Settings → Automation** page itself. It looks for AI
 | Claude Code, Codex, Gemini | Through a managed note in their instructions file |
 
 One click wires it up — nothing to copy or paste. After that, you just ask the assistant to make a call. Two things worth knowing: some assistants need a full restart (quit and reopen) to pick up the new tools, and the connection keeps itself current — when WaveKat Voice updates in the background, any assistant you've connected is quietly kept in sync, so you never have to reconnect.
+
+![WaveKat Voice on Ubuntu — connecting AI assistants like Claude and Cursor, each with a one-click Connect button.](/screenshots/settings-automation-agents/en.webp)
 
 ## What it looks like from a terminal
 

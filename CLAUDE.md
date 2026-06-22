@@ -133,6 +133,39 @@ git submodule update --remote vendor/wavekat-brand
 make sync
 ```
 
+## Product screenshots
+
+Real, localized app screenshots from wavekat-voice's screenshot pipeline (its
+`docs/41` — `make screenshots` then `make screenshots-frames`) live in a
+**shared, scene-keyed namespace**: `public/screenshots/<scene>/<code>.webp`. One
+file per (scene, language) that *any* page can reference — `in-call` is one
+asset, not a copy per post. **The guiding rule: a screenshot earns its place
+only where it makes a page's point** — don't add one (or sync a scene) just
+because the pipeline can make it.
+
+Today the only consumer is the "place calls from the command line" blog post,
+which embeds three, each illustrating the section it sits under: `in-call`
+("what it actually does"), `settings-automation` ("there's nothing to install" —
+the enable toggle + Install-CLI button), and `settings-automation-agents`
+("connect an AI assistant in one click" — the one-click Connect rows).
+`settings-automation*` are scenes added to wavekat-voice for this; the agents one
+is the same page scrolled to the assistants section (a scene `scroll` hint, since
+it's below the 960×640 fold).
+
+- **Framed, not bare.** These use the pipeline's **Ubuntu/GNOME-framed** output
+  (`screenshots/framed/ubuntu/…`), so the window chrome is real, not CSS — we're
+  a Mac + Linux product and the author runs Ubuntu. No site-drawn frame.
+- **Single theme (light), per language.** A baked-in frame can't follow the
+  page's dark/light toggle, so we pick light and keep it consistent — but each
+  localized surface shows the app in *its* language (`/screenshots/<scene>/<code>.webp`).
+- **Committed, not built.** Nothing here pulls from the private renderer at build
+  time, so the chosen shots are committed under `public/screenshots/` as WebP
+  (~1.1 MB) and referenced by plain markdown `![alt](/screenshots/…)` with
+  translated alt text. Refresh with `make screenshots` (`npm run sync:screenshots`)
+  against a local wavekat-voice checkout; `npm run check:screenshots` asserts the
+  set is complete. The scene list lives in `scripts/sync-screenshots.js` — keep it
+  in sync with the `![](/screenshots/<scene>/…)` refs across the site.
+
 ## Current state
 
 - Working branch: `feat/astro-scaffold`

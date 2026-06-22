@@ -22,11 +22,15 @@ Um die Grenze genau zu benennen, denn das ist wichtig:
 
 Der Assistent ist also die Hand am Wählfeld, nicht die Stimme in der Leitung. Das ist eine bewusste, ehrliche Grenze — und für die alltäglichen „verbinde mich mit einem Menschen"-Aufgaben ist es das meiste von dem, was Sie tatsächlich wollen.
 
+![WaveKat Voice unter Ubuntu — ein vom Assistenten initiierter Anruf, laufend, mit Live-Transkript daneben.](/screenshots/in-call/de.webp)
+
 ## Es gibt nichts zu installieren
 
 Der Befehl `wavekat-voice` ist dasselbe Programm, das die App ausführt — es liegt bereits auf Ihrer Festplatte, sobald Sie WaveKat Voice installieren. Kein zweiter Download, kein separates Paket, keine Version, die mit der App aus dem Takt geraten kann.
 
 Es ist **standardmäßig ausgeschaltet**. Solange die Automatisierung aktiviert ist, kann jedes Programm, das Sie auf Ihrem Computer ausführen, über Ihr Konto Anrufe tätigen — und Anrufe können Kosten verursachen —, deshalb überlassen wir diese Entscheidung Ihnen. Schalten Sie es unter **Settings → Automation** ein; dort gibt es auch eine Schaltfläche, die `wavekat-voice` mit einem Klick zu Ihrem PATH hinzufügt, damit jedes Terminal es findet.
+
+![WaveKat Voice unter Ubuntu — die Automatisierungseinstellungen mit aktiviertem Befehlszeilenzugriff und der Schaltfläche zum Installieren des Kommandozeilen-Tools.](/screenshots/settings-automation/de.webp)
 
 ## Verbinden Sie einen KI-Assistenten mit einem Klick
 
@@ -38,6 +42,8 @@ Der schnellste Weg ist die Seite **Settings → Automation** selbst. Sie sucht n
 | Claude Code, Codex, Gemini | Über einen verwalteten Hinweis in ihrer Anweisungsdatei |
 
 Ein Klick richtet alles ein — nichts zu kopieren oder einzufügen. Danach bitten Sie den Assistenten einfach, einen Anruf zu tätigen. Zwei Dinge sind wissenswert: Manche Assistenten müssen vollständig neu gestartet werden (beenden und erneut öffnen), um die neuen Werkzeuge zu erkennen; und die Verbindung hält sich selbst aktuell — wenn WaveKat Voice im Hintergrund aktualisiert wird, wird jeder verbundene Assistent stillschweigend synchron gehalten, sodass Sie nie neu verbinden müssen.
+
+![WaveKat Voice unter Ubuntu — KI-Assistenten wie Claude und Cursor verbinden, jeweils mit einer Ein-Klick-Schaltfläche „Verbinden“.](/screenshots/settings-automation-agents/de.webp)
 
 ## Wie es im Terminal aussieht
 

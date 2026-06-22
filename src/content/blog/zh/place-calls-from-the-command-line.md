@@ -22,11 +22,15 @@ WaveKat Voice 一直在后台静静运行着一部电话：它向你的 SIP 提�
 
 所以助手是拨号盘上的手，而不是线路上的声音。这是一条经过深思熟虑的、诚实的界线——而对于日常那些"帮我接通一个真人"的琐事来说，它已经满足了你真正想要的大部分需求。
 
+![Ubuntu 上的 WaveKat Voice——助手发起的通话正在进行，旁边显示实时字幕。](/screenshots/in-call/zh-Hans.webp)
+
 ## 没有任何东西需要安装
 
 `wavekat-voice` 命令就是运行该应用的同一个程序——在你安装 WaveKat Voice 的那一刻，它就已经在你的磁盘上了。没有第二次下载，没有单独的安装包，也没有可能与应用脱节的版本。
 
 它**默认关闭**。当自动化处于开启状态时，你在电脑上运行的任何程序都可以通过你的账户拨打电话——而通话可能会产生费用——所以我们把这个决定交给你。在 **Settings → Automation** 中开启它，那里还有一个一键按钮，可以把 `wavekat-voice` 添加到你的 PATH 中，让任何终端都能找到它。
+
+![Ubuntu 上的 WaveKat Voice——已开启命令行访问的自动化设置，以及安装命令行工具的按钮。](/screenshots/settings-automation/zh-Hans.webp)
 
 ## 一键连接 AI 助手
 
@@ -38,6 +42,8 @@ WaveKat Voice 一直在后台静静运行着一部电话：它向你的 SIP 提�
 | Claude Code、Codex、Gemini | 通过在其指令文件中的一条受管理的备注 |
 
 一键即可接通——无需复制或粘贴。之后，你只需让助手拨打电话即可。有两点值得了解：有些助手需要完全重启（退出并重新打开）才能识别新工具；而且连接会保持自身最新——当 WaveKat Voice 在后台更新时，你已连接的任何助手都会被悄悄地保持同步，所以你永远不必重新连接。
+
+![Ubuntu 上的 WaveKat Voice——通过一键“连接”按钮接入 Claude、Cursor 等 AI 助手。](/screenshots/settings-automation-agents/zh-Hans.webp)
 
 ## 在终端中是什么样子
 

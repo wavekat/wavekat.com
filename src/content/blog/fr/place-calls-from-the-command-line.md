@@ -22,11 +22,15 @@ Pour être précis sur la limite, car elle compte :
 
 Ainsi, l'assistant est la main sur le clavier, pas la voix sur la ligne. C'est une limite délibérée et honnête — et pour les corvées quotidiennes du type « passe-moi un humain », c'est l'essentiel de ce que vous voulez vraiment.
 
+![WaveKat Voice sous Ubuntu — un appel lancé par l'assistant, en cours, avec la transcription en direct à côté.](/screenshots/in-call/fr.webp)
+
 ## Il n'y a rien à installer
 
 La commande `wavekat-voice` est le même programme qui fait tourner l'application — il est déjà sur votre disque dès l'instant où vous installez WaveKat Voice. Pas de second téléchargement, pas de paquet séparé, aucune version susceptible de se désynchroniser de l'application.
 
 Elle est **désactivée par défaut**. Tant que l'automatisation est active, n'importe quel programme que vous exécutez sur votre ordinateur peut passer des appels via votre compte — et les appels peuvent coûter de l'argent — alors nous vous laissons cette décision. Activez-la dans **Settings → Automation**, où se trouve aussi un bouton en un clic pour ajouter `wavekat-voice` à votre PATH, afin que n'importe quel terminal puisse le trouver.
+
+![WaveKat Voice sous Ubuntu — les réglages d'Automatisation avec l'accès en ligne de commande activé et le bouton pour installer l'outil en ligne de commande.](/screenshots/settings-automation/fr.webp)
 
 ## Connectez un assistant IA en un clic
 
@@ -38,6 +42,8 @@ Le chemin le plus rapide est la page **Settings → Automation** elle-même. Ell
 | Claude Code, Codex, Gemini | Via une note gérée dans leur fichier d'instructions |
 
 Un clic suffit pour tout brancher — rien à copier ni à coller. Ensuite, il vous suffit de demander à l'assistant de passer un appel. Deux choses valent la peine d'être sues : certains assistants nécessitent un redémarrage complet (quitter et rouvrir) pour reconnaître les nouveaux outils, et la connexion se maintient à jour d'elle-même — lorsque WaveKat Voice se met à jour en arrière-plan, tout assistant que vous avez connecté est discrètement gardé synchronisé, si bien que vous n'avez jamais à le reconnecter.
+
+![WaveKat Voice sous Ubuntu — connecter des assistants IA comme Claude et Cursor, chacun avec un bouton Connecter en un clic.](/screenshots/settings-automation-agents/fr.webp)
 
 ## À quoi cela ressemble depuis un terminal
 
