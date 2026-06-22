@@ -1,11 +1,17 @@
 SHELL  := /bin/bash
 NVM    := . ~/.nvm/nvm.sh && nvm use 22 &&
-.PHONY: dev build preview sync install clean cf-build help
+.PHONY: dev build preview sync screenshots install clean cf-build help
 .DEFAULT_GOAL := help
 
 # Copy needed assets from wavekat-brand submodule → public/
 sync:
 	$(NVM) npm run sync
+
+# Refresh the Ubuntu-framed app screenshots (public/screenshots/) from a local
+# wavekat-voice checkout (run `make screenshots && make screenshots-frames`
+# there first). Committed assets — not part of the regular build.
+screenshots:
+	$(NVM) npm run sync:screenshots
 
 # Start dev server
 dev:
@@ -38,6 +44,7 @@ help:
 	@echo "  build     Build for production → dist/"
 	@echo "  preview   Build and preview locally"
 	@echo "  sync      Copy assets from wavekat-brand submodule"
+	@echo "  screenshots  Refresh framed app screenshots → public/screenshots/"
 	@echo "  install   Install dependencies"
 	@echo "  cf-build  Simulate Cloudflare Pages build (no nvm)"
 	@echo "  clean     Remove dist/, .astro/, public/logos/"

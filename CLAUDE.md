@@ -101,6 +101,7 @@ i18n is **global, URL-driven infrastructure**, not a per-section feature. `src/l
   - `translatedRoutes` — which base paths exist in which non-default locale. This is what makes a page "translated": `hreflang`, the sitemap alternates, and the switcher targets all read from it.
 - **hreflang, the switcher, and the sitemap are automatic.** `buildAlternates()` emits the reciprocal set (+ region aliases + `x-default`) only for pages in `translatedRoutes`; untranslated pages get **no** hreflang (so we never claim a translation that doesn't exist) but **still show the switcher** (it falls back to the locale home, never a 404). The sitemap `i18n` map in `astro.config.mjs` mirrors the slug↔code mapping.
 - **A "suggest, don't force" banner** (in `Base.astro`) offers the visitor's browser language when this page has it, in the target language, and remembers dismissal in `localStorage`. Never auto-redirect — it breaks SEO/crawling and traps shared-machine users.
+- **In-body links are NOT localized automatically.** The chrome localizes itself, but links written *inside* a page (`.astro` body, blog markdown) are taken verbatim — so a hand-written `/voice/download/` in a `/zh/` page leaks the reader back to English. When you write an internal link on a localized page, prefix it with the locale (`/zh/voice/download/`) **if that page is translated**; leave it unprefixed only for default-locale-only targets (e.g. the English-only `/docs/**`). `scripts/check-links.js` (`npm run check:links`, run in CI after the build) guards both failure modes — it fails the build on any broken internal link **and** on any localized page that links to a default-locale URL whose localized twin exists. Run `npm run build && npm run check:links` locally before publishing link-heavy changes (use `SYNC_DOCS=1 WAVEKAT_LOCAL_REPOS=<path>` so the private `/docs/voice/*` get checked too).
 
 ### Naming rules (these are deliberate — follow them)
 
@@ -132,6 +133,39 @@ To pull brand updates:
 git submodule update --remote vendor/wavekat-brand
 make sync
 ```
+
+## Product screenshots
+
+Real, localized app screenshots from wavekat-voice's screenshot pipeline (its
+`docs/41` — `make screenshots` then `make screenshots-frames`) live in a
+**shared, scene-keyed namespace**: `public/screenshots/<scene>/<code>.webp`. One
+file per (scene, language) that *any* page can reference — `in-call` is one
+asset, not a copy per post. **The guiding rule: a screenshot earns its place
+only where it makes a page's point** — don't add one (or sync a scene) just
+because the pipeline can make it.
+
+Today the only consumer is the "place calls from the command line" blog post,
+which embeds three, each illustrating the section it sits under: `in-call`
+("what it actually does"), `settings-automation` ("there's nothing to install" —
+the enable toggle + Install-CLI button), and `settings-automation-agents`
+("connect an AI assistant in one click" — the one-click Connect rows).
+`settings-automation*` are scenes added to wavekat-voice for this; the agents one
+is the same page scrolled to the assistants section (a scene `scroll` hint, since
+it's below the 960×640 fold).
+
+- **Framed, not bare.** These use the pipeline's **Ubuntu/GNOME-framed** output
+  (`screenshots/framed/ubuntu/…`), so the window chrome is real, not CSS — we're
+  a Mac + Linux product and the author runs Ubuntu. No site-drawn frame.
+- **Single theme (light), per language.** A baked-in frame can't follow the
+  page's dark/light toggle, so we pick light and keep it consistent — but each
+  localized surface shows the app in *its* language (`/screenshots/<scene>/<code>.webp`).
+- **Committed, not built.** Nothing here pulls from the private renderer at build
+  time, so the chosen shots are committed under `public/screenshots/` as WebP
+  (~1.1 MB) and referenced by plain markdown `![alt](/screenshots/…)` with
+  translated alt text. Refresh with `make screenshots` (`npm run sync:screenshots`)
+  against a local wavekat-voice checkout; `npm run check:screenshots` asserts the
+  set is complete. The scene list lives in `scripts/sync-screenshots.js` — keep it
+  in sync with the `![](/screenshots/<scene>/…)` refs across the site.
 
 ## Current state
 

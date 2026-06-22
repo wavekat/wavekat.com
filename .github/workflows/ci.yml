@@ -24,3 +24,7 @@ jobs:
       - run: npm run cf:build
         env:
           SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+
+      # Catch broken internal links and locale leaks before they ship. Runs
+      # against the full build above (docs synced), so /docs/voice/* is checked.
+      - run: npm run check:links

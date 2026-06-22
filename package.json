@@ -8,6 +8,9 @@
   "scripts": {
     "sync": "node scripts/sync-brand.js",
     "sync:docs": "node scripts/sync-docs.js",
+    "sync:screenshots": "node scripts/sync-screenshots.js",
+    "check:screenshots": "node scripts/sync-screenshots.js --check",
+    "check:links": "node scripts/check-links.js",
     "dev": "npm run sync && astro dev",
     "build": "npm run sync && SYNC_DOCS=1 npm run sync:docs && astro build",
     "preview": "astro preview",
