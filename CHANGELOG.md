@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.36](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.35...wavekat-com-v0.0.36) (2026-06-22)
+
+
+### Features
+
+* **blog:** show the app in the command-line post (Ubuntu-framed, localized) ([#101](https://github.com/wavekat/wavekat.com/issues/101)) ([21ef963](https://github.com/wavekat/wavekat.com/commit/21ef963554186fdf1af5d11459605ff57d63fdec))
+
 ## [0.0.35](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.34...wavekat-com-v0.0.35) (2026-06-17)
 
 
