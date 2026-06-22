@@ -28,13 +28,13 @@ Der Assistent ist also die Hand am Wählfeld, nicht die Stimme in der Leitung. D
 
 Der Befehl `wavekat-voice` ist dasselbe Programm, das die App ausführt — es liegt bereits auf Ihrer Festplatte, sobald Sie WaveKat Voice installieren. Kein zweiter Download, kein separates Paket, keine Version, die mit der App aus dem Takt geraten kann.
 
-Es ist **standardmäßig ausgeschaltet**. Solange die Automatisierung aktiviert ist, kann jedes Programm, das Sie auf Ihrem Computer ausführen, über Ihr Konto Anrufe tätigen — und Anrufe können Kosten verursachen —, deshalb überlassen wir diese Entscheidung Ihnen. Schalten Sie es unter **Settings → Automation** ein; dort gibt es auch eine Schaltfläche, die `wavekat-voice` mit einem Klick zu Ihrem PATH hinzufügt, damit jedes Terminal es findet.
+Es ist **standardmäßig ausgeschaltet**. Solange die Automatisierung aktiviert ist, kann jedes Programm, das Sie auf Ihrem Computer ausführen, über Ihr Konto Anrufe tätigen — und Anrufe können Kosten verursachen —, deshalb überlassen wir diese Entscheidung Ihnen. Schalten Sie es unter **Einstellungen → Automatisierung** (Settings → Automation) ein; dort gibt es auch eine Schaltfläche, die `wavekat-voice` mit einem Klick zu Ihrem PATH hinzufügt, damit jedes Terminal es findet.
 
 ![WaveKat Voice unter Ubuntu — die Automatisierungseinstellungen mit aktiviertem Befehlszeilenzugriff und der Schaltfläche zum Installieren des Kommandozeilen-Tools.](/screenshots/settings-automation/de.webp)
 
 ## Verbinden Sie einen KI-Assistenten mit einem Klick
 
-Der schnellste Weg ist die Seite **Settings → Automation** selbst. Sie sucht nach KI-Assistenten, die Sie bereits installiert haben, und bietet für jeden eine **Connect**-Schaltfläche an. Heute deckt das ab:
+Der schnellste Weg ist die Seite **Einstellungen → Automatisierung** selbst. Sie sucht nach KI-Assistenten, die Sie bereits installiert haben, und bietet für jeden eine **Verbinden** (Connect)-Schaltfläche an. Heute deckt das ab:
 
 | Assistent | Wie er verbunden wird |
 |---|---|
@@ -71,13 +71,13 @@ Ein paar Entscheidungen, mit denen wir zufrieden sind:
 
 - **Eine Binärdatei, keine neue Angriffsfläche.** Das Kommandozeilenwerkzeug ist der eigene Daemon der App mit einem anderen Hut auf — es erbt also die Signierung der App, ihre automatischen Updates und ihre Sicherheitsprüfung kostenlos und kann nie eine veraltete Version sein.
 - **Die Binärdatei ist die Quelle der Wahrheit.** Der Hilfetext trägt die Exit-Codes und Beispiele; die Assistenten-Integrationen verweisen auf `wavekat-voice --help`, statt eine Befehlsliste einzufrieren, die veralten würde. Aktualisieren Sie die App, und die Werkzeuge aktualisieren sich mit.
-- **Standardmäßig aus, opt-in, widerrufbar.** Einen kostenpflichtigen Telefonanruf zu tätigen ist folgenreich, deshalb bleibt die Automatisierung aus, bis Sie darum bitten, und **Remove** hängt jeden Assistenten wieder aus, ohne den Rest seiner Einstellungen anzutasten.
+- **Standardmäßig aus, opt-in, widerrufbar.** Einen kostenpflichtigen Telefonanruf zu tätigen ist folgenreich, deshalb bleibt die Automatisierung aus, bis Sie darum bitten, und **Entfernen** (Remove) hängt jeden Assistenten wieder aus, ohne den Rest seiner Einstellungen anzutasten.
 
 ## Häufig gestellte Fragen
 
 ### Kann ein KI-Assistent mit WaveKat Voice Telefonanrufe tätigen?
 
-Ja. Mit aktivierter Automatisierung in WaveKat Voice (Settings → Automation) kann ein KI-Assistent wie Claude über das Kommandozeilenwerkzeug der App oder ihren MCP-Server echte Telefonanrufe tätigen, verfolgen und beenden. Der Assistent steuert den Anruf; Sie sprechen darin.
+Ja. Mit aktivierter Automatisierung in WaveKat Voice (Einstellungen → Automatisierung) kann ein KI-Assistent wie Claude über das Kommandozeilenwerkzeug der App oder ihren MCP-Server echte Telefonanrufe tätigen, verfolgen und beenden. Der Assistent steuert den Anruf; Sie sprechen darin.
 
 ### Spricht die KI im Anruf statt mir?
 
@@ -85,7 +85,7 @@ Nein. WaveKat Voice leitet das Anrufaudio über das Mikrofon und die Lautspreche
 
 ### Muss ich etwas zusätzlich installieren, um die Kommandozeile zu nutzen?
 
-Nein. Der Befehl `wavekat-voice` wird mit der WaveKat-Voice-App geliefert, ist also bereits auf Ihrem Computer. Sie müssen nur die Automatisierung unter Settings → Automation einschalten und optional auf „Install command-line tool" klicken, um sie zu Ihrem PATH hinzuzufügen.
+Nein. Der Befehl `wavekat-voice` wird mit der WaveKat-Voice-App geliefert, ist also bereits auf Ihrem Computer. Sie müssen nur die Automatisierung unter Einstellungen → Automatisierung einschalten und optional auf „Befehlszeilenwerkzeug installieren (Install command-line tool)" klicken, um sie zu Ihrem PATH hinzuzufügen.
 
 ### Ist es sicher, die Automatisierung eingeschaltet zu lassen?
 
@@ -101,6 +101,6 @@ WaveKat Voice läuft heute auf Mac und Linux, Windows folgt, sobald die Nachfrag
 
 ## Probieren Sie es aus
 
-[Laden Sie WaveKat Voice herunter](/voice/download/), öffnen Sie **Settings → Automation** und verbinden Sie Ihren Assistenten. Die vollständige Befehlsreferenz — jeder Befehl, seine JSON-Ausgabe und die Exit-Codes — finden Sie in der [Automatisierungsdokumentation](/voice/automation/).
+[Laden Sie WaveKat Voice herunter](/voice/download/), öffnen Sie **Einstellungen → Automatisierung** und verbinden Sie Ihren Assistenten. Die vollständige Befehlsreferenz — jeder Befehl, seine JSON-Ausgabe und die Exit-Codes — finden Sie in der [Automatisierungsdokumentation](/voice/automation/).
 
 Wir stehen hier erst am Anfang. Anrufe zu steuern ist die Grundlage; ein Assistent, der auch das Gespräch selbst führen kann, ist der nächste Schritt.

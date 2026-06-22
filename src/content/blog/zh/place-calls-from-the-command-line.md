@@ -28,13 +28,13 @@ WaveKat Voice 一直在后台静静运行着一部电话：它向你的 SIP 提�
 
 `wavekat-voice` 命令就是运行该应用的同一个程序——在你安装 WaveKat Voice 的那一刻，它就已经在你的磁盘上了。没有第二次下载，没有单独的安装包，也没有可能与应用脱节的版本。
 
-它**默认关闭**。当自动化处于开启状态时，你在电脑上运行的任何程序都可以通过你的账户拨打电话——而通话可能会产生费用——所以我们把这个决定交给你。在 **Settings → Automation** 中开启它，那里还有一个一键按钮，可以把 `wavekat-voice` 添加到你的 PATH 中，让任何终端都能找到它。
+它**默认关闭**。当自动化处于开启状态时，你在电脑上运行的任何程序都可以通过你的账户拨打电话——而通话可能会产生费用——所以我们把这个决定交给你。在 **设置 → 自动化**（Settings → Automation）中开启它，那里还有一个一键按钮，可以把 `wavekat-voice` 添加到你的 PATH 中，让任何终端都能找到它。
 
 ![Ubuntu 上的 WaveKat Voice——已开启命令行访问的自动化设置，以及安装命令行工具的按钮。](/screenshots/settings-automation/zh-Hans.webp)
 
 ## 一键连接 AI 助手
 
-最快的途径就是 **Settings → Automation** 页面本身。它会查找你已经安装的 AI 助手，并为每一个提供一个 **Connect** 按钮。目前涵盖：
+最快的途径就是 **设置 → 自动化** 页面本身。它会查找你已经安装的 AI 助手，并为每一个提供一个 **连接**（Connect）按钮。目前涵盖：
 
 | 助手 | 如何连接 |
 |---|---|
@@ -71,13 +71,13 @@ wavekat-voice call list --json | jq -r '.[0].id' | xargs wavekat-voice call hang
 
 - **一个二进制文件，没有新的攻击面。** 这个命令行工具就是应用自己的守护进程换了顶帽子——所以它免费继承了应用的签名、自动更新和安全审查，并且永远不会是过时的版本。
 - **二进制文件就是事实的来源。** 帮助文本携带了退出码和示例；助手的集成指向 `wavekat-voice --help`，而不是冻结一份会过时的命令清单。更新应用，工具也随之更新。
-- **默认关闭、需主动开启、可撤销。** 拨打一通付费电话事关重大，所以自动化在你主动要求之前保持关闭，而 **Remove** 可以再次解除任何助手的挂钩，且不会触及其余设置。
+- **默认关闭、需主动开启、可撤销。** 拨打一通付费电话事关重大，所以自动化在你主动要求之前保持关闭，而 **移除**（Remove）可以再次解除任何助手的挂钩，且不会触及其余设置。
 
 ## 常见问题
 
 ### AI 助手能用 WaveKat Voice 拨打电话吗？
 
-可以。在 WaveKat Voice 中启用自动化后（Settings → Automation），像 Claude 这样的 AI 助手可以通过应用的命令行工具或其 MCP 服务器来拨打、跟进和结束真实电话。助手驱动通话；说话的是你。
+可以。在 WaveKat Voice 中启用自动化后（设置 → 自动化），像 Claude 这样的 AI 助手可以通过应用的命令行工具或其 MCP 服务器来拨打、跟进和结束真实电话。助手驱动通话；说话的是你。
 
 ### 是 AI 在通话中说话而不是我吗？
 
@@ -85,7 +85,7 @@ wavekat-voice call list --json | jq -r '.[0].id' | xargs wavekat-voice call hang
 
 ### 使用命令行需要额外安装任何东西吗？
 
-不需要。`wavekat-voice` 命令随 WaveKat Voice 应用一起提供，所以它已经在你的电脑上了。你只需在 Settings → Automation 中开启自动化，并可选地点击"Install command-line tool"将它添加到你的 PATH 中。
+不需要。`wavekat-voice` 命令随 WaveKat Voice 应用一起提供，所以它已经在你的电脑上了。你只需在 设置 → 自动化 中开启自动化，并可选地点击"安装命令行工具（Install command-line tool）"将它添加到你的 PATH 中。
 
 ### 让自动化一直开着安全吗？
 
@@ -101,6 +101,6 @@ WaveKat Voice 目前运行在 Mac 和 Linux 上，Windows 将在有需求时推�
 
 ## 试试看
 
-[下载 WaveKat Voice](/voice/download/)，打开 **Settings → Automation**，然后连接你的助手。完整的命令参考——每一个命令、它的 JSON 输出以及退出码——都在[自动化文档](/voice/automation/)中。
+[下载 WaveKat Voice](/voice/download/)，打开 **设置 → 自动化**，然后连接你的助手。完整的命令参考——每一个命令、它的 JSON 输出以及退出码——都在[自动化文档](/voice/automation/)中。
 
 我们才刚刚起步。驱动通话是基础；一个还能亲自维持对话的助手，是这件事接下来要去的方向。

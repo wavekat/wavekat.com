@@ -28,13 +28,13 @@ WaveKat Voice 一直在背景靜靜執行著一部電話：它向你的 SIP 供�
 
 `wavekat-voice` 命令就是執行該應用程式的同一個程式——在你安裝 WaveKat Voice 的那一刻，它就已經在你的磁碟上了。沒有第二次下載，沒有單獨的安裝套件，也沒有可能與應用程式脫節的版本。
 
-它**預設關閉**。當自動化處於開啟狀態時，你在電腦上執行的任何程式都可以透過你的帳戶撥打電話——而通話可能會產生費用——所以我們把這個決定交給你。在 **Settings → Automation** 中開啟它，那裡還有一個一鍵按鈕，可以把 `wavekat-voice` 加入到你的 PATH 中，讓任何終端機都能找到它。
+它**預設關閉**。當自動化處於開啟狀態時，你在電腦上執行的任何程式都可以透過你的帳戶撥打電話——而通話可能會產生費用——所以我們把這個決定交給你。在 **設定 → 自動化**（Settings → Automation）中開啟它，那裡還有一個一鍵按鈕，可以把 `wavekat-voice` 加入到你的 PATH 中，讓任何終端機都能找到它。
 
 ![Ubuntu 上的 WaveKat Voice——已開啟命令列存取的自動化設定，以及安裝命令列工具的按鈕。](/screenshots/settings-automation/zh-Hant.webp)
 
 ## 一鍵連接 AI 助理
 
-最快的途徑就是 **Settings → Automation** 頁面本身。它會尋找你已經安裝的 AI 助理，並為每一個提供一個 **Connect** 按鈕。目前涵蓋：
+最快的途徑就是 **設定 → 自動化** 頁面本身。它會尋找你已經安裝的 AI 助理，並為每一個提供一個 **連接**（Connect）按鈕。目前涵蓋：
 
 | 助理 | 如何連接 |
 |---|---|
@@ -71,13 +71,13 @@ wavekat-voice call list --json | jq -r '.[0].id' | xargs wavekat-voice call hang
 
 - **一個二進位檔案，沒有新的攻擊面。** 這個命令列工具就是應用程式自己的常駐程式換了頂帽子——所以它免費繼承了應用程式的簽章、自動更新和安全稽核，並且永遠不會是過時的版本。
 - **二進位檔案就是事實的來源。** 說明文字攜帶了離開碼和範例；助理的整合指向 `wavekat-voice --help`，而不是凍結一份會過時的命令清單。更新應用程式，工具也隨之更新。
-- **預設關閉、需主動開啟、可撤銷。** 撥打一通付費電話事關重大，所以自動化在你主動要求之前保持關閉，而 **Remove** 可以再次解除任何助理的掛鉤，且不會觸及其餘設定。
+- **預設關閉、需主動開啟、可撤銷。** 撥打一通付費電話事關重大，所以自動化在你主動要求之前保持關閉，而 **移除**（Remove）可以再次解除任何助理的掛鉤，且不會觸及其餘設定。
 
 ## 常見問題
 
 ### AI 助理能用 WaveKat Voice 撥打電話嗎？
 
-可以。在 WaveKat Voice 中啟用自動化後（Settings → Automation），像 Claude 這樣的 AI 助理可以透過應用程式的命令列工具或其 MCP 伺服器來撥打、跟進和結束真實電話。助理驅動通話；說話的是你。
+可以。在 WaveKat Voice 中啟用自動化後（設定 → 自動化），像 Claude 這樣的 AI 助理可以透過應用程式的命令列工具或其 MCP 伺服器來撥打、跟進和結束真實電話。助理驅動通話；說話的是你。
 
 ### 是 AI 在通話中說話而不是我嗎？
 
@@ -85,7 +85,7 @@ wavekat-voice call list --json | jq -r '.[0].id' | xargs wavekat-voice call hang
 
 ### 使用命令列需要額外安裝任何東西嗎？
 
-不需要。`wavekat-voice` 命令隨 WaveKat Voice 應用程式一起提供，所以它已經在你的電腦上了。你只需在 Settings → Automation 中開啟自動化，並可選擇性地點擊「Install command-line tool」將它加入到你的 PATH 中。
+不需要。`wavekat-voice` 命令隨 WaveKat Voice 應用程式一起提供，所以它已經在你的電腦上了。你只需在 設定 → 自動化 中開啟自動化，並可選擇性地點擊「安裝命令列工具（Install command-line tool）」將它加入到你的 PATH 中。
 
 ### 讓自動化一直開著安全嗎？
 
@@ -101,6 +101,6 @@ WaveKat Voice 目前執行在 Mac 和 Linux 上，Windows 將在有需求時推�
 
 ## 試試看
 
-[下載 WaveKat Voice](/voice/download/)，打開 **Settings → Automation**，然後連接你的助理。完整的命令參考——每一個命令、它的 JSON 輸出以及離開碼——都在[自動化文件](/voice/automation/)中。
+[下載 WaveKat Voice](/voice/download/)，打開 **設定 → 自動化**，然後連接你的助理。完整的命令參考——每一個命令、它的 JSON 輸出以及離開碼——都在[自動化文件](/voice/automation/)中。
 
 我們才剛剛起步。驅動通話是基礎；一個還能親自維持對話的助理，是這件事接下來要去的方向。

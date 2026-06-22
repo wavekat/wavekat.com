@@ -28,13 +28,13 @@ Quindi l’assistente è la mano sul tastierino, non una voce sulla linea. È un
 
 Il comando `wavekat-voice` è lo stesso programma che fa girare l’app — è già sul tuo disco nel momento in cui installi WaveKat Voice. Nessun secondo download, nessun pacchetto separato, nessuna versione che possa disallinearsi dall’app.
 
-È **disattivato per impostazione predefinita**. Mentre l’automazione è attiva, qualsiasi programma tu esegua sul computer può effettuare chiamate tramite il tuo account — e le chiamate possono costare denaro — quindi lasciamo a te questa decisione. Attivala in **Settings → Automation**, dove c’è anche un pulsante in un clic per aggiungere `wavekat-voice` al tuo PATH, così qualsiasi terminale possa trovarlo.
+È **disattivato per impostazione predefinita**. Mentre l’automazione è attiva, qualsiasi programma tu esegua sul computer può effettuare chiamate tramite il tuo account — e le chiamate possono costare denaro — quindi lasciamo a te questa decisione. Attivala in **Impostazioni → Automazione** (Settings → Automation), dove c’è anche un pulsante in un clic per aggiungere `wavekat-voice` al tuo PATH, così qualsiasi terminale possa trovarlo.
 
 ![WaveKat Voice su Ubuntu — le impostazioni di Automazione con l'accesso da riga di comando attivato e il pulsante per installare lo strumento da riga di comando.](/screenshots/settings-automation/it.webp)
 
 ## Collega un assistente AI in un clic
 
-Il percorso più veloce è la pagina **Settings → Automation** stessa. Cerca gli assistenti AI che hai già installato e offre un pulsante **Connect** per ciascuno. Oggi questo copre:
+Il percorso più veloce è la pagina **Impostazioni → Automazione** stessa. Cerca gli assistenti AI che hai già installato e offre un pulsante **Connetti** (Connect) per ciascuno. Oggi questo copre:
 
 | Assistente | Come si collega |
 |---|---|
@@ -71,13 +71,13 @@ Alcune scelte di cui siamo soddisfatti:
 
 - **Un solo binario, nessuna nuova superficie.** Lo strumento da riga di comando è il demone stesso dell’app con un altro cappello — quindi eredita gratuitamente la firma dell’app, i suoi aggiornamenti automatici e la sua revisione di sicurezza, e non potrà mai essere una versione obsoleta.
 - **Il binario è la fonte di verità.** Il testo di aiuto contiene i codici di uscita e gli esempi; le integrazioni degli assistenti puntano a `wavekat-voice --help` invece di congelare un elenco di comandi destinato a invecchiare. Aggiorna l’app e gli strumenti si aggiornano con essa.
-- **Disattivata per impostazione predefinita, attivabile su richiesta, revocabile.** Effettuare una telefonata a pagamento è una cosa importante, quindi l’automazione resta disattivata finché non la richiedi, e **Remove** sgancia di nuovo qualsiasi assistente senza toccare il resto delle sue impostazioni.
+- **Disattivata per impostazione predefinita, attivabile su richiesta, revocabile.** Effettuare una telefonata a pagamento è una cosa importante, quindi l’automazione resta disattivata finché non la richiedi, e **Rimuovi** (Remove) sgancia di nuovo qualsiasi assistente senza toccare il resto delle sue impostazioni.
 
 ## Domande frequenti
 
 ### Un assistente AI può effettuare telefonate con WaveKat Voice?
 
-Sì. Con l’automazione abilitata in WaveKat Voice (Settings → Automation), un assistente AI come Claude può effettuare, seguire e terminare vere telefonate tramite lo strumento da riga di comando dell’app o il suo server MCP. L’assistente guida la chiamata; a parlare sei tu.
+Sì. Con l’automazione abilitata in WaveKat Voice (Impostazioni → Automazione), un assistente AI come Claude può effettuare, seguire e terminare vere telefonate tramite lo strumento da riga di comando dell’app o il suo server MCP. L’assistente guida la chiamata; a parlare sei tu.
 
 ### È l’AI a parlare durante la chiamata al posto mio?
 
@@ -85,7 +85,7 @@ No. WaveKat Voice instrada l’audio della chiamata attraverso il microfono e gl
 
 ### Devo installare qualcosa in più per usare la riga di comando?
 
-No. Il comando `wavekat-voice` è incluso nell’app WaveKat Voice, quindi è già sul tuo computer. Devi solo attivare l’automazione in Settings → Automation e, facoltativamente, cliccare su "Install command-line tool" per aggiungerlo al tuo PATH.
+No. Il comando `wavekat-voice` è incluso nell’app WaveKat Voice, quindi è già sul tuo computer. Devi solo attivare l’automazione in Impostazioni → Automazione e, facoltativamente, cliccare su "Installa lo strumento da riga di comando (Install command-line tool)" per aggiungerlo al tuo PATH.
 
 ### È sicuro lasciare l’automazione attiva?
 
@@ -101,6 +101,6 @@ WaveKat Voice oggi gira su Mac e Linux, con Windows in arrivo quando ci sarà ri
 
 ## Provalo
 
-[Scarica WaveKat Voice](/voice/download/), apri **Settings → Automation** e collega il tuo assistente. Il riferimento completo dei comandi — ogni comando, il suo output JSON e i codici di uscita — si trova nella [documentazione sull’automazione](/voice/automation/).
+[Scarica WaveKat Voice](/voice/download/), apri **Impostazioni → Automazione** e collega il tuo assistente. Il riferimento completo dei comandi — ogni comando, il suo output JSON e i codici di uscita — si trova nella [documentazione sull’automazione](/voice/automation/).
 
 Qui stiamo solo iniziando. Guidare le chiamate è la base; un assistente capace anche di sostenere la conversazione è dove tutto questo andrà a finire.
