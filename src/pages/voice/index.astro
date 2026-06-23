@@ -5,8 +5,10 @@ import {
   PhoneCall,
   Mic,
   FileText,
+  Terminal,
   Server,
   Cloud,
+  Languages,
   Lock,
   ArrowRight,
 } from '@lucide/astro';
@@ -33,6 +35,11 @@ const features = [
     body: 'See the words as they\'re spoken. A running transcript sits alongside the call, so you can take in what matters instead of scribbling notes.',
   },
   {
+    icon: Terminal,
+    title: 'Let an AI assistant dial',
+    body: 'Switch on automation and a command-line tool — or an AI assistant like Claude — can place, wait on, and end calls for you. It works the dialpad; you do the talking. Off until you turn it on.',
+  },
+  {
     icon: Server,
     title: 'Works with your provider',
     body: 'Bring the phone provider you already use — Twilio, Telnyx, 2talk, and more. Pick it from the list and the setup is filled in for you.',
@@ -41,6 +48,11 @@ const features = [
     icon: Cloud,
     title: 'Sync if you want',
     body: 'Sign in to your WaveKat account and your recordings and transcripts sync up so you can review them on the web. Don\'t sign in, and everything simply stays on your computer.',
+  },
+  {
+    icon: Languages,
+    title: 'Speaks your language',
+    body: 'The app follows your computer\'s language and speaks nine — English, Spanish, French, German, Italian, Japanese, Korean, and Chinese in both Simplified and Traditional. Switch any time in Settings.',
   },
   {
     icon: Lock,
@@ -83,6 +95,15 @@ const faqs = [
   {
     q: 'Where are my recordings and transcripts kept?',
     a: 'On your computer. Nothing is uploaded unless you decide to. If you sign in to a WaveKat account, your recordings and transcripts can sync so you can review them on the web — otherwise they never leave your computer.',
+  },
+  {
+    q: 'Can an AI assistant place calls for me?',
+    a: 'Yes. Turn on automation in Settings → Automation and a command-line tool — or a connected AI assistant like Claude, Cursor, or Windsurf — can place, follow, and end calls through the app. The assistant works the dialpad; you still do the talking. It\'s off by default, and assistants connect in one click.',
+    link: { href: '/blog/place-calls-from-the-command-line/', label: 'How it works' },
+  },
+  {
+    q: 'What languages does the app come in?',
+    a: 'Nine: English, Spanish, French, German, Italian, Japanese, Korean, and Chinese in both Simplified and Traditional. It follows your computer\'s language automatically, and you can pick another any time in Settings.',
   },
   {
     q: 'Is it free?',

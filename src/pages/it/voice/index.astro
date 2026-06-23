@@ -12,8 +12,10 @@ import {
   PhoneCall,
   Mic,
   FileText,
+  Terminal,
   Server,
   Cloud,
+  Languages,
   Lock,
   ArrowRight,
 } from '@lucide/astro';
@@ -40,6 +42,11 @@ const features = [
     body: 'Vedi le parole mentre vengono pronunciate. Una trascrizione scorre accanto alla chiamata, così puoi cogliere ciò che conta invece di prendere appunti di fretta.',
   },
   {
+    icon: Terminal,
+    title: 'Lascia comporre a un assistente AI',
+    body: 'Attiva l’automazione e uno strumento da riga di comando — o un assistente AI come Claude — può effettuare, attendere e terminare le chiamate per te. Lui guida il tastierino; a parlare sei tu. Disattivato finché non lo attivi.',
+  },
+  {
     icon: Server,
     title: 'Funziona con il tuo operatore',
     body: 'Porta l’operatore telefonico che già usi — Twilio, Telnyx, 2talk e altri. Scegli dall’elenco e la configurazione viene compilata per te.',
@@ -48,6 +55,11 @@ const features = [
     icon: Cloud,
     title: 'Sincronizza se vuoi',
     body: 'Accedi al tuo account WaveKat e le tue registrazioni e trascrizioni si sincronizzano, così puoi rivederle sul web. Non accedere, e tutto resta semplicemente sul tuo computer.',
+  },
+  {
+    icon: Languages,
+    title: 'Parla la tua lingua',
+    body: 'L’app segue la lingua del tuo computer e ne parla nove — inglese, spagnolo, francese, tedesco, italiano, giapponese, coreano e cinese sia semplificato che tradizionale. Cambiala quando vuoi nelle Impostazioni.',
   },
   {
     icon: Lock,
@@ -90,6 +102,15 @@ const faqs = [
   {
     q: 'Dove vengono conservate le mie registrazioni e trascrizioni?',
     a: 'Sul tuo computer. Nulla viene caricato a meno che tu non lo decida. Se accedi a un account WaveKat, le tue registrazioni e trascrizioni possono sincronizzarsi, così puoi rivederle sul web — altrimenti non lasciano mai il tuo computer.',
+  },
+  {
+    q: 'Un assistente AI può effettuare chiamate per me?',
+    a: 'Sì. Attiva l’automazione in Impostazioni → Automazione e uno strumento da riga di comando — o un assistente AI collegato come Claude, Cursor o Windsurf — può effettuare, seguire e terminare le chiamate tramite l’app. L’assistente guida il tastierino; a parlare sei sempre tu. È disattivato per impostazione predefinita, e gli assistenti si collegano in un clic.',
+    link: { href: '/it/blog/place-calls-from-the-command-line/', label: 'Come funziona' },
+  },
+  {
+    q: 'In quali lingue è disponibile l’app?',
+    a: 'Nove: inglese, spagnolo, francese, tedesco, italiano, giapponese, coreano e cinese sia semplificato che tradizionale. Segue automaticamente la lingua del tuo computer e puoi sceglierne un’altra quando vuoi nelle Impostazioni.',
   },
   {
     q: 'È gratuito?',
