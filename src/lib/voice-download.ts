@@ -8,16 +8,16 @@
 // nothing to edit here.
 //
 // macOS feed `latest-mac.yml`:
-//   version: 0.0.26
+//   version: 0.0.40
 //   files:
-//     - url: WaveKat Voice-0.0.26-arm64-mac.zip   (the in-app update payload)
-//     - url: WaveKat Voice-0.0.26-arm64.dmg       (the human download)  ← we want this
+//     - url: WaveKat Voice-0.0.40-arm64-mac.zip   (the in-app update payload)
+//     - url: WaveKat Voice-0.0.40-arm64.dmg       (the human download)  ← we want this
 //
 // Linux feed `latest-linux.yml`:
-//   version: 0.0.26
+//   version: 0.0.40
 //   files:
-//     - url: WaveKat Voice-0.0.26.AppImage        (the in-app update payload)
-//     - url: WaveKat Voice-0.0.26.deb             (the human download)  ← we want this
+//     - url: WaveKat Voice-0.0.40.AppImage        (the in-app update payload)
+//     - url: WaveKat Voice-0.0.40.deb             (the human download)  ← we want this
 //
 // In both feeds the installer we surface is the file entry that carries a
 // `url`, `sha512`, then `size` (the .dmg / .deb). The other entry is the
@@ -55,9 +55,9 @@ const MAC: Platform = {
   label: 'Download for Mac',
   arch: 'Macs with Apple chip (M1 or newer)',
   fallback: {
-    version: '0.0.26',
-    fileName: 'WaveKat Voice-0.0.26-arm64.dmg',
-    sizeBytes: 125353721,
+    version: '0.0.40',
+    fileName: 'WaveKat Voice-0.0.40-arm64.dmg',
+    sizeBytes: 126241228,
   },
 };
 
@@ -67,9 +67,9 @@ const LINUX: Platform = {
   label: 'Download for Linux',
   arch: 'Debian & Ubuntu (.deb, 64-bit)',
   fallback: {
-    version: '0.0.26',
-    fileName: 'WaveKat Voice-0.0.26.deb',
-    sizeBytes: 105649108,
+    version: '0.0.40',
+    fileName: 'WaveKat Voice-0.0.40.deb',
+    sizeBytes: 106304532,
   },
 };
 

@@ -12,8 +12,10 @@ import {
   PhoneCall,
   Mic,
   FileText,
+  Terminal,
   Server,
   Cloud,
+  Languages,
   Lock,
   ArrowRight,
 } from '@lucide/astro';
@@ -40,6 +42,11 @@ const features = [
     body: 'Sehen Sie die Wörter, während sie gesprochen werden. Ein laufendes Transkript läuft neben dem Anruf mit, sodass Sie das Wesentliche aufnehmen, statt mitzuschreiben.',
   },
   {
+    icon: Terminal,
+    title: 'Einen KI-Assistenten wählen lassen',
+    body: 'Schalten Sie die Automatisierung ein, und ein Kommandozeilenwerkzeug — oder ein KI-Assistent wie Claude — kann Anrufe für Sie tätigen, darauf warten und sie beenden. Es bedient das Wählfeld; sprechen tun Sie. Standardmäßig ausgeschaltet, bis Sie es aktivieren.',
+  },
+  {
     icon: Server,
     title: 'Funktioniert mit Ihrem Anbieter',
     body: 'Bringen Sie den Telefonanbieter mit, den Sie bereits nutzen — Twilio, Telnyx, 2talk und weitere. Wählen Sie ihn aus der Liste, und die Einrichtung wird für Sie ausgefüllt.',
@@ -48,6 +55,11 @@ const features = [
     icon: Cloud,
     title: 'Synchronisieren, wenn Sie möchten',
     body: 'Melden Sie sich bei Ihrem WaveKat-Konto an, und Ihre Aufzeichnungen und Transkripte werden synchronisiert, sodass Sie sie im Web durchsehen können. Melden Sie sich nicht an, bleibt einfach alles auf Ihrem Computer.',
+  },
+  {
+    icon: Languages,
+    title: 'Spricht Ihre Sprache',
+    body: 'Die App richtet sich nach der Sprache Ihres Computers und spricht neun — Englisch, Spanisch, Französisch, Deutsch, Italienisch, Japanisch, Koreanisch und Chinesisch in Vereinfacht und Traditionell. Wechseln Sie sie jederzeit in den Einstellungen.',
   },
   {
     icon: Lock,
@@ -90,6 +102,15 @@ const faqs = [
   {
     q: 'Wo werden meine Aufzeichnungen und Transkripte gespeichert?',
     a: 'Auf Ihrem Computer. Nichts wird hochgeladen, es sei denn, Sie entscheiden sich dafür. Wenn Sie sich bei einem WaveKat-Konto anmelden, können Ihre Aufzeichnungen und Transkripte synchronisiert werden, sodass Sie sie im Web durchsehen können — andernfalls verlassen sie nie Ihren Computer.',
+  },
+  {
+    q: 'Kann ein KI-Assistent für mich Anrufe tätigen?',
+    a: 'Ja. Schalten Sie die Automatisierung unter Einstellungen → Automatisierung ein, und ein Kommandozeilenwerkzeug — oder ein verbundener KI-Assistent wie Claude, Cursor oder Windsurf — kann über die App Anrufe tätigen, verfolgen und beenden. Der Assistent bedient das Wählfeld; sprechen tun weiterhin Sie. Es ist standardmäßig ausgeschaltet, und Assistenten lassen sich mit einem Klick verbinden.',
+    link: { href: '/de/blog/place-calls-from-the-command-line/', label: 'So funktioniert es' },
+  },
+  {
+    q: 'In welchen Sprachen gibt es die App?',
+    a: 'In neun: Englisch, Spanisch, Französisch, Deutsch, Italienisch, Japanisch, Koreanisch und Chinesisch in Vereinfacht und Traditionell. Sie richtet sich automatisch nach der Sprache Ihres Computers, und Sie können jederzeit in den Einstellungen eine andere wählen.',
   },
   {
     q: 'Ist es kostenlos?',

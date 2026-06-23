@@ -12,8 +12,10 @@ import {
   PhoneCall,
   Mic,
   FileText,
+  Terminal,
   Server,
   Cloud,
+  Languages,
   Lock,
   ArrowRight,
 } from '@lucide/astro';
@@ -40,6 +42,11 @@ const features = [
     body: 'Vea las palabras a medida que se pronuncian. Una transcripción en marcha aparece junto a la llamada, para que pueda asimilar lo importante en lugar de garabatear notas.',
   },
   {
+    icon: Terminal,
+    title: 'Deje que un asistente de IA marque',
+    body: 'Active la automatización y una herramienta de línea de comandos —o un asistente de IA como Claude— podrá realizar llamadas, esperar a que contesten y finalizarlas por usted. Maneja el teclado de marcación; usted es quien habla. Desactivado hasta que usted lo active.',
+  },
+  {
     icon: Server,
     title: 'Funciona con su proveedor',
     body: 'Use el proveedor de telefonía que ya tiene — Twilio, Telnyx, 2talk y más. Elíjalo de la lista y la configuración se rellena por usted.',
@@ -48,6 +55,11 @@ const features = [
     icon: Cloud,
     title: 'Sincronice si quiere',
     body: 'Inicie sesión en su cuenta de WaveKat y sus grabaciones y transcripciones se sincronizan para que pueda revisarlas en la web. Si no inicia sesión, todo se queda simplemente en su computadora.',
+  },
+  {
+    icon: Languages,
+    title: 'Habla su idioma',
+    body: 'La app sigue el idioma de su computadora y habla nueve: inglés, español, francés, alemán, italiano, japonés, coreano y chino, tanto simplificado como tradicional. Cámbielo cuando quiera en Ajustes.',
   },
   {
     icon: Lock,
@@ -90,6 +102,15 @@ const faqs = [
   {
     q: '¿Dónde se guardan mis grabaciones y transcripciones?',
     a: 'En su computadora. No se sube nada salvo que usted lo decida. Si inicia sesión en una cuenta de WaveKat, sus grabaciones y transcripciones pueden sincronizarse para que las revise en la web; de lo contrario, nunca salen de su computadora.',
+  },
+  {
+    q: '¿Puede un asistente de IA realizar llamadas por mí?',
+    a: 'Sí. Active la automatización en Ajustes → Automatización y una herramienta de línea de comandos —o un asistente de IA conectado como Claude, Cursor o Windsurf— podrá realizar, seguir y finalizar llamadas a través de la app. El asistente maneja el teclado de marcación; usted sigue siendo quien habla. Está desactivado de forma predeterminada y los asistentes se conectan en un solo clic.',
+    link: { href: '/es/blog/place-calls-from-the-command-line/', label: 'Cómo funciona' },
+  },
+  {
+    q: '¿En qué idiomas viene la app?',
+    a: 'Nueve: inglés, español, francés, alemán, italiano, japonés, coreano y chino, tanto simplificado como tradicional. Sigue el idioma de su computadora automáticamente, y puede elegir otro cuando quiera en Ajustes.',
   },
   {
     q: '¿Es gratis?',
