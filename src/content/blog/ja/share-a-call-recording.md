@@ -57,7 +57,7 @@ WaveKat Voice のすべての通話は、すでにあなたのコンピュータ
 
 ![ブラウザで開いた WaveKat Voice の共有録音 —— 受け取った人に見える、音声プレーヤーと話者ごとにラベル付けされた文字起こし。](/screenshots/share-viewer/ja.webp)
 
-**実際に見てみる：** [本物の共有録音を開く →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) —— 公開・音声のみで共有された通話を、受け取った人に見えるそのままの形で。
+**実際に見てみる：** [本物の共有録音を開く →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) —— 公開・音声のみで共有された通話が、受け取った人に見えるそのままの形で開きます。
 
 ## 共有はクラウドで行われる —— これは意図的です
 
