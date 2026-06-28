@@ -57,7 +57,7 @@ Si vous avez partagé avec « Personnes spécifiques », la page leur demande d'
 
 ![Un enregistrement WaveKat Voice partagé ouvert dans le navigateur — le lecteur audio et la transcription étiquetée par interlocuteur que voit un destinataire.](/screenshots/share-viewer/fr.webp)
 
-**Voyez par vous-même :** [ouvrir un vrai enregistrement partagé →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — un appel partagé publiquement, en audio seul, exactement tel qu'un destinataire le voit (l'audio de l'appel est en anglais).
+**Voyez par vous-même :** [ouvrir un vrai enregistrement partagé →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — un appel partagé publiquement, en audio seul, exactement tel qu'un destinataire le voit.
 
 ## Le partage vit dans le cloud — à dessein
 

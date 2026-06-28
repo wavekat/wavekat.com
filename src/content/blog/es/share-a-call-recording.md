@@ -57,7 +57,7 @@ Si compartiste con "Personas específicas", la página les pide iniciar sesión 
 
 ![Una grabación compartida de WaveKat Voice abierta en el navegador — el reproductor de audio y la transcripción etiquetada por interlocutor que ve un destinatario.](/screenshots/share-viewer/es.webp)
 
-**Compruébalo tú mismo:** [abre una grabación compartida real →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — una llamada compartida de forma pública, solo audio, tal como la ve un destinatario (el audio de la llamada está en inglés).
+**Compruébalo tú mismo:** [abre una grabación compartida real →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — una llamada compartida de forma pública, solo audio, tal como la ve un destinatario.
 
 ## Compartir vive en la nube — a propósito
 

@@ -57,7 +57,7 @@ WaveKat Voice 中的每一通通话，都已经在你的电脑上录音并转写
 
 ![一段 WaveKat Voice 共享录音在浏览器中打开——接收者看到的音频播放器和按说话人标注的转写文字。](/screenshots/share-viewer/zh-Hans.webp)
 
-**亲眼看看：** [打开一段真实的共享录音 →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA)——一通以「公开」方式、仅音频分享的通话，正是接收者看到的样子（通话音频为英文）。
+**亲眼看看：** [打开一段真实的共享录音 →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA)——一通以「公开」方式、仅音频分享的通话，正是接收者看到的样子。
 
 ## 分享在云端进行——这是有意为之
 
