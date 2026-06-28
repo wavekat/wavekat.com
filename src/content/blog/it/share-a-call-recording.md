@@ -7,7 +7,7 @@ tags: [voice-ai, registrazioni, privacy]
 lang: "it"
 ---
 
-WaveKat Voice ora trasforma qualsiasi chiamata registrata in un link che puoi inviare. Apri una chiamata, scegli chi può ascoltarla — solo tu, alcune persone che inviti, o chiunque abbia il link — e copia un URL. Chi lo apre trova una pagina pulita con il lettore audio sopra una trascrizione etichettata per interlocutore. Le registrazioni partono come **Privata**, la condivisione è facoltativa per ogni chiamata, e puoi interromperla in qualsiasi momento. Introdotta in WaveKat Voice [0.0.41](/it/voice/changelog/#0041), è disponibile oggi su Mac e Linux.
+WaveKat Voice ora trasforma qualsiasi chiamata registrata in un link che puoi inviare. Apri una chiamata, scegli chi può ascoltarla — solo tu, alcune persone che inviti, o chiunque abbia il link — e copia un URL. Chi lo apre trova una pagina pulita con il lettore audio sopra una trascrizione etichettata per interlocutore. Le registrazioni partono come **Privata**, la condivisione è facoltativa per ogni chiamata, e puoi interromperla in qualsiasi momento. Introdotta in WaveKat Voice [0.0.41](/it/voice/changelog/#0.0.41), è disponibile oggi su Mac e Linux.
 
 Questo prosegue il filo che continuiamo a tirare: [dare a ogni piccola impresa la voce di una grande](/it/blog/hello-world/). Una grande azienda può recuperare una chiamata e inoltrarla a un collega, a un cliente o a un fornitore in pochi secondi. Ora puoi farlo anche tu — dalla stessa app che [registra e trascrive ogni chiamata](/it/voice/) e [lascia che il tuo assistente AI le effettui](/it/blog/place-calls-from-the-command-line/).
 

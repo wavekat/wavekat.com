@@ -6,7 +6,7 @@ author: Eason Guo
 tags: [voice-ai, recordings, privacy]
 ---
 
-WaveKat Voice now turns any recorded call into a link you can send. Open a call, choose who's allowed to listen — just you, a few people you invite, or anyone with the link — and copy a URL. Whoever opens it gets a clean page with the audio player above a speaker-labeled transcript. Recordings start **Private**, sharing is opt-in per call, and you can stop sharing at any time. It shipped in WaveKat Voice [0.0.41](/voice/changelog/#0041) and is live on Mac and Linux today.
+WaveKat Voice now turns any recorded call into a link you can send. Open a call, choose who's allowed to listen — just you, a few people you invite, or anyone with the link — and copy a URL. Whoever opens it gets a clean page with the audio player above a speaker-labeled transcript. Recordings start **Private**, sharing is opt-in per call, and you can stop sharing at any time. It shipped in WaveKat Voice [0.0.41](/voice/changelog/#0.0.41) and is live on Mac and Linux today.
 
 This continues the thread we keep pulling on: [giving every small business the voice of a big one](/blog/hello-world/). A big company can pull up a call and forward it to a colleague, a client, or a supplier in seconds. Now you can too — from the same app that [records and transcribes every call](/voice/) and [lets your AI assistant place them](/blog/place-calls-from-the-command-line/).
 

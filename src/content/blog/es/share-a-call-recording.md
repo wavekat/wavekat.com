@@ -7,7 +7,7 @@ tags: [voz-ia, grabaciones, privacidad]
 lang: "es"
 ---
 
-WaveKat Voice ahora convierte cualquier llamada grabada en un enlace que puedes enviar. Abre una llamada, elige quién puede escucharla —solo tú, unas pocas personas que invites, o cualquiera que tenga el enlace— y copia una URL. Quien la abra verá una página limpia con el reproductor de audio sobre una transcripción etiquetada por interlocutor. Las grabaciones empiezan como **Privada**, compartir se activa llamada por llamada, y puedes dejar de compartir en cualquier momento. Llegó en WaveKat Voice [0.0.41](/es/voice/changelog/#0041) y ya está disponible hoy en Mac y Linux.
+WaveKat Voice ahora convierte cualquier llamada grabada en un enlace que puedes enviar. Abre una llamada, elige quién puede escucharla —solo tú, unas pocas personas que invites, o cualquiera que tenga el enlace— y copia una URL. Quien la abra verá una página limpia con el reproductor de audio sobre una transcripción etiquetada por interlocutor. Las grabaciones empiezan como **Privada**, compartir se activa llamada por llamada, y puedes dejar de compartir en cualquier momento. Llegó en WaveKat Voice [0.0.41](/es/voice/changelog/#0.0.41) y ya está disponible hoy en Mac y Linux.
 
 Esto continúa el hilo del que no dejamos de tirar: [darle a cada pequeña empresa la voz de una grande](/es/blog/hello-world/). Una gran empresa puede recuperar una llamada y reenviarla a un colega, un cliente o un proveedor en segundos. Ahora tú también puedes hacerlo —desde la misma aplicación que [graba y transcribe cada llamada](/es/voice/) y [permite que tu asistente de IA las realice](/es/blog/place-calls-from-the-command-line/).
 
