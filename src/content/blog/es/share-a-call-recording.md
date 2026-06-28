@@ -57,6 +57,8 @@ Si compartiste con "Personas específicas", la página les pide iniciar sesión 
 
 ![Una grabación compartida de WaveKat Voice abierta en el navegador — el reproductor de audio y la transcripción etiquetada por interlocutor que ve un destinatario.](/screenshots/share-viewer/es.webp)
 
+**Compruébalo tú mismo:** [abre una grabación compartida real →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — una llamada compartida de forma pública, solo audio, tal como la ve un destinatario (la página está en inglés).
+
 ## Compartir vive en la nube — a propósito
 
 Un enlace para compartir es algo que abre otra persona, posiblemente con tu portátil cerrado. WaveKat Voice se ejecuta en tu propia máquina y no es accesible desde internet, así que una grabación compartida tiene que vivir en algún lugar al que el destinatario realmente pueda llegar. Eso significa que compartir requiere tres cosas, y el panel para compartir te dice cuál falta:

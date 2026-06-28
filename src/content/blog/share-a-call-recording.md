@@ -56,6 +56,8 @@ If you shared with "Specific people," the page asks them to sign in first and on
 
 ![A shared WaveKat Voice recording opened in the browser — the audio player and speaker-labeled transcript that a recipient sees.](/screenshots/share-viewer/en.webp)
 
+**See it for yourself:** [open a real shared recording →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — a public call shared as audio only, opened exactly the way a recipient sees it.
+
 ## Sharing lives in the cloud — on purpose
 
 A share link is something another person opens, possibly while your laptop is closed. WaveKat Voice runs on your own machine and isn't reachable from the internet, so a shared recording has to live somewhere a recipient can actually reach it. That means sharing requires three things, and the Share panel tells you which one is missing:
