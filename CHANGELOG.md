@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.38](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.37...wavekat-com-v0.0.38) (2026-06-28)
+
+
+### Features
+
+* **blog:** link a live demo in share post ([#108](https://github.com/wavekat/wavekat.com/issues/108)) ([0c54c2c](https://github.com/wavekat/wavekat.com/commit/0c54c2c0920e7829e4b013421612a23d462f5ea9))
+
 ## [0.0.37](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.36...wavekat-com-v0.0.37) (2026-06-28)
 
 
