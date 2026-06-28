@@ -76,6 +76,7 @@ const fullSite = [
   '/blog/hello-world/',
   '/blog/common-voice-explorer/',
   '/blog/place-calls-from-the-command-line/',
+  '/blog/share-a-call-recording/',
 ];
 
 // Which base paths exist in which non-default locale. The default locale is

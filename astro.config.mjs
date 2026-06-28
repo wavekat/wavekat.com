@@ -35,6 +35,34 @@ function rehypeRewriteDocLinks() {
   };
 }
 
+// Give version-number headings (the changelog's `0.0.41`, …) a stable, lossless
+// id equal to the literal version, so pages can deep-link to a release with
+// `…/voice/changelog/#0.0.41`. github-slugger (Astro's default) strips the dots
+// to `0041`, which is both ugly and collision-prone — `0.1.41` and `0.14.1`
+// both reduce to `0141`. Scoped to headings whose text is *exactly* a
+// `X.Y.Z` version, so every other heading keeps its normal slug; this runs
+// after the default slug plugin and overrides the id only for those.
+function rehypeVersionAnchors() {
+  const VERSION = /^\d+\.\d+\.\d+$/;
+  const textOf = (node) =>
+    (node.children || [])
+      .map((c) => (c.type === 'text' ? c.value : c.tagName ? textOf(c) : ''))
+      .join('');
+  return () => (tree) => {
+    const visit = (node) => {
+      if (typeof node.tagName === 'string' && /^h[1-6]$/.test(node.tagName)) {
+        const text = textOf(node).trim();
+        if (VERSION.test(text)) {
+          node.properties = node.properties || {};
+          node.properties.id = text;
+        }
+      }
+      if (Array.isArray(node.children)) node.children.forEach(visit);
+    };
+    visit(tree);
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://wavekat.com',
@@ -83,7 +111,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    rehypePlugins: [rehypeRewriteDocLinks()],
+    rehypePlugins: [rehypeRewriteDocLinks(), rehypeVersionAnchors()],
   },
   vite: {
     plugins: [tailwindcss()],
