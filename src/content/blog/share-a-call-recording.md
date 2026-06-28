@@ -6,7 +6,7 @@ author: Eason Guo
 tags: [voice-ai, recordings, privacy]
 ---
 
-WaveKat Voice now turns any recorded call into a link you can send. Open a call, choose who's allowed to listen — just you, a few people you invite, or anyone with the link — and copy a URL. Whoever opens it gets a clean page with the audio player and the transcript side by side. Recordings start **Private**, sharing is opt-in per call, and you can stop sharing at any time. It's live on Mac and Linux today.
+WaveKat Voice now turns any recorded call into a link you can send. Open a call, choose who's allowed to listen — just you, a few people you invite, or anyone with the link — and copy a URL. Whoever opens it gets a clean page with the audio player above a speaker-labeled transcript. Recordings start **Private**, sharing is opt-in per call, and you can stop sharing at any time. It shipped in WaveKat Voice [0.0.41](/voice/changelog/#0041) and is live on Mac and Linux today.
 
 This continues the thread we keep pulling on: [giving every small business the voice of a big one](/blog/hello-world/). A big company can pull up a call and forward it to a colleague, a client, or a supplier in seconds. Now you can too — from the same app that [records and transcribes every call](/voice/) and [lets your AI assistant place them](/blog/place-calls-from-the-command-line/).
 
@@ -46,7 +46,6 @@ Making a recording public is the one path with a guardrail in front of it. Befor
 A few things make this honest rather than a checkbox:
 
 - **Private is the sticky default.** The share panel opens on Private every time. Public is never pre-selected and never one click closer than the safer choices.
-- **Public links aren't search-indexable.** A public page is marked `noindex` and kept out of search engines, so a link you share doesn't quietly end up in Google.
 - **Every link is revocable.** Set a recording back to Private and outstanding links stop working immediately.
 
 ## What your recipient sees
@@ -95,7 +94,7 @@ Yes. Before you share, you choose whether to show, mask, or hide the caller's nu
 
 ### Is a shared recording public to the whole internet?
 
-Only if you choose "Anyone with the link," and WaveKat Voice warns you before that happens. Public pages are marked `noindex` so they stay out of search engines, and you can make a recording Private again at any time, which disables existing links. The default for every recording is Private.
+Only if you choose "Anyone with the link," and WaveKat Voice warns you before that happens. You can make a recording Private again at any time, which disables existing links. The default for every recording is Private.
 
 ### Do I need an account to share recordings?
 
