@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.37](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.36...wavekat-com-v0.0.37) (2026-06-28)
+
+
+### Features
+
+* **blog:** add share-a-recording post ([#107](https://github.com/wavekat/wavekat.com/issues/107)) ([661ca7d](https://github.com/wavekat/wavekat.com/commit/661ca7d19d54cf955a56bd80bd12d53abd219cf1))
+* **voice:** surface CLI automation and multilingual ([#104](https://github.com/wavekat/wavekat.com/issues/104)) ([857d4d0](https://github.com/wavekat/wavekat.com/commit/857d4d08cb1504c765574b227ca409a0144470ea))
+
 ## [0.0.36](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.35...wavekat-com-v0.0.36) (2026-06-22)
 
 
