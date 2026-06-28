@@ -21,4 +21,11 @@
   * {
     font-family: 'JetBrains Mono', Menlo, 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
   }
+
+  /* Offset in-page anchor jumps (e.g. /voice/changelog/#0.0.41, docs TOC
+     links) so the targeted heading isn't flush against the viewport top or
+     hidden under the occasional fixed language banner. */
+  html {
+    scroll-padding-top: 4rem;
+  }
 }
