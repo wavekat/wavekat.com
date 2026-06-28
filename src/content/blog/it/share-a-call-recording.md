@@ -57,6 +57,8 @@ Se hai condiviso con "Persone specifiche", la pagina chiede prima di accedere e 
 
 ![Una registrazione condivisa di WaveKat Voice aperta nel browser — il lettore audio e la trascrizione etichettata per interlocutore che vede un destinatario.](/screenshots/share-viewer/it.webp)
 
+**Guardalo tu stesso:** [apri una registrazione condivisa reale →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — una chiamata condivisa pubblicamente, solo audio, esattamente come la vede un destinatario.
+
 ## La condivisione vive nel cloud — di proposito
 
 Un link di condivisione è qualcosa che apre un'altra persona, magari mentre il tuo portatile è chiuso. WaveKat Voice gira sulla tua macchina e non è raggiungibile da internet, quindi una registrazione condivisa deve trovarsi in un posto a cui un destinatario possa davvero arrivare. Questo significa che la condivisione richiede tre cose, e il pannello di condivisione ti dice qual è quella che manca:

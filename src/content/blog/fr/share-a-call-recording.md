@@ -57,6 +57,8 @@ Si vous avez partagé avec « Personnes spécifiques », la page leur demande d'
 
 ![Un enregistrement WaveKat Voice partagé ouvert dans le navigateur — le lecteur audio et la transcription étiquetée par interlocuteur que voit un destinataire.](/screenshots/share-viewer/fr.webp)
 
+**Voyez par vous-même :** [ouvrir un vrai enregistrement partagé →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — un appel partagé publiquement, en audio seul, exactement tel qu'un destinataire le voit.
+
 ## Le partage vit dans le cloud — à dessein
 
 Un lien de partage est quelque chose qu'une autre personne ouvre, peut-être pendant que votre ordinateur portable est fermé. WaveKat Voice s'exécute sur votre propre machine et n'est pas joignable depuis Internet, donc un enregistrement partagé doit vivre quelque part où un destinataire peut réellement l'atteindre. Cela signifie que le partage requiert trois choses, et le panneau de partage vous indique laquelle manque :

@@ -57,6 +57,8 @@ Wenn Sie mit „Bestimmte Personen" geteilt haben, bittet die Seite sie zuerst u
 
 ![Eine geteilte WaveKat-Voice-Aufnahme, im Browser geöffnet — der Audioplayer und das nach Sprechern beschriftete Transkript, das ein Empfänger sieht.](/screenshots/share-viewer/de.webp)
 
+**Sehen Sie es selbst:** [eine echte geteilte Aufnahme öffnen →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — ein öffentlich, nur als Audio geteilter Anruf, genau so, wie ihn ein Empfänger sieht.
+
 ## Das Teilen lebt in der Cloud — mit Absicht
 
 Ein Teilen-Link ist etwas, das eine andere Person öffnet, womöglich während Ihr Laptop zugeklappt ist. WaveKat Voice läuft auf Ihrer eigenen Maschine und ist nicht aus dem Internet erreichbar, also muss eine geteilte Aufnahme irgendwo liegen, wo ein Empfänger sie tatsächlich erreichen kann. Das bedeutet, dass das Teilen drei Dinge voraussetzt, und das Teilen-Panel sagt Ihnen, welches fehlt:
