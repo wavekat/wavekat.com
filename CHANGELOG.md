@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.39](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.38...wavekat-com-v0.0.39) (2026-06-28)
+
+
+### Bug Fixes
+
+* **blog:** add faint border to prose images ([#110](https://github.com/wavekat/wavekat.com/issues/110)) ([a17dd17](https://github.com/wavekat/wavekat.com/commit/a17dd176653c466e2ffb41591aef100ecb9825e1))
+
 ## [0.0.38](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.37...wavekat-com-v0.0.38) (2026-06-28)
 
 
