@@ -57,7 +57,7 @@ WaveKat Voice 中的每一通通話，都已經在你的電腦上錄音並轉錄
 
 ![一段 WaveKat Voice 分享錄音在瀏覽器中打開——接收者看到的音訊播放器和按說話者標示的逐字稿。](/screenshots/share-viewer/zh-Hant.webp)
 
-**親眼看看：** [打開一段真實的分享錄音 →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA)——一通以「公開」方式、僅音訊分享的通話，正是接收者看到的樣子（頁面為英文）。
+**親眼看看：** [打開一段真實的分享錄音 →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA)——一通以「公開」方式、僅音訊分享的通話，正是接收者看到的樣子（通話音訊為英文）。
 
 ## 分享在雲端進行——這是刻意為之
 

@@ -57,7 +57,7 @@ WaveKat Voice의 모든 통화는 이미 당신의 컴퓨터에서 녹음되고 
 
 ![브라우저에서 열린 WaveKat Voice 공유 녹음 —— 받는 사람에게 보이는 오디오 플레이어와 말하는 사람별로 표시된 대화 기록.](/screenshots/share-viewer/ko.webp)
 
-**직접 확인해 보세요:** [실제 공유 녹음 열기 →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) —— 「공개」로, 오디오만 공유된 통화를 받는 사람이 보는 그대로 (페이지는 영어로 열립니다).
+**직접 확인해 보세요:** [실제 공유 녹음 열기 →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) —— 「공개」로, 오디오만 공유된 통화를 받는 사람이 보는 그대로 (통화 음성은 영어입니다).
 
 ## 공유는 클라우드에서 이루어집니다 —— 의도적으로
 

@@ -57,7 +57,7 @@ Se hai condiviso con "Persone specifiche", la pagina chiede prima di accedere e 
 
 ![Una registrazione condivisa di WaveKat Voice aperta nel browser — il lettore audio e la trascrizione etichettata per interlocutore che vede un destinatario.](/screenshots/share-viewer/it.webp)
 
-**Guarda tu stesso:** [apri una registrazione condivisa reale →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — una chiamata condivisa pubblicamente, solo audio, esattamente come la vede un destinatario (la pagina è in inglese).
+**Guarda tu stesso:** [apri una registrazione condivisa reale →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — una chiamata condivisa pubblicamente, solo audio, esattamente come la vede un destinatario (l'audio della chiamata è in inglese).
 
 ## La condivisione vive nel cloud — di proposito
 

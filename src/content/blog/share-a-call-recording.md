@@ -56,7 +56,7 @@ If you shared with "Specific people," the page asks them to sign in first and on
 
 ![A shared WaveKat Voice recording opened in the browser — the audio player and speaker-labeled transcript that a recipient sees.](/screenshots/share-viewer/en.webp)
 
-**See it for yourself:** [open a real shared recording →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — a public call shared as audio only, opened exactly the way a recipient sees it.
+**See it for yourself:** [open a real shared recording →](https://platform.wavekat.com/voice/s/5EWJHKQ1zXamKB3ydxxPQA) — a public call shared as audio only, opened exactly the way a recipient sees it (the call audio is in English).
 
 ## Sharing lives in the cloud — on purpose
 
