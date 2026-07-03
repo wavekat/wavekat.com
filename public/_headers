@@ -1,0 +1,19 @@
+# Cloudflare Pages custom headers (https://developers.cloudflare.com/pages/configuration/headers/)
+
+# Everything under /_astro/ is content-hashed by the build, so it can never
+# change at a given URL — cache it for a year. Pages' default is only 4 hours.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Brand and screenshot assets keep stable URLs but change rarely; a day of
+# caching with a week of stale-while-revalidate avoids re-fetching on every
+# deploy without pinning old assets forever.
+/logos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/screenshots/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# The site has no legitimate embedding use; deny framing (clickjacking).
+/*
+  X-Frame-Options: DENY

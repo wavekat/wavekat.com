@@ -26,8 +26,8 @@ const pillClass = (isActive: boolean) =>
 
 <header class="flex items-center justify-between mb-12">
   <a href={homeHref} class="block">
-    <img src="/logos/wavekat-tight-light.svg" alt="wavekat" class="h-9 dark:hidden" />
-    <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" class="h-9 hidden dark:block" />
+    <img src="/logos/wavekat-tight-light.svg" alt="wavekat" width="125" height="36" class="h-9 dark:hidden" />
+    <img src="/logos/wavekat-tight-dark.svg" alt="wavekat" width="125" height="36" class="h-9 hidden dark:block" />
   </a>
   <div class="flex items-center gap-3">
     <a href={localeHref('/voice/')} class={pillClass(active === 'voice')}>{ui.navVoice}</a>
