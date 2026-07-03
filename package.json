@@ -12,7 +12,7 @@
     "check:screenshots": "node scripts/sync-screenshots.js --check",
     "check:links": "node scripts/check-links.js",
     "dev": "npm run sync && astro dev",
-    "build": "npm run sync && SYNC_DOCS=1 npm run sync:docs && astro build",
+    "build": "npm run sync && SYNC_DOCS=1 npm run sync:docs && astro build && node scripts/flatten-404s.js",
     "preview": "astro preview",
     "cf:build": "npm run build",
     "cf:deploy": "wrangler pages deploy ./dist",

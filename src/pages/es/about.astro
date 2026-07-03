@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Mail } from '@lucide/astro';
+
+// Mirrors /about/ section-for-section (see src/pages/about.astro).
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': 'https://wavekat.com/es/about/',
+      url: 'https://wavekat.com/es/about/',
+      name: "Acerca de WaveKat",
+      inLanguage: 'es',
+      mainEntity: { '@id': 'https://wavekat.com/#organization' },
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://wavekat.com/#founder',
+      name: 'Eason Guo',
+      jobTitle: 'Founder',
+      email: 'mailto:eason@wavekat.com',
+      url: 'https://wavekat.com/about/',
+      worksFor: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
+---
+
+<Base
+  title="Acerca de — WaveKat"
+  description="WaveKat crea herramientas de voz de código abierto con IA que dan a cada pequeño negocio la voz de uno grande. Quién está detrás, qué construimos y cómo contactarnos."
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header />
+
+    <section class="mb-16">
+      <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+        Acerca de WaveKat
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat es una pequeña empresa de software independiente que crea herramientas de voz de código abierto, impulsadas por IA, para pequeños negocios. Su producto estrella, <a href=\"/es/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a>, es un softphone de escritorio para Mac y Linux que graba y transcribe cada llamada."} />
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Por qué existe WaveKat</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"Nuestra misión es <strong class=\"text-gray-700 dark:text-gray-200\">dar a cada pequeño negocio la voz de uno grande</strong>. Una gran empresa tiene centralita, grabación de llamadas, transcripciones y software que lo maneja todo. Una tienda de una sola persona tiene un teléfono en un bolsillo ocupado. WaveKat construye las herramientas que cierran esa brecha — empezando por el teléfono, porque ahí es donde los pequeños negocios ganan o pierden clientes cada día."} />
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+        La voz es donde empezamos, no todo lo que haremos.
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Qué construimos</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/es/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> convierte tu ordenador en el teléfono de tu negocio: contesta y haz llamadas con el proveedor SIP que ya usas, con cada llamada grabada y transcrita en tu propia máquina. Es gratis durante la beta pública, y un asistente de IA puede <a href=\"/es/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">manejarlo por ti</a>."} />
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"Debajo hay una familia de bibliotecas Rust de código abierto — detección de actividad de voz, detección de turnos, voz a texto, texto a voz, transporte SIP/RTP — publicadas en la <a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">organización de GitHub de WaveKat</a> y documentadas en los <a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">docs</a>. Construir en abierto nos mantiene honestos: puedes leer el código que maneja tus llamadas."} />
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Quién está detrás</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat lo construye <strong class=\"text-gray-700 dark:text-gray-200\">Eason Guo</strong>, su fundador — un ingeniero de software que escribe el código, publica las versiones y responde el correo. Cuando escribes a WaveKat, hablas con la persona que construyó lo que preguntas."} />
+    </section>
+
+    <section class="mb-20">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Contacto</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-5" set:html={"El correo es la mejor forma de contactarnos — leemos cada mensaje. Para preguntas sobre WaveKat Voice en concreto, la página <a href=\"/es/voice/talk/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">habla con nosotros</a> te da ventaja."} />
+      <a
+        href="mailto:eason@wavekat.com"
+        data-conversion="mailto_click"
+        class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+        style="background-color: #ff6d00"
+      >
+        <Mail class="w-4 h-4" />
+        eason@wavekat.com
+      </a>
+    </section>
+
+    <Footer />
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
+</Base>

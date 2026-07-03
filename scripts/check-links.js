@@ -73,7 +73,7 @@ const skipped = new Set(); // synced-doc targets we couldn't check locally
 const linkRe = /(?:href|src)="(\/[^":]*?)"/g;
 
 for (const file of pages) {
-  const sourceUrl = "/" + file.slice(dist.length + 1).replace(/index\.html$/, "");
+  const sourceUrl = "/" + file.slice(dist.length + 1).replace(/index\.html$/, "").replace(/404\.html$/, "404/"); // flattened locale 404s count as /…/404/
   const localeMatch = sourceUrl.match(slugRe);
   const localeSlug = localeMatch ? localeMatch[1] : null;
   // This page's path with the locale prefix stripped — i.e. its default-locale
