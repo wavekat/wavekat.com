@@ -16,22 +16,13 @@ const aboutSchema = {
       inLanguage: 'it',
       mainEntity: { '@id': 'https://wavekat.com/#organization' },
     },
-    {
-      '@type': 'Person',
-      '@id': 'https://wavekat.com/#founder',
-      name: 'Eason Guo',
-      jobTitle: 'Founder',
-      email: 'mailto:eason@wavekat.com',
-      url: 'https://wavekat.com/about/',
-      worksFor: { '@id': 'https://wavekat.com/#organization' },
-    },
   ],
 };
 ---
 
 <Base
   title="Chi siamo — WaveKat"
-  description="WaveKat crea strumenti vocali open source basati sull'IA che danno a ogni piccola impresa la voce di una grande. Chi c'è dietro, cosa costruiamo e come contattarci."
+  description="WaveKat crea strumenti vocali open source basati sull'IA che danno a ogni piccola impresa la voce di una grande. Cosa costruiamo, perché e come contattarci."
 >
   <div class="max-w-3xl mx-auto px-6 py-12">
 
@@ -56,11 +47,6 @@ const aboutSchema = {
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Cosa costruiamo</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/it/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> trasforma il tuo computer nel telefono della tua attività: rispondi e chiama con il provider SIP che già usi, con ogni chiamata registrata e trascritta sulla tua macchina. È gratuito durante la beta pubblica, e un assistente IA può <a href=\"/it/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">usarlo al posto tuo</a>."} />
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"Alla base c'è una famiglia di librerie Rust open source — rilevamento dell'attività vocale, rilevamento dei turni, riconoscimento vocale, sintesi vocale, trasporto SIP/RTP — tutte pubblicate nell'<a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">organizzazione GitHub di WaveKat</a> e documentate nei <a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">docs</a>. Costruire in aperto ci tiene onesti: il codice che gestisce le tue chiamate puoi leggerlo tu stesso."} />
-    </section>
-
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Chi c'è dietro</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat è costruito da <strong class=\"text-gray-700 dark:text-gray-200\">Eason Guo</strong>, il suo fondatore — un ingegnere del software che scrive il codice, pubblica le release e risponde alle e-mail. Quando scrivi a WaveKat, parli con la persona che ha costruito ciò di cui stai chiedendo."} />
     </section>
 
     <section class="mb-20">

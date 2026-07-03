@@ -4,8 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { Mail } from '@lucide/astro';
 
-// AboutPage + Person structured data: binds the site's content to the human
-// behind it (the E-E-A-T "who" signal) and gives the org node a founder.
+// AboutPage structured data: gives the root entity graph a typed page that
+// says what WaveKat is, referencing the sitewide Organization node.
 const aboutSchema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -16,22 +16,13 @@ const aboutSchema = {
       name: 'About WaveKat',
       mainEntity: { '@id': 'https://wavekat.com/#organization' },
     },
-    {
-      '@type': 'Person',
-      '@id': 'https://wavekat.com/#founder',
-      name: 'Eason Guo',
-      jobTitle: 'Founder',
-      email: 'mailto:eason@wavekat.com',
-      url: 'https://wavekat.com/about/',
-      worksFor: { '@id': 'https://wavekat.com/#organization' },
-    },
   ],
 };
 ---
 
 <Base
   title="About — WaveKat"
-  description="WaveKat builds open-source, AI-powered voice tools that give small businesses the voice of a big one. Who's behind it, what we make, and how to reach us."
+  description="WaveKat builds open-source, AI-powered voice tools that give small businesses the voice of a big one. What we build, why, and how to reach us."
 >
   <div class="max-w-3xl mx-auto px-6 py-12">
 
@@ -78,16 +69,6 @@ const aboutSchema = {
         <a href="https://github.com/wavekat" target="_blank" rel="noopener noreferrer" class="text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors">WaveKat GitHub organization</a>
         and documented in the <a href="/docs/" class="text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors">docs</a>.
         Building in the open keeps us honest: you can read the code that handles your calls.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Who's behind it</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
-        WaveKat is built by <strong class="text-gray-700 dark:text-gray-200">Eason Guo</strong>,
-        its founder — a software engineer who writes the code, ships the releases, and answers the
-        email. When you write to WaveKat, you're talking to the person who built the thing you're
-        asking about.
       </p>
     </section>
 

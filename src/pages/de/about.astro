@@ -16,22 +16,13 @@ const aboutSchema = {
       inLanguage: 'de',
       mainEntity: { '@id': 'https://wavekat.com/#organization' },
     },
-    {
-      '@type': 'Person',
-      '@id': 'https://wavekat.com/#founder',
-      name: 'Eason Guo',
-      jobTitle: 'Founder',
-      email: 'mailto:eason@wavekat.com',
-      url: 'https://wavekat.com/about/',
-      worksFor: { '@id': 'https://wavekat.com/#organization' },
-    },
   ],
 };
 ---
 
 <Base
   title="Über uns — WaveKat"
-  description="WaveKat baut quelloffene, KI-gestützte Sprachtools, die jedem kleinen Unternehmen die Stimme eines großen geben. Wer dahintersteht, was wir bauen und wie Sie uns erreichen."
+  description="WaveKat baut quelloffene, KI-gestützte Sprachtools, die jedem kleinen Unternehmen die Stimme eines großen geben. Was wir bauen, warum und wie Sie uns erreichen."
 >
   <div class="max-w-3xl mx-auto px-6 py-12">
 
@@ -56,11 +47,6 @@ const aboutSchema = {
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Was wir bauen</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/de/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> macht Ihren Computer zum Geschäftstelefon: Anrufe annehmen und tätigen über den SIP-Anbieter, den Sie bereits nutzen — jeder Anruf wird auf Ihrem eigenen Rechner aufgezeichnet und transkribiert. In der öffentlichen Beta kostenlos, und ein KI-Assistent kann <a href=\"/de/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">es für Sie bedienen</a>."} />
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"Darunter liegt eine Familie quelloffener Rust-Bibliotheken — Sprachaktivitätserkennung, Turn-Erkennung, Spracherkennung, Sprachsynthese, SIP/RTP-Transport — alle veröffentlicht in der <a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">GitHub-Organisation von WaveKat</a> und in den <a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">Docs</a> dokumentiert. Offen zu bauen hält uns ehrlich: Den Code, der Ihre Anrufe verarbeitet, können Sie selbst lesen."} />
-    </section>
-
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Wer dahintersteht</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat wird von <strong class=\"text-gray-700 dark:text-gray-200\">Eason Guo</strong> gebaut, dem Gründer — einem Softwareentwickler, der den Code schreibt, die Releases veröffentlicht und die E-Mails beantwortet. Wer WaveKat schreibt, spricht mit der Person, die das Produkt gebaut hat."} />
     </section>
 
     <section class="mb-20">

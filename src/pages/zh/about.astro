@@ -16,22 +16,13 @@ const aboutSchema = {
       inLanguage: 'zh-Hans',
       mainEntity: { '@id': 'https://wavekat.com/#organization' },
     },
-    {
-      '@type': 'Person',
-      '@id': 'https://wavekat.com/#founder',
-      name: 'Eason Guo',
-      jobTitle: 'Founder',
-      email: 'mailto:eason@wavekat.com',
-      url: 'https://wavekat.com/about/',
-      worksFor: { '@id': 'https://wavekat.com/#organization' },
-    },
   ],
 };
 ---
 
 <Base
   title="关于 — WaveKat"
-  description="WaveKat 构建开源、AI 驱动的语音工具，让每一家小企业都拥有大企业的声音。了解我们是谁、在做什么，以及如何联系我们。"
+  description="WaveKat 构建开源、AI 驱动的语音工具，让每一家小企业都拥有大企业的声音。了解我们在做什么、为什么，以及如何联系我们。"
 >
   <div class="max-w-3xl mx-auto px-6 py-12">
 
@@ -56,11 +47,6 @@ const aboutSchema = {
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">我们在做什么</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/zh/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> 把你的电脑变成企业电话：通过你现有的 SIP 运营商接打电话，每一通通话都在你自己的机器上录音并转写。公测期间免费，还可以<a href=\"/zh/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">让 AI 助手替你拨打</a>。"} />
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"在它之下是一系列开源 Rust 库——语音活动检测、话轮检测、语音转文字、文字转语音、SIP/RTP 传输——全部发布在 <a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat 的 GitHub 组织</a>下，并配有<a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">文档</a>。公开构建让我们保持诚实：处理你通话的代码，你可以亲自阅读。"} />
-    </section>
-
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">谁在背后</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat 由创始人 <strong class=\"text-gray-700 dark:text-gray-200\">Eason Guo</strong> 构建——他是一名软件工程师，写代码、发版本、回邮件。当你写信给 WaveKat 时，与你交流的正是做出这个产品的人。"} />
     </section>
 
     <section class="mb-20">

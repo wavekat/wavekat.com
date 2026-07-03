@@ -16,22 +16,13 @@ const aboutSchema = {
       inLanguage: 'ko',
       mainEntity: { '@id': 'https://wavekat.com/#organization' },
     },
-    {
-      '@type': 'Person',
-      '@id': 'https://wavekat.com/#founder',
-      name: 'Eason Guo',
-      jobTitle: 'Founder',
-      email: 'mailto:eason@wavekat.com',
-      url: 'https://wavekat.com/about/',
-      worksFor: { '@id': 'https://wavekat.com/#organization' },
-    },
   ],
 };
 ---
 
 <Base
   title="소개 — WaveKat"
-  description="WaveKat은 모든 작은 비즈니스가 큰 기업의 목소리를 갖도록 오픈소스 AI 음성 도구를 만듭니다. 우리가 누구인지, 무엇을 만드는지, 어떻게 연락할 수 있는지 소개합니다."
+  description="WaveKat은 모든 작은 비즈니스가 큰 기업의 목소리를 갖도록 오픈소스 AI 음성 도구를 만듭니다. 무엇을 왜 만드는지, 그리고 어떻게 연락할 수 있는지 소개합니다."
 >
   <div class="max-w-3xl mx-auto px-6 py-12">
 
@@ -56,11 +47,6 @@ const aboutSchema = {
       <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">우리가 만드는 것</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/ko/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a>는 컴퓨터를 비즈니스 전화로 바꿉니다. 이미 사용 중인 SIP 사업자를 통해 전화를 걸고 받으며, 모든 통화가 내 컴퓨터에서 녹음되고 텍스트로 기록됩니다. 공개 베타 기간에는 무료이며, <a href=\"/ko/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">AI 어시스턴트가 대신 걸게</a> 할 수도 있습니다."} />
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"그 아래에는 오픈소스 Rust 라이브러리들 — 음성 활동 감지, 턴 감지, 음성 인식, 음성 합성, SIP/RTP 전송 — 이 있으며, 모두 <a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat GitHub 조직</a>에 공개되어 있고 <a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">문서</a>도 갖추고 있습니다. 공개적으로 만드는 것이 우리를 정직하게 합니다. 당신의 통화를 다루는 코드를 직접 읽어볼 수 있으니까요."} />
-    </section>
-
-    <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">누가 만드나요</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat은 창업자 <strong class=\"text-gray-700 dark:text-gray-200\">Eason Guo</strong>가 만듭니다. 코드를 쓰고, 릴리스를 내고, 이메일에 답하는 소프트웨어 엔지니어입니다. WaveKat에 메일을 보내면, 그 제품을 만든 사람과 직접 이야기하게 됩니다."} />
     </section>
 
     <section class="mb-20">
