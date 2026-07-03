@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!-- Without a built 404.html, Cloudflare Pages falls back to serving the
+     homepage with a 200 for every unmatched path (a soft-404 that wastes
+     crawl budget and muddies indexing). This page makes unknown URLs return
+     a real 404 status. -->
+<Base title="Page not found — WaveKat" description="This page doesn't exist. Head back to the WaveKat homepage or explore WaveKat Voice." noindex>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header />
+
+    <section class="mb-20 py-16 text-center">
+      <p class="text-6xl font-bold mb-6" style="color: #ff6d00;">404</p>
+      <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">Page not found</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10">
+        The page you're looking for doesn't exist or has moved.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3 text-sm">
+        <a href="/" class="rounded px-4 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90" style="background-color: #ff6d00;">Go to the homepage</a>
+        <a href="/voice/" class="rounded border border-gray-200 dark:border-white/10 px-4 py-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">WaveKat Voice</a>
+        <a href="/blog/" class="rounded border border-gray-200 dark:border-white/10 px-4 py-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">Blog</a>
+      </div>
+    </section>
+
+    <Footer />
+  </div>
+</Base>
