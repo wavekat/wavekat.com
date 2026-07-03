@@ -1,6 +1,6 @@
 ---
 title: "Hold, Switch, and Transfer Calls Like a Front Desk"
-description: "WaveKat Voice now puts calls on hold, handles a second call while you're on the first, and transfers callers to someone else — blind or announced first."
+description: "WaveKat Voice now puts calls on hold, answers a second call while you're on the first, and transfers callers — blind or attended — on Mac and Linux."
 date: 2026-07-04
 author: Eason Guo
 tags: [voice-ai, calls]
@@ -13,7 +13,7 @@ draft: true
 
 WaveKat Voice can now do the three things a front desk does all day: put a caller on hold, answer a second call while the first one waits, and transfer a caller to someone else — either straight away, or after checking with them first. It lands in WaveKat Voice [0.0.42](/voice/changelog/#0.0.42) on Mac and Linux.
 
-This is the most literal step yet toward [giving every small business the voice of a big one](/blog/hello-world/). When you call a big company, someone says "one moment, let me put you through" — and it works, because there's a receptionist with a switchboard. Now the [app that already records and transcribes every call](/voice/) gives a one-person shop the same moves.
+This is the most literal step yet toward [giving every small business the voice of a big one](/blog/hello-world/). When you call a big company, someone says "one moment, let me put you through" — and it works, because there's a receptionist with a switchboard. Now the [app that already records and transcribes every call](/voice/) gives a one-person shop the same moves. Hold, call waiting, and transfer are the controls a desk worker reaches for constantly, and any serious [softphone](/voice/alternatives/) is expected to have them — WaveKat Voice now does, with its own twist: what happens on hold stays out of the recording.
 
 ## Put a caller on hold
 
@@ -21,7 +21,7 @@ There's a **Hold** button on the call screen, between Mute and the keypad. Press
 
 Hold isn't just muting both ends locally. WaveKat Voice tells the other side's phone system the call is being held (the standard SIP way), so most systems play their own hold music to the caller — they hear "you're on hold", not dead air. Press **Resume** and the conversation, the recording, and the transcript pick back up.
 
-## Answer a second call while you're on one
+## Call waiting: answer a second call while you're on one
 
 When a second call rings while you're already talking, you no longer have to choose between them. Answer it, and the first call goes on hold by itself — exactly like call waiting on a mobile phone. A switcher bar on the call screen lists every call in progress, and you move between them with a click.
 
@@ -54,7 +54,7 @@ A blind transfer sends the caller to the new destination immediately, without ta
 
 ### Does the person I transfer a call to need WaveKat Voice?
 
-No. Transfers use the standard SIP mechanism, so the destination just receives an ordinary phone call — any phone, any softphone, any extension your provider can reach.
+No. WaveKat Voice uses the standard SIP transfer mechanism (a REFER, RFC 3515), so the destination just receives an ordinary phone call — any phone, any softphone, any extension your provider can reach.
 
 ### Can I merge two calls into a conference call?
 
@@ -62,7 +62,7 @@ Not yet. WaveKat Voice can hold two or more calls at once and switch between the
 
 ### What does a caller hear while on hold?
 
-Whatever their own phone system plays for hold — usually its hold music. WaveKat Voice signals the hold in the standard SIP way rather than playing a tone itself, which is what lets the other side respond properly.
+Whatever their own phone system plays for hold — usually its hold music. WaveKat Voice signals the hold in the standard SIP way (a re-INVITE, RFC 3264) rather than playing a tone itself, which is what lets the other side respond properly.
 
 ### Is a call recorded while it's on hold?
 
