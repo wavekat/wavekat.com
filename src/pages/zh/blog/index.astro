@@ -4,6 +4,7 @@ import Base from '../../../layouts/Base.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import PostCard from '../../../components/PostCard.astro';
+import { itemListSchema } from '../../../lib/seo';
 
 // Simplified-Chinese posts live under src/content/blog/zh/ (id "zh/<slug>").
 // Strip the locale prefix so the cards link to /zh/blog/<slug>/.
@@ -11,6 +12,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lan
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const slugOf = (id: string) => id.replace(/^zh\//, '');
+
+const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, Astro.site!).href, posts.map((p) => ({ name: p.data.title, url: new URL(`/zh/blog/${slugOf(p.id)}/`, Astro.site!).href })));
 ---
 
 <Base title="博客 — WaveKat" description="来自 WaveKat 团队的工程笔记、产品公告与技术深度文章。">
@@ -47,4 +50,6 @@ const slugOf = (id: string) => id.replace(/^zh\//, '');
     <Footer />
 
   </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(listSchema)} />
 </Base>

@@ -1,0 +1,10 @@
+---
+import NotFound from '../components/NotFound.astro';
+
+// Without a built 404.html, Cloudflare Pages falls back to serving the
+// homepage with a 200 for every unmatched path (a soft-404 that wastes
+// crawl budget and muddies indexing). This page makes unknown URLs return
+// a real 404 status; each locale dir ships its own via NotFound.astro.
+---
+
+<NotFound />

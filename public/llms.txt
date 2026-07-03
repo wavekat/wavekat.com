@@ -1,0 +1,33 @@
+# WaveKat
+
+> WaveKat builds open-source, AI-powered tools that give small businesses enterprise-grade voice capabilities. Its flagship product, WaveKat Voice, is a desktop softphone for Mac and Linux that records and transcribes every call.
+
+## Core pages
+
+- [WaveKat Voice](https://wavekat.com/voice/): Desktop softphone for Mac and Linux — answer and place calls, every call recorded automatically, live transcript alongside each call. Works with SIP providers like Twilio, Telnyx, and 2talk. Free public beta.
+- [Download WaveKat Voice](https://wavekat.com/voice/download/): macOS 12+ (Apple Silicon) .dmg and Linux .deb (Debian/Ubuntu).
+- [Use cases](https://wavekat.com/voice/use-cases/): Who WaveKat Voice is for — small businesses that live on the phone.
+- [Softphone alternatives](https://wavekat.com/voice/alternatives/): How WaveKat Voice compares to other SIP softphones, e.g. [vs Linphone](https://wavekat.com/voice/alternatives/linphone/).
+- [Changelog](https://wavekat.com/voice/changelog/): Release notes for every WaveKat Voice version.
+- [Docs](https://wavekat.com/docs/): Setup and usage documentation for WaveKat Voice and the open-source libraries.
+
+## Blog
+
+- [Share a Call Recording With a Link](https://wavekat.com/blog/share-a-call-recording/): Turn any recorded call into a shareable link — private, invite-only, or public.
+- [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls.
+- [Common Voice Explorer](https://wavekat.com/blog/common-voice-explorer/): A free tool to browse and review Mozilla Common Voice dataset clips.
+- [Hello, World](https://wavekat.com/blog/hello-world/): Why WaveKat exists — giving every small business the voice of a big one.
+
+## Open-source libraries (https://github.com/wavekat)
+
+- wavekat-vad: Voice Activity Detection — WebRTC, Silero, TEN-VAD, FireRedVAD backends
+- wavekat-turn: Turn detection — end-of-utterance for voice pipelines
+- wavekat-asr: Streaming speech-to-text for voice pipelines
+- wavekat-tts: Text-to-speech synthesis for voice pipelines
+- wavekat-sip: SIP signaling and RTP transport for voice pipelines
+- wavekat-core: Shared audio primitives (AudioFrame, sample conversion)
+- wavekat-cli: Command-line client (wk) for the WaveKat platform
+
+## Locales
+
+Full translations of the homepage, all WaveKat Voice pages, and the blog are available under /zh/ (Simplified Chinese), /zh-hant/ (Traditional Chinese), /ja/, /ko/, /de/, /es/, /fr/, and /it/.

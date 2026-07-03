@@ -28,7 +28,7 @@ interface Props {
 
 const {
   title = 'WaveKat — Open-Source AI Voice Tools for Small Business',
-  description = 'WaveKat builds open-source, AI-powered tools that give small businesses enterprise-grade voice capabilities — phone answering, conversations, and 24/7 presence.',
+  description = 'WaveKat builds open-source AI voice tools for small business — a desktop app that makes your computer your business phone and records every call.',
   ogImage = '/og.png',
   ogImageAlt = 'WaveKat — open-source AI voice tools for small business',
   ogType = 'website',
@@ -70,7 +70,11 @@ const orgSchema = {
       '@id': 'https://wavekat.com/#organization',
       name: 'WaveKat',
       url: 'https://wavekat.com',
-      logo: 'https://wavekat.com/og.png',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://wavekat.com/logos/wavekat-icon-light.svg',
+      },
+      image: 'https://wavekat.com/og.png',
       description:
         'WaveKat builds open-source, AI-powered voice tools that give small businesses enterprise-grade phone capabilities.',
       sameAs: [
@@ -139,7 +143,18 @@ const orgSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Load the font CSS without blocking first paint: it arrives as a
+         low-priority preload and switches itself to a stylesheet once
+         fetched. Blocking here cost ~950ms of mobile LCP. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    </noscript>
     <!-- Google tag (GA4 + Google Ads) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8ZGBL04R7"></script>
     <script is:inline>

@@ -2,6 +2,7 @@
 title: "Bonjour le monde — WaveKat est là"
 description: "Présentation de WaveKat : des outils vocaux open source et alimentés par l'IA, conçus pour les petites entreprises. Voici ce que nous construisons, et pourquoi."
 date: 2026-04-01
+updated: 2026-07-04
 author: Eason Guo
 tags: [annonce, open-source, ia-vocale]
 lang: "fr"
@@ -22,7 +23,7 @@ WaveKat développe des outils pour l'IA vocale en temps réel. Nous commençons 
 - **wavekat-turn** — la détection de tour de parole, qui sait quand un locuteur a fini de parler
 - **wavekat-lab** — un tableau de bord interactif pour tester et comparer les backends audio
 
-Au-dessus de ces bibliothèques, nous construisons **wavekat-voice** — un système de réponse téléphonique par IA qui se branche sur l'infrastructure SIP/RTP standard. Il décroche le téléphone, mène une vraie conversation et gère l'appel — pour que le chef d'entreprise n'ait pas à le faire.
+Au-dessus de ces bibliothèques, nous avons construit **WaveKat Voice** — un softphone de bureau pour Mac et Linux qui transforme votre ordinateur en téléphone professionnel. Il répond et passe des appels via le fournisseur SIP que vous avez déjà, enregistre chaque appel et transcrit ce qui se dit en direct. Un [assistant IA peut manier le clavier de numérotation pour vous](/fr/blog/place-calls-from-the-command-line/) — c'est vous qui parlez ; un assistant qui tient la conversation lui-même, c'est la direction que nous prenons.
 
 ## Pourquoi commencer par l'open source ?
 
@@ -31,3 +32,5 @@ Nous pensons que la technologie fondamentale — VAD, détection de tour de paro
 ## Et ensuite ?
 
 Nous sommes plongés dans le développement. Suivez-nous sur [GitHub](https://github.com/wavekat) ou repassez ici — nous écrirons sur l'ingénierie derrière la voix en temps réel, les compromis que nous faisons et ce que nous apprenons en chemin.
+
+**WaveKat Voice** est aujourd’hui en bêta publique gratuite — [téléchargez-le](/fr/voice/download/) pour Mac ou Linux.
