@@ -42,19 +42,38 @@ For a blind transfer, press Transfer, enter the destination, and you're done —
 
 Transfers are recorded honestly in your history, too. A transferred call ends as **Transferred**, and the call's detail page shows exactly where it went — "Transferred to …" — instead of pretending you hung up.
 
-## Questions you might have
+## Frequently asked questions
 
-**Does the person I transfer a call to need WaveKat Voice?**
+### How do I transfer a call in WaveKat Voice?
+
+Press Transfer on the call screen and enter a number, extension, or SIP address. Sending it right away is a blind transfer; choosing **Talk first** holds the caller and dials the destination so you can announce them, then **Complete transfer** connects the two.
+
+### What is the difference between a blind and an attended transfer?
+
+A blind transfer sends the caller to the new destination immediately, without talking to the recipient first. An attended transfer holds the caller while you call the recipient yourself, and only connects the two once you confirm — so you can back out if the recipient is busy or declines. WaveKat Voice supports both.
+
+### Does the person I transfer a call to need WaveKat Voice?
+
 No. Transfers use the standard SIP mechanism, so the destination just receives an ordinary phone call — any phone, any softphone, any extension your provider can reach.
 
-**Can I merge two calls into a conference?**
-Not yet. You can hold two or more calls at once and switch between them, but only one is live at a time. Three-way calling is a separate feature we haven't built.
+### Can I merge two calls into a conference call?
 
-**What do callers hear while they're on hold?**
-Whatever their own phone system plays for hold — usually its hold music. WaveKat Voice signals the hold rather than playing a tone itself, which is what lets the other side respond properly.
+Not yet. WaveKat Voice can hold two or more calls at once and switch between them, but only one is live at a time. Three-way calling is a separate feature we haven't built.
 
-**Is anything recorded while a call is on hold?**
-No. The recording and the live transcript pause for the duration of the hold, on both sides, and resume when the call does. The saved recording's timeline stays accurate — held time appears as silence, not as a cut.
+### What does a caller hear while on hold?
 
-**Do these features cost extra or need setup?**
-No. Hold, call waiting, and both kinds of transfer are built into WaveKat Voice and work with the SIP account you already use. Update to [0.0.42](/voice/changelog/#0.0.42) and the controls are on every call screen.
+Whatever their own phone system plays for hold — usually its hold music. WaveKat Voice signals the hold in the standard SIP way rather than playing a tone itself, which is what lets the other side respond properly.
+
+### Is a call recorded while it's on hold?
+
+No. The recording and the live transcript pause for the duration of the hold, on both sides, and resume with the call. The saved recording's timeline stays accurate — held time appears as silence, not as a cut.
+
+### Which platforms support hold, call waiting, and transfer?
+
+WaveKat Voice runs on Mac and Linux today, with Windows coming when there's demand. Hold, call waiting, and both kinds of transfer work on both supported platforms, with the SIP account you already use — no extra cost, no setup.
+
+## Try it
+
+[Download WaveKat Voice](/voice/download/) — or update to [0.0.42](/voice/changelog/#0.0.42) — and the controls are on every call screen: Hold next to Mute, Transfer beside it, and call waiting that just happens when the second call rings. Nothing to configure, nothing extra to pay for.
+
+Put a caller on hold, take the second line, and put someone through like there's a front desk — because now there is.
