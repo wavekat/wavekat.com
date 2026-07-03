@@ -70,7 +70,11 @@ const orgSchema = {
       '@id': 'https://wavekat.com/#organization',
       name: 'WaveKat',
       url: 'https://wavekat.com',
-      logo: 'https://wavekat.com/og.png',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://wavekat.com/logos/wavekat-icon-light.svg',
+      },
+      image: 'https://wavekat.com/og.png',
       description:
         'WaveKat builds open-source, AI-powered voice tools that give small businesses enterprise-grade phone capabilities.',
       sameAs: [
