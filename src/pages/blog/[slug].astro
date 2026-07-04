@@ -1,10 +1,11 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { blogFilter } from '../../lib/blog';
 import Post from '../../layouts/Post.astro';
 import { extractFaqs } from '../../lib/seo';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'en');
+  const posts = await getCollection('blog', blogFilter('en'));
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
