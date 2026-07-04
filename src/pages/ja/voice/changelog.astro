@@ -12,10 +12,16 @@ import Voice from '../../../layouts/Voice.astro';
 // disk. Before the first sync (or in local dev without one) it matches
 // nothing, so `entry` is undefined and we fall back to a "coming soon" note
 // rather than failing the build.
-const modules = import.meta.glob('../../../content/docs/voice/changelog.md', {
+// Prefer this locale's translated changelog; fall back to the English file
+// (changelog.md) when the translation has not synced yet, so a missing locale
+// degrades to English instead of a blank page.
+const localized = import.meta.glob('../../../content/docs/voice/changelog.ja.md', {
   eager: true,
 });
-const entry = Object.values(modules)[0] as
+const english = import.meta.glob('../../../content/docs/voice/changelog.md', {
+  eager: true,
+});
+const entry = (Object.values(localized)[0] ?? Object.values(english)[0]) as
   | { Content: any; frontmatter: { title?: string; description?: string } }
   | undefined;
 
