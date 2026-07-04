@@ -1,6 +1,6 @@
 ---
 title: "Metti in attesa, passa tra le chiamate e trasferisci come una reception"
-description: "WaveKat Voice ora mette le chiamate in attesa, risponde a una seconda chiamata mentre sei sulla prima e trasferisce chi chiama — trasferimento cieco o assistito — su Mac e Linux."
+description: "WaveKat Voice ora mette le chiamate in attesa, risponde a una seconda chiamata mentre sei sulla prima e trasferisce chi chiama — trasferimento cieco o assistito — su Mac e Linux, e la registrazione si mette in pausa automaticamente durante l'attesa."
 date: 2026-07-04
 author: Eason Guo
 tags: [voice-ai, chiamate]
@@ -11,15 +11,15 @@ lang: "it"
 <!-- TODO before publishing: set the real release version + date (the two
      changelog links below assume 0.0.42), and remove `draft: true`. -->
 
-WaveKat Voice ora sa fare le tre cose che una reception fa tutto il giorno: mettere in attesa chi chiama, rispondere a una seconda chiamata mentre la prima aspetta e trasferire chi chiama a qualcun altro — subito, oppure dopo averlo prima consultato. Arriva con WaveKat Voice [0.0.42](/it/voice/changelog/#0.0.42) su Mac e Linux.
+WaveKat Voice — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora sa fare le tre cose che una reception fa tutto il giorno: mettere in attesa chi chiama, rispondere a una seconda chiamata mentre la prima aspetta e trasferire chi chiama a qualcun altro — subito, oppure dopo averlo prima consultato. Arriva con WaveKat Voice [0.0.42](/it/voice/changelog/#0.0.42).
 
-È il passo più letterale finora verso il nostro obiettivo: [dare a ogni piccola attività la voce di una grande](/it/blog/hello-world/). Quando chiami una grande azienda, qualcuno dice «un attimo, la metto in linea» — e funziona, perché c'è una centralinista con un centralino. Ora [l'app che già registra e trascrive ogni chiamata](/it/voice/) dà a un negozio con una sola persona le stesse mosse. Attesa, avviso di chiamata e trasferimento sono i comandi che chi sta a una scrivania usa di continuo, e qualsiasi [softphone](/it/voice/alternatives/) serio deve averli — WaveKat Voice ora li ha, con un tocco tutto suo: quello che succede durante l'attesa resta fuori dalla registrazione.
+È il passo più letterale finora verso il nostro obiettivo: [dare a ogni piccola attività la voce di una grande](/it/blog/hello-world/). Quando chiami una grande azienda, qualcuno dice «un attimo, la metto in linea» — e funziona, perché c'è una centralinista con un centralino. Ora [WaveKat Voice](/it/voice/), che già registra e trascrive ogni chiamata, dà a un negozio con una sola persona le stesse mosse. Attesa, avviso di chiamata e trasferimento sono i comandi che chi sta a una scrivania usa di continuo, e qualsiasi [softphone](/it/voice/alternatives/) serio deve averli — WaveKat Voice ora li ha, con un tocco tutto suo: quello che succede durante l'attesa resta fuori dalla registrazione.
 
 ## Mettere in attesa chi chiama
 
-Sulla schermata di chiamata c'è un pulsante **Attesa**, tra Muto e il tastierino. Premilo e la chiamata si mette in pausa in entrambe le direzioni: tu non senti loro, loro non sentono te e — visto che in WaveKat Voice tutto resta fedele alla realtà — anche la registrazione e la trascrizione dal vivo si fermano. Nulla di ciò che viene detto vicino alla tua scrivania mentre una chiamata è parcheggiata finisce nella trascrizione.
+Mettere in attesa chi chiama in WaveKat Voice mette in pausa la registrazione e la trascrizione dal vivo per tutto il tempo in cui la chiamata resta parcheggiata — nulla di ciò che viene detto vicino alla tua scrivania durante l'attesa finisce nella registrazione o nella trascrizione. Sulla schermata di chiamata c'è un pulsante **Attesa**, tra Muto e il tastierino; premilo e la chiamata si mette in pausa in entrambe le direzioni, così tu non senti chi chiama e loro non sentono te.
 
-L'attesa non è un semplice muto locale su entrambi i lati. WaveKat Voice comunica al sistema telefonico dall'altra parte che la chiamata è in attesa (nel modo standard di SIP), così la maggior parte dei sistemi fa sentire a chi chiama la propria musica di attesa — sente «sei in attesa», non un silenzio di tomba. Premi **Riprendi** e la conversazione, la registrazione e la trascrizione ripartono.
+WaveKat Voice segnala l'attesa al sistema telefonico dall'altra parte nel modo standard di SIP, così la maggior parte dei sistemi fa sentire a chi chiama la propria musica di attesa — sente «sei in attesa», non un silenzio di tomba. È più di un semplice muto locale: il sistema remoto sa che la chiamata è parcheggiata, non solo silenziosa. Premi **Riprendi** e la conversazione, la registrazione e la trascrizione ripartono.
 
 ![WaveKat Voice su Ubuntu — una chiamata in attesa: il banner di attesa con Riprendi e la trascrizione in pausa.](/screenshots/in-call-hold/it.webp)
 
@@ -27,7 +27,7 @@ L'attesa non è un semplice muto locale su entrambi i lati. WaveKat Voice comuni
 
 Quando una seconda chiamata squilla mentre stai già parlando, non devi più scegliere tra le due. Rispondi, e la prima chiamata va in attesa da sola — esattamente come l'avviso di chiamata sul cellulare. Una barra di scambio sulla schermata di chiamata elenca ogni chiamata in corso, e passi dall'una all'altra con un clic.
 
-Solo una chiamata alla volta ha l'audio dal vivo. La chiamata che stai guardando è quella su cui stai parlando; tutti gli altri aspettano in attesa, e le loro registrazioni e trascrizioni aspettano con loro. Per impostazione predefinita, passare a una chiamata in attesa la riprende subito; se preferisci riprendere ogni chiamata di proposito, c'è un'opzione in **Impostazioni → Generali** («Riprendi una chiamata quando ci passi»), e ogni chiamata in attesa mostra un avviso ben visibile, così una linea silenziosa non sembra mai una linea caduta.
+Solo una chiamata alla volta ha l'audio dal vivo. La chiamata che stai guardando è quella su cui stai parlando; ogni altra chiamata è in attesa, con la sua registrazione e la sua trascrizione dal vivo in pausa finché non ci torni sopra. Per impostazione predefinita, passare a una chiamata in attesa la riprende subito; se preferisci riprendere ogni chiamata di proposito, c'è un'opzione in **Impostazioni → Generali** («Riprendi una chiamata quando ci passi»), e ogni chiamata in attesa mostra un avviso ben visibile, così una linea silenziosa non sembra mai una linea caduta.
 
 ![WaveKat Voice su Ubuntu — una chiamata in corso con altri due chiamanti in attesa nella barra di scambio.](/screenshots/in-call-waiting/it.webp)
 
@@ -62,13 +62,17 @@ Il trasferimento cieco manda chi chiama alla nuova destinazione subito, senza pa
 
 No. WaveKat Voice usa il meccanismo di trasferimento standard di SIP (un REFER, RFC 3515), quindi la destinazione riceve solo una normale telefonata — qualsiasi telefono, qualsiasi softphone, qualsiasi interno che il tuo operatore possa raggiungere.
 
+### Attesa e trasferimento funzionano con qualsiasi operatore SIP?
+
+Sì. L'attesa usa il re-INVITE standard di SIP (RFC 3264) e il trasferimento usa SIP REFER (RFC 3515), quindi entrambi funzionano con qualsiasi operatore o centralino conforme a SIP, usando l'account che già hai — senza configurazione specifica dell'operatore.
+
 ### Posso unire due chiamate in una conferenza?
 
 Non ancora. WaveKat Voice può tenere due o più chiamate in attesa contemporaneamente e passare dall'una all'altra, ma solo una alla volta è dal vivo. La chiamata a tre è una funzione a parte che non abbiamo ancora costruito.
 
 ### Cosa sente chi chiama mentre è in attesa?
 
-Quello che il suo sistema telefonico riproduce per l'attesa — di solito la sua musica di attesa. WaveKat Voice segnala l'attesa nel modo standard di SIP (un re-INVITE, RFC 3264) invece di riprodurre un tono da sé, ed è proprio questo che permette all'altro lato di rispondere correttamente.
+Chi viene messo in attesa in WaveKat Voice sente quello che il suo sistema telefonico riproduce per l'attesa — di solito la sua musica di attesa, non silenzio o un tono da WaveKat Voice. WaveKat Voice segnala l'attesa nel modo standard di SIP (un re-INVITE, RFC 3264), che affida l'esperienza di attesa al sistema di chi chiama, così sente ciò che si aspetta.
 
 ### Una chiamata viene registrata mentre è in attesa?
 

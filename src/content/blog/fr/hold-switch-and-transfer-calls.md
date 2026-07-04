@@ -1,6 +1,6 @@
 ---
 title: "Mettre en attente, basculer et transférer des appels comme un standard"
-description: "WaveKat Voice sait désormais mettre un appel en attente, répondre à un second appel pendant le premier et transférer un appelant — en aveugle ou avec supervision — sur Mac et Linux."
+description: "WaveKat Voice sait désormais mettre un appel en attente, répondre à un second appel pendant le premier et transférer un appelant — en aveugle ou avec supervision — sur Mac et Linux, et l'enregistrement se met en pause automatiquement pendant la mise en attente."
 date: 2026-07-04
 author: Eason Guo
 tags: [ia-vocale, appels]
@@ -11,15 +11,15 @@ lang: "fr"
 <!-- TODO before publishing: set the real release version + date (the two
      changelog links below assume 0.0.42), and remove `draft: true`. -->
 
-WaveKat Voice sait désormais faire les trois choses qu'un accueil fait toute la journée : mettre un appelant en attente, répondre à un second appel pendant que le premier patiente, et transférer un appelant vers quelqu'un d'autre — soit directement, soit après l'avoir consulté. Ces fonctions arrivent avec WaveKat Voice [0.0.42](/fr/voice/changelog/#0.0.42) sur Mac et Linux.
+WaveKat Voice — le softphone SIP pour Mac et Linux qui enregistre et transcrit chaque appel — sait désormais faire les trois choses qu'un accueil fait toute la journée : mettre un appelant en attente, répondre à un second appel pendant que le premier patiente, et transférer un appelant vers quelqu'un d'autre — soit directement, soit après l'avoir consulté. Elles arrivent avec WaveKat Voice [0.0.42](/fr/voice/changelog/#0.0.42).
 
-C'est le pas le plus littéral à ce jour vers notre objectif : [donner à chaque petite entreprise la voix d'une grande](/fr/blog/hello-world/). Quand vous appelez une grande entreprise, quelqu'un dit « un instant, je vous mets en relation » — et ça marche, parce qu'il y a une standardiste devant un standard. Désormais, [l'application qui enregistre et transcrit déjà chaque appel](/fr/voice/) donne les mêmes gestes à un commerce tenu par une seule personne. La mise en attente, le double appel et le transfert sont les commandes qu'une personne à l'accueil utilise sans cesse, et tout [softphone](/fr/voice/alternatives/) sérieux est censé les avoir — WaveKat Voice les a maintenant, avec sa touche à lui : ce qui se passe pendant l'attente reste hors de l'enregistrement.
+C'est le pas le plus littéral à ce jour vers notre objectif : [donner à chaque petite entreprise la voix d'une grande](/fr/blog/hello-world/). Quand vous appelez une grande entreprise, quelqu'un dit « un instant, je vous mets en relation » — et ça marche, parce qu'il y a une standardiste devant un standard. Désormais, [WaveKat Voice](/fr/voice/), qui enregistre et transcrit déjà chaque appel, donne les mêmes gestes à un commerce tenu par une seule personne. La mise en attente, le double appel et le transfert sont les commandes qu'une personne à l'accueil utilise sans cesse, et tout [softphone](/fr/voice/alternatives/) sérieux est censé les avoir — WaveKat Voice les a maintenant, avec sa touche à lui : ce qui se passe pendant l'attente reste hors de l'enregistrement.
 
 ## Mettre un appelant en attente
 
-Un bouton **Attente** figure sur l'écran d'appel, entre Muet et le clavier. Appuyez dessus et l'appel se met en pause dans les deux sens : vous ne les entendez plus, ils ne vous entendent plus, et — parce que tout reste honnête dans WaveKat Voice — l'enregistrement et la transcription en direct se mettent en pause aussi. Rien de ce qui se dit près de votre bureau pendant qu'un appel patiente ne finit dans la transcription.
+Mettre un appelant en attente dans WaveKat Voice met en pause l'enregistrement et la transcription en direct pendant toute la durée où l'appel patiente — rien de ce qui se dit près de votre bureau pendant une mise en attente ne finit dans l'enregistrement ni dans la transcription. Un bouton **Attente** figure sur l'écran d'appel, entre Muet et le clavier ; appuyez dessus et l'appel se met en pause dans les deux sens : vous n'entendez plus l'appelant et il ne vous entend plus.
 
-La mise en attente ne se contente pas de couper le son des deux côtés en local. WaveKat Voice signale au système téléphonique d'en face que l'appel est mis en attente (à la manière standard de SIP), si bien que la plupart des systèmes diffusent leur propre musique d'attente à l'appelant — il entend « vous êtes en attente », pas un silence de mort. Appuyez sur **Reprendre** et la conversation, l'enregistrement et la transcription repartent.
+WaveKat Voice signale la mise en attente au système téléphonique d'en face à la manière standard de SIP, si bien que la plupart des systèmes diffusent leur propre musique d'attente — l'appelant entend « vous êtes en attente », pas un silence de mort. C'est plus qu'une simple coupure du son en local : le système distant sait que l'appel est en attente, et pas seulement silencieux. Appuyez sur **Reprendre** et la conversation, l'enregistrement et la transcription repartent.
 
 ![WaveKat Voice sur Ubuntu — un appel en attente : la bannière de mise en attente avec Reprendre, la transcription en pause.](/screenshots/in-call-hold/fr.webp)
 
@@ -27,7 +27,7 @@ La mise en attente ne se contente pas de couper le son des deux côtés en local
 
 Quand un second appel sonne alors que vous êtes déjà en ligne, vous n'avez plus à choisir entre les deux. Répondez-y, et le premier appel se met en attente tout seul — exactement comme le double appel sur un téléphone mobile. Une barre de bascule sur l'écran d'appel liste chaque appel en cours, et vous passez de l'un à l'autre d'un clic.
 
-Un seul appel a de l'audio en direct à la fois. L'appel que vous regardez est celui sur lequel vous parlez ; tous les autres patientent en attente, et leurs enregistrements et transcriptions patientent avec eux. Par défaut, basculer vers un appel en attente le reprend immédiatement ; si vous préférez reprendre chaque appel délibérément, un réglage existe dans **Réglages → Général** (« Reprendre un appel quand vous basculez dessus »), et tout appel en attente porte une bannière bien visible, pour qu'une ligne silencieuse ne passe jamais pour une ligne coupée.
+Un seul appel a de l'audio en direct à la fois. L'appel que vous regardez est celui sur lequel vous parlez ; tous les autres sont en attente, avec leur enregistrement et leur transcription en direct en pause jusqu'à ce que vous y reveniez. Par défaut, basculer vers un appel en attente le reprend immédiatement ; si vous préférez reprendre chaque appel délibérément, un réglage existe dans **Réglages → Général** (« Reprendre un appel quand vous basculez dessus »), et tout appel en attente porte une bannière bien visible, pour qu'une ligne silencieuse ne passe jamais pour une ligne coupée.
 
 ![WaveKat Voice sur Ubuntu — un appel en cours, avec deux autres appelants en attente dans la barre de bascule.](/screenshots/in-call-waiting/fr.webp)
 
@@ -62,13 +62,17 @@ Un transfert aveugle envoie l'appelant vers la nouvelle destination immédiateme
 
 Non. WaveKat Voice utilise le mécanisme de transfert standard de SIP (un REFER, RFC 3515) : la destination reçoit simplement un appel téléphonique ordinaire — n'importe quel téléphone, n'importe quel softphone, n'importe quel poste que votre opérateur peut joindre.
 
+### L'attente et le transfert fonctionnent-ils avec n'importe quel opérateur SIP ?
+
+Oui. La mise en attente utilise le re-INVITE standard de SIP (RFC 3264) et le transfert utilise le REFER de SIP (RFC 3515), si bien que les deux fonctionnent avec n'importe quel opérateur ou PBX conforme à SIP, avec le compte que vous avez déjà — sans configuration propre à l'opérateur.
+
 ### Puis-je fusionner deux appels en conférence téléphonique ?
 
 Pas encore. WaveKat Voice peut garder deux appels ou plus en attente et basculer entre eux, mais un seul est en direct à la fois. La conférence à trois est une fonction à part que nous n'avons pas encore construite.
 
 ### Qu'entend un appelant pendant qu'il est en attente ?
 
-Ce que son propre système téléphonique diffuse pour l'attente — le plus souvent sa musique d'attente. WaveKat Voice signale la mise en attente à la manière standard de SIP (un re-INVITE, RFC 3264) plutôt que de jouer une tonalité lui-même, et c'est justement ce qui permet à l'autre côté de réagir correctement.
+Un appelant mis en attente dans WaveKat Voice entend ce que son propre système téléphonique diffuse pour l'attente — le plus souvent sa musique d'attente, pas un silence ni une tonalité venant de WaveKat Voice. WaveKat Voice signale la mise en attente à la manière standard de SIP (un re-INVITE, RFC 3264), ce qui confie l'expérience d'attente au système de l'appelant lui-même, si bien qu'il entend ce à quoi il s'attend.
 
 ### Un appel est-il enregistré pendant qu'il est en attente ?
 

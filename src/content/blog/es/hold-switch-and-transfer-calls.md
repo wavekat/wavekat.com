@@ -1,6 +1,6 @@
 ---
 title: "Retenga, alterne y transfiera llamadas como una recepción"
-description: "WaveKat Voice ahora pone llamadas en espera, contesta una segunda llamada mientras atiende la primera y transfiere llamadas — de forma ciega o atendida — en Mac y Linux."
+description: "WaveKat Voice ahora pone llamadas en espera, contesta una segunda llamada mientras atiende la primera y transfiere llamadas — de forma ciega o atendida — en Mac y Linux, y la grabación se pausa automáticamente durante la espera."
 date: 2026-07-04
 author: Eason Guo
 tags: [voz-ia, llamadas]
@@ -11,15 +11,15 @@ lang: "es"
 <!-- TODO before publishing: set the real release version + date (the two
      changelog links below assume 0.0.42), and remove `draft: true`. -->
 
-WaveKat Voice ahora puede hacer las tres cosas que una recepción hace todo el día: poner a quien llama en espera, contestar una segunda llamada mientras la primera espera y transferir a quien llama a otra persona — ya sea de inmediato o después de consultarlo primero. Llega con WaveKat Voice [0.0.42](/es/voice/changelog/#0.0.42) en Mac y Linux.
+WaveKat Voice — el softphone SIP para Mac y Linux que graba y transcribe cada llamada — ahora puede hacer las tres cosas que una recepción hace todo el día: poner a quien llama en espera, contestar una segunda llamada mientras la primera espera y transferir a quien llama a otra persona — ya sea de inmediato o después de consultarlo primero. Llega con WaveKat Voice [0.0.42](/es/voice/changelog/#0.0.42).
 
-Es el paso más literal hasta ahora hacia [dar a cada pequeño negocio la voz de uno grande](/es/blog/hello-world/). Cuando usted llama a una gran empresa, alguien dice «un momento, le comunico» — y funciona, porque hay una recepcionista con un conmutador. Ahora la [aplicación que ya graba y transcribe cada llamada](/es/voice/) le da a un negocio de una sola persona los mismos movimientos. Retener, la llamada en espera y la transferencia son los controles que quien atiende un escritorio usa constantemente, y cualquier [softphone](/es/voice/alternatives/) serio debe tenerlos — WaveKat Voice ya los tiene, con un matiz propio: lo que ocurre durante la espera queda fuera de la grabación.
+Es el paso más literal hasta ahora hacia [dar a cada pequeño negocio la voz de uno grande](/es/blog/hello-world/). Cuando usted llama a una gran empresa, alguien dice «un momento, le comunico» — y funciona, porque hay una recepcionista con un conmutador. Ahora [WaveKat Voice](/es/voice/), que ya graba y transcribe cada llamada, le da a un negocio de una sola persona los mismos movimientos. Retener, la llamada en espera y la transferencia son los controles que quien atiende un escritorio usa constantemente, y cualquier [softphone](/es/voice/alternatives/) serio debe tenerlos — WaveKat Voice ya los tiene, con un matiz propio: lo que ocurre durante la espera queda fuera de la grabación.
 
 ## Poner a quien llama en espera
 
-Hay un botón de **Retener** en la pantalla de llamada, entre Silenciar y el teclado. Al pulsarlo, la llamada se pausa en ambas direcciones: usted no los oye, ellos no lo oyen a usted y — porque en WaveKat Voice todo se mantiene fiel a la verdad — la grabación y la transcripción en vivo también se pausan. Nada de lo que se diga cerca de su escritorio mientras una llamada está aparcada termina en la transcripción.
+Poner a quien llama en espera en WaveKat Voice pausa la grabación y la transcripción en vivo durante todo el tiempo que la llamada quede aparcada — nada de lo que se diga cerca de su escritorio durante una espera termina en la grabación ni en la transcripción. Hay un botón de **Retener** en la pantalla de llamada, entre Silenciar y el teclado; al pulsarlo, la llamada se pausa en ambas direcciones, así que usted no oye a quien llama y ellos no lo oyen a usted.
 
-Retener no es simplemente silenciar ambos extremos en local. WaveKat Voice le indica al sistema telefónico del otro lado que la llamada está retenida (por la vía estándar de SIP), así que la mayoría de los sistemas reproducen su propia música de espera — quien llama oye «está usted en espera», no un silencio muerto. Pulse **Reanudar** y la conversación, la grabación y la transcripción continúan.
+WaveKat Voice le indica al sistema telefónico del otro lado que la llamada está retenida por la vía estándar de SIP, así que la mayoría de los sistemas reproducen su propia música de espera — quien llama oye «está usted en espera», no un silencio muerto. Es más que un silenciado local: el sistema remoto sabe que la llamada está aparcada, no solo en silencio. Pulse **Reanudar** y la conversación, la grabación y la transcripción continúan.
 
 ![WaveKat Voice en Ubuntu — una llamada retenida: el aviso de llamada en espera con Reanudar y la transcripción en pausa.](/screenshots/in-call-hold/es.webp)
 
@@ -27,7 +27,7 @@ Retener no es simplemente silenciar ambos extremos en local. WaveKat Voice le in
 
 Cuando suena una segunda llamada mientras ya está hablando, ya no tiene que elegir entre las dos. Contéstela y la primera pasa a espera por sí sola — exactamente como la llamada en espera de un teléfono móvil. Una barra de cambio en la pantalla de llamada lista cada llamada en curso, y usted se mueve entre ellas con un clic.
 
-Solo una llamada tiene audio en vivo en cada momento. La llamada que está mirando es en la que está hablando; todos los demás esperan retenidos, y sus grabaciones y transcripciones esperan con ellos. De forma predeterminada, cambiar a una llamada retenida la reanuda de inmediato; si prefiere reanudar cada llamada deliberadamente, hay un interruptor en **Ajustes → General** («Reanudar una llamada al cambiar a ella»), y toda llamada retenida muestra un aviso claro para que una línea en silencio nunca parezca una línea caída.
+Solo una llamada está en vivo en cada momento. La llamada que está mirando es en la que está hablando; todas las demás están retenidas, con su grabación y su transcripción en vivo en pausa hasta que vuelva a ellas. De forma predeterminada, cambiar a una llamada retenida la reanuda de inmediato; si prefiere reanudar cada llamada deliberadamente, hay un interruptor en **Ajustes → General** («Reanudar una llamada al cambiar a ella»), y toda llamada retenida muestra un aviso claro para que una línea en silencio nunca parezca una línea caída.
 
 ![WaveKat Voice en Ubuntu — una llamada en curso con dos personas más esperando retenidas en la barra de cambio.](/screenshots/in-call-waiting/es.webp)
 
@@ -62,13 +62,17 @@ La transferencia ciega envía a quien llama al nuevo destino de inmediato, sin h
 
 No. WaveKat Voice usa el mecanismo estándar de transferencia de SIP (un REFER, RFC 3515), así que el destino solo recibe una llamada telefónica normal — cualquier teléfono, cualquier softphone, cualquier extensión que su proveedor pueda alcanzar.
 
+### ¿Funcionan la retención y la transferencia con cualquier proveedor SIP?
+
+Sí. La retención usa el re-INVITE estándar de SIP (RFC 3264) y la transferencia usa SIP REFER (RFC 3515), así que ambas funcionan con cualquier proveedor o centralita PBX compatible con SIP, usando la cuenta que usted ya tiene — sin configuración específica del proveedor.
+
 ### ¿Puedo unir dos llamadas en una llamada de conferencia?
 
 Todavía no. WaveKat Voice puede retener dos o más llamadas a la vez y alternar entre ellas, pero solo una está en vivo en cada momento. La llamada a tres es una función aparte que aún no hemos construido.
 
 ### ¿Qué oye quien llama mientras está en espera?
 
-Lo que su propio sistema telefónico reproduzca para la espera — normalmente su música de espera. WaveKat Voice señaliza la retención por la vía estándar de SIP (un re-INVITE, RFC 3264) en lugar de reproducir un tono por su cuenta, que es lo que permite al otro lado responder correctamente.
+Quien es puesto en espera en WaveKat Voice oye lo que su propio sistema telefónico reproduzca para la espera — normalmente su música de espera, no un silencio ni un tono de WaveKat Voice. WaveKat Voice señaliza la retención por la vía estándar de SIP (un re-INVITE, RFC 3264), lo que deja la experiencia de espera en manos del sistema de quien llama, así que oye lo que esperaría oír.
 
 ### ¿Se graba una llamada mientras está en espera?
 

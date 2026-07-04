@@ -1,6 +1,6 @@
 ---
 title: "Anrufe halten, wechseln und weiterleiten wie eine Telefonzentrale"
-description: "WaveKat Voice kann Anrufe jetzt halten, einen zweiten Anruf während des ersten annehmen und Anrufer weiterleiten — ohne oder mit Rückfrage — auf Mac und Linux."
+description: "WaveKat Voice kann Anrufe jetzt halten, einen zweiten Anruf während des ersten annehmen und Anrufer weiterleiten — ohne oder mit Rückfrage — auf Mac und Linux, und die Aufnahme pausiert beim Halten automatisch."
 date: 2026-07-04
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
@@ -11,15 +11,15 @@ lang: "de"
 <!-- TODO before publishing: set the real release version + date (the two
      changelog links below assume 0.0.42), and remove `draft: true`. -->
 
-WaveKat Voice kann jetzt die drei Dinge, die ein Empfang den ganzen Tag tut: einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, und einen Anrufer an jemand anderen weiterleiten — entweder sofort oder erst nach Rücksprache. Die Funktionen erscheinen mit WaveKat Voice [0.0.42](/de/voice/changelog/#0.0.42) auf Mac und Linux.
+WaveKat Voice — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die drei Dinge, die ein Empfang den ganzen Tag tut: einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, und einen Anrufer an jemand anderen weiterleiten — entweder sofort oder erst nach Rücksprache. Sie erscheinen mit WaveKat Voice [0.0.42](/de/voice/changelog/#0.0.42).
 
-Das ist der bislang wörtlichste Schritt hin zu unserem Ziel, [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Wer bei einem großen Unternehmen anruft, hört „Einen Moment, ich stelle Sie durch" — und es funktioniert, weil dort eine Empfangskraft mit einer Telefonzentrale sitzt. Jetzt gibt die [App, die bereits jeden Anruf aufzeichnet und transkribiert](/de/voice/), einem Ein-Personen-Betrieb dieselben Handgriffe. Halten, Anklopfen und Weiterleiten sind die Bedienelemente, nach denen am Empfang ständig gegriffen wird, und jedes ernstzunehmende [Softphone](/de/voice/alternatives/) muss sie haben — WaveKat Voice hat sie jetzt, mit einer eigenen Besonderheit: Was während des Haltens passiert, bleibt aus der Aufnahme heraus.
+Das ist der bislang wörtlichste Schritt hin zu unserem Ziel, [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Wer bei einem großen Unternehmen anruft, hört „Einen Moment, ich stelle Sie durch" — und es funktioniert, weil dort eine Empfangskraft mit einer Telefonzentrale sitzt. Jetzt gibt [WaveKat Voice](/de/voice/) — das bereits jeden Anruf aufzeichnet und transkribiert — einem Ein-Personen-Betrieb dieselben Handgriffe. Halten, Anklopfen und Weiterleiten sind die Bedienelemente, nach denen am Empfang ständig gegriffen wird, und jedes ernstzunehmende [Softphone](/de/voice/alternatives/) muss sie haben — WaveKat Voice hat sie jetzt, mit einer eigenen Besonderheit: Was während des Haltens passiert, bleibt aus der Aufnahme heraus.
 
 ## Einen Anrufer halten
 
-Auf dem Anrufbildschirm gibt es jetzt einen **Halten**-Knopf, zwischen Stummschalten und Wähltastatur. Ein Druck darauf pausiert den Anruf in beide Richtungen: Sie hören die Gegenseite nicht, sie hört Sie nicht — und weil in WaveKat Voice alles ehrlich bleibt, pausieren auch die Aufnahme und das Live-Transkript. Nichts, was neben Ihrem Schreibtisch gesagt wird, während ein Anruf geparkt ist, landet im Transkript.
+Wer in WaveKat Voice einen Anrufer hält, pausiert die Aufnahme und das Live-Transkript für die gesamte Zeit, in der der Anruf geparkt ist — nichts, was während eines Haltens neben Ihrem Schreibtisch gesagt wird, landet in der Aufnahme oder im Transkript. Auf dem Anrufbildschirm gibt es einen **Halten**-Knopf, zwischen Stummschalten und Wähltastatur; ein Druck darauf pausiert den Anruf in beide Richtungen, sodass Sie die Gegenseite nicht hören und sie Sie nicht hört.
 
-Halten ist mehr als beidseitiges lokales Stummschalten. WaveKat Voice teilt dem Telefonsystem der Gegenseite (auf dem SIP-Standardweg) mit, dass der Anruf gehalten wird, sodass die meisten Systeme dem Anrufer ihre eigene Wartemusik vorspielen — er hört „Sie werden gehalten", keine Totenstille. Mit **Fortsetzen** laufen Gespräch, Aufnahme und Transkript weiter.
+WaveKat Voice teilt dem Telefonsystem der Gegenseite auf dem SIP-Standardweg mit, dass der Anruf gehalten wird, sodass die meisten Systeme ihre eigene Wartemusik vorspielen — der Anrufer hört „Sie werden gehalten", keine Totenstille. Das ist mehr als beidseitiges lokales Stummschalten: Das entfernte System weiß, dass der Anruf geparkt ist, nicht nur still. Mit **Fortsetzen** laufen Gespräch, Aufnahme und Transkript weiter.
 
 ![WaveKat Voice auf Ubuntu — ein gehaltener Anruf: das Warteschleifen-Banner mit Fortsetzen, die Transkription pausiert.](/screenshots/in-call-hold/de.webp)
 
@@ -27,7 +27,7 @@ Halten ist mehr als beidseitiges lokales Stummschalten. WaveKat Voice teilt dem 
 
 Wenn ein zweiter Anruf klingelt, während Sie schon sprechen, müssen Sie sich nicht mehr entscheiden. Nehmen Sie ihn an, und der erste Anruf legt sich von selbst in die Warteschleife — genau wie das Anklopfen auf dem Mobiltelefon. Eine Umschaltleiste auf dem Anrufbildschirm listet jeden laufenden Anruf, und Sie wechseln per Klick zwischen ihnen.
 
-Nur ein Anruf hat je Live-Audio. Der Anruf, den Sie gerade ansehen, ist der, auf dem Sie sprechen; alle anderen warten in der Warteschleife, und ihre Aufnahmen und Transkripte warten mit. Standardmäßig wird ein gehaltener Anruf beim Umschalten sofort fortgesetzt; wer jeden Anruf lieber bewusst fortsetzt, findet in **Einstellungen → Allgemein** einen Schalter („Anruf beim Umschalten fortsetzen"), und jeder gehaltene Anruf trägt ein deutliches Banner, damit eine stille Leitung nie wie eine abgebrochene wirkt.
+Nur ein Anruf ist jeweils live. Der Anruf, den Sie gerade ansehen, ist der, auf dem Sie sprechen; jeder andere Anruf wird gehalten, und seine Aufnahme und sein Live-Transkript pausieren, bis Sie zu ihm zurückwechseln. Standardmäßig wird ein gehaltener Anruf beim Umschalten sofort fortgesetzt; wer jeden Anruf lieber bewusst fortsetzt, findet in **Einstellungen → Allgemein** einen Schalter („Anruf beim Umschalten fortsetzen"), und jeder gehaltene Anruf trägt ein deutliches Banner, damit eine stille Leitung nie wie eine abgebrochene wirkt.
 
 ![WaveKat Voice auf Ubuntu — ein laufender Anruf, während zwei weitere Anrufer in der Umschaltleiste in der Warteschleife warten.](/screenshots/in-call-waiting/de.webp)
 
@@ -62,13 +62,17 @@ Ohne Rückfrage (Blind Transfer) wird der Anrufer sofort zum neuen Ziel geschick
 
 Nein. WaveKat Voice nutzt den SIP-Standardmechanismus für Weiterleitungen (ein REFER, RFC 3515), das Ziel erhält also einen ganz gewöhnlichen Anruf — jedes Telefon, jedes Softphone, jede Durchwahl, die Ihr Anbieter erreicht.
 
+### Funktionieren Halten und Weiterleiten mit jedem SIP-Anbieter?
+
+Ja. Halten nutzt das SIP-Standard-re-INVITE (RFC 3264) und Weiterleiten das SIP-REFER (RFC 3515), sodass beide mit jedem SIP-konformen Anbieter oder jeder SIP-konformen Telefonanlage funktionieren — mit dem Konto, das Sie bereits haben, ohne anbieterspezifische Einrichtung.
+
 ### Kann ich zwei Anrufe zu einer Telefonkonferenz zusammenführen?
 
 Noch nicht. WaveKat Voice kann zwei oder mehr Anrufe gleichzeitig halten und zwischen ihnen wechseln, aber nur einer ist jeweils live. Dreierkonferenzen sind eine eigene Funktion, die wir noch nicht gebaut haben.
 
 ### Was hört ein Anrufer in der Warteschleife?
 
-Das, was sein eigenes Telefonsystem für die Warteschleife abspielt — meist dessen Wartemusik. WaveKat Voice signalisiert das Halten auf dem SIP-Standardweg (ein re-INVITE, RFC 3264), statt selbst einen Ton abzuspielen; genau deshalb kann die Gegenseite richtig reagieren.
+Ein in WaveKat Voice gehaltener Anrufer hört das, was sein eigenes Telefonsystem für die Warteschleife abspielt — meist dessen Wartemusik, nicht Stille oder einen Ton von WaveKat Voice. WaveKat Voice signalisiert das Halten auf dem SIP-Standardweg (ein re-INVITE, RFC 3264) und überlässt so das Warteschleifen-Erlebnis dem eigenen System des Anrufers, sodass er hört, was er erwartet.
 
 ### Wird ein Anruf aufgezeichnet, während er gehalten wird?
 
