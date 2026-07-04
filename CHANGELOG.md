@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.40](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.39...wavekat-com-v0.0.40) (2026-07-04)
+
+
+### Features
+
+* localize the changelog page ([#115](https://github.com/wavekat/wavekat.com/issues/115)) ([f0b002c](https://github.com/wavekat/wavekat.com/commit/f0b002cf0500bdbab8af1c75d8c088e4e8243bcb))
+* **seo:** sitewide SEO, GEO, and perf fixes ([#113](https://github.com/wavekat/wavekat.com/issues/113)) ([7accbcf](https://github.com/wavekat/wavekat.com/commit/7accbcfcbf78c54b680514544e9d6e2930228969))
+
 ## [0.0.39](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.38...wavekat-com-v0.0.39) (2026-06-28)
 
 
