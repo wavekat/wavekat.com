@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import path from 'node:path';
+import { readFileSync, existsSync } from 'node:fs';
+import { imageSize } from 'image-size';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -63,6 +65,41 @@ function rehypeVersionAnchors() {
   };
 }
 
+// Markdown images ship with no width/height, so the browser can't reserve
+// space before they load (layout shift when the ~1200px blog screenshots
+// arrive) and every image loads immediately. Measure local /public assets at
+// build time, stamp the real dimensions, and lazy-load everything after each
+// page's first image (only that one can be above the fold in a post).
+function rehypeImageDimensions() {
+  return () => (tree) => {
+    let imageIndex = 0;
+    const visit = (node) => {
+      if (node.tagName === 'img' && node.properties && typeof node.properties.src === 'string') {
+        const src = node.properties.src;
+        if (src.startsWith('/') && !src.startsWith('//')) {
+          const file = path.join(process.cwd(), 'public', src.split(/[?#]/)[0]);
+          if (existsSync(file)) {
+            try {
+              const { width, height } = imageSize(readFileSync(file));
+              if (width && height) {
+                node.properties.width ??= width;
+                node.properties.height ??= height;
+              }
+            } catch {
+              // Unmeasurable image — leave it unsized rather than fail the build.
+            }
+          }
+        }
+        node.properties.decoding ??= 'async';
+        node.properties.loading ??= imageIndex === 0 ? 'eager' : 'lazy';
+        imageIndex += 1;
+      }
+      if (Array.isArray(node.children)) node.children.forEach(visit);
+    };
+    visit(tree);
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://wavekat.com',
@@ -111,7 +148,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    rehypePlugins: [rehypeRewriteDocLinks(), rehypeVersionAnchors()],
+    rehypePlugins: [rehypeRewriteDocLinks(), rehypeVersionAnchors(), rehypeImageDimensions()],
   },
   vite: {
     plugins: [tailwindcss()],

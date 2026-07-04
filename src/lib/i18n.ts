@@ -77,6 +77,7 @@ const fullSite = [
   '/blog/common-voice-explorer/',
   '/blog/place-calls-from-the-command-line/',
   '/blog/share-a-call-recording/',
+  '/about/',
 ];
 
 // Which base paths exist in which non-default locale. The default locale is
@@ -207,6 +208,10 @@ export interface UIStrings {
   talkWritePost: string;
   footerEmail: string;
   footerSource: string;
+  footerAbout: string;
+  notFoundTitle: string;
+  notFoundBody: string;
+  notFoundHome: string;
   postBack: string;
   postUpdated: string;
 }
@@ -255,6 +260,10 @@ const strings: Record<string, UIStrings> = {
     talkWritePost: ' directly.',
     footerEmail: 'Email us',
     footerSource: 'View source on GitHub',
+    footerAbout: 'About',
+    notFoundTitle: "Page not found",
+    notFoundBody: "The page you're looking for doesn't exist or has moved.",
+    notFoundHome: "Go to the homepage",
     postBack: '← back to blog',
     postUpdated: 'updated',
   },
@@ -283,6 +292,10 @@ const strings: Record<string, UIStrings> = {
     talkWritePost: '。',
     footerEmail: '给我们发邮件',
     footerSource: '在 GitHub 上查看源码',
+    footerAbout: '关于',
+    notFoundTitle: "页面不存在",
+    notFoundBody: "您要找的页面不存在或已被移动。",
+    notFoundHome: "返回首页",
     postBack: '← 返回博客',
     postUpdated: '更新于',
   },

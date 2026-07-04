@@ -1,6 +1,6 @@
 ---
 title: "Let Your AI Assistant Place Real Phone Calls"
-description: "WaveKat Voice now ships a command-line tool and MCP server, so an AI assistant like Claude can place and manage real phone calls on your computer — with one-click setup."
+description: "WaveKat Voice now ships a command-line tool and MCP server, so an AI assistant like Claude can place and manage real phone calls on your computer."
 date: 2026-06-16
 author: Eason Guo
 tags: [voice-ai, automation, ai-agents]

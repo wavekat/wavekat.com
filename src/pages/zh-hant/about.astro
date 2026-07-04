@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Mail } from '@lucide/astro';
+
+// Mirrors /about/ section-for-section (see src/pages/about.astro).
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': 'https://wavekat.com/zh-hant/about/',
+      url: 'https://wavekat.com/zh-hant/about/',
+      name: "關於 WaveKat",
+      inLanguage: 'zh-Hant',
+      mainEntity: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
+---
+
+<Base
+  title="關於 — WaveKat"
+  description="WaveKat 打造開源、AI 驅動的語音工具，讓每一家小企業都擁有大企業的聲音。了解我們在做什麼、為什麼，以及如何聯絡我們。"
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header />
+
+    <section class="mb-16">
+      <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+        關於 WaveKat
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat 是一家小而獨立的軟體公司，為小企業打造開源、AI 驅動的語音工具。旗艦產品 <a href=\"/zh-hant/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> 是一款適用於 Mac 和 Linux 的桌面軟體電話，會自動錄音並轉寫每一通通話。"} />
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">為什麼會有 WaveKat</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"我們的使命是<strong class=\"text-gray-700 dark:text-gray-200\">讓每一家小企業都擁有大企業的聲音</strong>。大公司有話務台、通話錄音、逐字稿，以及驅動這一切的軟體；一個人的小店只有一支放在忙碌口袋裡的手機。WaveKat 打造的工具正是為了縮小這道差距——從電話開始，因為小企業每天都在電話上贏得或失去客戶。"} />
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+        語音是我們的起點，但不會是終點。
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">我們在做什麼</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/zh-hant/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> 把你的電腦變成企業電話：透過你現有的 SIP 業者接打電話，每一通通話都在你自己的機器上錄音並轉寫。公測期間免費，還可以<a href=\"/zh-hant/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">讓 AI 助手替你撥打</a>。"} />
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"在它之下是一系列開源 Rust 函式庫——語音活動偵測、話輪偵測、語音轉文字、文字轉語音、SIP/RTP 傳輸——全部發佈在 <a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat 的 GitHub 組織</a>下，並附有<a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">文件</a>。公開開發讓我們保持誠實：處理你通話的程式碼，你可以親自閱讀。"} />
+    </section>
+
+    <section class="mb-20">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">聯絡我們</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-5" set:html={"電子郵件是聯絡我們的最佳方式——每一封我們都會閱讀。關於 WaveKat Voice 的具體問題，可以從<a href=\"/zh-hant/voice/talk/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">聯絡我們</a>頁面開始。"} />
+      <a
+        href="mailto:eason@wavekat.com"
+        data-conversion="mailto_click"
+        class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+        style="background-color: #ff6d00"
+      >
+        <Mail class="w-4 h-4" />
+        eason@wavekat.com
+      </a>
+    </section>
+
+    <Footer />
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
+</Base>

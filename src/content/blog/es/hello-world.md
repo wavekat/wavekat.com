@@ -2,6 +2,7 @@
 title: "Hola, mundo — WaveKat ya está aquí"
 description: "Presentamos WaveKat: herramientas de voz de código abierto, impulsadas por IA y creadas para las pequeñas empresas. Esto es lo que estamos construyendo y por qué."
 date: 2026-04-01
+updated: 2026-07-04
 author: Eason Guo
 tags: [anuncio, código-abierto, voz-ia]
 lang: "es"
@@ -22,7 +23,7 @@ WaveKat construye herramientas para la IA de voz en tiempo real. Empezamos con u
 - **wavekat-turn** — detección de turnos, que sabe cuándo un hablante ha terminado de hablar
 - **wavekat-lab** — un panel interactivo para probar y comparar backends de audio
 
-Sobre estas bibliotecas construimos **wavekat-voice**, un sistema de atención telefónica con IA que se conecta a la infraestructura estándar SIP/RTP. Descuelga el teléfono, mantiene una conversación real y gestiona la llamada, para que el dueño del negocio no tenga que hacerlo.
+Sobre estas bibliotecas hemos construido **WaveKat Voice**, un softphone de escritorio para Mac y Linux que convierte tu ordenador en el teléfono de tu negocio. Contesta y hace llamadas a través del proveedor SIP que ya tienes, graba cada llamada y escribe lo que se dice en tiempo real. Un [asistente de IA puede manejar el marcador por ti](/es/blog/place-calls-from-the-command-line/) — hablar, hablas tú; un asistente que lleve la conversación por sí mismo es hacia donde vamos.
 
 ## ¿Por qué empezar con el código abierto?
 
@@ -31,3 +32,5 @@ Creemos que la tecnología fundamental —VAD, detección de turnos, procesamien
 ## Qué viene después
 
 Estamos enfocados de lleno en construir. Síganos en [GitHub](https://github.com/wavekat) o vuelva por aquí: escribiremos sobre la ingeniería detrás de la voz en tiempo real, las decisiones de compromiso que tomamos y lo que aprendemos por el camino.
+
+**WaveKat Voice** está hoy en beta pública gratuita — [descárgalo](/es/voice/download/) para tu Mac o Linux.

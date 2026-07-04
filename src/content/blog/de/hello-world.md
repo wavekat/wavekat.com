@@ -2,6 +2,7 @@
 title: "Hallo, Welt — WaveKat ist da"
 description: "Wir stellen WaveKat vor: quelloffene, KI-gestützte Sprachwerkzeuge für kleine Unternehmen. Hier erfahren Sie, was wir bauen und warum."
 date: 2026-04-01
+updated: 2026-07-04
 author: Eason Guo
 tags: [Ankündigung, Open-Source, Sprach-KI]
 lang: "de"
@@ -22,7 +23,7 @@ WaveKat entwickelt Werkzeuge für Echtzeit-Sprach-KI. Wir beginnen mit einer Rei
 - **wavekat-turn** — Sprecherwechselerkennung, die weiß, wann eine sprechende Person fertig ist
 - **wavekat-lab** — ein interaktives Dashboard zum Testen und Vergleichen von Audio-Backends
 
-Auf diesen Bibliotheken aufbauend entwickeln wir **wavekat-voice** — ein KI-gestütztes Telefonannahmesystem, das sich an gängige SIP/RTP-Infrastruktur anschließt. Es nimmt das Telefon ab, führt ein echtes Gespräch und wickelt den Anruf ab — damit die Inhaberin oder der Inhaber es nicht selbst tun muss.
+Auf diesen Bibliotheken aufbauend haben wir **WaveKat Voice** gebaut — ein Desktop-Softphone für Mac und Linux, das Ihren Computer zum Geschäftstelefon macht. Es nimmt Anrufe an und tätigt sie über den SIP-Anbieter, den Sie bereits haben, zeichnet jeden Anruf auf und schreibt das Gesagte live mit. Ein [KI-Assistent kann das Wählfeld für Sie bedienen](/de/blog/place-calls-from-the-command-line/) — sprechen tun Sie; ein Assistent, der das Gespräch selbst führt, ist der nächste Schritt, auf den wir hinarbeiten.
 
 ## Warum mit Open Source beginnen?
 
@@ -31,3 +32,5 @@ Wir sind überzeugt, dass die grundlegende Technologie — VAD, Sprecherwechsele
 ## Wie es weitergeht
 
 Wir sind voll im Entwicklungsmodus. Folgen Sie uns auf [GitHub](https://github.com/wavekat) oder schauen Sie hier wieder vorbei — wir werden über die Technik hinter Echtzeit-Sprache schreiben, über die Abwägungen, die wir treffen, und über das, was wir unterwegs lernen.
+
+**WaveKat Voice** ist heute in der kostenlosen öffentlichen Beta — [laden Sie es herunter](/de/voice/download/), für Mac oder Linux.

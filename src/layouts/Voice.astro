@@ -34,6 +34,37 @@ const localeHref = (href: string) =>
 // against the locale-stripped basePath so it works under /zh/ too.
 const isActive = (href: string) =>
   basePath === href || (href !== '/voice/' && basePath.startsWith(href));
+
+// Second-level pages get a Voice > page BreadcrumbList from the layout, so
+// every locale is covered in one place. Deeper pages (alternatives/<slug>)
+// emit their own three-level breadcrumb and are excluded here.
+const crumbLabels: Record<string, string> = {
+  '/voice/use-cases/': ui.subUseCases,
+  '/voice/alternatives/': ui.subAlternatives,
+  '/voice/download/': ui.subDownload,
+  '/voice/changelog/': ui.subChangelog,
+  '/voice/talk/': ui.subTalk,
+};
+const crumbSchema = crumbLabels[basePath]
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'WaveKat Voice',
+          item: new URL(localizedPath('/voice/', lang), Astro.site).href,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: crumbLabels[basePath],
+          item: new URL(Astro.url.pathname, Astro.site).href,
+        },
+      ],
+    }
+  : null;
 ---
 
 <Base title={`${title} — WaveKat`} description={description}>
@@ -68,4 +99,6 @@ const isActive = (href: string) =>
     </div>
 
   </div>
+
+  {crumbSchema && <script type="application/ld+json" set:html={JSON.stringify(crumbSchema)} />}
 </Base>

@@ -1,6 +1,6 @@
 ---
 title: "Share a Call Recording With a Link"
-description: "WaveKat Voice now turns any recorded call into a shareable link — private, invite-only, or public — with controls over exactly what the recipient can hear and read."
+description: "WaveKat Voice now turns any recorded call into a shareable link — private, invite-only, or public — you control what the recipient can hear and read."
 date: 2026-06-28
 author: Eason Guo
 tags: [voice-ai, recordings, privacy]

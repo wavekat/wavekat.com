@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Mail } from '@lucide/astro';
+
+// Mirrors /about/ section-for-section (see src/pages/about.astro).
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': 'https://wavekat.com/ja/about/',
+      url: 'https://wavekat.com/ja/about/',
+      name: "WaveKat について",
+      inLanguage: 'ja',
+      mainEntity: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
+---
+
+<Base
+  title="WaveKat について"
+  description="WaveKat は、小さなビジネスに大企業の声を届けるオープンソースの AI 音声ツールを開発しています。何を作り、なぜ作るのか、そしてどう連絡できるかをご紹介します。"
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    <Header />
+
+    <section class="mb-16">
+      <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
+        WaveKat について
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"WaveKat は、小さなビジネスのためにオープンソースの AI 音声ツールを開発する、小さな独立系ソフトウェア会社です。主力製品の <a href=\"/ja/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> は Mac と Linux 向けのデスクトップソフトフォンで、すべての通話を自動で録音・文字起こしします。"} />
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">WaveKat が存在する理由</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"私たちのミッションは<strong class=\"text-gray-700 dark:text-gray-200\">すべての小さなビジネスに大企業の声を</strong>届けることです。大企業には電話交換台、通話録音、文字起こし、そしてそれらを動かすソフトウェアがあります。ひとりで営む店には、忙しいポケットの中の電話が一台あるだけ。WaveKat はその差を埋めるツールを作ります——まずは電話から。小さなビジネスは毎日、電話でお客様を得たり失ったりしているからです。"} />
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+        音声は出発点であって、終着点ではありません。
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">私たちが作っているもの</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3" set:html={"<a href=\"/ja/voice/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat Voice</a> はあなたのコンピュータをビジネス電話に変えます。いまお使いの SIP プロバイダで電話を受け、かけ、すべての通話をあなた自身のマシンで録音・文字起こしします。公開ベータ期間中は無料で、<a href=\"/ja/blog/place-calls-from-the-command-line/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">AI アシスタントに操作を任せる</a>こともできます。"} />
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl" set:html={"その土台には、オープンソースの Rust ライブラリ群——音声区間検出、ターン検出、音声認識、音声合成、SIP/RTP トランスポート——があり、すべて <a href=\"https://github.com/wavekat\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">WaveKat の GitHub オーガニゼーション</a>で公開され、<a href=\"/docs/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">ドキュメント</a>も揃っています。オープンに作ることが私たちの誠実さです。あなたの通話を扱うコードは、誰でも読めます。"} />
+    </section>
+
+    <section class="mb-20">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">お問い合わせ</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-5" set:html={"連絡はメールが一番確実です——すべてのメッセージに目を通しています。WaveKat Voice についての質問は、<a href=\"/ja/voice/talk/\" class=\"text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors\">お問い合わせ</a>ページからどうぞ。"} />
+      <a
+        href="mailto:eason@wavekat.com"
+        data-conversion="mailto_click"
+        class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+        style="background-color: #ff6d00"
+      >
+        <Mail class="w-4 h-4" />
+        eason@wavekat.com
+      </a>
+    </section>
+
+    <Footer />
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
+</Base>
