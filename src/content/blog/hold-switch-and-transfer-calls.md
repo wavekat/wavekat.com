@@ -8,8 +8,7 @@ draft: true
 ---
 
 <!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), remove `draft: true`, and add
-     screenshots if the pipeline gets hold/transfer scenes. -->
+     changelog links below assume 0.0.42) and remove `draft: true`. -->
 
 WaveKat Voice can now do the three things a front desk does all day: put a caller on hold, answer a second call while the first one waits, and transfer a caller to someone else — either straight away, or after checking with them first. It lands in WaveKat Voice [0.0.42](/voice/changelog/#0.0.42) on Mac and Linux.
 
@@ -21,11 +20,15 @@ There's a **Hold** button on the call screen, between Mute and the keypad. Press
 
 Hold isn't just muting both ends locally. WaveKat Voice tells the other side's phone system the call is being held (the standard SIP way), so most systems play their own hold music to the caller — they hear "you're on hold", not dead air. Press **Resume** and the conversation, the recording, and the transcript pick back up.
 
+![WaveKat Voice on Ubuntu — a call on hold: the on-hold banner with Resume, and transcription paused.](/screenshots/in-call-hold/en.webp)
+
 ## Call waiting: answer a second call while you're on one
 
 When a second call rings while you're already talking, you no longer have to choose between them. Answer it, and the first call goes on hold by itself — exactly like call waiting on a mobile phone. A switcher bar on the call screen lists every call in progress, and you move between them with a click.
 
 Only one call ever has live audio. The call you're looking at is the one you're talking on; everyone else waits on hold, and their recordings and transcripts wait with them. By default, switching to a held call resumes it immediately; if you'd rather resume each call deliberately, there's a toggle in **Settings → General** ("Resume a call when you switch to it"), and a clear banner on any held call so a silent line never reads as a dropped one.
+
+![WaveKat Voice on Ubuntu — a live call with two more callers waiting on hold in the call switcher.](/screenshots/in-call-waiting/en.webp)
 
 ## Transfer a caller — straight away, or after checking
 
@@ -39,6 +42,8 @@ The **Transfer** button sends a live caller to someone else — another number, 
 | **When to use it** | You know they should take it: "putting you through to billing" | You want to announce the caller, or aren't sure they're available |
 
 For a blind transfer, press Transfer, enter the destination, and you're done — once the new person answers, your side of the call ends. For an attended transfer, choose **Talk first**: the caller goes on hold, WaveKat Voice dials the destination as a second call, and you talk to them privately ("I've got a customer asking about the invoice — can you take it?"). When they're ready, press **Complete transfer** and the two are connected while you drop out. If they're busy, decline, or turn out to be the wrong person, just hang up the consult call and resume your caller — they never know the first attempt didn't work out.
+
+![WaveKat Voice on Ubuntu — an attended transfer: the caller on hold and a Complete transfer button to connect them.](/screenshots/in-call-transfer/en.webp)
 
 Transfers are recorded honestly in your history, too. A transferred call ends as **Transferred**, and the call's detail page shows exactly where it went — "Transferred to …" — instead of pretending you hung up.
 

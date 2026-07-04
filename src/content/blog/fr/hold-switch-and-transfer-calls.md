@@ -9,8 +9,7 @@ lang: "fr"
 ---
 
 <!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), remove `draft: true`, and add
-     screenshots if the pipeline gets hold/transfer scenes. -->
+     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice sait désormais faire les trois choses qu'un accueil fait toute la journée : mettre un appelant en attente, répondre à un second appel pendant que le premier patiente, et transférer un appelant vers quelqu'un d'autre — soit directement, soit après l'avoir consulté. Ces fonctions arrivent avec WaveKat Voice [0.0.42](/fr/voice/changelog/#0.0.42) sur Mac et Linux.
 
@@ -22,11 +21,15 @@ Un bouton **Attente** figure sur l'écran d'appel, entre Muet et le clavier. App
 
 La mise en attente ne se contente pas de couper le son des deux côtés en local. WaveKat Voice signale au système téléphonique d'en face que l'appel est mis en attente (à la manière standard de SIP), si bien que la plupart des systèmes diffusent leur propre musique d'attente à l'appelant — il entend « vous êtes en attente », pas un silence de mort. Appuyez sur **Reprendre** et la conversation, l'enregistrement et la transcription repartent.
 
+![WaveKat Voice sur Ubuntu — un appel en attente : la bannière de mise en attente avec Reprendre, la transcription en pause.](/screenshots/in-call-hold/fr.webp)
+
 ## Double appel : répondre à un second appel pendant le premier
 
 Quand un second appel sonne alors que vous êtes déjà en ligne, vous n'avez plus à choisir entre les deux. Répondez-y, et le premier appel se met en attente tout seul — exactement comme le double appel sur un téléphone mobile. Une barre de bascule sur l'écran d'appel liste chaque appel en cours, et vous passez de l'un à l'autre d'un clic.
 
 Un seul appel a de l'audio en direct à la fois. L'appel que vous regardez est celui sur lequel vous parlez ; tous les autres patientent en attente, et leurs enregistrements et transcriptions patientent avec eux. Par défaut, basculer vers un appel en attente le reprend immédiatement ; si vous préférez reprendre chaque appel délibérément, un réglage existe dans **Réglages → Général** (« Reprendre un appel quand vous basculez dessus »), et tout appel en attente porte une bannière bien visible, pour qu'une ligne silencieuse ne passe jamais pour une ligne coupée.
+
+![WaveKat Voice sur Ubuntu — un appel en cours, avec deux autres appelants en attente dans la barre de bascule.](/screenshots/in-call-waiting/fr.webp)
 
 ## Transférer un appelant — directement, ou après vérification
 
@@ -40,6 +43,8 @@ Le bouton **Transférer** envoie un appelant en ligne vers quelqu'un d'autre —
 | **Quand l'utiliser** | Vous savez que c'est pour lui : « je vous passe la facturation » | Vous voulez annoncer l'appelant, ou n'êtes pas sûr qu'il soit disponible |
 
 Pour un transfert aveugle, appuyez sur Transférer, saisissez la destination, et c'est terminé — dès que la nouvelle personne décroche, votre côté de l'appel prend fin. Pour un transfert supervisé, choisissez **Parler d'abord** : l'appelant passe en attente, WaveKat Voice compose la destination comme un second appel, et vous lui parlez en privé (« j'ai un client qui a une question sur la facture — vous pouvez le prendre ? »). Quand tout est prêt, appuyez sur **Finaliser le transfert** : les deux sont connectés et vous vous retirez. Si la personne est occupée, refuse, ou n'est finalement pas la bonne, raccrochez simplement l'appel de consultation et reprenez votre appelant — il ne saura jamais que la première tentative n'a pas abouti.
+
+![WaveKat Voice sur Ubuntu — un transfert supervisé : l'appelant en attente et le bouton Finaliser le transfert pour les connecter.](/screenshots/in-call-transfer/fr.webp)
 
 Les transferts sont aussi consignés honnêtement dans votre historique. Un appel transféré se termine en **Transféré**, et sa page de détail montre exactement où il est parti — « Transféré vers … » — au lieu de faire comme si vous aviez raccroché.
 

@@ -9,8 +9,7 @@ lang: "it"
 ---
 
 <!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), remove `draft: true`, and add
-     screenshots if the pipeline gets hold/transfer scenes. -->
+     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice ora sa fare le tre cose che una reception fa tutto il giorno: mettere in attesa chi chiama, rispondere a una seconda chiamata mentre la prima aspetta e trasferire chi chiama a qualcun altro — subito, oppure dopo averlo prima consultato. Arriva con WaveKat Voice [0.0.42](/it/voice/changelog/#0.0.42) su Mac e Linux.
 
@@ -22,11 +21,15 @@ Sulla schermata di chiamata c'è un pulsante **Attesa**, tra Muto e il tastierin
 
 L'attesa non è un semplice muto locale su entrambi i lati. WaveKat Voice comunica al sistema telefonico dall'altra parte che la chiamata è in attesa (nel modo standard di SIP), così la maggior parte dei sistemi fa sentire a chi chiama la propria musica di attesa — sente «sei in attesa», non un silenzio di tomba. Premi **Riprendi** e la conversazione, la registrazione e la trascrizione ripartono.
 
+![WaveKat Voice su Ubuntu — una chiamata in attesa: il banner di attesa con Riprendi e la trascrizione in pausa.](/screenshots/in-call-hold/it.webp)
+
 ## Avviso di chiamata: rispondi a una seconda chiamata mentre sei sulla prima
 
 Quando una seconda chiamata squilla mentre stai già parlando, non devi più scegliere tra le due. Rispondi, e la prima chiamata va in attesa da sola — esattamente come l'avviso di chiamata sul cellulare. Una barra di scambio sulla schermata di chiamata elenca ogni chiamata in corso, e passi dall'una all'altra con un clic.
 
 Solo una chiamata alla volta ha l'audio dal vivo. La chiamata che stai guardando è quella su cui stai parlando; tutti gli altri aspettano in attesa, e le loro registrazioni e trascrizioni aspettano con loro. Per impostazione predefinita, passare a una chiamata in attesa la riprende subito; se preferisci riprendere ogni chiamata di proposito, c'è un'opzione in **Impostazioni → Generali** («Riprendi una chiamata quando ci passi»), e ogni chiamata in attesa mostra un avviso ben visibile, così una linea silenziosa non sembra mai una linea caduta.
+
+![WaveKat Voice su Ubuntu — una chiamata in corso con altri due chiamanti in attesa nella barra di scambio.](/screenshots/in-call-waiting/it.webp)
 
 ## Trasferire chi chiama — subito, o dopo aver verificato
 
@@ -40,6 +43,8 @@ Il pulsante **Trasferisci** manda chi è in linea da qualcun altro — un altro 
 | **Quando usarlo** | Sai che deve prenderla lui: «la passo alla fatturazione» | Vuoi annunciare chi chiama, o non sei sicuro che sia disponibile |
 
 Per un trasferimento cieco, premi Trasferisci, inserisci la destinazione e hai finito — appena la nuova persona risponde, il tuo lato della chiamata termina. Per un trasferimento assistito, scegli **Parla prima**: chi chiama va in attesa, WaveKat Voice compone la destinazione come seconda chiamata e tu le parli in privato («ho un cliente che chiede della fattura — puoi prenderlo tu?»). Quando è tutto pronto, premi **Completa trasferimento** e i due vengono collegati mentre tu esci. Se la persona è occupata, rifiuta o si rivela quella sbagliata, ti basta riagganciare la chiamata di consultazione e riprendere chi chiamava — non saprà mai che il primo tentativo non è andato a buon fine.
+
+![WaveKat Voice su Ubuntu — un trasferimento assistito: chi chiama è in attesa e il pulsante Completa trasferimento li collega.](/screenshots/in-call-transfer/it.webp)
 
 Anche nella cronologia i trasferimenti restano onesti. Una chiamata trasferita si chiude come **Trasferita**, e la pagina di dettaglio mostra esattamente dov'è andata — «Trasferita a …» — invece di fingere che tu abbia riagganciato.
 

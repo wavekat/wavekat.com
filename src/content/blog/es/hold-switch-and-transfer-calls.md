@@ -9,8 +9,7 @@ lang: "es"
 ---
 
 <!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), remove `draft: true`, and add
-     screenshots if the pipeline gets hold/transfer scenes. -->
+     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice ahora puede hacer las tres cosas que una recepción hace todo el día: poner a quien llama en espera, contestar una segunda llamada mientras la primera espera y transferir a quien llama a otra persona — ya sea de inmediato o después de consultarlo primero. Llega con WaveKat Voice [0.0.42](/es/voice/changelog/#0.0.42) en Mac y Linux.
 
@@ -22,11 +21,15 @@ Hay un botón de **Retener** en la pantalla de llamada, entre Silenciar y el tec
 
 Retener no es simplemente silenciar ambos extremos en local. WaveKat Voice le indica al sistema telefónico del otro lado que la llamada está retenida (por la vía estándar de SIP), así que la mayoría de los sistemas reproducen su propia música de espera — quien llama oye «está usted en espera», no un silencio muerto. Pulse **Reanudar** y la conversación, la grabación y la transcripción continúan.
 
+![WaveKat Voice en Ubuntu — una llamada retenida: el aviso de llamada en espera con Reanudar y la transcripción en pausa.](/screenshots/in-call-hold/es.webp)
+
 ## Llamada en espera: conteste una segunda llamada durante la primera
 
 Cuando suena una segunda llamada mientras ya está hablando, ya no tiene que elegir entre las dos. Contéstela y la primera pasa a espera por sí sola — exactamente como la llamada en espera de un teléfono móvil. Una barra de cambio en la pantalla de llamada lista cada llamada en curso, y usted se mueve entre ellas con un clic.
 
 Solo una llamada tiene audio en vivo en cada momento. La llamada que está mirando es en la que está hablando; todos los demás esperan retenidos, y sus grabaciones y transcripciones esperan con ellos. De forma predeterminada, cambiar a una llamada retenida la reanuda de inmediato; si prefiere reanudar cada llamada deliberadamente, hay un interruptor en **Ajustes → General** («Reanudar una llamada al cambiar a ella»), y toda llamada retenida muestra un aviso claro para que una línea en silencio nunca parezca una línea caída.
+
+![WaveKat Voice en Ubuntu — una llamada en curso con dos personas más esperando retenidas en la barra de cambio.](/screenshots/in-call-waiting/es.webp)
 
 ## Transferir a quien llama — de inmediato o consultando primero
 
@@ -40,6 +43,8 @@ El botón **Transferir** envía a quien llama a otra persona — otro número, o
 | **Cuándo usarla** | Sabe que deben atenderla: «le comunico con facturación» | Quiere anunciar a quien llama, o no está seguro de que estén disponibles |
 
 Para una transferencia ciega, pulse Transferir, escriba el destino y listo — en cuanto la nueva persona contesta, su lado de la llamada termina. Para una atendida, elija **Hablar primero**: quien llama pasa a espera, WaveKat Voice marca el destino como una segunda llamada y usted habla en privado («tengo un cliente preguntando por la factura, ¿puede atenderlo?»). Cuando estén listos, pulse **Completar transferencia** y los dos quedan conectados mientras usted se retira. Si la persona está ocupada, rechaza o resulta no ser la indicada, simplemente cuelgue la llamada de consulta y reanude a quien llamó — nunca sabrá que el primer intento no funcionó.
+
+![WaveKat Voice en Ubuntu — una transferencia atendida: quien llama en espera y el botón Completar transferencia para conectarlos.](/screenshots/in-call-transfer/es.webp)
 
 Las transferencias también quedan registradas con honestidad en su historial. Una llamada transferida termina como **Transferida**, y la página de detalle muestra exactamente adónde fue — «Transferida a …» — en lugar de fingir que usted colgó.
 

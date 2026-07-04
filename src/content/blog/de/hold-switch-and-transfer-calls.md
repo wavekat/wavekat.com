@@ -9,8 +9,7 @@ lang: "de"
 ---
 
 <!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), remove `draft: true`, and add
-     screenshots if the pipeline gets hold/transfer scenes. -->
+     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice kann jetzt die drei Dinge, die ein Empfang den ganzen Tag tut: einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, und einen Anrufer an jemand anderen weiterleiten — entweder sofort oder erst nach Rücksprache. Die Funktionen erscheinen mit WaveKat Voice [0.0.42](/de/voice/changelog/#0.0.42) auf Mac und Linux.
 
@@ -22,11 +21,15 @@ Auf dem Anrufbildschirm gibt es jetzt einen **Halten**-Knopf, zwischen Stummscha
 
 Halten ist mehr als beidseitiges lokales Stummschalten. WaveKat Voice teilt dem Telefonsystem der Gegenseite (auf dem SIP-Standardweg) mit, dass der Anruf gehalten wird, sodass die meisten Systeme dem Anrufer ihre eigene Wartemusik vorspielen — er hört „Sie werden gehalten", keine Totenstille. Mit **Fortsetzen** laufen Gespräch, Aufnahme und Transkript weiter.
 
+![WaveKat Voice auf Ubuntu — ein gehaltener Anruf: das Warteschleifen-Banner mit Fortsetzen, die Transkription pausiert.](/screenshots/in-call-hold/de.webp)
+
 ## Anklopfen: einen zweiten Anruf annehmen, während Sie telefonieren
 
 Wenn ein zweiter Anruf klingelt, während Sie schon sprechen, müssen Sie sich nicht mehr entscheiden. Nehmen Sie ihn an, und der erste Anruf legt sich von selbst in die Warteschleife — genau wie das Anklopfen auf dem Mobiltelefon. Eine Umschaltleiste auf dem Anrufbildschirm listet jeden laufenden Anruf, und Sie wechseln per Klick zwischen ihnen.
 
 Nur ein Anruf hat je Live-Audio. Der Anruf, den Sie gerade ansehen, ist der, auf dem Sie sprechen; alle anderen warten in der Warteschleife, und ihre Aufnahmen und Transkripte warten mit. Standardmäßig wird ein gehaltener Anruf beim Umschalten sofort fortgesetzt; wer jeden Anruf lieber bewusst fortsetzt, findet in **Einstellungen → Allgemein** einen Schalter („Anruf beim Umschalten fortsetzen"), und jeder gehaltene Anruf trägt ein deutliches Banner, damit eine stille Leitung nie wie eine abgebrochene wirkt.
+
+![WaveKat Voice auf Ubuntu — ein laufender Anruf, während zwei weitere Anrufer in der Umschaltleiste in der Warteschleife warten.](/screenshots/in-call-waiting/de.webp)
 
 ## Einen Anrufer weiterleiten — sofort oder nach Rückfrage
 
@@ -40,6 +43,8 @@ Der **Weiterleiten**-Knopf schickt einen laufenden Anrufer zu jemand anderem —
 | **Wann sinnvoll** | Sie wissen, dass die Person übernehmen soll: „Ich stelle Sie zur Buchhaltung durch" | Sie wollen den Anrufer ankündigen oder sind unsicher, ob jemand erreichbar ist |
 
 Für eine Weiterleitung ohne Rückfrage drücken Sie Weiterleiten, geben das Ziel ein — fertig; sobald die neue Person abnimmt, endet Ihre Seite des Anrufs. Für eine Weiterleitung mit Rückfrage wählen Sie **Erst sprechen**: Der Anrufer wird gehalten, WaveKat Voice ruft das Ziel als zweiten Anruf an, und Sie sprechen ungestört („Ich habe einen Kunden mit einer Frage zur Rechnung — können Sie übernehmen?"). Wenn alles passt, drücken Sie **Weiterleitung abschließen**, die beiden werden verbunden, und Sie steigen aus. Ist die Person beschäftigt, lehnt ab oder ist doch die falsche, legen Sie einfach das Rückfrage-Gespräch auf und setzen Ihren Anrufer fort — er erfährt nie, dass der erste Versuch nicht geklappt hat.
+
+![WaveKat Voice auf Ubuntu — eine Weiterleitung mit Rückfrage: der Anrufer gehalten, daneben der Knopf Weiterleitung abschließen.](/screenshots/in-call-transfer/de.webp)
 
 Auch in Ihrer Anrufliste bleiben Weiterleitungen ehrlich. Ein weitergeleiteter Anruf endet als **Weitergeleitet**, und die Detailseite zeigt genau, wohin er ging — „Weitergeleitet an …" — statt so zu tun, als hätten Sie aufgelegt.
 
