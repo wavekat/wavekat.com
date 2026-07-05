@@ -67,6 +67,8 @@ const SCENES = [
   { name: "in-call-transfer", source: "voice", frame: "ubuntu" }, // Complete transfer
   { name: "settings-automation", source: "voice", frame: "ubuntu" }, // enable CLI
   { name: "settings-automation-agents", source: "voice", frame: "ubuntu" }, // connect
+  { name: "provider-picker-2talk", source: "voice", frame: "ubuntu" }, // pick 2talk (providers/2talk)
+  { name: "account-2talk-filled", source: "voice", frame: "ubuntu" }, // 2talk SIP fields pre-filled
   { name: "share-sheet", source: "voice", frame: "macos" }, // the Share panel
   { name: "share-viewer", source: "platform" }, // what the recipient opens (web)
 ];
