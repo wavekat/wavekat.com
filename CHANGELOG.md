@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.42](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.41...wavekat-com-v0.0.42) (2026-07-05)
+
+
+### Features
+
+* **blog:** hold, switch, and transfer post ([#112](https://github.com/wavekat/wavekat.com/issues/112)) ([151390c](https://github.com/wavekat/wavekat.com/commit/151390c190fff4da3c45fab86a1c63123b5e32e7))
+
 ## [0.0.41](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.40...wavekat-com-v0.0.41) (2026-07-05)
 
 
