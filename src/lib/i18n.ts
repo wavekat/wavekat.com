@@ -78,6 +78,7 @@ const fullSite = [
   '/blog/common-voice-explorer/',
   '/blog/place-calls-from-the-command-line/',
   '/blog/share-a-call-recording/',
+  '/blog/hold-switch-and-transfer-calls/',
   '/about/',
 ];
 
