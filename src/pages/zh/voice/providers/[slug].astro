@@ -1,0 +1,250 @@
+---
+import Voice from '../../../../layouts/Voice.astro';
+import TalkCTA from '../../../../components/TalkCTA.astro';
+import VoiceDownload from '../../../../components/VoiceDownload.astro';
+import { Check, ArrowRight } from '@lucide/astro';
+import { getProviders, type Provider } from '../../../../lib/voice-providers';
+
+export function getStaticPaths() {
+  return getProviders('zh-Hans').map((provider) => ({
+    params: { slug: provider.slug },
+    props: { provider },
+  }));
+}
+
+interface Props {
+  provider: Provider;
+}
+
+const { provider } = Astro.props;
+
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'zh-Hans';
+
+// On-page FAQ → FAQPage rich result, plus a breadcrumb so the provider page
+// shows its place under Voice in search listings.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'zh-Hans',
+  mainEntity: provider.faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Voice', item: 'https://wavekat.com/zh/voice/' },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: provider.name,
+      item: `https://wavekat.com/zh/voice/providers/${provider.slug}/`,
+    },
+  ],
+};
+---
+
+<Voice title={provider.seoTitle} description={provider.seoDescription}>
+  <!-- Hero -->
+  <section class="relative mb-16 pt-2">
+    <div
+      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <h1 class="text-2xl sm:text-3xl font-bold leading-[1.2] tracking-tight mb-6 text-gray-900 dark:text-white">
+      {provider.heading}
+    </h1>
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+      {provider.intro}
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <VoiceDownload />
+      <a
+        href="/zh/voice/"
+        class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        {provider.whatWavekatDoesLabel}
+        <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+  </section>
+
+  <!-- How to set up -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.setup.heading}</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      {provider.setup.summary}
+    </p>
+    <ol class="space-y-3 mb-5">
+      {provider.setup.steps.map((s, i) => (
+        <li class="flex gap-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <span
+            class="shrink-0 flex items-center justify-center w-5 h-5 rounded-full text-[11px] font-bold mt-0.5"
+            style="background-color: #ff6d0018; color: #ff6d00;"
+          >
+            {i + 1}
+          </span>
+          <span>{s}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="grid gap-4 sm:grid-cols-2 mb-5">
+      <figure class="space-y-2">
+        <img
+          src={`/screenshots/provider-picker-2talk/${imgCode}.webp`}
+          alt={provider.setup.steps[1]}
+          loading="lazy"
+          decoding="async"
+          width="1040"
+          height="756"
+          class="w-full rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface"
+        />
+        <figcaption class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+          {provider.setup.steps[1]}
+        </figcaption>
+      </figure>
+      <figure class="space-y-2">
+        <img
+          src={`/screenshots/account-2talk-filled/${imgCode}.webp`}
+          alt={provider.setup.steps[2]}
+          loading="lazy"
+          decoding="async"
+          width="1040"
+          height="756"
+          class="w-full rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface"
+        />
+        <figcaption class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+          {provider.setup.steps[2]}
+        </figcaption>
+      </figure>
+    </div>
+    <p class="text-xs text-gray-500 dark:text-gray-500 leading-relaxed max-w-xl">
+      {provider.setup.note}
+    </p>
+  </section>
+
+  <!-- Comparison table -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">
+      {provider.comparisonHeading}
+    </h2>
+    <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10">
+      <table class="w-full text-left border-collapse min-w-[34rem]">
+        <thead>
+          <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+            <th class="px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase w-1/4">
+              &nbsp;
+            </th>
+            {provider.columns.map((col, i) => (
+              <th
+                class="px-4 py-3 text-[10px] font-bold tracking-widest uppercase"
+                style={i === 0 ? 'color: #ff6d00' : ''}
+                class:list={[i === 0 ? '' : 'text-gray-400']}
+              >
+                {col}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {provider.comparison.map((row) => (
+            <tr class="border-b border-gray-100 dark:border-white/5 last:border-0 align-top">
+              <td class="px-4 py-3 text-xs font-bold text-gray-900 dark:text-white">{row.label}</td>
+              {row.cells.map((cell, i) => (
+                <td
+                  class="px-4 py-3 text-xs leading-relaxed"
+                  class:list={[
+                    i === 0 ? 'text-gray-600 dark:text-gray-300' : 'text-gray-500 dark:text-gray-400',
+                  ]}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- What the provider is -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.whatItIs.heading}</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      {provider.whatItIs.summary}
+    </p>
+    <ul class="space-y-2.5">
+      {provider.whatItIs.strengths.map((s) => (
+        <li class="flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <Check class="w-4 h-4 mt-0.5 shrink-0" style="color: #ff6d00" />
+          <span>{s}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Which to choose -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.chooseHeading}</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="rounded-lg border p-5" style="border-color: #ff6d0040; background-color: #ff6d0008;">
+        <span class="text-sm font-bold block mb-3 text-gray-900 dark:text-white">
+          {provider.chooseWavekatLabel}
+        </span>
+        <ul class="space-y-2.5">
+          {provider.chooseWavekat.map((c) => (
+            <li class="flex gap-2.5 text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+              <Check class="w-3.5 h-3.5 mt-0.5 shrink-0" style="color: #ff6d00" />
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface">
+        <span class="text-sm font-bold block mb-3 text-gray-900 dark:text-white">
+          {provider.chooseOtherLabel}
+        </span>
+        <ul class="space-y-2.5">
+          {provider.chooseOther.map((c) => (
+            <li class="flex gap-2.5 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              <Check class="w-3.5 h-3.5 mt-0.5 shrink-0 text-gray-400" />
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.faqsHeading}</h2>
+    <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+      {provider.faqs.map((f) => (
+        <details class="group">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+            {f.q}
+            <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+          </summary>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+            {f.a}
+          </p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <TalkCTA />
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+</Voice>

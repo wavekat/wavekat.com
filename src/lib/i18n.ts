@@ -72,6 +72,7 @@ const fullSite = [
   '/voice/changelog/',
   '/voice/alternatives/',
   '/voice/alternatives/linphone/',
+  '/voice/providers/2talk/',
   '/blog/',
   '/blog/hello-world/',
   '/blog/common-voice-explorer/',
