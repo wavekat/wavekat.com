@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.41](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.40...wavekat-com-v0.0.41) (2026-07-05)
+
+
+### Features
+
+* **voice:** 2talk softphone provider page ([#116](https://github.com/wavekat/wavekat.com/issues/116)) ([af0f709](https://github.com/wavekat/wavekat.com/commit/af0f70997df9607b066eab06aa021fbf2894b518))
+
+
+### Bug Fixes
+
+* keep header nav on one line on mobile ([#117](https://github.com/wavekat/wavekat.com/issues/117)) ([0b3a8af](https://github.com/wavekat/wavekat.com/commit/0b3a8af194cadcf7228d2140c9303f6512d9a85d))
+
 ## [0.0.40](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.39...wavekat-com-v0.0.40) (2026-07-04)
 
 
