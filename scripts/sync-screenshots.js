@@ -62,6 +62,9 @@ const destRoot = join(root, "public/screenshots");
 // the Mac build. Defaults to "ubuntu" when omitted.
 const SCENES = [
   { name: "in-call", source: "voice", frame: "ubuntu" }, // a placed call
+  { name: "in-call-hold", source: "voice", frame: "ubuntu" }, // parked call, amber banner
+  { name: "in-call-waiting", source: "voice", frame: "ubuntu" }, // switcher, two held
+  { name: "in-call-transfer", source: "voice", frame: "ubuntu" }, // Complete transfer
   { name: "settings-automation", source: "voice", frame: "ubuntu" }, // enable CLI
   { name: "settings-automation-agents", source: "voice", frame: "ubuntu" }, // connect
   { name: "provider-picker-2talk", source: "voice", frame: "ubuntu" }, // pick 2talk (providers/2talk)

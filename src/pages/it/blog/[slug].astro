@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { blogFilter } from '../../../lib/blog';
 import Post from '../../../layouts/Post.astro';
 import { extractFaqs } from '../../../lib/seo';
 
@@ -7,7 +8,7 @@ import { extractFaqs } from '../../../lib/seo';
 // (id "it/<slug>"); the route param is the bare slug so URLs are /it/blog/<slug>/.
 // The Post layout localises its chrome from the /it/ URL automatically.
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'it');
+  const posts = await getCollection('blog', blogFilter('it'));
   return posts.map((post) => ({
     params: { slug: post.id.replace(/^it\//, '') },
     props: { post },

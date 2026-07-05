@@ -1,6 +1,6 @@
 SHELL  := /bin/bash
 NVM    := . ~/.nvm/nvm.sh && nvm use 22 &&
-.PHONY: dev build preview sync screenshots install clean cf-build help
+.PHONY: dev dev-draft build build-draft preview sync screenshots install clean cf-build help
 .DEFAULT_GOAL := help
 
 # Copy needed assets from wavekat-brand submodule → public/
@@ -17,9 +17,17 @@ screenshots:
 dev:
 	$(NVM) npm run dev
 
+# Start dev server with draft blog posts visible (local only — never deploy this)
+dev-draft:
+	$(NVM) DRAFTS=1 npm run dev
+
 # Build for production → dist/
 build:
 	$(NVM) npm run build
+
+# Build including draft blog posts (local preview only — drafts must NOT ship)
+build-draft:
+	$(NVM) DRAFTS=1 npm run build
 
 # Preview production build locally
 preview: build
@@ -41,7 +49,9 @@ help:
 	@echo "Usage: make <target>"
 	@echo ""
 	@echo "  dev       Start dev server"
+	@echo "  dev-draft Start dev server with draft blog posts visible"
 	@echo "  build     Build for production → dist/"
+	@echo "  build-draft  Build including draft posts (local preview only)"
 	@echo "  preview   Build and preview locally"
 	@echo "  sync      Copy assets from wavekat-brand submodule"
 	@echo "  screenshots  Refresh framed app screenshots → public/screenshots/"
