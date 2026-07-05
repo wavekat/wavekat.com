@@ -1,15 +1,11 @@
 ---
 title: "안내 데스크처럼 통화를 보류하고, 전환하고, 돌려주세요"
 description: "WaveKat Voice가 이제 통화 보류, 통화 중 두 번째 전화 받기, 그리고 블라인드·협의 방식의 호전환을 지원합니다 — Mac과 Linux에서. 보류 중에는 녹음이 자동으로 일시 정지됩니다."
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [음성AI, 통화]
-draft: true
 lang: "ko"
 ---
-
-<!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice——모든 통화를 녹음하고 받아 적는 Mac·Linux용 SIP 소프트폰——가 이제 안내 데스크가 하루 종일 하는 세 가지 일을 할 수 있습니다. 전화를 보류하고, 첫 번째 통화가 기다리는 동안 두 번째 전화를 받고, 전화를 다른 사람에게 돌려줍니다 — 바로 넘길 수도 있고, 먼저 상대와 이야기해 확인한 뒤 넘길 수도 있습니다. 이 기능은 WaveKat Voice [0.0.42](/ko/voice/changelog/#0.0.42)에서 제공됩니다.
 

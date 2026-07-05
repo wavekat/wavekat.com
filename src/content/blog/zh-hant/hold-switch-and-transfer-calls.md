@@ -1,15 +1,11 @@
 ---
 title: "像總機一樣保留、切換與轉接來電"
 description: "WaveKat Voice 現在可以將通話保留、在通話中接聽第二通來電，並以盲轉或詢問轉接的方式轉接來電——Mac 和 Linux 均可用，且錄音在保留期間會自動暫停。"
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [語音AI, 通話]
-draft: true
 lang: "zh-Hant"
 ---
-
-<!-- TODO 發布前：填入真實的版本號和日期（下方兩個更新日誌連結假定為
-     0.0.42），並移除 `draft: true`。 -->
 
 WaveKat Voice——一款可在 Mac 和 Linux 上執行、會記錄並轉寫每一通通話的 SIP 軟體電話——現在可以做總機每天都在做的三件事：把來電者保留、在第一通電話等待時接聽第二通來電，以及把來電者轉接給其他人——可以直接轉過去，也可以先和對方溝通確認。該功能隨 WaveKat Voice [0.0.42](/zh-hant/voice/changelog/#0.0.42) 推出。
 

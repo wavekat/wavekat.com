@@ -1,15 +1,11 @@
 ---
 title: "Retenga, alterne y transfiera llamadas como una recepción"
 description: "WaveKat Voice ahora pone llamadas en espera, contesta una segunda llamada mientras atiende la primera y transfiere llamadas — de forma ciega o atendida — en Mac y Linux, y la grabación se pausa automáticamente durante la espera."
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [voz-ia, llamadas]
-draft: true
 lang: "es"
 ---
-
-<!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice — el softphone SIP para Mac y Linux que graba y transcribe cada llamada — ahora puede hacer las tres cosas que una recepción hace todo el día: poner a quien llama en espera, contestar una segunda llamada mientras la primera espera y transferir a quien llama a otra persona — ya sea de inmediato o después de consultarlo primero. Llega con WaveKat Voice [0.0.42](/es/voice/changelog/#0.0.42).
 

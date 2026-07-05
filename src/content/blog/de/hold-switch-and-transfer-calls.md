@@ -1,15 +1,11 @@
 ---
 title: "Anrufe halten, wechseln und weiterleiten wie eine Telefonzentrale"
 description: "WaveKat Voice kann Anrufe jetzt halten, einen zweiten Anruf während des ersten annehmen und Anrufer weiterleiten — ohne oder mit Rückfrage — auf Mac und Linux, und die Aufnahme pausiert beim Halten automatisch."
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
-draft: true
 lang: "de"
 ---
-
-<!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die drei Dinge, die ein Empfang den ganzen Tag tut: einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, und einen Anrufer an jemand anderen weiterleiten — entweder sofort oder erst nach Rücksprache. Sie erscheinen mit WaveKat Voice [0.0.42](/de/voice/changelog/#0.0.42).
 

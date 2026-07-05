@@ -1,15 +1,11 @@
 ---
 title: "Mettre en attente, basculer et transférer des appels comme un standard"
 description: "WaveKat Voice sait désormais mettre un appel en attente, répondre à un second appel pendant le premier et transférer un appelant — en aveugle ou avec supervision — sur Mac et Linux, et l'enregistrement se met en pause automatiquement pendant la mise en attente."
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [ia-vocale, appels]
-draft: true
 lang: "fr"
 ---
-
-<!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice — le softphone SIP pour Mac et Linux qui enregistre et transcrit chaque appel — sait désormais faire les trois choses qu'un accueil fait toute la journée : mettre un appelant en attente, répondre à un second appel pendant que le premier patiente, et transférer un appelant vers quelqu'un d'autre — soit directement, soit après l'avoir consulté. Elles arrivent avec WaveKat Voice [0.0.42](/fr/voice/changelog/#0.0.42).
 

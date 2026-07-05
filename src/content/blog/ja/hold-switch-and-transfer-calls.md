@@ -1,15 +1,11 @@
 ---
 title: "受付のように通話を保留・切り替え・転送する"
 description: "WaveKat Voice が通話の保留、通話中の 2 本目の着信への応答、そしてブラインド転送・取り次ぎ転送による通話の転送に対応。保留中は録音が自動的に一時停止し、Mac と Linux で使えます。"
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [音声AI, 通話]
-draft: true
 lang: "ja"
 ---
-
-<!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice——通話をすべて録音・文字起こしする Mac・Linux 向けの SIP ソフトフォン——が、受付係が一日中こなしている 3 つのことをできるようになりました。通話を保留にする、最初の通話を待たせたまま 2 本目の着信に出る、そして通話を別の人へ転送する — すぐに転送することも、先に相手と話して確認してからつなぐこともできます。この機能は WaveKat Voice [0.0.42](/ja/voice/changelog/#0.0.42) で提供されます。
 

@@ -1,15 +1,11 @@
 ---
 title: "Metti in attesa, passa tra le chiamate e trasferisci come una reception"
 description: "WaveKat Voice ora mette le chiamate in attesa, risponde a una seconda chiamata mentre sei sulla prima e trasferisce chi chiama — trasferimento cieco o assistito — su Mac e Linux, e la registrazione si mette in pausa automaticamente durante l'attesa."
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [voice-ai, chiamate]
-draft: true
 lang: "it"
 ---
-
-<!-- TODO before publishing: set the real release version + date (the two
-     changelog links below assume 0.0.42), and remove `draft: true`. -->
 
 WaveKat Voice — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora sa fare le tre cose che una reception fa tutto il giorno: mettere in attesa chi chiama, rispondere a una seconda chiamata mentre la prima aspetta e trasferire chi chiama a qualcun altro — subito, oppure dopo averlo prima consultato. Arriva con WaveKat Voice [0.0.42](/it/voice/changelog/#0.0.42).
 

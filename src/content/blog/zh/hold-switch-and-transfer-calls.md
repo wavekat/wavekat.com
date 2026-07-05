@@ -1,15 +1,11 @@
 ---
 title: "像前台一样保持、切换和转接来电"
 description: "WaveKat Voice 现在可以将通话置于保持状态、在通话中接听第二通来电，并以盲转或询问转接的方式转接来电——Mac 和 Linux 均可用。录音在保持期间会自动暂停。"
-date: 2026-07-04
+date: 2026-07-05
 author: Eason Guo
 tags: [语音AI, 通话]
-draft: true
 lang: "zh-Hans"
 ---
-
-<!-- TODO 发布前：填入真实的版本号和日期（下方两个更新日志链接假定为
-     0.0.42），并移除 `draft: true`。 -->
 
 WaveKat Voice——一款可在 Mac 和 Linux 上运行、会记录并转写每一通通话的 SIP 软电话——现在可以做前台每天都在做的三件事：把来电者置于保持状态、在第一通电话等待时接听第二通来电，以及把来电者转接给其他人——可以直接转过去，也可以先和对方沟通确认。该功能随 WaveKat Voice [0.0.42](/zh/voice/changelog/#0.0.42) 推出。
 
