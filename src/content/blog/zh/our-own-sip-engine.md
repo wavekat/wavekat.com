@@ -4,7 +4,6 @@ description: "WaveKat Voice 现已运行在 wavekat-sip 上——我们从零编
 date: 2026-07-06
 author: Eason Guo
 tags: [语音AI, 工程, 开源, SIP]
-draft: true
 lang: "zh-Hans"
 ---
 
@@ -34,7 +33,7 @@ SIP（会话发起协议）是电话之间建立通话所讲的语言——把�
 |------|---------|
 | **注册** | 把你的线路注册到运营商（摘要认证），并保持在线，让来电始终能找到你。 |
 | **通话** | 拨出电话、接听来电，并在你接起之前给对方送出规范的振铃信号。 |
-| **通话中控制** | 保持与恢复、盲转与询问转接，以及电话菜单所需的 DTMF（按键音）。 |
+| **通话中控制** | 保持与恢复（SIP re-INVITE，RFC 3264）、盲转与询问转接（SIP REFER，RFC 3515），以及电话菜单所需的 DTMF（按键音）。 |
 | **音质** | 协商 [Opus 编解码器](/zh/voice/)实现宽频「高清」语音，对方不支持时自动回落到标准的 G.711。 |
 | **可靠性** | RFC 4028 会话计时器，防止长通话在中途被网络悄悄掐断。 |
 
@@ -43,6 +42,28 @@ SIP（会话发起协议）是电话之间建立通话所讲的语言——把�
 `wavekat-sip` 不是一个私有的内部组件。它以 Apache-2.0 许可证发布在 [crates.io](https://crates.io/crates/wavekat-sip) 上，文档在 [docs.rs](https://docs.rs/wavekat-sip)，就像我们的[语音活动检测](https://github.com/wavekat/wavekat-vad)和[话轮检测](https://github.com/wavekat/wavekat-turn) crate 一样。任何用 Rust 构建软电话、语音机器人或通话录音网桥的人，都可以使用 WaveKat Voice 正在运行的这个引擎。开放地构建就是我们的工作方式——产品底下的工具供你审阅、供你复用，而不是一道护城河。
 
 说句实话：它还早。这个 crate 正在积极开发中，API 在版本之间仍会变化。但它是驱动一个真实产品的真实引擎，不是一个演示品。
+
+## 常见问题
+
+### wavekat-sip 是什么？
+
+`wavekat-sip` 是 WaveKat 自研的开源 Rust crate，负责 SIP 信令和 RTP 音频传输。它是 WaveKat Voice 拨出或接听每一通电话背后的引擎，底下没有任何第三方 SIP 协议栈。
+
+### wavekat-sip 是开源的吗？我能用在自己的项目里吗？
+
+可以。`wavekat-sip` 以 Apache-2.0 许可证发布在 [crates.io](https://crates.io/crates/wavekat-sip) 上，文档在 [docs.rs](https://docs.rs/wavekat-sip)。任何用 Rust 构建软电话、语音机器人或通话录音网桥的人，都可以使用 WaveKat Voice 正在运行的这同一个引擎。
+
+### WaveKat Voice 支持高清音频吗？
+
+支持。WaveKat Voice 会协商 Opus 编解码器来实现宽频「高清」语音；当对方不支持 Opus 时，会自动回落到标准的 G.711。
+
+### WaveKat Voice 能配合任意 SIP 运营商使用吗？
+
+可以。`wavekat-sip` 采用标准的 SIP 注册（摘要认证），因此可与任何兼容 SIP 的运营商或 PBX 配合——用你已有的账号，无需任何运营商专属配置。
+
+### wavekat-sip 可以用于生产环境了吗？
+
+它是驱动一个真实产品的真实引擎，因此已经每天在用——但它还早。这个 crate 正在积极开发中，API 在版本之间仍会变化，所以如果你现在就基于它构建，请锁定版本。
 
 ## 这对你的通话意味着什么
 
