@@ -14,22 +14,26 @@ interface Shot {
 interface Props {
   imgCode: string;
   shots: Shot[];
-  // Outer frame border around the image — off by default since the
-  // Ubuntu/GNOME-framed screenshots already carry their own visual edge.
-  border?: boolean;
+  // Outer frame — a border, a surface background, inset padding, and a
+  // shadow — around the image. On by default; pass `framed={false}` for a
+  // bare screenshot (rounded corners only, flush to the edge) when the
+  // shot's own chrome is enough.
+  framed?: boolean;
 }
 
-const { imgCode, shots, border = false } = Astro.props;
+const { imgCode, shots, framed = true } = Astro.props;
 ---
 
 <div class="voice-carousel">
   <div
     class:list={[
-      'relative rounded-xl overflow-hidden bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5',
-      border && 'border border-gray-200 dark:border-white/10',
+      framed && 'rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface p-2 sm:p-3 shadow-lg shadow-black/5',
     ]}
-    style="aspect-ratio: 1200 / 872;"
   >
+    <div
+      class:list={['relative overflow-hidden', framed ? 'rounded-lg' : 'rounded-xl']}
+      style="aspect-ratio: 1200 / 872;"
+    >
     {shots.map((shot, i) => (
       <img
         src={`/screenshots/${shot.scene}/${imgCode}.webp`}
@@ -64,6 +68,7 @@ const { imgCode, shots, border = false } = Astro.props;
         </button>
       </>
     )}
+    </div>
   </div>
 
   <p
