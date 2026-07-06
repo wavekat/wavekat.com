@@ -1,0 +1,146 @@
+---
+// A single, big image at a time with dot indicators to switch between them
+// (a "carousel" — click a dot, an arrow, or swipe). Reused across the Voice
+// overview page in every locale; only `shots` (alt/caption text) and
+// `imgCode` change per locale.
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
+
+interface Shot {
+  scene: string;
+  alt: string;
+  caption: string;
+}
+
+interface Props {
+  imgCode: string;
+  shots: Shot[];
+  // Outer frame — a border, a surface background, inset padding, and a
+  // shadow — around the image. On by default; pass `framed={false}` for a
+  // bare screenshot (rounded corners only, flush to the edge) when the
+  // shot's own chrome is enough.
+  framed?: boolean;
+}
+
+const { imgCode, shots, framed = true } = Astro.props;
+---
+
+<div class="voice-carousel">
+  <div
+    class:list={[
+      framed && 'rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface p-2 sm:p-3 shadow-lg shadow-black/5',
+    ]}
+  >
+    <div
+      class:list={['relative overflow-hidden', framed ? 'rounded-lg' : 'rounded-xl']}
+      style="aspect-ratio: 1200 / 872;"
+    >
+    {shots.map((shot, i) => (
+      <img
+        src={`/screenshots/${shot.scene}/${imgCode}.webp`}
+        alt={shot.alt}
+        width="1200"
+        height="872"
+        decoding="async"
+        loading={i === 0 ? undefined : 'lazy'}
+        fetchpriority={i === 0 ? 'high' : undefined}
+        data-slide={i}
+        class:list={[
+          'absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out',
+          i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none',
+        ]}
+      />
+    ))}
+    {shots.length > 1 && (
+      <>
+        <button
+          type="button"
+          class="carousel-prev absolute left-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/90 dark:bg-black/60 text-gray-700 dark:text-white shadow-sm border border-gray-200/80 dark:border-white/10 backdrop-blur-sm hover:bg-white hover:scale-105 dark:hover:bg-black/80 transition-all"
+          aria-label="Previous screenshot"
+        >
+          <ChevronLeft class="w-4 h-4" />
+        </button>
+        <button
+          type="button"
+          class="carousel-next absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/90 dark:bg-black/60 text-gray-700 dark:text-white shadow-sm border border-gray-200/80 dark:border-white/10 backdrop-blur-sm hover:bg-white hover:scale-105 dark:hover:bg-black/80 transition-all"
+          aria-label="Next screenshot"
+        >
+          <ChevronRight class="w-4 h-4" />
+        </button>
+      </>
+    )}
+    </div>
+  </div>
+
+  <p
+    class="carousel-caption text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center mt-3"
+    data-captions={JSON.stringify(shots.map((s) => s.caption))}
+    aria-live="polite"
+  >
+    {shots[0].caption}
+  </p>
+
+  {shots.length > 1 && (
+    <div class="flex justify-center gap-2 mt-3">
+      {shots.map((_, i) => (
+        <button
+          type="button"
+          class:list={['carousel-dot h-1.5 rounded-full transition-all', i === 0 ? 'w-5' : 'w-1.5']}
+          style={`background-color: ${i === 0 ? '#ff6d00' : '#d1d5db'}`}
+          data-index={i}
+          aria-label={`Show screenshot ${i + 1} of ${shots.length}`}
+          aria-current={i === 0 ? 'true' : 'false'}
+        />
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll('.voice-carousel').forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll('[data-slide]'));
+    const dots = Array.from(carousel.querySelectorAll('.carousel-dot'));
+    const captionEl = carousel.querySelector('.carousel-caption');
+    const captions = JSON.parse(captionEl?.dataset.captions || '[]');
+    let current = 0;
+
+    function show(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === current;
+        slide.classList.toggle('opacity-100', active);
+        slide.classList.toggle('opacity-0', !active);
+        slide.classList.toggle('pointer-events-none', !active);
+      });
+      dots.forEach((dot, i) => {
+        const active = i === current;
+        dot.classList.toggle('w-5', active);
+        dot.classList.toggle('w-1.5', !active);
+        dot.style.backgroundColor = active ? '#ff6d00' : '#d1d5db';
+        dot.setAttribute('aria-current', active ? 'true' : 'false');
+      });
+      if (captionEl && captions[current]) captionEl.textContent = captions[current];
+    }
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+    carousel.querySelector('.carousel-prev')?.addEventListener('click', () => show(current - 1));
+    carousel.querySelector('.carousel-next')?.addEventListener('click', () => show(current + 1));
+
+    let touchStartX = 0;
+    const frame = carousel.querySelector('.relative');
+    frame?.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+      },
+      { passive: true }
+    );
+    frame?.addEventListener(
+      'touchend',
+      (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      },
+      { passive: true }
+    );
+  });
+</script>

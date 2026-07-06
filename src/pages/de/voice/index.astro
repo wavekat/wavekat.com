@@ -10,8 +10,10 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
   Mic,
   FileText,
+  AudioLines,
   Terminal,
   Server,
   Cloud,
@@ -20,16 +22,42 @@ import {
   ArrowRight,
 } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
+import ProductCarousel from '../../../components/ProductCarousel.astro';
 import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'de';
+
+const productShots = [
+  {
+    scene: 'in-call',
+    alt: 'WaveKat Voice auf dem Desktop während eines laufenden Anrufs — das Wählfeld und die Anrufsteuerung, mit dem Live-Transkript, das daneben mitläuft.',
+    caption: 'Ein laufender Anruf — die Anrufsteuerung links, das Transkript, das sich rechts von selbst schreibt.',
+  },
+  {
+    scene: 'in-call-transfer',
+    alt: 'WaveKat Voice auf dem Desktop mitten in einer Weiterleitung mit Rückfrage — der Anrufer wird gehalten, daneben die Schaltfläche Weiterleitung abschließen.',
+    caption: 'Ein Anruf wird weitergeleitet, nachdem man kurz mit der Gegenseite gesprochen hat.',
+  },
+  {
+    scene: 'settings-automation-agents',
+    alt: 'WaveKat Voice, Einstellungen → Automatisierung — KI-Assistenten wie Claude und Cursor werden mit einer Ein-Klick-Schaltfläche „Verbinden“ angebunden.',
+    caption: 'Einen KI-Assistenten verbinden, der Anrufe tätigt — mit einem Klick.',
+  },
+];
 
 const features = [
   {
     icon: PhoneCall,
     title: 'Anrufe direkt vom Desktop',
     body: 'Nehmen Sie Anrufe entgegen und tätigen Sie sie direkt von Ihrem Computer aus — kein Tischtelefon, keine zusätzliche Hardware, kein Browser-Tab, das Sie im Auge behalten müssen. Es wartet unauffällig im Hintergrund, bis das Telefon klingelt.',
+  },
+  {
+    icon: PhoneForwarded,
+    title: 'Halten, wechseln und weiterleiten',
+    body: 'Legen Sie einen Anrufer in die Warteschleife, nehmen Sie eine zweite Leitung an und wechseln Sie zwischen beiden — leiten Sie ihn dann direkt weiter oder erst nach einem kurzen Wort unter vier Augen. Was in der Warteschleife passiert, bleibt aus der Aufzeichnung und dem Transkript heraus.',
   },
   {
     icon: Mic,
@@ -40,6 +68,11 @@ const features = [
     icon: FileText,
     title: 'Live-Transkription',
     body: 'Sehen Sie die Wörter, während sie gesprochen werden. Ein laufendes Transkript läuft neben dem Anruf mit, sodass Sie das Wesentliche aufnehmen, statt mitzuschreiben.',
+  },
+  {
+    icon: AudioLines,
+    title: 'Anrufe in HD',
+    body: 'Wenn Ihr Anbieter es unterstützt, handelt WaveKat Voice den Opus-Codec aus — für breitbandige, gestochen klare HD-Sprache — und fällt von selbst auf Standardqualität zurück, wenn das nicht möglich ist. Es gibt nichts einzuschalten.',
   },
   {
     icon: Terminal,
@@ -94,6 +127,15 @@ const faqs = [
   {
     q: 'Brauche ich spezielle Hardware?',
     a: 'Nein. Wenn Sie einen Computer und ein Konto bei einem Telefonanbieter haben, haben Sie alles, was Sie brauchen. Kein Tischtelefon, keine zusätzliche Ausrüstung — ein Headset ist schön, aber nicht erforderlich.',
+  },
+  {
+    q: 'Kann ich einen Anrufer in die Warteschleife legen oder einen Anruf weiterleiten?',
+    a: 'Ja. WaveKat Voice kann einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, zwischen den Anrufen wechseln und einen Anrufer an jemand anderen weiterleiten — entweder direkt (blind) oder nachdem Sie sich vorher kurz mit der Person abgestimmt haben (begleitet). Solange ein Anruf in der Warteschleife ist, pausieren seine Aufzeichnung und sein Live-Transkript von selbst.',
+    link: { href: '/de/blog/hold-switch-and-transfer-calls/', label: 'So funktioniert es' },
+  },
+  {
+    q: 'Unterstützt WaveKat Voice HD-Audio?',
+    a: 'Ja. Wenn Ihr Telefonanbieter es unterstützt, nutzt WaveKat Voice den Opus-Codec für breitbandige — „HD“-Sprache, voller und klarer als eine gewöhnliche Telefonleitung, und fällt automatisch auf Standardqualität (G.711) zurück, wenn das nicht möglich ist. Es gibt nichts zu konfigurieren.',
   },
   {
     q: 'Mit welchen Telefonanbietern funktioniert es?',
@@ -211,6 +253,11 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/de/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · kostenlos während der Beta</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/de/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · kostenlos während der Beta</p>
     </div>
+  </section>
+
+  <!-- Product shots -->
+  <section class="mb-16 -mt-6">
+    <ProductCarousel imgCode={imgCode} shots={productShots} />
   </section>
 
   <!-- Features -->

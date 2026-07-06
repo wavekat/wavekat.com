@@ -15,9 +15,12 @@ interface Props {
   tags?: string[];
   ogImage?: string;
   faqs?: Faq[];
+  // Defense-in-depth for drafts: even if a DRAFTS=1 build ever reached
+  // production, a draft post must not be indexable.
+  noindex?: boolean;
 }
 
-const { title, description, date, updated, author, tags = [], ogImage, faqs = [] } = Astro.props;
+const { title, description, date, updated, author, tags = [], ogImage, faqs = [], noindex = false } = Astro.props;
 
 // Locale-aware back link, date formatting and labels (works at /zh/blog/… too).
 const { code: lang } = resolveLocale(Astro.url.pathname);
@@ -38,6 +41,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   ogImageAlt={title}
   ogType="article"
   article={{ publishedTime: date, modifiedTime: updated, author: author || 'WaveKat', tags }}
+  noindex={noindex}
 >
   <div class="max-w-3xl mx-auto px-6 py-12">
 

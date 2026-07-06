@@ -27,6 +27,7 @@ const { Content } = await render(post);
   author={post.data.author}
   tags={post.data.tags}
   ogImage={post.data.ogImage}
+  noindex={post.data.draft}
   faqs={extractFaqs(post.body ?? '')}
 >
   <Content />
