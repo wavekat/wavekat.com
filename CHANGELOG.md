@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.43](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.42...wavekat-com-v0.0.43) (2026-07-06)
+
+
+### Features
+
+* **voice:** add hold/transfer + HD to overview ([#120](https://github.com/wavekat/wavekat.com/issues/120)) ([176d536](https://github.com/wavekat/wavekat.com/commit/176d536b2479210ee94b446ebe8097a575bc2707))
+
 ## [0.0.42](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.41...wavekat-com-v0.0.42) (2026-07-05)
 
 
