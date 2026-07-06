@@ -39,7 +39,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: 'Espera, cambio y transferencia',
-    body: 'Ponga a un cliente en espera, atienda una segunda línea y alterne entre ambas; luego transfiera la llamada directamente o tras hablar antes en privado. Lo que ocurra durante la espera queda fuera de la grabación.',
+    body: 'Ponga a un cliente en espera, atienda una segunda línea y alterne entre ambas; luego transfiera la llamada directamente o tras hablar antes en privado. Lo que ocurra durante la espera queda fuera de la grabación y de la transcripción.',
   },
   {
     icon: Mic,
@@ -116,8 +116,8 @@ const faqs = [
     link: { href: '/es/blog/hold-switch-and-transfer-calls/', label: 'Cómo funciona' },
   },
   {
-    q: '¿Qué tal suena el audio?',
-    a: 'Cuando su proveedor de telefonía lo admite, WaveKat Voice usa el códec Opus para una voz de banda ancha —«HD»—, más plena y nítida que una línea telefónica corriente, y vuelve automáticamente a la calidad estándar cuando no lo admite. No hay nada que configurar.',
+    q: '¿WaveKat Voice admite audio en HD?',
+    a: 'Sí. Cuando su proveedor de telefonía lo admite, WaveKat Voice usa el códec Opus para una voz de banda ancha —«HD»—, más plena y nítida que una línea telefónica corriente, y vuelve automáticamente a la calidad estándar (G.711) cuando no lo admite. No hay nada que configurar.',
   },
   {
     q: '¿Con qué proveedores de telefonía funciona?',
@@ -246,6 +246,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">

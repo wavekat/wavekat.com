@@ -39,7 +39,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: 'Mettez en attente, basculez, transférez',
-    body: 'Mettez un appelant en attente, prenez une deuxième ligne, et basculez de l’un à l’autre — puis transférez l’appel, directement ou après un mot en aparté. Tout ce qui se passe pendant l’attente reste hors de l’enregistrement.',
+    body: 'Mettez un appelant en attente, prenez une deuxième ligne, et basculez de l’un à l’autre — puis transférez l’appel, directement ou après un mot en aparté. Tout ce qui se passe pendant l’attente reste hors de l’enregistrement et de la transcription.',
   },
   {
     icon: Mic,
@@ -116,8 +116,8 @@ const faqs = [
     link: { href: '/fr/blog/hold-switch-and-transfer-calls/', label: 'Comment ça marche' },
   },
   {
-    q: 'Quelle est la qualité du son ?',
-    a: 'Lorsque votre opérateur téléphonique le permet, WaveKat Voice utilise le codec Opus pour une voix large bande — « HD » —, plus riche et plus claire qu’une ligne téléphonique ordinaire, et revient automatiquement à la qualité standard lorsqu’il ne le peut pas. Il n’y a rien à configurer.',
+    q: 'WaveKat Voice prend-il en charge l’audio HD ?',
+    a: 'Oui. Lorsque votre opérateur téléphonique le permet, WaveKat Voice utilise le codec Opus pour une voix large bande — « HD » —, plus riche et plus claire qu’une ligne téléphonique ordinaire, et revient automatiquement à la qualité standard (G.711) lorsqu’il ne le peut pas. Il n’y a rien à configurer.',
   },
   {
     q: 'Avec quels opérateurs téléphoniques est-il compatible ?',
@@ -246,6 +246,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">

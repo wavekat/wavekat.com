@@ -38,7 +38,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: '保留・切り替え・転送',
-    body: '通話を保留にして、二本目の回線に出て、二つの通話を切り替えられます——そして、そのまま直接転送するか、先に一言確認してから転送するかを選べます。保留中のやり取りは録音には残りません。',
+    body: '通話を保留にして、二本目の回線に出て、二つの通話を切り替えられます——そして、そのまま直接転送するか、先に一言確認してから転送するかを選べます。保留中のやり取りは録音にも文字起こしにも残りません。',
   },
   {
     icon: Mic,
@@ -115,8 +115,8 @@ const faqs = [
     link: { href: '/ja/blog/hold-switch-and-transfer-calls/', label: '仕組みを見る' },
   },
   {
-    q: '音質はどのくらい良いですか？',
-    a: '電話事業者が対応していれば、WaveKat Voice は Opus コーデックを使って広帯域の——「HD」——音声で通話します。通常の電話回線よりも豊かでクリアな音声で、対応していないときは自動で標準品質に切り替わります。設定するものは何もありません。',
+    q: 'WaveKat Voice は HD 音質の通話に対応していますか？',
+    a: 'はい。電話事業者が対応していれば、WaveKat Voice は Opus コーデックを使って広帯域の——「HD」——音声で通話します。通常の電話回線よりも豊かでクリアな音声で、対応していないときは自動で標準品質（G.711）に切り替わります。設定するものは何もありません。',
   },
   {
     q: 'どの電話事業者に対応していますか？',
@@ -245,6 +245,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">

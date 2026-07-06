@@ -39,7 +39,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: '保持、切换与转接',
-    body: '把一通来电设为保持，接起第二条线路，在两者之间随意切换——之后既可以直接转接，也可以先私下交代几句再转过去。保持期间发生的一切都不会进入录音。',
+    body: '把一通来电设为保持，接起第二条线路，在两者之间随意切换——之后既可以直接转接，也可以先私下交代几句再转过去。保持期间发生的一切都不会进入录音和文字稿。',
   },
   {
     icon: Mic,
@@ -116,8 +116,8 @@ const faqs = [
     link: { href: '/zh/blog/hold-switch-and-transfer-calls/', label: '了解工作原理' },
   },
   {
-    q: '通话音质怎么样？',
-    a: '只要你的电话运营商支持，WaveKat Voice 就会使用 Opus 编解码器带来宽频——即“HD 高清”——语音，比普通电话线更饱满、更清晰；不支持时也会自动回落到标准音质。没有任何需要配置的地方。',
+    q: 'WaveKat Voice 支持 HD 高清通话吗？',
+    a: '支持。只要你的电话运营商支持，WaveKat Voice 就会使用 Opus 编解码器带来宽频——即“HD 高清”——语音，比普通电话线更饱满、更清晰；不支持时也会自动回落到标准音质（G.711）。没有任何需要配置的地方。',
   },
   {
     q: '它兼容哪些电话运营商？',
@@ -245,6 +245,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">

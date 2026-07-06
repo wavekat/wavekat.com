@@ -1,6 +1,6 @@
 ---
 title: "Why WaveKat Voice Runs on Its Own SIP Engine"
-description: "WaveKat Voice now runs on wavekat-sip, our from-scratch, open-source SIP and RTP engine — no third-party SIP stack. Here's why we built it and what it means for your calls."
+description: "WaveKat Voice now runs on wavekat-sip, our from-scratch, open-source SIP and RTP engine — no third-party SIP stack. Here's why and what it means for your calls."
 date: 2026-07-06
 author: Eason Guo
 tags: [voice-ai, engineering, open-source, sip]
@@ -19,7 +19,7 @@ Until recently, WaveKat Voice drove its calls through a third-party SIP library.
 
 ## Why we built our own
 
-We rewrote the engine from scratch, as `wavekat-sip`, for three plain reasons:
+We rewrote WaveKat Voice's SIP engine from scratch, as `wavekat-sip`, for three plain reasons:
 
 - **Control.** Features like putting a caller on hold, [transferring a call](/blog/hold-switch-and-transfer-calls/), and keeping a long call alive with session timers all live at the SIP layer. Owning that layer means we add them directly, instead of bending someone else's model to fit.
 - **Footprint.** WaveKat Voice is a lightweight desktop app that's meant to sit quietly out of your way. A focused, purpose-built engine keeps it small — it carries only the SIP and RTP it actually uses, not a general-purpose stack's worth of everything else.
@@ -45,6 +45,6 @@ It's honest to say it's early: the crate is in active development and its API st
 
 ## What this means for your calls
 
-Mostly, you won't notice — and that's the point. Your calls connect and sound the way they should. What changes is behind the scenes: the features that make WaveKat Voice feel like a real front desk — hold, call waiting, transfer, HD audio — now ship on our timeline instead of a dependency's, and when something needs to be steadier, we can go straight to the code that runs it.
+Mostly, WaveKat Voice's calls won't feel any different — and that's the point. They connect and sound the way they should. What changes is behind the scenes: the features that make WaveKat Voice feel like a real front desk — hold, call waiting, transfer, HD audio — now ship on our timeline instead of a dependency's, and when something needs to be steadier, we can go straight to the code that runs it.
 
 WaveKat Voice is [free during the public beta](/voice/download/) on Mac and Linux. Connect the phone provider you already have, and your next call runs on an engine we built ourselves — and gave away.

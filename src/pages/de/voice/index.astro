@@ -38,7 +38,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: 'Halten, wechseln und weiterleiten',
-    body: 'Legen Sie einen Anrufer in die Warteschleife, nehmen Sie eine zweite Leitung an und wechseln Sie zwischen beiden — leiten Sie ihn dann direkt weiter oder erst nach einem kurzen Wort unter vier Augen. Was in der Warteschleife passiert, bleibt aus der Aufzeichnung heraus.',
+    body: 'Legen Sie einen Anrufer in die Warteschleife, nehmen Sie eine zweite Leitung an und wechseln Sie zwischen beiden — leiten Sie ihn dann direkt weiter oder erst nach einem kurzen Wort unter vier Augen. Was in der Warteschleife passiert, bleibt aus der Aufzeichnung und dem Transkript heraus.',
   },
   {
     icon: Mic,
@@ -115,8 +115,8 @@ const faqs = [
     link: { href: '/de/blog/hold-switch-and-transfer-calls/', label: 'So funktioniert es' },
   },
   {
-    q: 'Wie gut klingt der Ton?',
-    a: 'Wenn Ihr Telefonanbieter es unterstützt, nutzt WaveKat Voice den Opus-Codec für breitbandige — „HD“-Sprache, voller und klarer als eine gewöhnliche Telefonleitung, und fällt automatisch auf Standardqualität zurück, wenn das nicht möglich ist. Es gibt nichts zu konfigurieren.',
+    q: 'Unterstützt WaveKat Voice HD-Audio?',
+    a: 'Ja. Wenn Ihr Telefonanbieter es unterstützt, nutzt WaveKat Voice den Opus-Codec für breitbandige — „HD“-Sprache, voller und klarer als eine gewöhnliche Telefonleitung, und fällt automatisch auf Standardqualität (G.711) zurück, wenn das nicht möglich ist. Es gibt nichts zu konfigurieren.',
   },
   {
     q: 'Mit welchen Telefonanbietern funktioniert es?',
@@ -245,6 +245,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">

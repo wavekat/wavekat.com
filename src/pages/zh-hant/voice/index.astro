@@ -39,7 +39,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: '保留、切換與轉接',
-    body: '把一通來電轉為保留，接起第二條線路，並在兩者之間切換——接著可以直接轉接，或先低聲交代幾句再轉。保留期間發生的一切都不會進入錄音。',
+    body: '把一通來電轉為保留，接起第二條線路，並在兩者之間切換——接著可以直接轉接，或先低聲交代幾句再轉。保留期間發生的一切都不會進入錄音和文字稿。',
   },
   {
     icon: Mic,
@@ -116,8 +116,8 @@ const faqs = [
     link: { href: '/zh-hant/blog/hold-switch-and-transfer-calls/', label: '了解運作方式' },
   },
   {
-    q: '通話音質好嗎？',
-    a: '在你的電話電信業者支援時，WaveKat Voice 會採用 Opus 編解碼器帶來寬頻——「HD」——語音，比一般電話線路更飽滿、更清晰；不支援時則自動退回標準音質。完全無須設定。',
+    q: 'WaveKat Voice 支援 HD 高清通話嗎？',
+    a: '支援。在你的電話電信業者支援時，WaveKat Voice 會採用 Opus 編解碼器帶來寬頻——「HD」——語音，比一般電話線路更飽滿、更清晰；不支援時則自動退回標準音質（G.711）。完全無須設定。',
   },
   {
     q: '它相容哪些電話電信業者？',
@@ -245,6 +245,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">

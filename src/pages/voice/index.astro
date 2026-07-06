@@ -32,7 +32,7 @@ const features = [
   {
     icon: PhoneForwarded,
     title: 'Hold, switch, and transfer',
-    body: 'Put a caller on hold, pick up a second line, and switch between them — then transfer either straight through or after a quiet word first. Whatever happens on hold stays out of the recording.',
+    body: 'Put a caller on hold, pick up a second line, and switch between them — then transfer either straight through or after a quiet word first. Whatever happens on hold stays out of the recording and the transcript.',
   },
   {
     icon: Mic,
@@ -109,8 +109,8 @@ const faqs = [
     link: { href: '/blog/hold-switch-and-transfer-calls/', label: 'How it works' },
   },
   {
-    q: 'How good does the audio sound?',
-    a: 'When your phone provider supports it, WaveKat Voice uses the Opus codec for wideband — "HD" — voice, fuller and clearer than an ordinary phone line, and falls back to standard quality automatically when it doesn\'t. There\'s nothing to configure.',
+    q: 'Does WaveKat Voice support HD audio?',
+    a: 'Yes. When your phone provider supports it, WaveKat Voice uses the Opus codec for wideband — "HD" — voice, fuller and clearer than an ordinary phone line, and falls back to standard quality (G.711) automatically when it doesn\'t. There\'s nothing to configure.',
   },
   {
     q: 'Which phone providers does it work with?',
@@ -238,6 +238,7 @@ const faqSchema = {
         width="1200"
         height="872"
         decoding="async"
+        fetchpriority="high"
         class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
       />
       <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
