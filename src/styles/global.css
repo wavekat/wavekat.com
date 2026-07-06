@@ -28,15 +28,4 @@
   html {
     scroll-padding-top: 4rem;
   }
-
-  /* Give blog/prose images a faint border so screenshots with a white
-     background don't bleed into the white page (matches the code-block
-     border in Post.astro: gray-200 light, white/10 dark). */
-  .prose img {
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-  }
-  .dark .prose img {
-    border-color: rgb(255 255 255 / 0.1);
-  }
 }
