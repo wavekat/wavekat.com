@@ -14,14 +14,20 @@ interface Shot {
 interface Props {
   imgCode: string;
   shots: Shot[];
+  // Outer frame border around the image — off by default since the
+  // Ubuntu/GNOME-framed screenshots already carry their own visual edge.
+  border?: boolean;
 }
 
-const { imgCode, shots } = Astro.props;
+const { imgCode, shots, border = false } = Astro.props;
 ---
 
 <div class="voice-carousel">
   <div
-    class="relative rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+    class:list={[
+      'relative rounded-xl overflow-hidden bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5',
+      border && 'border border-gray-200 dark:border-white/10',
+    ]}
     style="aspect-ratio: 1200 / 872;"
   >
     {shots.map((shot, i) => (
