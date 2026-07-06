@@ -79,6 +79,7 @@ const fullSite = [
   '/blog/place-calls-from-the-command-line/',
   '/blog/share-a-call-recording/',
   '/blog/hold-switch-and-transfer-calls/',
+  '/blog/our-own-sip-engine/',
   '/about/',
 ];
 
