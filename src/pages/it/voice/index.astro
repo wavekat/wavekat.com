@@ -22,12 +22,31 @@ import {
   ArrowRight,
 } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
+import ProductCarousel from '../../../components/ProductCarousel.astro';
 import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
 // Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
 const imgCode = 'it';
+
+const productShots = [
+  {
+    scene: 'in-call',
+    alt: 'WaveKat Voice sul desktop durante una chiamata dal vivo — il tastierino e i comandi di chiamata, con la trascrizione in tempo reale che scorre accanto.',
+    caption: 'Una chiamata dal vivo — i comandi a sinistra, la trascrizione che si scrive da sola a destra.',
+  },
+  {
+    scene: 'in-call-transfer',
+    alt: 'WaveKat Voice sul desktop durante un trasferimento assistito — chi chiama è in attesa, accanto al pulsante Completa trasferimento.',
+    caption: 'Trasferimento di una chiamata dopo un breve scambio privato con l’altra parte.',
+  },
+  {
+    scene: 'settings-automation-agents',
+    alt: 'WaveKat Voice, Impostazioni → Automazione — collegamento di assistenti AI come Claude e Cursor con un pulsante Connetti con un clic.',
+    caption: 'Collegamento di un assistente AI per effettuare chiamate, con un clic.',
+  },
+];
 
 const features = [
   {
@@ -238,44 +257,7 @@ const faqSchema = {
 
   <!-- Product shots -->
   <section class="mb-16 -mt-6">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {[
-        {
-          scene: 'in-call',
-          alt: 'WaveKat Voice sul desktop durante una chiamata dal vivo — il tastierino e i comandi di chiamata, con la trascrizione in tempo reale che scorre accanto.',
-          caption: 'Una chiamata dal vivo — i comandi a sinistra, la trascrizione che si scrive da sola a destra.',
-          priority: true,
-        },
-        {
-          scene: 'in-call-transfer',
-          alt: 'WaveKat Voice sul desktop durante un trasferimento assistito — chi chiama è in attesa, accanto al pulsante Completa trasferimento.',
-          caption: 'Trasferimento di una chiamata dopo un breve scambio privato con l’altra parte.',
-          priority: false,
-        },
-        {
-          scene: 'settings-automation-agents',
-          alt: 'WaveKat Voice, Impostazioni → Automazione — collegamento di assistenti AI come Claude e Cursor con un pulsante Connetti con un clic.',
-          caption: 'Collegamento di un assistente AI per effettuare chiamate, con un clic.',
-          priority: false,
-        },
-      ].map((shot) => (
-        <figure class="space-y-2">
-          <img
-            src={`/screenshots/${shot.scene}/${imgCode}.webp`}
-            alt={shot.alt}
-            width="1200"
-            height="872"
-            decoding="async"
-            loading={shot.priority ? undefined : 'lazy'}
-            fetchpriority={shot.priority ? 'high' : undefined}
-            class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
-          />
-          <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
-            {shot.caption}
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+    <ProductCarousel imgCode={imgCode} shots={productShots} />
   </section>
 
   <!-- Features -->
