@@ -236,22 +236,46 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- Product shot -->
+  <!-- Product shots -->
   <section class="mb-16 -mt-6">
-    <figure class="space-y-2">
-      <img
-        src={`/screenshots/in-call/${imgCode}.webp`}
-        alt="通话进行中的 WaveKat 桌面应用——拨号盘与通话控制，旁边同步滚动着实时文字稿。"
-        width="1200"
-        height="872"
-        decoding="async"
-        fetchpriority="high"
-        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
-      />
-      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
-        WaveKat Voice 中的一通实时通话——左侧是通话控制，右侧的文字稿正自动书写。
-      </figcaption>
-    </figure>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {[
+        {
+          scene: 'in-call',
+          alt: '通话进行中的 WaveKat 桌面应用——拨号盘与通话控制，旁边同步滚动着实时文字稿。',
+          caption: '一通实时通话——左侧是通话控制，右侧的文字稿正自动书写。',
+          priority: true,
+        },
+        {
+          scene: 'in-call-transfer',
+          alt: '桌面上的 WaveKat Voice，正在进行询问转接——来电者处于保持状态，旁边是完成转接按钮。',
+          caption: '先和对方沟通一句，再把通话转接过去。',
+          priority: false,
+        },
+        {
+          scene: 'settings-automation-agents',
+          alt: 'WaveKat Voice 的 设置 → 自动化——通过一键连接按钮接入 Claude、Cursor 等 AI 助手。',
+          caption: '一键连接 AI 助手，让它替你拨打电话。',
+          priority: false,
+        },
+      ].map((shot) => (
+        <figure class="space-y-2">
+          <img
+            src={`/screenshots/${shot.scene}/${imgCode}.webp`}
+            alt={shot.alt}
+            width="1200"
+            height="872"
+            decoding="async"
+            loading={shot.priority ? undefined : 'lazy'}
+            fetchpriority={shot.priority ? 'high' : undefined}
+            class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+          />
+          <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+            {shot.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   </section>
 
   <!-- Features -->

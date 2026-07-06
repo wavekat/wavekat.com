@@ -236,22 +236,46 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- Product shot -->
+  <!-- Product shots -->
   <section class="mb-16 -mt-6">
-    <figure class="space-y-2">
-      <img
-        src={`/screenshots/in-call/${imgCode}.webp`}
-        alt="통화 중인 데스크톱의 WaveKat Voice — 다이얼패드와 통화 제어 버튼, 그 옆으로 흐르는 실시간 전사."
-        width="1200"
-        height="872"
-        decoding="async"
-        fetchpriority="high"
-        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
-      />
-      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
-        WaveKat Voice의 실시간 통화 — 왼쪽에는 통화 제어 버튼, 오른쪽에는 스스로 써 내려가는 전사.
-      </figcaption>
-    </figure>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {[
+        {
+          scene: 'in-call',
+          alt: '통화 중인 데스크톱의 WaveKat Voice — 다이얼패드와 통화 제어 버튼, 그 옆으로 흐르는 실시간 전사.',
+          caption: '실시간 통화 — 왼쪽에는 통화 제어 버튼, 오른쪽에는 스스로 써 내려가는 전사.',
+          priority: true,
+        },
+        {
+          scene: 'in-call-transfer',
+          alt: '데스크톱의 WaveKat Voice, 협의 전환 진행 중 — 발신자는 보류 상태이고 옆에 전환 완료 버튼이 있습니다.',
+          caption: '먼저 상대와 짧게 확인한 뒤 통화를 넘기는 중입니다.',
+          priority: false,
+        },
+        {
+          scene: 'settings-automation-agents',
+          alt: 'WaveKat Voice 설정 → 자동화 — Claude와 Cursor 같은 AI 어시스턴트를 원클릭 연결 버튼으로 연결합니다.',
+          caption: 'AI 어시스턴트를 원클릭으로 연결해 통화를 맡깁니다.',
+          priority: false,
+        },
+      ].map((shot) => (
+        <figure class="space-y-2">
+          <img
+            src={`/screenshots/${shot.scene}/${imgCode}.webp`}
+            alt={shot.alt}
+            width="1200"
+            height="872"
+            decoding="async"
+            loading={shot.priority ? undefined : 'lazy'}
+            fetchpriority={shot.priority ? 'high' : undefined}
+            class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+          />
+          <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+            {shot.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   </section>
 
   <!-- Features -->

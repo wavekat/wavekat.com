@@ -229,22 +229,46 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- Product shot -->
+  <!-- Product shots -->
   <section class="mb-16 -mt-6">
-    <figure class="space-y-2">
-      <img
-        src={`/screenshots/in-call/${imgCode}.webp`}
-        alt="WaveKat Voice on the desktop during a live call — the dialpad and call controls, with the live transcript running alongside."
-        width="1200"
-        height="872"
-        decoding="async"
-        fetchpriority="high"
-        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
-      />
-      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
-        A live call in WaveKat Voice — call controls on the left, the transcript writing itself on the right.
-      </figcaption>
-    </figure>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {[
+        {
+          scene: 'in-call',
+          alt: 'WaveKat Voice on the desktop during a live call — the dialpad and call controls, with the live transcript running alongside.',
+          caption: 'A live call — controls on the left, the transcript writing itself on the right.',
+          priority: true,
+        },
+        {
+          scene: 'in-call-transfer',
+          alt: 'WaveKat Voice on the desktop mid attended transfer — the caller on hold and a Complete transfer button to connect them.',
+          caption: 'Transferring a call after a quiet word with the other side first.',
+          priority: false,
+        },
+        {
+          scene: 'settings-automation-agents',
+          alt: 'WaveKat Voice Settings → Automation, connecting AI assistants like Claude and Cursor with a one-click Connect button.',
+          caption: 'Connecting an AI assistant to place calls, one click.',
+          priority: false,
+        },
+      ].map((shot) => (
+        <figure class="space-y-2">
+          <img
+            src={`/screenshots/${shot.scene}/${imgCode}.webp`}
+            alt={shot.alt}
+            width="1200"
+            height="872"
+            decoding="async"
+            loading={shot.priority ? undefined : 'lazy'}
+            fetchpriority={shot.priority ? 'high' : undefined}
+            class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+          />
+          <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+            {shot.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   </section>
 
   <!-- Features -->
