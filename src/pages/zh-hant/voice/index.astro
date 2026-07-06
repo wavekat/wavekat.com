@@ -10,6 +10,8 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
+  AudioLines,
   Mic,
   FileText,
   Terminal,
@@ -25,11 +27,19 @@ import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
 
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'zh-Hant';
+
 const features = [
   {
     icon: PhoneCall,
     title: '在電腦上打電話',
     body: '直接在電腦上接聽和撥打電話——不需要話機、不需要額外硬體，也不用盯著瀏覽器分頁。它安靜地待在一旁，電話響起時才出現。',
+  },
+  {
+    icon: PhoneForwarded,
+    title: '保留、切換與轉接',
+    body: '把一通來電轉為保留，接起第二條線路，並在兩者之間切換——接著可以直接轉接，或先低聲交代幾句再轉。保留期間發生的一切都不會進入錄音。',
   },
   {
     icon: Mic,
@@ -40,6 +50,11 @@ const features = [
     icon: FileText,
     title: '即時轉寫',
     body: '邊說邊看到文字。通話旁邊滾動顯示即時文字稿，讓你專注於重要內容，而不是埋頭記筆記。',
+  },
+  {
+    icon: AudioLines,
+    title: 'HD 高清通話',
+    body: '在你的電信業者支援時，WaveKat Voice 會協商採用 Opus 編解碼器，帶來寬頻、HD 清晰的語音——無法支援時則會自動退回標準音質。無須手動開啟。',
   },
   {
     icon: Terminal,
@@ -94,6 +109,15 @@ const faqs = [
   {
     q: '需要什麼特殊硬體嗎？',
     a: '不需要。只要有一台電腦和一個電話電信業者帳號，你就萬事俱備了。不需要話機、不需要額外裝置——有副耳機更好，但不是必須的。',
+  },
+  {
+    q: '我可以把來電轉為保留或轉接通話嗎？',
+    a: '可以。WaveKat Voice 能把來電轉為保留、在第一通等待時接起第二通、在通話之間切換，並把來電轉接給其他人——可以直接轉接（盲轉），也可以先與對方確認再轉（諮詢轉接）。通話處於保留時，它的錄音和即時文字稿會自動暫停。',
+    link: { href: '/zh-hant/blog/hold-switch-and-transfer-calls/', label: '了解運作方式' },
+  },
+  {
+    q: '通話音質好嗎？',
+    a: '在你的電話電信業者支援時，WaveKat Voice 會採用 Opus 編解碼器帶來寬頻——「HD」——語音，比一般電話線路更飽滿、更清晰；不支援時則自動退回標準音質。完全無須設定。',
   },
   {
     q: '它相容哪些電話電信業者？',
@@ -210,6 +234,23 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 公測期間免費</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 公測期間免費</p>
     </div>
+  </section>
+
+  <!-- Product shot -->
+  <section class="mb-16 -mt-6">
+    <figure class="space-y-2">
+      <img
+        src={`/screenshots/in-call/${imgCode}.webp`}
+        alt="通話進行中的 WaveKat Voice 桌面畫面——撥號盤與通話控制，一旁即時滾動顯示文字稿。"
+        width="1200"
+        height="872"
+        decoding="async"
+        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+      />
+      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+        WaveKat Voice 中一通進行中的通話——左側是通話控制，右側是自動書寫的文字稿。
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Features -->

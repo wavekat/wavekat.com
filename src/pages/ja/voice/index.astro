@@ -10,8 +10,10 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
   Mic,
   FileText,
+  AudioLines,
   Terminal,
   Server,
   Cloud,
@@ -24,12 +26,19 @@ import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'ja';
 
 const features = [
   {
     icon: PhoneCall,
     title: 'パソコンから通話',
     body: 'パソコンから直接、電話の応答も発信もできます。固定電話も追加のハードウェアも、見張っておくブラウザのタブも不要です。電話が鳴るまでは、邪魔にならず静かに待機しています。',
+  },
+  {
+    icon: PhoneForwarded,
+    title: '保留・切り替え・転送',
+    body: '通話を保留にして、二本目の回線に出て、二つの通話を切り替えられます——そして、そのまま直接転送するか、先に一言確認してから転送するかを選べます。保留中のやり取りは録音には残りません。',
   },
   {
     icon: Mic,
@@ -40,6 +49,11 @@ const features = [
     icon: FileText,
     title: 'リアルタイム文字起こし',
     body: '話した言葉がその場で文字になります。通話の横にリアルタイムの文字起こしが流れるので、メモを取るのに追われず、大事な内容に集中できます。',
+  },
+  {
+    icon: AudioLines,
+    title: 'HD 品質の通話',
+    body: '電話事業者が対応していれば、WaveKat Voice は Opus コーデックをネゴシエートし、広帯域の HD クリアな音声で通話します——対応していないときは、自動で標準品質に切り替わります。オンにする設定は何もありません。',
   },
   {
     icon: Terminal,
@@ -94,6 +108,15 @@ const faqs = [
   {
     q: '特別なハードウェアは必要ですか？',
     a: 'いいえ。パソコンと電話事業者のアカウントさえあれば、必要なものはすべて揃っています。固定電話も追加の機材も不要です——ヘッドセットがあれば便利ですが、必須ではありません。',
+  },
+  {
+    q: '通話を保留にしたり、転送したりできますか？',
+    a: 'はい。WaveKat Voice は、通話を保留にしたり、最初の通話を待たせたまま二本目に出たり、通話を切り替えたり、別の相手に転送したりできます——そのまま直接（ブラインド）転送することも、先に相手に確認してから（アテンド）転送することもできます。通話が保留中の間は、その録音とリアルタイムの文字起こしも自動で一時停止します。',
+    link: { href: '/ja/blog/hold-switch-and-transfer-calls/', label: '仕組みを見る' },
+  },
+  {
+    q: '音質はどのくらい良いですか？',
+    a: '電話事業者が対応していれば、WaveKat Voice は Opus コーデックを使って広帯域の——「HD」——音声で通話します。通常の電話回線よりも豊かでクリアな音声で、対応していないときは自動で標準品質に切り替わります。設定するものは何もありません。',
   },
   {
     q: 'どの電話事業者に対応していますか？',
@@ -211,6 +234,23 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · ベータ期間中は無料</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · ベータ期間中は無料</p>
     </div>
+  </section>
+
+  <!-- Product shot -->
+  <section class="mb-16 -mt-6">
+    <figure class="space-y-2">
+      <img
+        src={`/screenshots/in-call/${imgCode}.webp`}
+        alt="デスクトップで通話中の WaveKat Voice——ダイヤルパッドと通話コントロール、その横にはリアルタイムの文字起こしが流れています。"
+        width="1200"
+        height="872"
+        decoding="async"
+        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+      />
+      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+        WaveKat Voice の通話中画面——左に通話コントロール、右には文字起こしがひとりでに書き込まれていきます。
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Features -->

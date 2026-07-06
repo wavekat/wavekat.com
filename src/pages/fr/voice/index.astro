@@ -10,8 +10,10 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
   Mic,
   FileText,
+  AudioLines,
   Terminal,
   Server,
   Cloud,
@@ -25,11 +27,19 @@ import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
 
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'fr';
+
 const features = [
   {
     icon: PhoneCall,
     title: 'Des appels depuis votre ordinateur',
     body: 'Recevez et passez vos appels directement depuis votre ordinateur — sans poste téléphonique, sans matériel supplémentaire, sans onglet de navigateur à surveiller. L’application reste discrètement en retrait jusqu’à ce que le téléphone sonne.',
+  },
+  {
+    icon: PhoneForwarded,
+    title: 'Mettez en attente, basculez, transférez',
+    body: 'Mettez un appelant en attente, prenez une deuxième ligne, et basculez de l’un à l’autre — puis transférez l’appel, directement ou après un mot en aparté. Tout ce qui se passe pendant l’attente reste hors de l’enregistrement.',
   },
   {
     icon: Mic,
@@ -40,6 +50,11 @@ const features = [
     icon: FileText,
     title: 'Transcription en direct',
     body: 'Voyez les mots à mesure qu’ils sont prononcés. Une transcription défile à côté de l’appel, pour saisir l’essentiel plutôt que de griffonner des notes.',
+  },
+  {
+    icon: AudioLines,
+    title: 'Des appels en HD',
+    body: 'Lorsque votre opérateur le permet, WaveKat Voice négocie le codec Opus pour une voix large bande, d’une clarté HD — et revient de lui-même à la qualité standard lorsqu’il ne le peut pas. Rien à activer.',
   },
   {
     icon: Terminal,
@@ -94,6 +109,15 @@ const faqs = [
   {
     q: 'Ai-je besoin d’un matériel particulier ?',
     a: 'Non. Si vous avez un ordinateur et un compte chez un opérateur téléphonique, vous avez tout ce qu’il faut. Pas de poste téléphonique, pas d’équipement supplémentaire — un casque est appréciable, mais pas indispensable.',
+  },
+  {
+    q: 'Puis-je mettre un appelant en attente ou transférer un appel ?',
+    a: 'Oui. WaveKat Voice peut mettre un appelant en attente, répondre à un deuxième appel pendant que le premier patiente, basculer d’un appel à l’autre, et transférer un appelant à quelqu’un d’autre — soit directement (transfert aveugle), soit après en avoir d’abord parlé avec le destinataire (transfert accompagné). Pendant qu’un appel est en attente, son enregistrement et sa transcription en direct se mettent en pause d’eux-mêmes.',
+    link: { href: '/fr/blog/hold-switch-and-transfer-calls/', label: 'Comment ça marche' },
+  },
+  {
+    q: 'Quelle est la qualité du son ?',
+    a: 'Lorsque votre opérateur téléphonique le permet, WaveKat Voice utilise le codec Opus pour une voix large bande — « HD » —, plus riche et plus claire qu’une ligne téléphonique ordinaire, et revient automatiquement à la qualité standard lorsqu’il ne le peut pas. Il n’y a rien à configurer.',
   },
   {
     q: 'Avec quels opérateurs téléphoniques est-il compatible ?',
@@ -211,6 +235,23 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · gratuit pendant la bêta</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · gratuit pendant la bêta</p>
     </div>
+  </section>
+
+  <!-- Product shot -->
+  <section class="mb-16 -mt-6">
+    <figure class="space-y-2">
+      <img
+        src={`/screenshots/in-call/${imgCode}.webp`}
+        alt="WaveKat Voice sur le bureau pendant un appel en cours — le clavier et les commandes d’appel, avec la transcription en direct qui défile à côté."
+        width="1200"
+        height="872"
+        decoding="async"
+        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+      />
+      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+        Un appel en direct dans WaveKat Voice — les commandes d’appel à gauche, la transcription qui s’écrit toute seule à droite.
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Features -->

@@ -3,6 +3,8 @@ import Voice from '../../layouts/Voice.astro';
 import TalkCTA from '../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
+  AudioLines,
   Mic,
   FileText,
   Terminal,
@@ -18,11 +20,19 @@ import { getMacDownload, getLinuxDownload } from '../../lib/voice-download';
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
 
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'en';
+
 const features = [
   {
     icon: PhoneCall,
     title: 'Calls from your desktop',
     body: 'Answer and place calls right from your computer — no desk phone, no extra hardware, no browser tab to babysit. It waits quietly out of the way until the phone rings.',
+  },
+  {
+    icon: PhoneForwarded,
+    title: 'Hold, switch, and transfer',
+    body: 'Put a caller on hold, pick up a second line, and switch between them — then transfer either straight through or after a quiet word first. Whatever happens on hold stays out of the recording.',
   },
   {
     icon: Mic,
@@ -33,6 +43,11 @@ const features = [
     icon: FileText,
     title: 'Live transcription',
     body: 'See the words as they\'re spoken. A running transcript sits alongside the call, so you can take in what matters instead of scribbling notes.',
+  },
+  {
+    icon: AudioLines,
+    title: 'Calls in HD',
+    body: 'When your provider supports it, WaveKat Voice negotiates the Opus codec for wideband, HD-clear voice — and falls back to standard quality on its own when it can\'t. Nothing to switch on.',
   },
   {
     icon: Terminal,
@@ -87,6 +102,15 @@ const faqs = [
   {
     q: 'Do I need any special hardware?',
     a: 'No. If you have a computer and an account with a phone provider, you have everything you need. No desk phone, no extra equipment — a headset is nice but not required.',
+  },
+  {
+    q: 'Can I put a caller on hold or transfer a call?',
+    a: 'Yes. WaveKat Voice can put a caller on hold, answer a second call while the first one waits, switch between calls, and transfer a caller to someone else — either straight through (blind) or after checking with them first (attended). While a call is on hold, its recording and live transcript pause on their own.',
+    link: { href: '/blog/hold-switch-and-transfer-calls/', label: 'How it works' },
+  },
+  {
+    q: 'How good does the audio sound?',
+    a: 'When your phone provider supports it, WaveKat Voice uses the Opus codec for wideband — "HD" — voice, fuller and clearer than an ordinary phone line, and falls back to standard quality automatically when it doesn\'t. There\'s nothing to configure.',
   },
   {
     q: 'Which phone providers does it work with?',
@@ -203,6 +227,23 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/voice/changelog/" title="See what's new in this version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · free during beta</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/voice/changelog/" title="See what's new in this version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · free during beta</p>
     </div>
+  </section>
+
+  <!-- Product shot -->
+  <section class="mb-16 -mt-6">
+    <figure class="space-y-2">
+      <img
+        src={`/screenshots/in-call/${imgCode}.webp`}
+        alt="WaveKat Voice on the desktop during a live call — the dialpad and call controls, with the live transcript running alongside."
+        width="1200"
+        height="872"
+        decoding="async"
+        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+      />
+      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+        A live call in WaveKat Voice — call controls on the left, the transcript writing itself on the right.
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Features -->

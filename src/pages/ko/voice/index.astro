@@ -10,8 +10,10 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
   Mic,
   FileText,
+  AudioLines,
   Terminal,
   Server,
   Cloud,
@@ -24,12 +26,19 @@ import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'ko';
 
 const features = [
   {
     icon: PhoneCall,
     title: '데스크톱에서 통화',
     body: '컴퓨터에서 바로 전화를 받고 걸 수 있습니다 — 탁상 전화기도, 별도 장비도, 신경 써야 할 브라우저 탭도 필요 없습니다. 전화가 울릴 때까지 조용히 한쪽에서 기다립니다.',
+  },
+  {
+    icon: PhoneForwarded,
+    title: '보류, 전환, 그리고 착신 전환',
+    body: '통화 중인 상대를 보류로 돌려놓고 두 번째 회선을 받아 두 통화를 오갈 수 있습니다 — 그런 다음 곧바로 연결하거나, 먼저 조용히 상황을 전한 뒤 넘길 수 있습니다. 보류 중에 오간 내용은 녹음에 남지 않습니다.',
   },
   {
     icon: Mic,
@@ -40,6 +49,11 @@ const features = [
     icon: FileText,
     title: '실시간 받아쓰기',
     body: '말하는 대로 글자가 보입니다. 통화 옆에서 실시간 전사가 흘러가, 메모를 휘갈기는 대신 중요한 내용에 집중할 수 있습니다.',
+  },
+  {
+    icon: AudioLines,
+    title: 'HD 음질 통화',
+    body: '사업자가 지원하는 경우, WaveKat Voice는 Opus 코덱을 협상해 광대역의 HD처럼 또렷한 음성을 제공합니다 — 그럴 수 없을 때는 스스로 표준 음질로 되돌립니다. 따로 켤 것은 없습니다.',
   },
   {
     icon: Terminal,
@@ -94,6 +108,15 @@ const faqs = [
   {
     q: '특별한 장비가 필요한가요?',
     a: '아니요. 컴퓨터 한 대와 전화 사업자 계정만 있으면 필요한 것은 다 갖춰진 셈입니다. 탁상 전화기도, 별도 장비도 필요 없습니다 — 헤드셋이 있으면 좋지만 필수는 아닙니다.',
+  },
+  {
+    q: '통화 중인 상대를 보류하거나 통화를 넘길 수 있나요?',
+    a: '네. WaveKat Voice는 통화 중인 상대를 보류로 돌려놓고, 첫 번째 통화가 기다리는 동안 두 번째 전화를 받고, 통화를 오가며, 상대를 다른 사람에게 넘길 수 있습니다 — 곧바로 연결(블라인드)하거나, 먼저 상대에게 확인한 뒤(어텐디드) 넘길 수 있습니다. 통화가 보류 중일 때는 그 녹음과 실시간 전사가 스스로 멈춥니다.',
+    link: { href: '/ko/blog/hold-switch-and-transfer-calls/', label: '작동 방식 보기' },
+  },
+  {
+    q: '음질은 얼마나 좋나요?',
+    a: '전화 사업자가 지원하는 경우, WaveKat Voice는 Opus 코덱을 사용해 광대역 — "HD" — 음성을 제공하며, 일반 전화 회선보다 더 풍부하고 또렷합니다. 지원하지 않을 때는 자동으로 표준 음질로 되돌립니다. 따로 설정할 것은 없습니다.',
   },
   {
     q: '어떤 전화 사업자와 호환되나요?',
@@ -211,6 +234,23 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/ko/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 베타 기간 무료</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/ko/voice/changelog/" title="이 버전의 새로운 내용 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 베타 기간 무료</p>
     </div>
+  </section>
+
+  <!-- Product shot -->
+  <section class="mb-16 -mt-6">
+    <figure class="space-y-2">
+      <img
+        src={`/screenshots/in-call/${imgCode}.webp`}
+        alt="통화 중인 데스크톱의 WaveKat Voice — 다이얼패드와 통화 제어 버튼, 그 옆으로 흐르는 실시간 전사."
+        width="1200"
+        height="872"
+        decoding="async"
+        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+      />
+      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+        WaveKat Voice의 실시간 통화 — 왼쪽에는 통화 제어 버튼, 오른쪽에는 스스로 써 내려가는 전사.
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Features -->

@@ -10,8 +10,10 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
+  PhoneForwarded,
   Mic,
   FileText,
+  AudioLines,
   Terminal,
   Server,
   Cloud,
@@ -25,11 +27,19 @@ import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
 
+// Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
+const imgCode = 'es';
+
 const features = [
   {
     icon: PhoneCall,
     title: 'Llamadas desde su escritorio',
     body: 'Conteste y haga llamadas directamente desde su computadora: sin teléfono de mesa, sin hardware extra, sin una pestaña del navegador que vigilar. Espera tranquilo y apartado hasta que suena el teléfono.',
+  },
+  {
+    icon: PhoneForwarded,
+    title: 'Espera, cambio y transferencia',
+    body: 'Ponga a un cliente en espera, atienda una segunda línea y alterne entre ambas; luego transfiera la llamada directamente o tras hablar antes en privado. Lo que ocurra durante la espera queda fuera de la grabación.',
   },
   {
     icon: Mic,
@@ -40,6 +50,11 @@ const features = [
     icon: FileText,
     title: 'Transcripción en vivo',
     body: 'Vea las palabras a medida que se pronuncian. Una transcripción en marcha aparece junto a la llamada, para que pueda asimilar lo importante en lugar de garabatear notas.',
+  },
+  {
+    icon: AudioLines,
+    title: 'Llamadas en HD',
+    body: 'Cuando su proveedor lo admite, WaveKat Voice negocia el códec Opus para una voz de banda ancha, nítida en HD, y vuelve por sí solo a la calidad estándar cuando no puede. No hay nada que activar.',
   },
   {
     icon: Terminal,
@@ -94,6 +109,15 @@ const faqs = [
   {
     q: '¿Necesito algún hardware especial?',
     a: 'No. Si tiene una computadora y una cuenta con un proveedor de telefonía, tiene todo lo que necesita. Sin teléfono de mesa, sin equipo extra; unos auriculares vienen bien, pero no son obligatorios.',
+  },
+  {
+    q: '¿Puedo poner a un cliente en espera o transferir una llamada?',
+    a: 'Sí. WaveKat Voice puede poner a un cliente en espera, atender una segunda llamada mientras la primera aguarda, alternar entre llamadas y transferir a un cliente a otra persona, ya sea directamente (transferencia ciega) o tras consultarlo antes con ella (transferencia consultada). Mientras una llamada está en espera, su grabación y su transcripción en vivo se pausan por sí solas.',
+    link: { href: '/es/blog/hold-switch-and-transfer-calls/', label: 'Cómo funciona' },
+  },
+  {
+    q: '¿Qué tal suena el audio?',
+    a: 'Cuando su proveedor de telefonía lo admite, WaveKat Voice usa el códec Opus para una voz de banda ancha —«HD»—, más plena y nítida que una línea telefónica corriente, y vuelve automáticamente a la calidad estándar cuando no lo admite. No hay nada que configurar.',
   },
   {
     q: '¿Con qué proveedores de telefonía funciona?',
@@ -211,6 +235,23 @@ const faqSchema = {
       <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/es/voice/changelog/" title="Vea las novedades de esta versión" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · gratis durante la beta</p>
       <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/es/voice/changelog/" title="Vea las novedades de esta versión" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · gratis durante la beta</p>
     </div>
+  </section>
+
+  <!-- Product shot -->
+  <section class="mb-16 -mt-6">
+    <figure class="space-y-2">
+      <img
+        src={`/screenshots/in-call/${imgCode}.webp`}
+        alt="WaveKat Voice en el escritorio durante una llamada en vivo: el teclado de marcación y los controles de llamada, con la transcripción en vivo a un lado."
+        width="1200"
+        height="872"
+        decoding="async"
+        class="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface shadow-lg shadow-black/5"
+      />
+      <figcaption class="text-xs text-gray-400 dark:text-gray-600 leading-relaxed text-center">
+        Una llamada en vivo en WaveKat Voice: los controles de llamada a la izquierda, la transcripción escribiéndose sola a la derecha.
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Features -->
