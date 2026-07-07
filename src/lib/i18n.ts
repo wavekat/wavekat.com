@@ -80,6 +80,7 @@ const fullSite = [
   '/blog/share-a-call-recording/',
   '/blog/hold-switch-and-transfer-calls/',
   '/blog/our-own-sip-engine/',
+  '/blog/click-to-call-phone-links/',
   '/about/',
 ];
 

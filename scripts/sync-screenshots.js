@@ -69,6 +69,8 @@ const SCENES = [
   { name: "settings-automation-agents", source: "voice", frame: "ubuntu" }, // connect
   { name: "provider-picker-2talk", source: "voice", frame: "ubuntu" }, // pick 2talk (providers/2talk)
   { name: "account-2talk-filled", source: "voice", frame: "ubuntu" }, // 2talk SIP fields pre-filled
+  { name: "dial-prefilled", source: "voice", frame: "ubuntu" }, // New Call sheet, number pre-filled (click-to-call)
+  { name: "settings-general-phone-links", source: "voice", frame: "ubuntu" }, // Settings → General, Phone links on
   { name: "share-sheet", source: "voice", frame: "macos" }, // the Share panel
   { name: "share-viewer", source: "platform" }, // what the recipient opens (web)
 ];

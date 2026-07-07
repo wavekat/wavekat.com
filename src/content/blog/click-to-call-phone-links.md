@@ -15,6 +15,8 @@ Click-to-call means a phone number on a web page is a link you can click to dial
 
 Turn on **Phone links** and any phone number that's a clickable link becomes a way into WaveKat Voice. Click `tel:+14155550123` in your browser and the app takes focus and opens the New Call sheet with `+14155550123` already in the To field. You look at it, and you press Call. Both `tel:` links (ordinary phone numbers) and `sip:` links (SIP addresses like `sip:alice@example.com`) work — the SIP address goes straight through to your account.
 
+![WaveKat Voice on Ubuntu — the New Call sheet open with a phone number already filled in, ready to dial.](/screenshots/dial-prefilled/en.webp)
+
 The default is deliberately the safe one: the number is filled in, but **you** place the call. A web page can *ask* to start a call; it can't actually dial without a human pressing Call. That matters, because a link on a page is something anyone can put there.
 
 ## Turning it on
@@ -25,6 +27,8 @@ Phone links are **off until you turn them on**, because claiming the phone-numbe
 |---|---|
 | **macOS** | WaveKat Voice becomes the handler right away, taking `tel:` links over from FaceTime. |
 | **Linux** | Works as soon as you turn it on. |
+
+![WaveKat Voice on Ubuntu — Settings → General with the Phone links toggle switched on.](/screenshots/settings-general-phone-links/en.webp)
 
 New to WaveKat Voice? You'll be offered phone links at the friendliest possible moment — right after your first successful test call, on the "you're all set" card. It's a one-time offer, never a nag: accept it or wave it off and it won't ask again. Longtime users who open the dial pad to type a number by hand — exactly the people click-to-call is for — get the same quiet offer at the bottom of the dial sheet. However you say yes, it's the same single switch underneath.
 
