@@ -9,7 +9,7 @@ draft: true
 
 WaveKat Voice — the SIP softphone for Mac and Linux that records and transcribes every call — can now be the app your computer opens when you click a phone number on a website. Click a `tel:` or `sip:` link anywhere — a company's contact page, a search result, a supplier's invoice — and WaveKat Voice comes to the front with the number already filled in, ready for you to press Call. It lands in [0.0.43](/voice/changelog/#0.0.43).
 
-This is one of those features you only notice when it's missing. Click-to-call is table-stakes on a business desk phone: you see a number on a page, you click it, the phone dials. The gap was real enough to keep at least one person on Windows — on Linux the system would *launch* a softphone on the click, but the number got lost on the way and never made it into the dial field. WaveKat Voice now closes that gap, and it closes it on every platform it runs on, not just Linux.
+Click-to-call means a phone number on a web page is a link you can click to dial, instead of something you copy out and retype by hand. It's table-stakes on a business desk phone, and one of those features you only notice when it's missing: you see a number on a page, you click it, the phone dials. WaveKat Voice — the [SIP softphone](/voice/) that records and transcribes every call and [runs on its own SIP engine](/blog/our-own-sip-engine/) — now dials the numbers you click, too.
 
 ## What it does
 
@@ -24,8 +24,7 @@ Phone links are **off until you turn them on**, because claiming the phone-numbe
 | Platform | What happens when you turn it on |
 |---|---|
 | **macOS** | WaveKat Voice becomes the handler right away, taking `tel:` links over from FaceTime. |
-| **Windows** | WaveKat Voice registers as an option; Windows may ask you to confirm the first time you click a link. |
-| **Linux** | Works out of the box on the `.deb`. A non-integrated AppImage may need your desktop's integration step first; if the app can't set it up, the setting says so instead of failing silently. |
+| **Linux** | Works as soon as you turn it on. |
 
 New to WaveKat Voice? You'll be offered phone links at the friendliest possible moment — right after your first successful test call, on the "you're all set" card. It's a one-time offer, never a nag: accept it or wave it off and it won't ask again. Longtime users who open the dial pad to type a number by hand — exactly the people click-to-call is for — get the same quiet offer at the bottom of the dial sheet. However you say yes, it's the same single switch underneath.
 
@@ -41,7 +40,7 @@ If pre-fill-and-confirm is one step more than you want, there's an opt-in for th
 
 ### How do I make a phone number on a website open in WaveKat Voice?
 
-Turn on **Phone links** in Settings → General. After that, clicking any `tel:` or `sip:` link — the kind of clickable phone number you find on contact pages — opens WaveKat Voice with the number filled in, ready to dial. On Windows you may be asked to confirm the app the first time.
+Turn on **Phone links** in Settings → General. After that, clicking any `tel:` or `sip:` link — the kind of clickable phone number you find on contact pages — opens WaveKat Voice with the number filled in, ready to dial.
 
 ### Does clicking a phone link place the call automatically?
 
@@ -49,7 +48,7 @@ No, not unless you ask it to. By default WaveKat Voice fills in the number and w
 
 ### Which platforms support click-to-call?
 
-Mac and Linux, the two platforms WaveKat Voice runs on today (Windows is coming when there's demand). On the Linux `.deb` it works as soon as you turn it on; a non-integrated AppImage may need your desktop environment's integration step first.
+Mac and Linux, the two platforms WaveKat Voice runs on today (Windows is coming when there's demand). Turn on Phone links in Settings → General and it works on both.
 
 ### Does it work with sip: links too, or only tel: numbers?
 
