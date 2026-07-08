@@ -62,6 +62,10 @@ const toolsAndClients = [
     href: 'https://github.com/wavekat/wavekat-cli',
   },
 ];
+// The pipeline reads as a signal chain; the last two crates are the foundation
+// every stage sits on. Slicing here keeps one data array per locale file.
+const pipelineFlow = voicePipeline.slice(0, 4);
+const pipelineBase = voicePipeline.slice(4);
 ---
 
 <Base
@@ -70,133 +74,204 @@ const toolsAndClients = [
 >
   <Header />
 
-  <div class="max-w-6xl mx-auto px-6">
+  <!-- Hero: product-first, screenshot front and center -->
+  <section class="relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,rgb(0_0_0/0.07)_1px,transparent_0)] bg-[size:28px_28px] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_35%,black,transparent)] dark:bg-[radial-gradient(circle_at_1px_1px,rgb(255_255_255/0.06)_1px,transparent_0)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full opacity-[0.13] blur-3xl"
+      style="background: radial-gradient(closest-side, #ff6d00, transparent);"
+      aria-hidden="true"
+    >
+    </div>
 
-    <!-- Hero -->
-    <section class="mx-auto max-w-3xl pt-14 pb-20 text-center sm:pt-20 sm:pb-24">
-      <a
-        href="/es/voice/"
-        class="animate-rise group inline-flex items-center gap-2 rounded-full border border-wk-orange/30 bg-wk-orange/5 py-1.5 pl-4 pr-3 text-xs font-medium text-wk-orange transition-colors hover:border-wk-orange/60 hover:bg-wk-orange/10"
-      >
-        <span class="font-semibold">WaveKat Voice</span>
-        <span class="h-3 w-px bg-wk-orange/30" aria-hidden="true"></span>
-        beta pública gratuita
-        <ArrowRight class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-      </a>
-      <h1 class="animate-rise mt-7 text-4xl font-extrabold leading-[1.1] tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-        Dele a cada pequeña empresa<br />
-        <span class="text-gradient-brand">la voz de una grande.</span>
-      </h1>
-      <p class="animate-rise-late mx-auto mt-7 max-w-2xl text-base leading-relaxed text-gray-500 dark:text-gray-400 sm:text-lg">
-        WaveKat crea herramientas impulsadas por IA que dan a las pequeñas empresas el tipo de
+    <div class="mx-auto grid max-w-6xl items-center gap-14 px-6 pt-16 pb-20 sm:pt-20 sm:pb-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+      <div>
+        <a
+          href="/es/voice/"
+          class="animate-rise group inline-flex items-center gap-2 rounded-full border border-wk-orange/30 bg-wk-orange/5 py-1.5 pl-4 pr-3 text-xs font-medium text-wk-orange transition-colors hover:border-wk-orange/60 hover:bg-wk-orange/10"
+        >
+          <span class="font-semibold">WaveKat Voice</span>
+          <span class="h-3 w-px bg-wk-orange/30" aria-hidden="true"></span>
+          beta pública gratuita
+          <ArrowRight class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+        </a>
+        <h1 class="animate-rise mt-7 text-4xl font-extrabold leading-[1.08] tracking-tight [text-wrap:balance] text-gray-900 dark:text-white sm:text-5xl xl:text-6xl">
+          Dele a cada pequeña empresa<br />
+          <span class="text-gradient-brand">la voz de una grande.</span>
+        </h1>
+        <p class="animate-rise-late mt-7 max-w-xl text-base leading-relaxed text-gray-500 dark:text-gray-400 sm:text-lg">
+          WaveKat crea herramientas impulsadas por IA que dan a las pequeñas empresas el tipo de
         capacidades que antes solo las grandes podían permitirse. Empezamos por la voz: una app de
         escritorio que convierte su computadora en su línea de empresa y graba y transcribe cada llamada.
-      </p>
-      <div class="animate-rise-late mt-10 flex flex-wrap items-center justify-center gap-4">
-        <VoiceDownload />
-        <a
-          href="https://github.com/wavekat"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-full border border-gray-300 px-7 py-3 text-sm font-semibold text-gray-700 transition-all hover:-translate-y-0.5 hover:border-gray-400 hover:bg-gray-900/5 dark:border-white/15 dark:text-gray-200 dark:hover:border-white/30 dark:hover:bg-white/5"
-        >
-          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
-          Ver en GitHub
-        </a>
+        </p>
+        <div class="animate-rise-late mt-9 flex flex-wrap items-center gap-4">
+          <VoiceDownload />
+          <a
+            href="https://github.com/wavekat"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition-all hover:-translate-y-0.5 hover:border-gray-400 hover:bg-gray-900/5 dark:border-white/15 dark:text-gray-200 dark:hover:border-white/30 dark:hover:bg-white/5"
+          >
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+            Ver en GitHub
+          </a>
+        </div>
       </div>
-    </section>
 
-    <!-- Featured product: WaveKat Voice -->
-    <section class="mb-24">
-      <h2 class="mb-6 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">Nuestra app</h2>
-      <div
-        class="relative overflow-hidden rounded-3xl border border-wk-orange/25 bg-gray-50/50 dark:bg-wk-surface"
-      >
+      <div class="animate-rise-late relative">
         <div
-          class="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full opacity-20 blur-3xl"
-          style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+          class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
+          style="background: radial-gradient(closest-side, #ff6d00, transparent);"
           aria-hidden="true"
         >
         </div>
-        <div class="relative grid items-center gap-10 p-8 sm:p-10 md:grid-cols-2">
-          <div>
-            <div class="mb-4 flex flex-wrap items-center gap-3">
-              <span class="text-2xl font-bold tracking-tight text-wk-orange">WaveKat Voice</span>
-              <span class="inline-flex items-center rounded-full border border-wk-orange/30 bg-wk-orange/5 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-orange">
-                beta pública gratuita
-              </span>
-            </div>
-            <p class="mb-7 text-[15px] leading-relaxed text-gray-600 dark:text-gray-300">
-              Una app de teléfono para su computadora. Conteste y haga llamadas desde su escritorio,
+        <img
+          src="/screenshots/in-call/es.webp"
+          alt="WaveKat Voice durante una llamada, con la transcripción escrita en tiempo real"
+          width="1200"
+          height="872"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="relative w-full rounded-xl shadow-2xl shadow-black/25 ring-1 ring-gray-900/10 transition-transform duration-500 [transform:perspective(1400px)_rotateY(-8deg)_rotateX(1deg)] hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)] dark:ring-white/10"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Product statement: a dark full-bleed band in both themes -->
+  <section class="relative overflow-hidden border-y border-gray-200/60 bg-[#070b14] dark:border-white/5 dark:bg-white/[0.02]" data-reveal>
+    <div
+      class="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full opacity-15 blur-3xl"
+      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-white/40">Nuestra app</h2>
+      <div class="flex flex-wrap items-center gap-4">
+        <span class="text-3xl font-bold tracking-tight text-wk-orange sm:text-4xl">WaveKat Voice</span>
+        <span class="inline-flex items-center rounded-full border border-wk-orange/30 bg-wk-orange/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-orange">
+          beta pública gratuita
+        </span>
+      </div>
+      <p class="mt-6 max-w-3xl text-lg font-medium leading-relaxed text-gray-200 sm:text-2xl sm:leading-relaxed">
+        Una app de teléfono para su computadora. Conteste y haga llamadas desde su escritorio,
             con cada conversación grabada y transcrita por usted, usando el proveedor de telefonía que ya tiene.
             Incluso puede dejar que un asistente de IA realice llamadas por usted.
-            </p>
-            <a
-              href="/es/voice/"
-              class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/35"
-            >
-              Más información y descarga
-              <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
-          </div>
-          <img
-            src="/screenshots/in-call/es.webp"
-            alt="WaveKat Voice durante una llamada, con la transcripción escrita en tiempo real"
-            width="1200"
-            height="872"
-            loading="lazy"
-            decoding="async"
-            class="w-full rounded-xl shadow-2xl shadow-black/20"
-          />
+      </p>
+      <a
+        href="/es/voice/"
+        class="group mt-9 inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+      >
+        Más información y descarga
+        <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+  </section>
+
+  <!-- Libraries: the pipeline drawn as the signal chain it is -->
+  <section class="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+    <h2 class="mb-3 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">Librerías</h2>
+    <h3 class="mb-10 text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">Pipeline de voz</h3>
+
+    <div class="grid gap-4 md:grid-cols-4 md:gap-8" data-reveal>
+      {pipelineFlow.map((lib, i) => (
+        <div class="relative">
+          <a
+            href={lib.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative block h-full overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-24px_var(--lib)] dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none"
+            style={`--lib: ${lib.color};`}
+          >
+            <span
+              class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
+              style={`background: linear-gradient(90deg, transparent, ${lib.color}, transparent);`}
+              aria-hidden="true"
+            ></span>
+            <span class="mb-2 block font-mono text-sm font-bold" style={`color: ${lib.color}`}>{lib.name}</span>
+            <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{lib.description}</p>
+          </a>
+          {i < 3 && (
+            <ArrowRight
+              class="absolute top-1/2 -right-6 hidden h-4 w-4 -translate-y-1/2 text-gray-300 dark:text-gray-600 md:block"
+              aria-hidden="true"
+            />
+          )}
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
 
-    <!-- Libraries -->
-    <section>
-      <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">Librerías</h2>
+    <div class="mt-4 grid gap-4 md:mt-8 md:grid-cols-2 md:gap-8" data-reveal>
+      {pipelineBase.map((lib) => (
+        <a
+          href={lib.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative block overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-24px_var(--lib)] dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none"
+          style={`--lib: ${lib.color};`}
+        >
+          <span
+            class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
+            style={`background: linear-gradient(90deg, transparent, ${lib.color}, transparent);`}
+            aria-hidden="true"
+          ></span>
+          <span class="mb-2 block font-mono text-sm font-bold" style={`color: ${lib.color}`}>{lib.name}</span>
+          <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{lib.description}</p>
+        </a>
+      ))}
+    </div>
 
-      <h3 class="mb-4 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Pipeline de voz</h3>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {voicePipeline.map((lib) => (
-          <a
-            href={lib.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group block rounded-2xl border border-[color:var(--lib-soft)] bg-gray-50/50 p-6 transition-all hover:-translate-y-0.5 hover:border-[color:var(--lib)] hover:shadow-[0_12px_32px_-16px_var(--lib)] dark:bg-wk-surface"
-            style={`--lib: ${lib.color}; --lib-soft: ${lib.color}30;`}
-          >
-            <span class="mb-2 block font-mono text-sm font-bold" style={`color: ${lib.color}`}>{lib.name}</span>
-            <p class="mb-5 text-sm leading-relaxed text-gray-500 dark:text-gray-400">{lib.description}</p>
-            <span class="font-mono text-xs text-gray-400 transition-colors group-hover:text-gray-700 dark:text-gray-600 dark:group-hover:text-gray-300">
-              github.com/wavekat/{lib.name} →
-            </span>
-          </a>
-        ))}
-      </div>
-
-      <h3 class="mb-4 mt-10 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Herramientas y clientes</h3>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {toolsAndClients.map((lib) => (
-          <a
-            href={lib.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group block rounded-2xl border border-[color:var(--lib-soft)] bg-gray-50/50 p-6 transition-all hover:-translate-y-0.5 hover:border-[color:var(--lib)] hover:shadow-[0_12px_32px_-16px_var(--lib)] dark:bg-wk-surface"
-            style={`--lib: ${lib.color}; --lib-soft: ${lib.color}30;`}
-          >
-            <span class="mb-2 block font-mono text-sm font-bold" style={`color: ${lib.color}`}>{lib.name}</span>
-            <p class="mb-5 text-sm leading-relaxed text-gray-500 dark:text-gray-400">{lib.description}</p>
-            <span class="font-mono text-xs text-gray-400 transition-colors group-hover:text-gray-700 dark:text-gray-600 dark:group-hover:text-gray-300">
-              github.com/wavekat/{lib.name} →
-            </span>
-          </a>
-        ))}
-      </div>
-    </section>
-
-
-  </div>
+    <h3 class="mb-8 mt-16 text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">Herramientas y clientes</h3>
+    <div class="grid gap-4 md:grid-cols-2 md:gap-8" data-reveal>
+      {toolsAndClients.map((lib) => (
+        <a
+          href={lib.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative block overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-24px_var(--lib)] dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none"
+          style={`--lib: ${lib.color};`}
+        >
+          <span
+            class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
+            style={`background: linear-gradient(90deg, transparent, ${lib.color}, transparent);`}
+            aria-hidden="true"
+          ></span>
+          <span class="mb-2 block font-mono text-sm font-bold" style={`color: ${lib.color}`}>{lib.name}</span>
+          <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{lib.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 
   <Footer />
+
+  <script>
+    // Scroll reveal — content is visible without JS; motion is added on top.
+    const els = document.querySelectorAll('[data-reveal]');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach((el) => el.classList.add('reveal-in'));
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('reveal-in');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.15 },
+      );
+      els.forEach((el) => {
+        el.classList.add('reveal-init');
+        io.observe(el);
+      });
+    }
+  </script>
 </Base>

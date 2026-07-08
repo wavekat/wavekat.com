@@ -50,6 +50,12 @@ const linkClass = (isActive: boolean) =>
         <Sun class="w-4 h-4 dark:hidden" />
         <Moon class="w-4 h-4 hidden dark:block" />
       </button>
+      <a
+        href={localeHref('/voice/download/')}
+        class="hidden whitespace-nowrap rounded-full bg-wk-orange px-4 py-1.5 text-xs font-semibold text-white shadow-md shadow-wk-orange/25 transition-all hover:-translate-y-px hover:shadow-lg hover:shadow-wk-orange/35 sm:inline-flex"
+      >
+        {ui.subDownload}
+      </a>
     </nav>
   </div>
 </header>
