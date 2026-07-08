@@ -68,12 +68,11 @@ const crumbSchema = crumbLabels[basePath]
 ---
 
 <Base title={`${title} — WaveKat`} description={description}>
-  <div class="max-w-3xl mx-auto px-6 py-12">
+  <Header active="voice" />
 
-    <Header active="voice" />
-
-    <!-- Sub-nav -->
-    <nav class="flex flex-wrap items-center gap-3 mb-12">
+  <!-- Sub-nav -->
+  <div class="border-b border-gray-100 dark:border-white/10">
+    <nav class="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-6">
       {subNav.map((item) => {
         const active = isActive(item.href);
         return (
@@ -81,24 +80,25 @@ const crumbSchema = crumbLabels[basePath]
             href={localeHref(item.href)}
             class={
               active
-                ? 'text-xs font-bold rounded px-3 py-1 transition-colors'
-                : 'text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors border border-gray-200 dark:border-white/10 rounded px-3 py-1'
+                ? 'whitespace-nowrap border-b-2 border-wk-orange px-3 py-3 text-sm font-semibold text-wk-orange transition-colors'
+                : 'whitespace-nowrap border-b-2 border-transparent px-3 py-3 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-white/20 dark:hover:text-white transition-colors'
             }
-            style={active ? 'color: #ff6d00; border: 1px solid #ff6d0060;' : ''}
           >
             {item.label}
           </a>
         );
       })}
     </nav>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 pt-12 pb-12">
 
     <slot />
 
-    <div class="mt-20">
-      <Footer />
-    </div>
 
   </div>
+
+  <Footer />
 
   {crumbSchema && <script type="application/ld+json" set:html={JSON.stringify(crumbSchema)} />}
 </Base>

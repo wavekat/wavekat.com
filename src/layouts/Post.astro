@@ -43,9 +43,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   article={{ publishedTime: date, modifiedTime: updated, author: author || 'WaveKat', tags }}
   noindex={noindex}
 >
-  <div class="max-w-3xl mx-auto px-6 py-12">
+  <Header active="blog" />
 
-    <Header active="blog" />
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    {/* Page container matches the sitewide 6xl width; the article itself stays
+        a centered reading column so long-form lines keep a readable measure. */}
+    <div class="mx-auto max-w-3xl">
 
     <!-- Post meta -->
     <div class="mb-8">
@@ -92,11 +95,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       </a>
     </div>
 
-    <div class="mt-20">
-      <Footer />
     </div>
-
   </div>
+
+  <Footer />
 
   <!-- JSON-LD structured data -->
   <script

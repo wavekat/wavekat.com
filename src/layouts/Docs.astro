@@ -25,12 +25,12 @@ const backLabel = isProductIndex ? 'all docs' : productLabel(productSlug);
 ---
 
 <Base title={`${title} — WaveKat Docs`} description={description} ogImage={ogImage}>
+  <Header active="docs" />
+
   <div class="max-w-6xl mx-auto px-6 py-12">
 
-    <Header active="docs" />
-
     <div class="grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)] gap-12">
-      <aside class="md:sticky md:top-8 md:self-start">
+      <aside class="md:sticky md:top-24 md:self-start">
         <DocsSidebar activeId={activeId} />
       </aside>
 
@@ -57,9 +57,8 @@ const backLabel = isProductIndex ? 'all docs' : productLabel(productSlug);
       </main>
     </div>
 
-    <div class="mt-20">
-      <Footer />
-    </div>
 
   </div>
+
+  <Footer />
 </Base>

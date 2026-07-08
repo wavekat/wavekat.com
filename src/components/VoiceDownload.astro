@@ -8,6 +8,7 @@
 // inline script promotes Linux when it detects a Linux user-agent. With JS
 // off, the native <details> still lets anyone reach the other build.
 import { Apple, Package, ChevronDown } from '@lucide/astro';
+import ConversionTracking from './ConversionTracking.astro';
 import { getMacDownload, getLinuxDownload } from '../lib/voice-download';
 import { resolveLocale, t } from '../lib/i18n';
 
@@ -36,8 +37,8 @@ const DEFAULT = 'mac';
 // lets `inline-flex` win the `display` race and `hidden` silently does nothing.
 const primaryCls =
   variant === 'cta'
-    ? 'items-center gap-2.5 rounded px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90'
-    : 'group items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#ff6d00]/20 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/30 hover:-translate-y-0.5';
+    ? 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ff6d00]/30'
+    : 'group items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff6d00]/25 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/35 hover:-translate-y-0.5';
 ---
 
 <div class="inline-flex flex-wrap items-center gap-3" data-voice-download>
@@ -61,7 +62,7 @@ const primaryCls =
       {ui.dlOther}
       <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
     </summary>
-    <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-lg border border-gray-200 bg-white p-1.5 shadow-xl dark:border-white/10 dark:bg-wk-surface">
+    <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95">
       {platforms.map((p) => (
         <a
           href={p.dl.url}
@@ -82,6 +83,8 @@ const primaryCls =
     </div>
   </details>
 </div>
+
+<ConversionTracking />
 
 <script is:inline>
   // Promote the visitor's platform to the primary button. Runs synchronously
