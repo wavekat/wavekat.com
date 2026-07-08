@@ -18,9 +18,9 @@ const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, As
 ---
 
 <Base title="博客 — WaveKat" description="来自 WaveKat 团队的工程笔记、产品公告与技术深度文章。">
-  <div class="max-w-3xl mx-auto px-6 py-12">
+  <Header active="blog" />
 
-    <Header active="blog" />
+  <div class="max-w-3xl mx-auto px-6 py-12">
 
     <!-- Blog listing -->
     <section class="mb-20">
@@ -48,9 +48,10 @@ const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, As
       )}
     </section>
 
-    <Footer />
 
   </div>
+
+  <Footer />
 
   <script type="application/ld+json" set:html={JSON.stringify(listSchema)} />
 </Base>

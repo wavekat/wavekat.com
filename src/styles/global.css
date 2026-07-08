@@ -5,6 +5,14 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* Typefaces: Inter carries the UI/body; JetBrains Mono is the accent voice
+     for repo names, code, versions and badges. */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', Menlo, 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* Brand accent */
+  --color-wk-orange: #ff6d00;
+
   /* Library accent colors */
   --color-wk-core: #00e676;
   --color-wk-vad: #00bcd4;
@@ -18,14 +26,65 @@
 }
 
 @layer base {
-  * {
-    font-family: 'JetBrains Mono', Menlo, 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+  }
+
+  ::selection {
+    background-color: rgb(255 109 0 / 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(255 109 0 / 0.6);
+    outline-offset: 2px;
   }
 
   /* Offset in-page anchor jumps (e.g. /voice/changelog/#0.0.41, docs TOC
      links) so the targeted heading isn't flush against the viewport top or
-     hidden under the occasional fixed language banner. */
+     hidden under the sticky header / occasional fixed language banner. */
   html {
-    scroll-padding-top: 4rem;
+    scroll-padding-top: 6rem;
+  }
+}
+
+@layer utilities {
+  /* Hero entrance — one gentle rise on load, skipped for reduced motion. */
+  .animate-rise {
+    animation: wk-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-rise-late {
+    animation: wk-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+
+  /* Brand gradient for headline accents. */
+  .text-gradient-brand {
+    background: linear-gradient(100deg, #ff6d00 0%, #ffa040 60%, #ffd740 120%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes wk-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-rise-late {
+    animation: none;
   }
 }

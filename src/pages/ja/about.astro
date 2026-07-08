@@ -24,9 +24,9 @@ const aboutSchema = {
   title="WaveKat について"
   description="WaveKat は、小さなビジネスに大企業の声を届けるオープンソースの AI 音声ツールを開発しています。何を作り、なぜ作るのか、そしてどう連絡できるかをご紹介します。"
 >
-  <div class="max-w-3xl mx-auto px-6 py-12">
+  <Header />
 
-    <Header />
+  <div class="max-w-3xl mx-auto px-6 py-12">
 
     <section class="mb-16">
       <h1 class="text-2xl font-bold leading-snug mb-5 text-gray-900 dark:text-white">
@@ -63,8 +63,9 @@ const aboutSchema = {
       </a>
     </section>
 
-    <Footer />
   </div>
+
+  <Footer />
 
   <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
 </Base>

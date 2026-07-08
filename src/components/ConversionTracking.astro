@@ -1,0 +1,28 @@
+---
+// Google Ads conversion wiring for any `a[data-conversion]` on the page.
+// Include once per component that renders conversion links (Astro dedupes the
+// bundled script); the per-element guard keeps a link from ever being bound
+// twice even if two components include it on the same page.
+---
+
+<script>
+  // Google Ads conversion labels — the value after the slash from
+  // Google Ads → Tools → Conversions → "<name>" → Tag setup.
+  const CONVERSIONS: Record<string, string> = {
+    mailto_click: 'AW-18128547216/wIcbCOfc66QcEJDbrsRD',
+  };
+
+  function fireConversion(name: string | undefined) {
+    const sendTo = name && CONVERSIONS[name];
+    // @ts-expect-error gtag is injected globally by Base.astro
+    if (!sendTo || typeof gtag !== 'function') return;
+    // @ts-expect-error gtag is injected globally by Base.astro
+    gtag('event', 'conversion', { send_to: sendTo });
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>('a[data-conversion]').forEach((el) => {
+    if (el.dataset.convBound) return;
+    el.dataset.convBound = '1';
+    el.addEventListener('click', () => fireConversion(el.dataset.conversion));
+  });
+</script>
