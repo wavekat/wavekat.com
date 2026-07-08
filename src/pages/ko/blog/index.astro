@@ -20,11 +20,11 @@ const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, As
 <Base title="블로그 — WaveKat" description="WaveKat 팀의 엔지니어링 노트, 제품 소식, 그리고 심층 기술 글입니다.">
   <Header active="blog" />
 
-  <div class="max-w-3xl mx-auto px-6 py-12">
+  <div class="max-w-5xl mx-auto px-6 py-12">
 
     <!-- Blog listing -->
     <section class="mb-20">
-      <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">블로그</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white">블로그</h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10">
         WaveKat 팀의 엔지니어링 노트, 제품 소식, 그리고 심층 기술 글입니다.
       </p>
@@ -32,7 +32,7 @@ const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, As
       {posts.length === 0 ? (
         <p class="text-sm text-gray-400 dark:text-gray-600">아직 글이 없습니다. 곧 다시 확인해 주세요.</p>
       ) : (
-        <div class="grid gap-3">
+        <div class="grid gap-4 sm:grid-cols-2">
           {posts.map((post) => (
             <PostCard
               title={post.data.title}
