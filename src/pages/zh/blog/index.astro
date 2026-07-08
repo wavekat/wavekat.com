@@ -20,7 +20,7 @@ const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, As
 <Base title="博客 — WaveKat" description="来自 WaveKat 团队的工程笔记、产品公告与技术深度文章。">
   <Header active="blog" />
 
-  <div class="max-w-5xl mx-auto px-6 py-12">
+  <div class="max-w-6xl mx-auto px-6 py-12">
 
     <!-- Blog listing -->
     <section class="mb-20">
@@ -32,7 +32,7 @@ const listSchema = itemListSchema('WaveKat Blog', new URL(Astro.url.pathname, As
       {posts.length === 0 ? (
         <p class="text-sm text-gray-400 dark:text-gray-600">还没有文章，请稍后再来看看。</p>
       ) : (
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <PostCard
               title={post.data.title}
