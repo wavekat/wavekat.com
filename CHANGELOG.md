@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.44](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.43...wavekat-com-v0.0.44) (2026-07-08)
+
+
+### Features
+
+* **blog:** click-to-call phone links post ([#122](https://github.com/wavekat/wavekat.com/issues/122)) ([6465b51](https://github.com/wavekat/wavekat.com/commit/6465b51c0bc409a85ed91f723bbc4981f11f21de))
+* modern full-width UX redesign ([#124](https://github.com/wavekat/wavekat.com/issues/124)) ([f98a131](https://github.com/wavekat/wavekat.com/commit/f98a13181e1647d8f8d227fa50f49df452ecbc66))
+
 ## [0.0.43](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.42...wavekat-com-v0.0.43) (2026-07-06)
 
 
