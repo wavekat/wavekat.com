@@ -168,9 +168,10 @@ const pipelineBase = voicePipeline.slice(4);
     </div>
   </section>
 
-  <!-- Free tool: the public voice-prompt generator. Two actions — "Try it free"
-       opens the live tool; "Learn more" goes to the landing page (/voice/prompts/),
-       which keeps the homepage → landing-page internal link for SEO. -->
+  <!-- Free tool: the public voice-prompt generator. Primary "Try it free" opens
+       the live tool; a "Learn more about the generator" inline link sits in the
+       copy and goes to the landing page (/voice/prompts/), keeping the
+       homepage → landing-page internal link for SEO. -->
   <section class="mx-auto max-w-6xl px-6 pt-20 sm:pt-24" data-reveal>
     <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">Free tool</h2>
     <div
@@ -194,23 +195,21 @@ const pipelineBase = voicePipeline.slice(4);
             studio-quality AI voices — in the exact format your phone system needs. Free to try in your
             browser.
           </p>
-        </div>
-        <div class="flex shrink-0 flex-col items-start gap-3 sm:items-end">
-          <a
-            href="https://platform.wavekat.com/voice/prompts"
-            class="group/cta inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
-          >
-            Try it free
-            <ArrowUpRight class="h-4 w-4 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
-          </a>
           <a
             href="/voice/prompts/"
-            class="group/more inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+            class="group/more mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-wk-orange transition-opacity hover:opacity-70"
           >
-            Learn more
-            <ArrowRight class="h-3.5 w-3.5 transition-transform group-hover/more:translate-x-0.5" />
+            Learn more about the generator
+            <ArrowRight class="h-4 w-4 transition-transform group-hover/more:translate-x-0.5" />
           </a>
         </div>
+        <a
+          href="https://platform.wavekat.com/voice/prompts"
+          class="group/cta inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40 sm:self-auto"
+        >
+          Try it free
+          <ArrowUpRight class="h-4 w-4 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+        </a>
       </div>
     </div>
   </section>
