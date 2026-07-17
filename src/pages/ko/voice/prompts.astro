@@ -1,0 +1,341 @@
+---
+// Korean version of the standalone SEO/GEO landing page for the platform's free
+// voice-prompt generator (the tool itself lives at
+// platform.wavekat.com/voice/prompts, see wavekat-platform PR #161). Mirrors
+// src/pages/voice/prompts.astro section-for-section so the two never drift
+// structurally; only the human-visible copy and the localised schema differ.
+// It deliberately does NOT use the Voice layout — that section is the WaveKat
+// Voice desktop app, a separate product — so it renders with the plain Base
+// chrome, like the homepage.
+import Base from '../../../layouts/Base.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import {
+  PhoneCall,
+  ListOrdered,
+  Voicemail,
+  Clock,
+  Music2,
+  Sparkles,
+  AudioLines,
+  Languages,
+  Download,
+  Zap,
+  ArrowRight,
+  ArrowUpRight,
+} from '@lucide/astro';
+
+// The live tool. No trailing slash — matches the platform's own canonical and
+// sitemap entry (apps/web/public/sitemap.xml).
+const APP_URL = 'https://platform.wavekat.com/voice/prompts';
+
+const title = '무료 전화 메뉴 · IVR 음성 생성기 | WaveKat';
+const description =
+  '텍스트를 전화 시스템에 바로 쓸 수 있는 인사말, IVR 메뉴, 음성사서함 안내로 바꿔 드립니다 — 스튜디오 품질의 AI 음성으로, 당신의 전화 시스템이 요구하는 바로 그 형식으로. 무료로 사용해 보세요, 계정도 필요 없습니다.';
+
+// What people actually search for and come to make. Each is a concrete,
+// quotable phone-audio job the generator does.
+const uses = [
+  {
+    icon: PhoneCall,
+    title: '전화 인사말',
+    body: '"애크미 배관에 전화 주셔서 감사합니다 — 무엇을 도와드릴까요?" 모든 통화에 한결같이 따뜻한 첫인사를.',
+  },
+  {
+    icon: ListOrdered,
+    title: 'IVR · 자동 안내 메뉴',
+    body: '"영업은 1번, 고객지원은 2번을 눌러 주세요." 전화 메뉴의 모든 갈래를 한 목소리로 녹음하세요.',
+  },
+  {
+    icon: Voicemail,
+    title: '음성사서함 인사말',
+    body: '아무도 전화를 받을 수 없을 때를 위한, "삐" 소리 뒤의 전문적인 안내 메시지.',
+  },
+  {
+    icon: Clock,
+    title: '영업시간 외 · 휴일 안내',
+    body: '"저희 사무실은 휴일로 휴무이며 월요일 오전 9시에 다시 문을 엽니다." 한 번 만들어 두고, 필요할 때 틀어 주세요.',
+  },
+  {
+    icon: Music2,
+    title: '대기 중 안내',
+    body: '대기 음악 사이에 넣는 짧은 음성 안내 — 영업시간, 이벤트, 콜백 안내까지.',
+  },
+];
+
+const features = [
+  {
+    icon: Sparkles,
+    title: '스튜디오 품질 AI 음성',
+    body: '전화 사용이 허가된, 엄선한 상용 텍스트 음성 변환 목소리들. 하나만 고르면 시스템 전체가 스튜디오에서 녹음한 듯한 소리를 냅니다.',
+  },
+  {
+    icon: AudioLines,
+    title: '전화 시스템에 바로 쓰는 오디오',
+    body: '모든 클립은 전화 시스템이 요구하는 형식 — 8 kHz µ-law, WAV, MP3 — 으로 나오므로, Asterisk, FreePBX, 3CX, Twilio 등에 재인코딩 없이 그대로 넣을 수 있습니다.',
+  },
+  {
+    icon: Zap,
+    title: '무료 체험, 가입 불필요',
+    body: '브라우저에서 바로 첫 클립을 만들어 보세요 — 계정도, 카드도 필요 없습니다. 계속 사용하고 라이브러리를 저장하고 싶을 때 GitHub나 Google로 로그인하세요.',
+  },
+  {
+    icon: Languages,
+    title: '다양한 음성과 언어',
+    body: '여러 언어에 걸친 다양한 목소리 중에서 고를 수 있어, 안내가 발신자가 기대하는 방식 그대로 그들을 맞이합니다.',
+  },
+  {
+    icon: Download,
+    title: '내려받아 바로 사용',
+    body: '파일은 명확하고 알아보기 쉬운 이름으로 내려받아지므로, 전화 시스템에 바로 올리거나 운영 담당자에게 그대로 건네면 됩니다.',
+  },
+  {
+    icon: AudioLines,
+    title: '모든 안내를 한 목소리로',
+    body: '인사말, 메뉴, 음성사서함, 대기 안내를 하나의 목소리로 통일하면, 발신자는 여기저기서 짜깁기한 녹음이 아니라 일관된 하나의 브랜드를 듣게 됩니다.',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    title: '대본 입력하기',
+    body: '인사말, 메뉴, 안내 문구를 직접 쓰거나 — 내장된 예시 중 하나로 시작해 고쳐 쓰세요.',
+  },
+  {
+    n: '2',
+    title: '음성 고르기',
+    body: '엄선된 목소리 중에서 고르고, 당신의 문장이 어떻게 들리는지 미리 들어 보세요. 언제든 바꿀 수 있습니다.',
+  },
+  {
+    n: '3',
+    title: '파일 내려받기',
+    body: '전화 시스템이 요구하는 형식으로 바로 쓸 수 있는 클립을 받아 올리세요. 끝입니다.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'WaveKat 음성 안내 생성기가 무엇인가요?',
+    a: '텍스트를 전화 시스템에 바로 쓸 수 있는 오디오 — 전화 인사말, IVR과 자동 안내 메뉴, 음성사서함 메시지, 대기 중 안내 — 로 바꿔 주는 무료 웹 도구입니다. 스튜디오 품질의 AI 음성이 읽어 줍니다. 대본을 입력하고, 음성을 고르고, 전화 시스템이 틀 수 있는 파일을 내려받으면 됩니다.',
+  },
+  {
+    q: '무료인가요?',
+    a: '네. 계정 없이도 브라우저에서 첫 클립들을 무료로 만들 수 있습니다. GitHub나 Google로 로그인하면 한도가 풀리고 안내를 라이브러리에 저장할 수 있으며, 사용량이 많아지면 WaveKat 플랫폼의 나머지와 동일한 무료·프로 요금제에 따라 계량됩니다.',
+  },
+  {
+    q: '어떤 오디오 형식으로 받게 되며, 제 전화 시스템에서 작동하나요?',
+    a: '클립은 전화 시스템이 요구하는 형식 — 8 kHz µ-law, WAV, MP3 — 으로 나오므로, Asterisk, FreePBX, 3CX, Twilio 같은 시스템에 재인코딩 없이 그대로 들어갑니다. 시스템이 요구하는 형식을 골라 파일을 올리기만 하면 됩니다.',
+  },
+  {
+    q: '체험하려면 계정이 필요한가요?',
+    a: '아니요. 누구나 가입 없이 몇 개의 클립을 만들 수 있습니다. 무료 허용량을 넘겨 계속 만들고 안내를 라이브러리에 저장해 다시 찾아보고 싶을 때만 로그인하면 됩니다.',
+  },
+  {
+    q: '제 업무용 전화 시스템에 이 클립을 써도 되나요?',
+    a: '네 — 바로 그것이 이 생성기의 용도입니다. 인사말, 메뉴, 음성사서함, 대기 안내를 만들어 내려받은 뒤, 당신의 전화 시스템에 올리세요.',
+  },
+  {
+    q: '앱인 WaveKat Voice와는 무엇이 다른가요?',
+    a: 'WaveKat Voice는 당신의 컴퓨터를 업무 전화로 바꿔 주는 데스크톱 앱입니다 — 전화를 받고 걸며, 녹음하고 전사합니다. 음성 안내 생성기는 전화 시스템이 틀어 줄 녹음된 인사말과 메뉴를 만드는 별개의 무료 웹 도구입니다. 둘은 서로를 보완하지만, 각각 따로 쓸 수도 있습니다.',
+    link: { href: '/ko/voice/', label: 'WaveKat Voice 알아보기' },
+  },
+];
+
+// The app itself, for software rich results and AI answer engines. `url` points
+// at the live tool (matching the platform's own WebApplication declaration), so
+// engines bind one entity to one canonical app URL; this page is its marketing
+// front door, referenced by the sitewide Organization.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'WaveKat Voice Prompt Generator',
+  url: APP_URL,
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Web',
+  browserRequirements: 'Requires a modern web browser',
+  isAccessibleForFree: true,
+  image: 'https://wavekat.com/og.png',
+  inLanguage: 'ko',
+  description:
+    '텍스트를 전화 시스템에 바로 쓸 수 있는 오디오 — 인사말, IVR 메뉴, 음성사서함 안내 — 로 바꿔 주는 무료 웹 도구로, 스튜디오 품질의 AI 음성을 사용합니다.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'ko',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <Header />
+
+  <div class="max-w-4xl mx-auto px-6 pt-12 pb-12">
+    <!-- Hero -->
+    <section class="relative mb-20 pt-4">
+      <!-- brand-orange glow -->
+      <div
+        class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+        style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="flex items-center gap-2 mb-5">
+        <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+          무료 · 가입 없이 체험
+        </span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+        무료 전화 메뉴 · IVR<br />
+        <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">음성 생성기.</span>
+      </h1>
+      <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+        WaveKat 음성 안내 생성기는 어떤 텍스트든 전화 시스템에 바로 쓸 수 있는 오디오 — 전화
+        인사말, IVR 메뉴, 음성사서함, 대기 안내 — 로 바꿔 줍니다. 스튜디오 품질의 AI 음성이,
+        당신의 전화 시스템이 요구하는 바로 그 형식으로 읽어 줍니다. 브라우저에서 무료로 써 보고,
+        로그인해 라이브러리를 저장하세요.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href={APP_URL}
+          class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+        >
+          무료로 사용해 보기
+          <ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+        <a
+          href="#how"
+          class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+        >
+          작동 방식 보기
+          <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+        </a>
+      </div>
+      <p class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+        <span class="font-mono">platform.wavekat.com/voice/prompts</span> 에서 실행 · 다운로드 불필요, 카드 불필요
+      </p>
+    </section>
+
+    <!-- What you can make -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">만들 수 있는 것</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {uses.map((u) => (
+          <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+              <u.icon class="w-4 h-4" style="color: #ff6d00" />
+            </span>
+            <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{u.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{u.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">왜 사용하나</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {features.map((f) => (
+          <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+              <f.icon class="w-4 h-4" style="color: #ff6d00" />
+            </span>
+            <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="mb-16 scroll-mt-24">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">작동 방식</h2>
+      <ol class="space-y-4">
+        {steps.map((s) => (
+          <li class="flex gap-4">
+            <span
+              class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+              style="background-color: #ff6d00"
+            >
+              {s.n}
+            </span>
+            <div>
+              <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Try CTA -->
+    <section class="mb-16">
+      <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
+        <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">지금 첫 안내를 만들어 보세요</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
+          브라우저에서 무료로 — 다운로드도, 계정도 필요 없습니다. 한 줄 입력하고, 음성을 고르고,
+          1분 안에 전화용 클립을 내려받으세요.
+        </p>
+        <div class="flex justify-center">
+          <a
+            href={APP_URL}
+            class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+          >
+            음성 안내 생성기 열기
+            <ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q&A -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">질문과 답변</h2>
+      <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+        {faqs.map((f) => (
+          <details class="group">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+              {f.q}
+              <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+            </summary>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+              {f.a}
+              {f.link && (
+                <a
+                  href={f.link.href}
+                  class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
+                  style="color: #ff6d00"
+                >
+                  {f.link.label}
+                  <ArrowRight class="w-3 h-3" />
+                </a>
+              )}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Base>

@@ -172,6 +172,40 @@ const pipelineBase = voicePipeline.slice(4);
     </div>
   </section>
 
+  <!-- Free tool: the public voice-prompt generator, a browser-based front door
+       to the platform. Links to its dedicated landing page (/voice/prompts/). -->
+  <section class="mx-auto max-w-6xl px-6 pt-20 sm:pt-24" data-reveal>
+    <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">免费工具</h2>
+    <a
+      href="/zh/voice/prompts/"
+      class="group relative block overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-24px_#ff6d00] dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none sm:p-10"
+    >
+      <span
+        class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
+        style="background: linear-gradient(90deg, transparent, #ff6d00, transparent);"
+        aria-hidden="true"
+      ></span>
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div class="max-w-2xl">
+          <span class="inline-flex items-center rounded-full border border-wk-orange/30 bg-wk-orange/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-orange">
+            免费 · 无需注册
+          </span>
+          <h3 class="mt-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+            电话菜单与 IVR 语音生成器
+          </h3>
+          <p class="mt-3 text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            把文字变成可直接用于电话系统的问候语、IVR 菜单和语音信箱提示音，配以录音棚级 AI
+            语音——并输出成你的电话系统所需的确切格式。在浏览器里免费试用。
+          </p>
+        </div>
+        <span class="inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-transform group-hover:-translate-y-0.5 sm:self-auto">
+          免费试用
+          <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </span>
+      </div>
+    </a>
+  </section>
+
   <!-- Libraries: the pipeline drawn as the signal chain it is -->
   <section class="mx-auto max-w-6xl px-6 py-20 sm:py-24">
     <h2 class="mb-3 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">开源库</h2>

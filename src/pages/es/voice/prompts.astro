@@ -1,0 +1,341 @@
+---
+// Spanish version of the standalone SEO/GEO landing page for the platform's
+// free voice-prompt generator (the tool itself lives at
+// platform.wavekat.com/voice/prompts, see wavekat-platform PR #161). This is
+// the marketing/answer-engine front door: it explains the tool, targets the
+// "free IVR / phone menu voice generator" queries, and hands off to the live
+// app. It deliberately does NOT use the Voice layout — that section is the
+// WaveKat Voice desktop app, a separate product — so it renders with the plain
+// Base chrome, like the homepage.
+import Base from '../../../layouts/Base.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import {
+  PhoneCall,
+  ListOrdered,
+  Voicemail,
+  Clock,
+  Music2,
+  Sparkles,
+  AudioLines,
+  Languages,
+  Download,
+  Zap,
+  ArrowRight,
+  ArrowUpRight,
+} from '@lucide/astro';
+
+// The live tool. No trailing slash — matches the platform's own canonical and
+// sitemap entry (apps/web/public/sitemap.xml).
+const APP_URL = 'https://platform.wavekat.com/voice/prompts';
+
+const title = 'Generador de voz gratis para menús telefónicos e IVR | WaveKat';
+const description =
+  'Convierta texto en saludos telefónicos, menús IVR y mensajes de buzón de voz listos para telefonía con voces de IA de calidad de estudio, en el formato exacto que su sistema telefónico necesita. Gratis para probar, sin necesidad de cuenta.';
+
+// What people actually search for and come to make. Each is a concrete,
+// quotable phone-audio job the generator does.
+const uses = [
+  {
+    icon: PhoneCall,
+    title: 'Saludos telefónicos',
+    body: '«Gracias por llamar a Fontanería Acme, ¿en qué podemos ayudarle?» Un saludo cálido y uniforme en cada llamada.',
+  },
+  {
+    icon: ListOrdered,
+    title: 'Menús IVR y de operadora automática',
+    body: '«Para ventas, marque 1. Para soporte, marque 2.» Grabe cada rama de su menú telefónico con una sola voz.',
+  },
+  {
+    icon: Voicemail,
+    title: 'Saludos de buzón de voz',
+    body: 'Un mensaje profesional tras la señal para las veces en que nadie puede contestar.',
+  },
+  {
+    icon: Clock,
+    title: 'Mensajes fuera de horario y festivos',
+    body: '«Nuestra oficina está cerrada por festivo y reabre el lunes a las 9:00.» Configúrelo una vez y reprodúzcalo cuando lo necesite.',
+  },
+  {
+    icon: Music2,
+    title: 'Avisos en espera',
+    body: 'Notas habladas breves entre la música de espera: horarios de apertura, una promoción o una invitación a dejar un mensaje.',
+  },
+];
+
+const features = [
+  {
+    icon: Sparkles,
+    title: 'Voces de IA de calidad de estudio',
+    body: 'Un conjunto seleccionado de voces comerciales de texto a voz, autorizadas para uso telefónico. Elija una y todo su sistema sonará como si se hubiera grabado en un estudio.',
+  },
+  {
+    icon: AudioLines,
+    title: 'Audio listo para telefonía',
+    body: 'Cada clip sale en los formatos que los sistemas telefónicos esperan —8 kHz µ-law, WAV o MP3— para que se integre directamente en Asterisk, FreePBX, 3CX, Twilio y los demás sin volver a codificar.',
+  },
+  {
+    icon: Zap,
+    title: 'Gratis para probar, sin registro',
+    body: 'Genere sus primeros clips directamente en el navegador: sin cuenta, sin tarjeta. Inicie sesión con GitHub o Google cuando quiera continuar y guardar una biblioteca.',
+  },
+  {
+    icon: Languages,
+    title: 'Muchas voces e idiomas',
+    body: 'Elija entre una variedad de voces en múltiples idiomas, para que el mensaje reciba a quien llama tal como espera ser recibido.',
+  },
+  {
+    icon: Download,
+    title: 'Descargue y listo',
+    body: 'Los archivos se descargan con un nombre claro y descriptivo, listos para subirlos a su sistema telefónico o entregárselos a quien lo administra.',
+  },
+  {
+    icon: AudioLines,
+    title: 'Coherencia en cada mensaje',
+    body: 'Una sola voz para su saludo, su menú, su buzón de voz y su mensaje de espera hace que quien llama oiga una marca única y coherente, no un mosaico de grabaciones.',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    title: 'Escriba su guion',
+    body: 'Redacte el saludo, el menú o el mensaje, o parta de uno de los ejemplos incorporados y edítelo.',
+  },
+  {
+    n: '2',
+    title: 'Elija una voz',
+    body: 'Seleccione entre las voces disponibles y escuche cómo suena su texto. Cámbiela cuando quiera.',
+  },
+  {
+    n: '3',
+    title: 'Descargue el archivo',
+    body: 'Obtenga un clip listo para telefonía en el formato que su sistema telefónico necesita y súbalo. Listo.',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿Qué es el generador de mensajes de voz de WaveKat?',
+    a: 'Es una herramienta web gratuita que convierte texto en audio listo para telefonía —saludos telefónicos, menús IVR y de operadora automática, mensajes de buzón de voz y avisos en espera— con voces de IA de calidad de estudio. Escribe el guion, elige una voz y descarga un archivo que su sistema telefónico puede reproducir.',
+  },
+  {
+    q: '¿Es gratis?',
+    a: 'Sí. Puede generar sus primeros clips en el navegador de forma gratuita, sin cuenta. Iniciar sesión con GitHub o Google amplía el límite y le permite guardar una biblioteca de sus mensajes; el uso más intensivo se contabiliza según los mismos planes gratuito y pro que el resto de la plataforma WaveKat.',
+  },
+  {
+    q: '¿Qué formato de audio obtengo y funcionará con mi sistema telefónico?',
+    a: 'Los clips salen en los formatos que los sistemas telefónicos esperan —8 kHz µ-law, WAV y MP3— para que se integren directamente en sistemas como Asterisk, FreePBX, 3CX y Twilio sin volver a codificar. Elija el formato que su sistema pida y suba el archivo.',
+  },
+  {
+    q: '¿Necesito una cuenta para probarlo?',
+    a: 'No. Cualquiera puede generar un par de clips sin registrarse. Solo inicia sesión cuando quiere seguir generando más allá de la cuota gratuita y guardar sus mensajes en una biblioteca a la que volver.',
+  },
+  {
+    q: '¿Puedo usar los clips en el sistema telefónico de mi empresa?',
+    a: 'Sí, para eso sirve exactamente el generador. Genere su saludo, su menú, su buzón de voz y sus avisos en espera, descárguelos y cárguelos en su sistema telefónico.',
+  },
+  {
+    q: '¿En qué se diferencia de WaveKat Voice, la app?',
+    a: 'WaveKat Voice es una app de escritorio que convierte su computadora en su teléfono de empresa: contesta y hace llamadas, grabadas y transcritas. El generador de mensajes de voz es una herramienta web gratuita e independiente que crea los saludos y menús grabados que su sistema telefónico reproduce. Se complementan, pero puede usar cualquiera de los dos por separado.',
+    link: { href: '/es/voice/', label: 'Sobre WaveKat Voice' },
+  },
+];
+
+// The app itself, for software rich results and AI answer engines. `url` points
+// at the live tool (matching the platform's own WebApplication declaration), so
+// engines bind one entity to one canonical app URL; this page is its marketing
+// front door, referenced by the sitewide Organization.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'WaveKat Voice Prompt Generator',
+  url: APP_URL,
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Web',
+  browserRequirements: 'Requires a modern web browser',
+  isAccessibleForFree: true,
+  image: 'https://wavekat.com/og.png',
+  inLanguage: 'es',
+  description:
+    'Una herramienta web gratuita que convierte texto en audio telefónico listo para telefonía —saludos, menús IVR y mensajes de buzón de voz— con voces de IA de calidad de estudio.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'es',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <Header />
+
+  <div class="max-w-4xl mx-auto px-6 pt-12 pb-12">
+    <!-- Hero -->
+    <section class="relative mb-20 pt-4">
+      <!-- brand-orange glow -->
+      <div
+        class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+        style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="flex items-center gap-2 mb-5">
+        <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
+          gratis · sin registro para probar
+        </span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+        Generador de voz gratis para<br />
+        <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">menús telefónicos e IVR.</span>
+      </h1>
+      <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+        El generador de mensajes de voz de WaveKat convierte cualquier texto en audio listo para
+        telefonía —saludos telefónicos, menús IVR, buzón de voz y mensajes en espera— con voces de IA de
+        calidad de estudio, en el formato exacto que su sistema telefónico necesita. Pruébelo gratis en su
+        navegador; inicie sesión para guardar una biblioteca.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href={APP_URL}
+          class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+        >
+          Pruébelo gratis
+          <ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+        <a
+          href="#how"
+          class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+        >
+          Vea cómo funciona
+          <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+        </a>
+      </div>
+      <p class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+        Funciona en <span class="font-mono">platform.wavekat.com/voice/prompts</span> · sin descargas, sin tarjeta
+      </p>
+    </section>
+
+    <!-- What you can make -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Qué puede crear</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {uses.map((u) => (
+          <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+              <u.icon class="w-4 h-4" style="color: #ff6d00" />
+            </span>
+            <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{u.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{u.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Por qué usarlo</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {features.map((f) => (
+          <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
+              <f.icon class="w-4 h-4" style="color: #ff6d00" />
+            </span>
+            <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="mb-16 scroll-mt-24">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Cómo funciona</h2>
+      <ol class="space-y-4">
+        {steps.map((s) => (
+          <li class="flex gap-4">
+            <span
+              class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+              style="background-color: #ff6d00"
+            >
+              {s.n}
+            </span>
+            <div>
+              <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Try CTA -->
+    <section class="mb-16">
+      <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
+        <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">Cree su primer mensaje ahora</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
+          Gratis para probar en su navegador: sin descargas, sin cuenta. Escriba una línea, elija una voz y
+          descargue un clip listo para telefonía en menos de un minuto.
+        </p>
+        <div class="flex justify-center">
+          <a
+            href={APP_URL}
+            class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+          >
+            Abrir el generador de mensajes de voz
+            <ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q&A -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Preguntas y respuestas</h2>
+      <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+        {faqs.map((f) => (
+          <details class="group">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+              {f.q}
+              <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+            </summary>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+              {f.a}
+              {f.link && (
+                <a
+                  href={f.link.href}
+                  class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
+                  style="color: #ff6d00"
+                >
+                  {f.link.label}
+                  <ArrowRight class="w-3 h-3" />
+                </a>
+              )}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Base>
