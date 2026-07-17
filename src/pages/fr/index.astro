@@ -7,7 +7,7 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
-import { ArrowRight } from '@lucide/astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 
 const voicePipeline = [
   {
@@ -178,10 +178,7 @@ const pipelineBase = voicePipeline.slice(4);
        to the platform. Links to its dedicated landing page (/fr/voice/prompts/). -->
   <section class="mx-auto max-w-6xl px-6 pt-20 sm:pt-24" data-reveal>
     <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">Outil gratuit</h2>
-    <a
-      href="/fr/voice/prompts/"
-      class="group relative block overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-24px_#ff6d00] dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none sm:p-10"
-    >
+    <div class="group relative overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-8 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none sm:p-10">
       <span
         class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
         style="background: linear-gradient(90deg, transparent, #ff6d00, transparent);"
@@ -201,12 +198,24 @@ const pipelineBase = voicePipeline.slice(4);
             téléphonique. Gratuit à essayer dans votre navigateur.
           </p>
         </div>
-        <span class="inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-transform group-hover:-translate-y-0.5 sm:self-auto">
-          Essayer gratuitement
-          <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </span>
+        <div class="flex shrink-0 flex-col items-start gap-3 sm:items-end">
+          <a
+            href="https://platform.wavekat.com/voice/prompts"
+            class="group/cta inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+          >
+            Essayer gratuitement
+            <ArrowUpRight class="h-4 w-4 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+          </a>
+          <a
+            href="/fr/voice/prompts/"
+            class="group/more inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+          >
+            En savoir plus
+            <ArrowRight class="h-3.5 w-3.5 transition-transform group-hover/more:translate-x-0.5" />
+          </a>
+        </div>
       </div>
-    </a>
+    </div>
   </section>
 
   <!-- Libraries: the pipeline drawn as the signal chain it is -->
