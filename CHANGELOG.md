@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.45](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.44...wavekat-com-v0.0.45) (2026-07-18)
+
+
+### Features
+
+* voice prompt generator landing page ([#125](https://github.com/wavekat/wavekat.com/issues/125)) ([570887d](https://github.com/wavekat/wavekat.com/commit/570887d75d68537424f68d1f04d1171b53214e50))
+
 ## [0.0.44](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.43...wavekat-com-v0.0.44) (2026-07-08)
 
 
