@@ -66,6 +66,7 @@ export const localeDefs: LocaleDef[] = [
 const fullSite = [
   '/',
   '/voice/',
+  '/voice/prompts/',
   '/voice/use-cases/',
   '/voice/download/',
   '/voice/talk/',

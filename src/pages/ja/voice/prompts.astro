@@ -1,0 +1,339 @@
+---
+// Japanese version of the standalone SEO/GEO landing page for the platform's
+// free voice-prompt generator (the tool itself lives at
+// platform.wavekat.com/voice/prompts, see wavekat-platform PR #161). This is the
+// marketing/answer-engine front door: it explains the tool, targets the "free
+// IVR / phone menu voice generator" queries, and hands off to the live app. It
+// deliberately does NOT use the Voice layout — that section is the WaveKat Voice
+// desktop app, a separate product — so it renders with the plain Base chrome,
+// like the homepage.
+import Base from '../../../layouts/Base.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import {
+  PhoneCall,
+  ListOrdered,
+  Voicemail,
+  Clock,
+  Music2,
+  Sparkles,
+  AudioLines,
+  Languages,
+  Download,
+  Zap,
+  ArrowRight,
+  ArrowUpRight,
+} from '@lucide/astro';
+
+// The live tool. No trailing slash — matches the platform's own canonical and
+// sitemap entry (apps/web/public/sitemap.xml).
+const APP_URL = 'https://platform.wavekat.com/voice/prompts';
+
+const title = '無料の電話メニュー・IVR 音声ジェネレーター | WaveKat';
+const description =
+  'テキストを、電話システムがそのまま使える形式で、電話の応答メッセージ・IVR メニュー・留守番電話の案内に変換します——スタジオ品質の AI 音声で。無料で試せて、アカウント登録は不要です。';
+
+// What people actually search for and come to make. Each is a concrete,
+// quotable phone-audio job the generator does.
+const uses = [
+  {
+    icon: PhoneCall,
+    title: '電話の応答メッセージ',
+    body: '「お電話ありがとうございます、Acme 設備です。ご用件をどうぞ」——どの通話でも変わらない、温かみのある第一声を。',
+  },
+  {
+    icon: ListOrdered,
+    title: 'IVR・自動応答メニュー',
+    body: '「ご注文の方は 1 を、サポートの方は 2 を押してください」——電話メニューのすべての分岐を、一つの声で録音。',
+  },
+  {
+    icon: Voicemail,
+    title: '留守番電話の案内',
+    body: '誰も出られないときのための、プロフェッショナルな「発信音のあとに」メッセージ。',
+  },
+  {
+    icon: Clock,
+    title: '営業時間外・休業日のお知らせ',
+    body: '「本日は休業日です。月曜午前 9 時より営業を再開いたします」——一度設定しておけば、必要なときに再生できます。',
+  },
+  {
+    icon: Music2,
+    title: '保留中のアナウンス',
+    body: '保留音の合間に流す、短い音声のお知らせ——営業時間、キャンペーン、折り返しのご案内など。',
+  },
+];
+
+const features = [
+  {
+    icon: Sparkles,
+    title: 'スタジオ品質の AI 音声',
+    body: '電話利用が許諾された、厳選された商用テキスト読み上げ音声のセット。一つ選ぶだけで、システム全体がスタジオ録音のような響きになります。',
+  },
+  {
+    icon: AudioLines,
+    title: '電話システムにそのまま使える音声',
+    body: 'どのクリップも、電話システムが求める形式で出力されます——8 kHz µ-law、WAV、MP3——だから Asterisk、FreePBX、3CX、Twilio などに、再エンコードなしでそのまま組み込めます。',
+  },
+  {
+    icon: Zap,
+    title: '無料で試せて、登録不要',
+    body: '最初のクリップは、ブラウザ上でそのまま生成できます——アカウントもクレジットカードも不要。続けて使いたくなったら、GitHub や Google でサインインすれば、ライブラリを保存できます。',
+  },
+  {
+    icon: Languages,
+    title: '豊富な音声と言語',
+    body: '複数の言語にわたる多彩な音声から選べるので、発信者が期待する迎え方で、案内が語りかけます。',
+  },
+  {
+    icon: Download,
+    title: 'ダウンロードしてすぐ使える',
+    body: '内容がひと目で分かる、分かりやすいファイル名でダウンロードされます——電話システムにアップロードするのも、担当者に渡すのもすぐに。',
+  },
+  {
+    icon: AudioLines,
+    title: 'すべての案内で一貫した声',
+    body: '応答メッセージも、メニューも、留守番電話も、保留のお知らせも一つの声で。発信者は、寄せ集めの録音ではなく、まとまりのある一つのブランドの声を聞きます。',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    title: '原稿を入力する',
+    body: '応答メッセージ、メニュー、お知らせを書く——あるいは、用意された例文の一つから始めて手直しするだけ。',
+  },
+  {
+    n: '2',
+    title: '声を選ぶ',
+    body: '厳選された音声から選び、あなたのテキストがどう聞こえるかを試聴。いつでも変更できます。',
+  },
+  {
+    n: '3',
+    title: 'ファイルをダウンロードする',
+    body: '電話システムが必要とする形式で、そのまま使えるクリップを受け取り、アップロード。これで完了です。',
+  },
+];
+
+const faqs = [
+  {
+    q: 'WaveKat の音声プロンプトジェネレーターとは何ですか？',
+    a: 'テキストを、電話システムがそのまま使える音声に変換する無料のウェブツールです——電話の応答メッセージ、IVR・自動応答メニュー、留守番電話のメッセージ、保留中のアナウンスを、スタジオ品質の AI 音声で読み上げます。原稿を入力し、声を選び、電話システムで再生できるファイルをダウンロードするだけです。',
+  },
+  {
+    q: '無料ですか？',
+    a: 'はい。最初のクリップは、アカウントなしでブラウザ上で無料で生成できます。GitHub や Google でサインインすれば上限が引き上がり、作成したプロンプトのライブラリを保存できます。より多くの利用は、WaveKat プラットフォームのほかの機能と同じ無料・プロの料金体系に従って計測されます。',
+  },
+  {
+    q: 'どの音声形式で受け取れますか？私の電話システムで使えますか？',
+    a: 'クリップは、電話システムが求める形式で出力されます——8 kHz µ-law、WAV、MP3——だから Asterisk、FreePBX、3CX、Twilio といったシステムに、再エンコードなしでそのまま組み込めます。お使いのシステムが求める形式を選んで、ファイルをアップロードしてください。',
+  },
+  {
+    q: '試すのにアカウントは必要ですか？',
+    a: 'いいえ。誰でも登録なしで、いくつかのクリップを生成できます。サインインが必要になるのは、無料の範囲を超えて生成を続けたいときや、あとで戻ってこられるライブラリにプロンプトを保存したいときだけです。',
+  },
+  {
+    q: '自社のビジネス電話システムにクリップを使えますか？',
+    a: 'はい——まさにそのためのジェネレーターです。応答メッセージ、メニュー、留守番電話、保留中のプロンプトを生成し、ダウンロードして、電話システムに読み込ませてください。',
+  },
+  {
+    q: 'アプリの WaveKat Voice とは何が違うのですか？',
+    a: 'WaveKat Voice は、あなたのパソコンをビジネス用の電話に変えるデスクトップアプリで、電話の応答も発信も行い、録音・文字起こしをします。音声プロンプトジェネレーターは、電話システムが再生する応答メッセージやメニューを作る、独立した無料のウェブツールです。両者は互いを補い合いますが、どちらか一方だけでも使えます。',
+    link: { href: '/ja/voice/', label: 'WaveKat Voice について' },
+  },
+];
+
+// The app itself, for software rich results and AI answer engines. `url` points
+// at the live tool (matching the platform's own WebApplication declaration), so
+// engines bind one entity to one canonical app URL; this page is its marketing
+// front door, referenced by the sitewide Organization.
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'WaveKat Voice Prompt Generator',
+  url: APP_URL,
+  inLanguage: 'ja',
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Web',
+  browserRequirements: 'Requires a modern web browser',
+  isAccessibleForFree: true,
+  image: 'https://wavekat.com/og.png',
+  description:
+    'テキストを、電話システムがそのまま使える音声——応答メッセージ、IVR メニュー、留守番電話の案内——に変換する無料のウェブツール。スタジオ品質の AI 音声を使用します。',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+  },
+  publisher: { '@id': 'https://wavekat.com/#organization' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'ja',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <Header />
+
+  <div class="max-w-4xl mx-auto px-6 pt-12 pb-12">
+    <!-- Hero -->
+    <section class="relative mb-20 pt-4">
+      <!-- brand-orange glow -->
+      <div
+        class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+        style="background: radial-gradient(circle, var(--color-wk-orange) 0%, transparent 70%);"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="flex items-center gap-2 mb-5">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-wk-orange/25 px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase text-wk-orange">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse bg-wk-orange"></span>
+          無料 · 登録なしで試せる
+        </span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
+        無料の電話メニュー・IVR<br />
+        <span class="bg-gradient-to-r from-wk-orange to-[#ffa14d] bg-clip-text text-transparent">音声ジェネレーター。</span>
+      </h1>
+      <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+        WaveKat の音声プロンプトジェネレーターは、どんなテキストも、電話システムがそのまま使える音声に
+        変換します——電話の応答メッセージ、IVR メニュー、留守番電話、保留中のお知らせを、スタジオ品質の
+        AI 音声で、お使いの電話システムが必要とする形式ちょうどに。ブラウザで無料で試して、サインインすれば
+        ライブラリを保存できます。
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href={APP_URL}
+          class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+        >
+          無料で試す
+          <ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+        <a
+          href="#how"
+          class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+        >
+          使い方を見る
+          <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+        </a>
+      </div>
+      <p class="mt-4 text-xs text-gray-400 dark:text-gray-600">
+        <span class="font-mono">platform.wavekat.com/voice/prompts</span> で動作 · ダウンロード不要、カード不要
+      </p>
+    </section>
+
+    <!-- What you can make -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">作れるもの</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {uses.map((u) => (
+          <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-wk-orange/40 hover:shadow-lg hover:shadow-wk-orange/5">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors bg-wk-orange/[0.08]">
+              <u.icon class="w-4 h-4 text-wk-orange" />
+            </span>
+            <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{u.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{u.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">選ばれる理由</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {features.map((f) => (
+          <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-wk-orange/40 hover:shadow-lg hover:shadow-wk-orange/5">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors bg-wk-orange/[0.08]">
+              <f.icon class="w-4 h-4 text-wk-orange" />
+            </span>
+            <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="mb-16 scroll-mt-24">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">使い方</h2>
+      <ol class="space-y-4">
+        {steps.map((s) => (
+          <li class="flex gap-4">
+            <span
+              class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white bg-wk-orange"
+            >
+              {s.n}
+            </span>
+            <div>
+              <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Try CTA -->
+    <section class="mb-16">
+      <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
+        <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">今すぐ最初の案内を作る</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
+          ブラウザで無料で試せます——ダウンロードもアカウントも不要。一行入力して、声を選べば、1 分とかからず
+          電話用のクリップをダウンロードできます。
+        </p>
+        <div class="flex justify-center">
+          <a
+            href={APP_URL}
+            class="group inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+          >
+            音声プロンプトジェネレーターを開く
+            <ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q&A -->
+    <section class="mb-16">
+      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">よくある質問</h2>
+      <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+        {faqs.map((f) => (
+          <details class="group">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+              {f.q}
+              <span class="shrink-0 text-wk-orange transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
+              {f.a}
+              {f.link && (
+                <a
+                  href={f.link.href}
+                  class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity text-wk-orange"
+                >
+                  {f.link.label}
+                  <ArrowRight class="w-3 h-3" />
+                </a>
+              )}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Base>

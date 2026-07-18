@@ -7,7 +7,7 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
-import { ArrowRight } from '@lucide/astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
 
 const voicePipeline = [
   {
@@ -171,6 +171,50 @@ const pipelineBase = voicePipeline.slice(4);
         Scopri di più e scarica
         <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
       </a>
+    </div>
+  </section>
+
+  <!-- Free tool: the public voice-prompt generator, a browser-based front door
+       to the platform. Links to its dedicated landing page (/it/voice/prompts/). -->
+  <section class="mx-auto max-w-6xl px-6 pt-20 sm:pt-24" data-reveal>
+    <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-gray-400">Strumento gratuito</h2>
+    <div
+      class="group relative overflow-hidden rounded-2xl border border-gray-200/70 bg-white p-8 shadow-sm dark:border-white/[0.06] dark:bg-white/[0.02] dark:shadow-none sm:p-10"
+    >
+      <span
+        class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
+        style="background: linear-gradient(90deg, transparent, #ff6d00, transparent);"
+        aria-hidden="true"
+      ></span>
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div class="max-w-2xl">
+          <span class="inline-flex items-center rounded-full border border-wk-orange/30 bg-wk-orange/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-orange">
+            gratis · senza registrazione
+          </span>
+          <h3 class="mt-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+            Generatore vocale per menu telefonici e IVR
+          </h3>
+          <p class="mt-3 text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            Trasforma il testo in messaggi di benvenuto, menu IVR e messaggi di segreteria pronti per la
+            telefonia, con voci AI di qualità da studio — esattamente nel formato richiesto dal tuo
+            centralino. Gratis da provare nel browser.
+          </p>
+          <a
+            href="/it/voice/prompts/"
+            class="group/more mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-wk-orange transition-opacity hover:opacity-70"
+          >
+            Scopri di più sul generatore
+            <ArrowRight class="h-4 w-4 transition-transform group-hover/more:translate-x-0.5" />
+          </a>
+        </div>
+        <a
+          href="https://platform.wavekat.com/voice/prompts"
+          class="group/cta inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40 sm:self-auto"
+        >
+          Provalo gratis
+          <ArrowUpRight class="h-4 w-4 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+        </a>
+      </div>
     </div>
   </section>
 
