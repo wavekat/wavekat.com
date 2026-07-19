@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [工具, 語音AI]
 lang: "zh-Hant"
-draft: true
 ---
 
 [WaveKat 語音提示產生器](/zh-hant/voice/prompts/)是一款免費的網頁工具，能把任何文字變成可直接用於電話系統的音訊——來電問候、IVR 與自動總機選單、語音信箱訊息、非上班時間公告與通話等候提示——由錄音室等級的 AI 語音唸出。你輸入腳本、挑選聲音，就能下載一個正是你的電話系統所需格式的檔案。它直接在瀏覽器裡執行，網址是 [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts)，而且無須建立帳號就能產生你的第一批音檔。

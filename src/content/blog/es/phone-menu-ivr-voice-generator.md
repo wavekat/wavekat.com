@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [herramientas, voz-ia]
 lang: "es"
-draft: true
 ---
 
 El [generador de mensajes de voz de WaveKat](/es/voice/prompts/) es una herramienta web gratuita que convierte cualquier texto en audio telefónico listo para telefonía —saludos, menús IVR y de operadora automática, mensajes de buzón de voz, anuncios fuera de horario y avisos en espera— con voces de IA de calidad de estudio. Escribe el guion, elige una voz y descarga un archivo en el formato exacto que su sistema telefónico necesita. Funciona en el navegador en [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts), y puede crear sus primeros clips sin crear una cuenta.

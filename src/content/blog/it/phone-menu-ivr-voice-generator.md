@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [strumenti, voice-ai]
 lang: "it"
-draft: true
 ---
 
 Il [generatore di prompt vocali WaveKat](/it/voice/prompts/) è uno strumento web gratuito che trasforma qualsiasi testo in audio pronto per la telefonia — messaggi di benvenuto, menu IVR e centralino automatico, messaggi di segreteria, annunci fuori orario e avvisi di attesa — pronunciato da voci AI di qualità da studio. Scrivi il copione, scegli una voce e scarichi un file esattamente nel formato richiesto dal tuo centralino. Funziona nel browser su [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts), e puoi creare le tue prime clip senza aprire un account.

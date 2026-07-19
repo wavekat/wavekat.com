@@ -4,7 +4,6 @@ description: "The WaveKat voice prompt generator turns text into telephony-ready
 date: 2026-07-19
 author: Eason Guo
 tags: [tools, voice-ai]
-draft: true
 ---
 
 The [WaveKat voice prompt generator](/voice/prompts/) is a free web tool that turns any text into telephony-ready phone audio — greetings, IVR and auto-attendant menus, voicemail messages, after-hours announcements, and on-hold notices — spoken by studio-quality AI voices. You type the script, pick a voice, and download a file in the exact format your phone system needs. It runs in the browser at [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts), and you can make your first clips without creating an account.

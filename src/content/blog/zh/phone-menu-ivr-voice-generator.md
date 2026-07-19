@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [工具, 语音AI]
 lang: "zh-Hans"
-draft: true
 ---
 
 [WaveKat 语音提示生成器](/zh/voice/prompts/)是一款免费的网页工具，能把任意文字变成可直接用于电话系统的音频——来电问候语、IVR 与自动话务员菜单、语音信箱留言、下班提示，以及等待中的语音通知——由录音棚级 AI 语音念出。你输入文案，挑选一把嗓音，然后下载一个格式恰好符合你电话系统要求的文件。它在浏览器里运行，地址是 [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts)，第一批音频无需注册账户即可生成。

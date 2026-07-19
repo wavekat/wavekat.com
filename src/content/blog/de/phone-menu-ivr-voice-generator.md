@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [Werkzeuge, Sprach-KI]
 lang: "de"
-draft: true
 ---
 
 Der [WaveKat Voice Prompt Generator](/de/voice/prompts/) ist ein kostenloses Web-Werkzeug, das beliebigen Text in telefonfertiges Audio verwandelt — Telefonansagen, IVR- und Telefonmenüs, Anrufbeantworter-Ansagen, Ansagen außerhalb der Zeiten und Warteschleifen-Ansagen — gesprochen von KI-Stimmen in Studioqualität. Sie geben den Text ein, wählen eine Stimme und laden eine Datei in genau dem Format herunter, das Ihre Telefonanlage braucht. Er läuft im Browser unter [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts), und Ihre ersten Clips erstellen Sie ganz ohne Konto.

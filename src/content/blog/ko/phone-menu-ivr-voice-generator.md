@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [도구, 음성AI]
 lang: "ko"
-draft: true
 ---
 
 [WaveKat 음성 안내 생성기](/ko/voice/prompts/)는 어떤 텍스트든 전화 시스템에 바로 쓸 수 있는 오디오 — 전화 인사말, IVR·자동 안내 메뉴, 음성사서함 메시지, 영업시간 외 안내, 대기 중 안내 — 로 바꿔 주는 무료 웹 도구입니다. 스튜디오 품질의 AI 음성이 읽어 줍니다. 대본을 입력하고, 음성을 고르고, 당신의 전화 시스템이 요구하는 바로 그 형식으로 파일을 내려받으면 됩니다. [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts)에서 브라우저로 실행되며, 계정을 만들지 않고도 첫 클립들을 만들 수 있습니다.

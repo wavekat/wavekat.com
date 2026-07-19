@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [ツール, 音声AI]
 lang: "ja"
-draft: true
 ---
 
 [WaveKat の音声プロンプトジェネレーター](/ja/voice/prompts/)は、どんなテキストも電話システムがそのまま使える音声に変換する無料のウェブツールです——電話の応答メッセージ、IVR・自動応答メニュー、留守番電話のメッセージ、営業時間外のお知らせ、保留中のアナウンスを、スタジオ品質の AI 音声で読み上げます。原稿を入力し、声を選び、お使いの電話システムが必要とする形式ちょうどのファイルをダウンロードするだけ。[platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts) でブラウザ上で動作し、最初のクリップはアカウントを作らずに生成できます。

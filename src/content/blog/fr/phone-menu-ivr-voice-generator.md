@@ -5,7 +5,6 @@ date: 2026-07-19
 author: Eason Guo
 tags: [outils, ia-vocale]
 lang: "fr"
-draft: true
 ---
 
 Le [générateur de messages vocaux WaveKat](/fr/voice/prompts/) est un outil web gratuit qui transforme n'importe quel texte en audio prêt pour la téléphonie — messages d'accueil, menus SVI et standards automatiques, messages de répondeur, annonces hors horaires et messages d'attente — dit par des voix IA de qualité studio. Vous saisissez le script, choisissez une voix, et téléchargez un fichier dans le format exact qu'exige votre système téléphonique. Il fonctionne dans le navigateur sur [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts), et vous pouvez créer vos premiers clips sans créer de compte.
