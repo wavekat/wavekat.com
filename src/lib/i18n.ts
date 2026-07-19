@@ -82,6 +82,7 @@ const fullSite = [
   '/blog/hold-switch-and-transfer-calls/',
   '/blog/our-own-sip-engine/',
   '/blog/click-to-call-phone-links/',
+  '/blog/phone-menu-ivr-voice-generator/',
   '/about/',
 ];
 
