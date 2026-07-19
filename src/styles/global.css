@@ -62,6 +62,25 @@
     animation: wk-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
   }
 
+  /* Opt-in chrome for bare screenshots (no baked-in window frame/shadow),
+     applied by writing `#shadow` on a markdown image URL — see
+     rehypeImageFlags in astro.config.mjs. The hairline border defines the
+     edge where a shadow alone can't (white capture on light ground, dark UI
+     on dark ground); the shadow lifts it off the page. */
+  .img-shadow {
+    border-radius: 0.5rem;
+    border: 1px solid rgb(0 0 0 / 0.08);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.06),
+      0 8px 24px rgb(0 0 0 / 0.1);
+  }
+  .dark .img-shadow {
+    border-color: rgb(255 255 255 / 0.12);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.4),
+      0 8px 24px rgb(0 0 0 / 0.55);
+  }
+
   /* Brand gradient for headline accents. */
   .text-gradient-brand {
     background: linear-gradient(100deg, #ff6d00 0%, #ffa040 60%, #ffd740 120%);

@@ -65,6 +65,34 @@ function rehypeVersionAnchors() {
   };
 }
 
+// Opt-in image presentation flags, written as a URL fragment in plain
+// markdown: `![alt](/screenshots/voice-prompts/en.webp#shadow)`. The fragment
+// is stripped from the served src and mapped to a class. Only `shadow` exists
+// today (`.img-shadow` in global.css) — for screenshots that don't carry their
+// own chrome (bare browser captures on a white ground) and would otherwise
+// melt into the page. It's per-image on purpose: the framed desktop-app shots
+// already ship a real window shadow, and stacking another would look wrong.
+function rehypeImageFlags() {
+  const FLAGS = { shadow: 'img-shadow' };
+  return () => (tree) => {
+    const visit = (node) => {
+      if (node.tagName === 'img' && node.properties && typeof node.properties.src === 'string') {
+        const [src, fragment] = node.properties.src.split('#');
+        const className = FLAGS[fragment];
+        if (className) {
+          node.properties.src = src;
+          node.properties.className = [
+            ...(Array.isArray(node.properties.className) ? node.properties.className : []),
+            className,
+          ];
+        }
+      }
+      if (Array.isArray(node.children)) node.children.forEach(visit);
+    };
+    visit(tree);
+  };
+}
+
 // Markdown images ship with no width/height, so the browser can't reserve
 // space before they load (layout shift when the ~1200px blog screenshots
 // arrive) and every image loads immediately. Measure local /public assets at
@@ -148,7 +176,12 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    rehypePlugins: [rehypeRewriteDocLinks(), rehypeVersionAnchors(), rehypeImageDimensions()],
+    rehypePlugins: [
+      rehypeRewriteDocLinks(),
+      rehypeVersionAnchors(),
+      rehypeImageFlags(),
+      rehypeImageDimensions(),
+    ],
   },
   vite: {
     plugins: [tailwindcss()],
