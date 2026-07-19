@@ -73,6 +73,7 @@ const SCENES = [
   { name: "settings-general-phone-links", source: "voice", frame: "ubuntu" }, // Settings → General, Phone links on
   { name: "share-sheet", source: "voice", frame: "macos" }, // the Share panel
   { name: "share-viewer", source: "platform" }, // what the recipient opens (web)
+  { name: "voice-prompts", source: "platform" }, // the free prompt generator (blog post)
 ];
 
 // The nine shipped interface languages, by wavekat.com locale `code` — exactly

@@ -9,6 +9,8 @@ draft: true
 
 The [WaveKat voice prompt generator](/voice/prompts/) is a free web tool that turns any text into telephony-ready phone audio — greetings, IVR and auto-attendant menus, voicemail messages, after-hours announcements, and on-hold notices — spoken by studio-quality AI voices. You type the script, pick a voice, and download a file in the exact format your phone system needs. It runs in the browser at [platform.wavekat.com/voice/prompts](https://platform.wavekat.com/voice/prompts), and you can make your first clips without creating an account.
 
+![The WaveKat voice prompt generator — type what your callers should hear, pick a voice and a telephony format, and press Generate.](/screenshots/voice-prompts/en.webp)
+
 ## Every business phone needs recordings — and getting them made is oddly hard
 
 Every phone system a business runs — an office PBX, a hosted VoIP line, a Twilio flow — needs recorded audio: the greeting callers hear first, the "press 1 for sales" menu, the voicemail message, the holiday announcement. The recordings are small, but the usual ways of making them are all awkward in their own way:
