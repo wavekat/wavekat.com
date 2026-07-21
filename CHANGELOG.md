@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.47](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.46...wavekat-com-v0.0.47) (2026-07-21)
+
+
+### Features
+
+* **footer:** regroup links and add a Tools column ([#129](https://github.com/wavekat/wavekat.com/issues/129)) ([3178fc6](https://github.com/wavekat/wavekat.com/commit/3178fc6cbce15934eb1da2468c4c0ced8745f9d0))
+
 ## [0.0.46](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.45...wavekat-com-v0.0.46) (2026-07-19)
 
 
