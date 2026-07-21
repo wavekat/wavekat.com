@@ -9,44 +9,38 @@ const ui = t(lang);
 const localeHref = (path: string) =>
   localesForPath(path).includes(lang) ? localizedPath(path, lang) : path;
 
-// Three labelled groups in two columns: the WaveKat Voice desktop app on its
-// own, then Tools and More stacked. Three equal columns would leave a lone
-// tool stranded beside a four-item list; stacking the two short groups makes
-// both columns the same height. Tools links straight to the live app rather
-// than to a marketing page — someone reaching for it in the footer wants the
-// tool, not a description of it — and is separate from Voice because it's a
-// different product.
-const columns = [
-  [
-    {
-      heading: 'WaveKat Voice', // brand name — never translated
-      links: [
-        { href: localeHref('/voice/'), label: ui.subOverview },
-        { href: localeHref('/voice/alternatives/'), label: ui.subAlternatives },
-        { href: localeHref('/voice/download/'), label: ui.subDownload },
-        { href: localeHref('/voice/changelog/'), label: ui.subChangelog },
-      ],
-    },
-  ],
-  [
-    {
-      heading: ui.footerTools,
-      links: [
-        {
-          href: 'https://platform.wavekat.com/voice/prompts',
-          label: ui.footerPrompts,
-          external: true,
-        },
-      ],
-    },
-    {
-      heading: ui.footerMore,
-      links: [
-        { href: localeHref('/blog/'), label: ui.navBlog },
-        { href: localeHref('/about/'), label: ui.footerAbout },
-      ],
-    },
-  ],
+// Three columns: the WaveKat Voice desktop app, the hosted tools, then
+// everything sitewide. Tools links straight to the live app rather than to a
+// marketing page — someone reaching for it in the footer wants the tool, not a
+// description of it — and is a separate group because it's a different product
+// from the Voice desktop app.
+const groups = [
+  {
+    heading: 'WaveKat Voice', // brand name — never translated
+    links: [
+      { href: localeHref('/voice/'), label: ui.subOverview },
+      { href: localeHref('/voice/alternatives/'), label: ui.subAlternatives },
+      { href: localeHref('/voice/download/'), label: ui.subDownload },
+      { href: localeHref('/voice/changelog/'), label: ui.subChangelog },
+    ],
+  },
+  {
+    heading: ui.footerTools,
+    links: [
+      {
+        href: 'https://platform.wavekat.com/voice/prompts',
+        label: ui.footerPrompts,
+        external: true,
+      },
+    ],
+  },
+  {
+    heading: ui.footerMore,
+    links: [
+      { href: localeHref('/blog/'), label: ui.navBlog },
+      { href: localeHref('/about/'), label: ui.footerAbout },
+    ],
+  },
 ];
 
 let siteVersion: string;
@@ -96,37 +90,35 @@ try {
         </a>
       </div>
     </div>
-    <nav class="grid grid-cols-2 gap-x-10 gap-y-8 sm:text-right">
-      {columns.map((column) => (
-        <div class="flex flex-col gap-8">
-          {column.map((group) => (
-            <div class="flex flex-col gap-2.5">
-              <span
-                class="font-mono text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-600"
-                >{group.heading}</span
+    <!-- Auto-width groups hugging the right edge, not stretched grid tracks —
+         equal columns spread a one-item group miles from its neighbours. -->
+    <nav class="flex flex-wrap gap-x-12 gap-y-8 sm:justify-end sm:text-right">
+      {groups.map((group) => (
+        <div class="flex flex-col gap-2.5">
+          <span
+            class="font-mono text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-600"
+            >{group.heading}</span
+          >
+          {group.links.map((link) =>
+            link.external ? (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white sm:justify-end"
               >
-              {group.links.map((link) =>
-                link.external ? (
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white sm:justify-end"
-                  >
-                    {link.label}
-                    <ArrowUpRight class="h-3.5 w-3.5 shrink-0 opacity-60" aria-hidden="true" />
-                  </a>
-                ) : (
-                  <a
-                    href={link.href}
-                    class="text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                )
-              )}
-            </div>
-          ))}
+                {link.label}
+                <ArrowUpRight class="h-3.5 w-3.5 shrink-0 opacity-60" aria-hidden="true" />
+              </a>
+            ) : (
+              <a
+                href={link.href}
+                class="text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
       ))}
     </nav>
