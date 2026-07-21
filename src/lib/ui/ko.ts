@@ -26,6 +26,7 @@ export const ui: UIStrings = {
   footerEmail: '이메일 보내기',
   footerAbout: '소개',
   footerPrompts: '음성 생성기',
+  footerMore: '기타',
   notFoundTitle: "페이지를 찾을 수 없습니다",
   notFoundBody: "찾으시는 페이지가 존재하지 않거나 이동되었습니다.",
   notFoundHome: "홈으로 돌아가기",

@@ -26,6 +26,7 @@ export const ui: UIStrings = {
   footerEmail: 'Schreiben Sie uns',
   footerAbout: 'über uns',
   footerPrompts: 'sprachgenerator',
+  footerMore: 'mehr',
   notFoundTitle: "Seite nicht gefunden",
   notFoundBody: "Die gesuchte Seite existiert nicht oder wurde verschoben.",
   notFoundHome: "Zur Startseite",

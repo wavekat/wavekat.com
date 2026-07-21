@@ -9,15 +9,28 @@ const ui = t(lang);
 const localeHref = (path: string) =>
   localesForPath(path).includes(lang) ? localizedPath(path, lang) : path;
 
-// Sitemap links reuse the localized chrome strings — no new translations needed.
-const links = [
-  { href: localeHref('/voice/'), label: ui.navVoice },
-  { href: localeHref('/voice/alternatives/'), label: ui.subAlternatives },
-  { href: localeHref('/voice/download/'), label: ui.subDownload },
-  { href: localeHref('/voice/changelog/'), label: ui.subChangelog },
-  { href: localeHref('/voice/prompts/'), label: ui.footerPrompts },
-  { href: localeHref('/blog/'), label: ui.navBlog },
-  { href: localeHref('/about/'), label: ui.footerAbout },
+// Two columns: the WaveKat Voice desktop app, then everything sitewide. The
+// prompt generator sits in the second group deliberately — it's a platform
+// tool, not part of the Voice app. Link labels reuse the localized chrome
+// strings; only the second heading needed a new one.
+const groups = [
+  {
+    heading: 'WaveKat Voice', // brand name — never translated
+    links: [
+      { href: localeHref('/voice/'), label: ui.subOverview },
+      { href: localeHref('/voice/alternatives/'), label: ui.subAlternatives },
+      { href: localeHref('/voice/download/'), label: ui.subDownload },
+      { href: localeHref('/voice/changelog/'), label: ui.subChangelog },
+    ],
+  },
+  {
+    heading: ui.footerMore,
+    links: [
+      { href: localeHref('/voice/prompts/'), label: ui.footerPrompts },
+      { href: localeHref('/blog/'), label: ui.navBlog },
+      { href: localeHref('/about/'), label: ui.footerAbout },
+    ],
+  },
 ];
 
 let siteVersion: string;
@@ -67,14 +80,19 @@ try {
         </a>
       </div>
     </div>
-    <nav class="grid grid-cols-2 gap-x-10 gap-y-2.5 sm:text-right">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class="text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-        >
-          {link.label}
-        </a>
+    <nav class="grid grid-cols-2 gap-x-10 gap-y-8 sm:text-right">
+      {groups.map((group) => (
+        <div class="flex flex-col gap-2.5">
+          <span class="text-xs font-medium text-gray-400 dark:text-gray-600">{group.heading}</span>
+          {group.links.map((link) => (
+            <a
+              href={link.href}
+              class="text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
       ))}
     </nav>
   </div>
