@@ -25,6 +25,7 @@ export const ui: UIStrings = {
   talkWritePost: '。',
   footerEmail: '寄信給我們',
   footerAbout: '關於',
+  footerPrompts: '語音產生器',
   notFoundTitle: "找不到頁面",
   notFoundBody: "您要找的頁面不存在或已被移動。",
   notFoundHome: "返回首頁",

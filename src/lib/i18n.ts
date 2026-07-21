@@ -215,6 +215,7 @@ export interface UIStrings {
   footerEmail: string;
   footerSource: string;
   footerAbout: string;
+  footerPrompts: string;
   notFoundTitle: string;
   notFoundBody: string;
   notFoundHome: string;
@@ -266,7 +267,8 @@ const strings: Record<string, UIStrings> = {
     talkWritePost: ' directly.',
     footerEmail: 'Email us',
     footerSource: 'View source on GitHub',
-    footerAbout: 'About',
+    footerAbout: 'about',
+    footerPrompts: 'prompt generator',
     notFoundTitle: "Page not found",
     notFoundBody: "The page you're looking for doesn't exist or has moved.",
     notFoundHome: "Go to the homepage",
@@ -299,6 +301,7 @@ const strings: Record<string, UIStrings> = {
     footerEmail: '给我们发邮件',
     footerSource: '在 GitHub 上查看源码',
     footerAbout: '关于',
+    footerPrompts: '语音生成器',
     notFoundTitle: "页面不存在",
     notFoundBody: "您要找的页面不存在或已被移动。",
     notFoundHome: "返回首页",

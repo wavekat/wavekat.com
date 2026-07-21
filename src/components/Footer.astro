@@ -12,9 +12,10 @@ const localeHref = (path: string) =>
 // Sitemap links reuse the localized chrome strings — no new translations needed.
 const links = [
   { href: localeHref('/voice/'), label: ui.navVoice },
+  { href: localeHref('/voice/alternatives/'), label: ui.subAlternatives },
   { href: localeHref('/voice/download/'), label: ui.subDownload },
   { href: localeHref('/voice/changelog/'), label: ui.subChangelog },
-  { href: '/docs', label: ui.navDocs },
+  { href: localeHref('/voice/prompts/'), label: ui.footerPrompts },
   { href: localeHref('/blog/'), label: ui.navBlog },
   { href: localeHref('/about/'), label: ui.footerAbout },
 ];
