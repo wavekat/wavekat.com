@@ -1,6 +1,6 @@
 ---
 import { execSync } from 'child_process';
-import { Mail } from '@lucide/astro';
+import { Mail, ArrowUpRight } from '@lucide/astro';
 import { version } from '../../package.json';
 import { resolveLocale, localesForPath, localizedPath, t } from '../lib/i18n';
 
@@ -9,10 +9,11 @@ const ui = t(lang);
 const localeHref = (path: string) =>
   localesForPath(path).includes(lang) ? localizedPath(path, lang) : path;
 
-// Two columns: the WaveKat Voice desktop app, then everything sitewide. The
-// prompt generator sits in the second group deliberately — it's a platform
-// tool, not part of the Voice app. Link labels reuse the localized chrome
-// strings; only the second heading needed a new one.
+// Three columns: the WaveKat Voice desktop app, the hosted tools, then
+// everything sitewide. Tools link straight to the live app rather than to a
+// marketing page — someone reaching for them in the footer wants the tool, not
+// a description of it. They live in their own group because they're separate
+// products from the Voice desktop app.
 const groups = [
   {
     heading: 'WaveKat Voice', // brand name — never translated
@@ -24,9 +25,24 @@ const groups = [
     ],
   },
   {
+    heading: ui.footerTools,
+    links: [
+      {
+        href: 'https://platform.wavekat.com/voice/prompts',
+        label: ui.footerPrompts,
+        external: true,
+      },
+      // Product name, not a translatable label.
+      {
+        href: 'https://commonvoice-explorer.wavekat.com',
+        label: 'Common Voice Explorer',
+        external: true,
+      },
+    ],
+  },
+  {
     heading: ui.footerMore,
     links: [
-      { href: localeHref('/voice/prompts/'), label: ui.footerPrompts },
       { href: localeHref('/blog/'), label: ui.navBlog },
       { href: localeHref('/about/'), label: ui.footerAbout },
     ],
@@ -80,21 +96,33 @@ try {
         </a>
       </div>
     </div>
-    <nav class="grid grid-cols-2 gap-x-10 gap-y-8 sm:text-right">
+    <nav class="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3 sm:text-right">
       {groups.map((group) => (
         <div class="flex flex-col gap-2.5">
           <span
             class="font-mono text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-600"
             >{group.heading}</span
           >
-          {group.links.map((link) => (
-            <a
-              href={link.href}
-              class="text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-            >
-              {link.label}
-            </a>
-          ))}
+          {group.links.map((link) =>
+            link.external ? (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white sm:justify-end"
+              >
+                {link.label}
+                <ArrowUpRight class="h-3.5 w-3.5 shrink-0 opacity-60" aria-hidden="true" />
+              </a>
+            ) : (
+              <a
+                href={link.href}
+                class="text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
       ))}
     </nav>

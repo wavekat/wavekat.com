@@ -16,7 +16,7 @@ export const ui: UIStrings = {
   subTalk: 'Contattaci',
   dlMac: 'Scarica per Mac',
   dlLinux: 'Scarica per Linux',
-  dlOther: 'altre piattaforme',
+  dlOther: 'Altre piattaforme',
   talkHeading: 'Contattaci',
   talkBody:
     'Domande, suggerimenti o un dispositivo che vorresti vedere supportato? L’email è il modo migliore per raggiungerci: leggiamo ogni messaggio e rispondiamo il prima possibile.',
@@ -27,10 +27,11 @@ export const ui: UIStrings = {
   footerAbout: 'Chi siamo',
   footerPrompts: 'Generatore vocale',
   footerMore: 'Altro',
+  footerTools: 'Strumenti',
   notFoundTitle: "Pagina non trovata",
   notFoundBody: "La pagina che cerchi non esiste o è stata spostata.",
   notFoundHome: "Vai alla home",
   footerSource: 'Vedi il codice sorgente su GitHub',
-  postBack: '← torna al blog',
+  postBack: '← Torna al blog',
   postUpdated: 'aggiornato',
 };

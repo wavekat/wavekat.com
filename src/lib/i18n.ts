@@ -217,6 +217,7 @@ export interface UIStrings {
   footerAbout: string;
   footerPrompts: string;
   footerMore: string;
+  footerTools: string;
   notFoundTitle: string;
   notFoundBody: string;
   notFoundHome: string;
@@ -259,7 +260,7 @@ const strings: Record<string, UIStrings> = {
     subTalk: 'Talk to Us',
     dlMac: 'Download for Mac',
     dlLinux: 'Download for Linux',
-    dlOther: 'other platforms',
+    dlOther: 'Other Platforms',
     talkHeading: 'Talk to us',
     talkBody:
       'Questions, feedback, or a device you wish we supported? Email is the best way to reach us — we read every message and reply as soon as we can.',
@@ -271,10 +272,11 @@ const strings: Record<string, UIStrings> = {
     footerAbout: 'About',
     footerPrompts: 'Prompt Generator',
     footerMore: 'More',
+    footerTools: 'Tools',
     notFoundTitle: "Page not found",
     notFoundBody: "The page you're looking for doesn't exist or has moved.",
     notFoundHome: "Go to the homepage",
-    postBack: '← back to blog',
+    postBack: '← Back to Blog',
     postUpdated: 'updated',
   },
   'zh-Hans': {
@@ -305,6 +307,7 @@ const strings: Record<string, UIStrings> = {
     footerAbout: '关于',
     footerPrompts: '语音生成器',
     footerMore: '更多',
+    footerTools: '工具',
     notFoundTitle: "页面不存在",
     notFoundBody: "您要找的页面不存在或已被移动。",
     notFoundHome: "返回首页",
