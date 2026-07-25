@@ -1,11 +1,10 @@
 ---
 title: "点击网页上的电话号码即可拨打"
 description: "WaveKat Voice 现在支持 Mac 和 Linux 上的 tel: 与 sip: 链接——点击任意网页上的电话号码，应用即会打开并填好号码待拨。可选的一键自动拨号默认关闭。"
-date: 2026-07-07
+date: 2026-07-25
 author: Eason Guo
 tags: [语音AI, 通话]
 lang: "zh-Hans"
-draft: true
 ---
 
 WaveKat Voice——一款可在 Mac 和 Linux 上运行、会记录并转写每一通通话的 SIP 软电话——现在可以成为你点击网页电话号码时电脑打开的那个应用。在任何地方点击 `tel:` 或 `sip:` 链接——公司的联系页面、搜索结果、供应商的发票——WaveKat Voice 就会跳到前台，号码已经填好，只等你按下「拨打」。该功能随 [0.0.43](/zh/voice/changelog/#0.0.43) 推出。

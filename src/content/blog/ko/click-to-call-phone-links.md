@@ -1,11 +1,10 @@
 ---
 title: "웹사이트의 전화번호를 클릭해 바로 걸기"
 description: "WaveKat Voice가 이제 Mac과 Linux에서 tel: 및 sip: 링크를 처리합니다 — 웹사이트의 전화번호를 클릭하면 앱이 열리고 바로 걸 수 있는 상태가 됩니다. 원클릭 자동 걸기는 선택 사항이며 기본은 꺼짐입니다."
-date: 2026-07-07
+date: 2026-07-25
 author: Eason Guo
 tags: [음성AI, 통화]
 lang: "ko"
-draft: true
 ---
 
 WaveKat Voice——모든 통화를 녹음하고 받아 적는 Mac·Linux용 SIP 소프트폰——가 이제 웹사이트에서 전화번호를 클릭할 때 컴퓨터가 여는 앱이 될 수 있습니다. 어디서든 `tel:` 또는 `sip:` 링크를 클릭하면 — 회사의 연락처 페이지든, 검색 결과든, 공급업체의 청구서든 — WaveKat Voice가 앞으로 나오면서 번호가 이미 채워진 채로, 전화 걸기만 누르면 되는 상태가 됩니다. 이 기능은 [0.0.43](/ko/voice/changelog/#0.0.43)에서 제공됩니다.

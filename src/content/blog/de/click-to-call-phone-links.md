@@ -1,11 +1,10 @@
 ---
 title: "Telefonnummern auf Websites anklicken und anrufen"
 description: "WaveKat Voice verarbeitet jetzt tel:- und sip:-Links auf Mac und Linux — eine Telefonnummer auf einer Website anklicken, und die App öffnet sich bereit zum Wählen. Optionale Sofortwahl, standardmäßig aus."
-date: 2026-07-07
+date: 2026-07-25
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
 lang: "de"
-draft: true
 ---
 
 WaveKat Voice — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die App sein, die Ihr Computer öffnet, wenn Sie auf einer Website auf eine Telefonnummer klicken. Klicken Sie irgendwo auf einen `tel:`- oder `sip:`-Link — die Kontaktseite eines Unternehmens, ein Suchergebnis, die Rechnung eines Lieferanten — und WaveKat Voice rückt in den Vordergrund, mit der bereits eingetragenen Nummer und bereit für Ihren Druck auf „Anrufen". Das kommt mit [0.0.43](/de/voice/changelog/#0.0.43).
