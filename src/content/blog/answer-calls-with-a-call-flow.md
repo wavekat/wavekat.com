@@ -26,9 +26,15 @@ A flow is a short list of steps, and the call walks through them. Each step is a
 
 There's no menu tree to draw from scratch and nothing to program. You start from a template — a gallery of ready-made flows, offered in your own language, that you copy into your account — and change the words. A blank flow is there too, if you'd rather build it yourself.
 
+![WaveKat Voice on Ubuntu — a call flow's page, showing its map: a greeting, a business-hours check that splits into open and closed, ringing you, and voicemail.](/screenshots/flow-detail/en.webp)
+
+The app draws the flow as a map, so "what happens when someone calls" is a picture you can point at rather than a list of rules you have to hold in your head.
+
 ## Build it on the web, run it on your computer
 
 Flows are authored at [platform.wavekat.com/voice/flows](https://platform.wavekat.com/voice/flows), signed in with the same WaveKat account the app uses. Pick a template, fork it into your library, and edit: type what callers should hear at each step, set your opening hours, decide how long the phone rings before the flow takes a message.
+
+![The WaveKat call-flow editor on the web — the flow map beside the step inspector, showing the greeting's wording, the voice it was generated with, and a Regenerate button.](/screenshots/flow-editor/en.webp#shadow)
 
 You don't have to record anything. Type the words and pick a voice, and the platform generates the audio with the [same voice prompt generator](/blog/phone-menu-ivr-voice-generator/) that's [free to use on its own](/voice/prompts/) — studio-quality speech, in the format phone systems want. One press voices every step in the flow at once, so a template becomes *your* greeting in about a minute. When you press **Publish**, that version of the flow is frozen: its wording, its settings, and its audio clips are locked together and can't drift underneath you.
 
@@ -40,7 +46,11 @@ Flows run **on your computer**, inside the app, using the SIP account you alread
 
 The part we're most pleased with isn't the answering — it's that you can see it happen.
 
-When a flow answers, the app doesn't pretend you're on a call. The home screen says **"Luigi's — after hours is answering"** with a line telling you what's happening right now: *Speaking to the caller… Playing the menu… Ringing you… Taking a message…* Open the flow's page mid-call and its **flow map** shows every step, with the current one lit up, so you can watch the call travel through.
+When a flow answers, the app doesn't pretend you're on a call. The screen says **"Reception is answering"** with a line telling you what's happening right now: *Speaking to the caller… Playing the menu… Ringing you… Taking a message…*
+
+![WaveKat Voice on Ubuntu — a call being answered by a flow: "Reception is answering", with "Taking a message…" and the caller's name.](/screenshots/flow-answering/en.webp)
+
+Below it, the same flow map you built lights up as the call travels through: the step the caller is on right now glows, the ones they've already passed stay bright, and the rest stay dim. You can see where they are and where they've been at a glance.
 
 That's call screening, and it's different from the voicemail you're used to. A carrier mailbox answers with nobody watching; you find out hours later. Here the flow answers on your behalf while you're sitting right there — so you get the old landline answering-machine experience back, where you hear who it is before you decide.
 
@@ -48,13 +58,19 @@ That's call screening, and it's different from the voicemail you're used to. A c
 
 Because you're watching, you can grab the call. While a caller is leaving a message, the app shows a **Pick up** button: press it and the call moves onto your microphone and speakers, exactly like a call you'd answered yourself. The message that was recorded up to that point is kept.
 
+![WaveKat Voice on Ubuntu — the live flow map with the voicemail step lit, a Pick up button, and the caller's message appearing as a live transcript.](/screenshots/flow-takeover/en.webp)
+
+And you don't have to guess whether it's worth taking: the message appears as text while it's being left, so you can read who it is and what they want before you decide.
+
 Pick up only appears at the moments where a human joining makes sense to the caller — while they're leaving a message, not halfway through your greeting or in the middle of a menu prompt. Nobody wants a voice to cut in over the recording that's still talking to them.
 
 ## After the call
 
-A flow-answered call lands in your history like any other, with the flow's name on it — *Answered by "Luigi's — after hours"* — so you can tell at a glance which calls you handled and which the flow did. Open one and there's a **What the flow did** list: played the greeting, checked business hours (closed), rang you (no answer), the caller left a message (34 sec).
+A flow-answered call lands in your history like any other, with the flow's name on it — *Answered by "Reception"* — so you can tell at a glance which calls you handled and which the flow did. Open one and the summary tells you how it ended in plain words: **The caller left a message**, with a link to the flow that took it.
 
-If the caller left a message, it's a recording and a transcript, in the same place as everything else — searchable, and [shareable with a link](/blog/share-a-call-recording/) if someone else needs to hear it.
+![WaveKat Voice on Ubuntu — a finished call answered by a flow: the "Answered by Reception" badge, an outcome of "The caller left a message", and the recording below.](/screenshots/call-details-flow/en.webp)
+
+The message itself is a recording and a transcript, in the same place as everything else — and the flow's steps are pinned along the recording, so you can jump straight to the moment the caller started talking instead of scrubbing for it. It's searchable, and [shareable with a link](/blog/share-a-call-recording/) if someone else needs to hear it.
 
 ## What's free, and what Pro adds
 
@@ -87,7 +103,7 @@ No. You type what callers should hear and pick a voice, and the platform generat
 
 ### What happens to a message a caller leaves?
 
-It's recorded and transcribed on your computer like any other call, and it appears in your history marked with the flow's name and what the flow did step by step. From there you can play it, read the transcript, or share it with a private link.
+It's recorded and transcribed on your computer like any other call, and it appears in your history marked with the flow's name and how the call ended. From there you can play it, read the transcript, jump to a step the flow took, or share it with a private link.
 
 ### Is this an AI receptionist that talks to callers?
 

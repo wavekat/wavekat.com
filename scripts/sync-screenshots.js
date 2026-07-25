@@ -74,6 +74,14 @@ const SCENES = [
   { name: "share-sheet", source: "voice", frame: "macos" }, // the Share panel
   { name: "share-viewer", source: "platform" }, // what the recipient opens (web)
   { name: "voice-prompts", source: "platform" }, // the free prompt generator (blog post)
+  // Answering flows (call-flows blog post): the flow itself, it answering a
+  // call, the take-over moment, the finished call — plus the web editor the
+  // flow is authored in.
+  { name: "flow-detail", source: "voice", frame: "ubuntu" }, // the flow map + Answering
+  { name: "flow-answering", source: "voice", frame: "ubuntu" }, // "X is answering"
+  { name: "flow-takeover", source: "voice", frame: "ubuntu" }, // live map + Pick up
+  { name: "call-details-flow", source: "voice", frame: "ubuntu" }, // answered-by-flow call
+  { name: "flow-editor", source: "platform" }, // authoring a flow (web)
 ];
 
 // The nine shipped interface languages, by wavekat.com locale `code` — exactly
