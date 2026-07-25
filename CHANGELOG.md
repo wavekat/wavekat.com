@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.48](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.47...wavekat-com-v0.0.48) (2026-07-25)
+
+
+### Features
+
+* **blog:** call flows post in nine languages ([#131](https://github.com/wavekat/wavekat.com/issues/131)) ([d43133f](https://github.com/wavekat/wavekat.com/commit/d43133f330ff50645ce4a5e4770a0976358d83af))
+
 ## [0.0.47](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.46...wavekat-com-v0.0.47) (2026-07-21)
 
 
