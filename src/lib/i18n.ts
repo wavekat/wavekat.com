@@ -83,6 +83,7 @@ const fullSite = [
   '/blog/our-own-sip-engine/',
   '/blog/click-to-call-phone-links/',
   '/blog/phone-menu-ivr-voice-generator/',
+  '/blog/answer-calls-with-a-call-flow/',
   '/about/',
 ];
 
