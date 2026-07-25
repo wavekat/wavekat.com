@@ -1,11 +1,10 @@
 ---
 title: "Cliquez sur un numéro de téléphone d'un site web pour l'appeler"
 description: "WaveKat Voice gère désormais les liens tel: et sip: sur Mac et Linux — cliquez sur un numéro de téléphone n'importe où et l'application s'ouvre, prête à composer. Appel automatique en un clic en option, désactivé par défaut."
-date: 2026-07-07
+date: 2026-07-25
 author: Eason Guo
 tags: [ia-vocale, appels]
 lang: "fr"
-draft: true
 ---
 
 WaveKat Voice — le softphone SIP pour Mac et Linux qui enregistre et transcrit chaque appel — peut désormais être l'application que votre ordinateur ouvre quand vous cliquez sur un numéro de téléphone sur un site web. Cliquez sur un lien `tel:` ou `sip:` n'importe où — la page contact d'une entreprise, un résultat de recherche, la facture d'un fournisseur — et WaveKat Voice passe au premier plan avec le numéro déjà rempli, prêt à ce que vous appuyiez sur Appeler. Ça arrive avec la [0.0.43](/fr/voice/changelog/#0.0.43).

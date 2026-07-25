@@ -1,11 +1,10 @@
 ---
 title: "點按網站上的電話號碼即可撥打"
 description: "WaveKat Voice 現在支援 Mac 和 Linux 上的 tel: 與 sip: 連結——點按任何網站上的電話號碼，應用程式便會開啟並填好號碼待撥。可選的一鍵自動撥號預設關閉。"
-date: 2026-07-07
+date: 2026-07-25
 author: Eason Guo
 tags: [語音AI, 通話]
 lang: "zh-Hant"
-draft: true
 ---
 
 WaveKat Voice——一款可在 Mac 和 Linux 上執行、會記錄並轉寫每一通通話的 SIP 軟體電話——現在可以成為你點按網站上電話號碼時電腦所開啟的那個應用程式。在任何地方點按 `tel:` 或 `sip:` 連結——公司的聯絡頁面、搜尋結果、供應商的發票——WaveKat Voice 就會跳到最前面，號碼已經填好，只等你按下「撥號」。該功能隨 [0.0.43](/zh-hant/voice/changelog/#0.0.43) 推出。

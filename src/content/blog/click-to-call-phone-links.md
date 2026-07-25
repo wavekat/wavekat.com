@@ -1,10 +1,9 @@
 ---
 title: "Click a Phone Number on a Website to Call It"
 description: "WaveKat Voice now handles tel: and sip: links on Mac and Linux — click a phone number on any website and the app opens with it ready to dial. Optional one-click auto-dial, off by default."
-date: 2026-07-07
+date: 2026-07-25
 author: Eason Guo
 tags: [voice-ai, calls]
-draft: true
 ---
 
 WaveKat Voice — the SIP softphone for Mac and Linux that records and transcribes every call — can now be the app your computer opens when you click a phone number on a website. Click a `tel:` or `sip:` link anywhere — a company's contact page, a search result, a supplier's invoice — and WaveKat Voice comes to the front with the number already filled in, ready for you to press Call. It lands in [0.0.43](/voice/changelog/#0.0.43).
