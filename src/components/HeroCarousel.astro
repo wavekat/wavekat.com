@@ -11,12 +11,17 @@
 // at all — the dots still work.
 //
 // Reused by every locale homepage; only `imgCode` and the `shots` copy change.
+import { ArrowUpRight } from '@lucide/astro';
+
 interface Shot {
   scene: string;
   alt: string;
   /** Short feature name, shown above the caption. */
   label: string;
   caption: string;
+  /** Where this feature is covered in full — a blog post, most often. When set,
+   *  the shot and its label both link there. */
+  href?: string;
 }
 
 interface Props {
@@ -47,23 +52,39 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
       style="aspect-ratio: 1200 / 872;"
     >
       {
-        shots.map((shot, i) => (
-          <img
-            src={`/screenshots/${shot.scene}/${imgCode}.webp`}
-            alt={shot.alt}
-            width="1200"
-            height="872"
-            decoding="async"
-            loading={i === 0 ? 'eager' : 'lazy'}
-            fetchpriority={i === 0 ? 'high' : 'low'}
-            aria-hidden={i === 0 ? undefined : 'true'}
-            data-slide={i}
-            class:list={[
-              'hc-slide absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out',
-              i === 0 ? 'opacity-100' : 'opacity-0',
-            ]}
-          />
-        ))
+        shots.map((shot, i) => {
+          const img = (
+            <img
+              src={`/screenshots/${shot.scene}/${imgCode}.webp`}
+              alt={shot.alt}
+              width="1200"
+              height="872"
+              decoding="async"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'low'}
+              class="h-full w-full object-cover"
+            />
+          );
+          const slideClasses = [
+            'hc-slide absolute inset-0 transition-opacity duration-700 ease-in-out',
+            i === 0 ? 'opacity-100' : 'opacity-0',
+          ];
+          return shot.href ? (
+            <a
+              href={shot.href}
+              aria-hidden={i === 0 ? undefined : 'true'}
+              tabindex={i === 0 ? undefined : -1}
+              data-slide={i}
+              class:list={['block', ...slideClasses]}
+            >
+              {img}
+            </a>
+          ) : (
+            <div aria-hidden={i === 0 ? undefined : 'true'} data-slide={i} class:list={slideClasses}>
+              {img}
+            </div>
+          );
+        })
       }
     </div>
 
@@ -85,9 +106,20 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
             >
               {/* 11px, not 10: `uppercase` does nothing for CJK labels, so they
                   lean on size alone to read as a label. */}
-              <span class="font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-orange uppercase">
-                {shot.label}
-              </span>
+              {shot.href ? (
+                <a
+                  href={shot.href}
+                  tabindex={i === 0 ? undefined : -1}
+                  class="group/hc-label inline-flex items-center justify-center gap-1 font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-orange uppercase transition-opacity hover:opacity-70"
+                >
+                  {shot.label}
+                  <ArrowUpRight class="h-3 w-3 transition-transform group-hover/hc-label:translate-x-0.5 group-hover/hc-label:-translate-y-0.5" />
+                </a>
+              ) : (
+                <span class="font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-orange uppercase">
+                  {shot.label}
+                </span>
+              )}
               <span class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{shot.caption}</span>
             </p>
           ))
@@ -201,12 +233,17 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
 
       // Only the current shot and caption are exposed — otherwise a screen
       // reader reads every screenshot's alt text and every caption in a row.
+      // The CSS `pointer-events: none` on [aria-hidden] keeps hidden slides
+      // unclickable, but a keyboard user can still Tab to a hidden link, so
+      // its tabindex is toggled alongside aria-hidden.
       for (const group of [slides, captions]) {
         group.forEach((el, i) => {
           const active = i === current;
           el.classList.toggle('opacity-100', active);
           el.classList.toggle('opacity-0', !active);
           el.toggleAttribute('aria-hidden', !active);
+          const link = el.tagName === 'A' ? el : el.querySelector<HTMLAnchorElement>('a');
+          if (link) link.tabIndex = active ? 0 : -1;
         });
       }
 
