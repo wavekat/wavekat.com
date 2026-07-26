@@ -14,7 +14,7 @@
 // marketing page, so it's excluded from the sitemap (see astro.config.mjs) and
 // isn't linked from the nav.
 import Base from '../../layouts/Base.astro';
-import { Maximize2, Moon, Pause, Play, Sun } from '@lucide/astro';
+import { Clock, Maximize2, Moon, Pause, Play, Sun } from '@lucide/astro';
 
 // `ratio` null = fill the whole viewport; otherwise the stage is letterboxed to
 // that aspect. Labels name the device or the pixel size people actually think
@@ -68,6 +68,11 @@ const presets = [
              SVG is used as an alpha mask, so the shimmer follows the letter
              shapes instead of a rectangle. -->
         <span class="shimmer" aria-hidden="true"></span>
+
+        <!-- Inside .mark on purpose: the clock is part of the lockup, so it
+             floats and leans with the wordmark instead of drifting against it.
+             Sits at top:100%, so it never affects .mark's own box. -->
+        <time class="clock" id="clock" hidden></time>
       </div>
     </div>
 
@@ -93,6 +98,15 @@ const presets = [
 
         <span class="divider" aria-hidden="true"></span>
 
+        <button
+          type="button"
+          class="icon-btn"
+          id="clock-toggle"
+          aria-label="Show clock"
+          aria-pressed="false"
+        >
+          <Clock class="w-4 h-4" />
+        </button>
         <button type="button" class="icon-btn" id="motion-toggle" aria-label="Pause motion">
           <Pause class="w-4 h-4 icon-when-moving" />
           <Play class="w-4 h-4 icon-when-still" />
@@ -105,9 +119,8 @@ const presets = [
           <Maximize2 class="w-4 h-4" />
         </button>
       </div>
-      <p class="hint"><kbd>F</kbd> fullscreen · <kbd>H</kbd> hide controls · <kbd>1</kbd>–<kbd
-          >7</kbd
-        > presets</p>
+      <p class="hint"><kbd>F</kbd> fullscreen · <kbd>H</kbd> hide controls · <kbd>C</kbd> clock ·
+        <kbd>1</kbd>–<kbd>7</kbd> presets</p>
     </div>
   </main>
 </Base>
@@ -213,6 +226,35 @@ const presets = [
   }
   :global(.dark) .mark-dark {
     display: block;
+  }
+
+  /* Sized against the frame, like the wordmark, so the lockup holds its
+     proportions from a 9:16 phone shape to a 21:9 ultrawide. Muted rather than
+     full-strength white: the mark is the subject, the clock is a readout. */
+  .clock {
+    position: absolute;
+    /* em-based, so the gap tracks the clock's own size across presets. The
+       wordmark SVG carries a little padding below the ribbon, so this is
+       tighter than it looks. */
+    top: calc(100% + 0.15em);
+    left: 50%;
+    translate: -50% 0;
+    font-family: var(--font-mono);
+    font-size: min(5.5cqw, 7.6cqh);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    white-space: nowrap;
+    color: rgb(17 24 39 / 0.55);
+  }
+  :global(.dark) .clock {
+    color: rgb(255 255 255 / 0.5);
+  }
+
+  /* With the clock showing, the lockup grew downward — lift it so the pair
+     still reads as optically centred in the frame. */
+  .stage[data-clock] .mark {
+    translate: calc(-50% + var(--px, 0px)) calc(-50% - 3cqh + var(--py, 0px));
   }
 
   .shimmer {
@@ -746,6 +788,47 @@ const presets = [
       if (paused) render(lastT);
     });
 
+    // ── Clock ───────────────────────────────────────────────────────────────
+    // 24h HH:MM. Not tied to `paused`: a clock isn't motion, and a stopped
+    // clock on a wallpaper is worse than no clock.
+    const clockEl = document.getElementById('clock') as HTMLTimeElement | null;
+    const clockBtn = document.getElementById('clock-toggle');
+    let clockOn = read().clock === 'on';
+    let clockTimer = 0;
+    let stamp = '';
+
+    function tick() {
+      const d = new Date();
+      const text = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+      if (text === stamp) return; // only touch the DOM on the minute
+      stamp = text;
+      if (clockEl) {
+        clockEl.textContent = text;
+        clockEl.dateTime = text;
+      }
+    }
+
+    function setClock(on: boolean, persist = true) {
+      clockOn = on;
+      if (clockEl) clockEl.hidden = !on;
+      if (on) stage!.dataset.clock = '';
+      else delete stage!.dataset.clock;
+      clockBtn?.setAttribute('aria-pressed', String(on));
+      clockBtn?.setAttribute('aria-label', on ? 'Hide clock' : 'Show clock');
+      clearInterval(clockTimer);
+      if (on) {
+        stamp = '';
+        tick();
+        // Polled rather than scheduled to the minute boundary: a second of
+        // string comparison is free, and it recovers on its own from a sleep,
+        // a timezone change, or the system clock being set.
+        clockTimer = window.setInterval(tick, 1000);
+      }
+      if (persist) write({ clock: on ? 'on' : 'off' });
+    }
+
+    clockBtn?.addEventListener('click', () => setClock(!clockOn));
+
     // ── Fullscreen ──────────────────────────────────────────────────────────
     const toggleFullscreen = () => {
       if (document.fullscreenElement) document.exitFullscreen();
@@ -785,6 +868,9 @@ const presets = [
       } else if (key === 'f') {
         e.preventDefault();
         toggleFullscreen();
+      } else if (key === 'c') {
+        setClock(!clockOn);
+        showControls();
       } else if (key >= '1' && key <= String(chips.length)) {
         applyPreset(chips[Number(key) - 1].dataset.preset!);
         showControls();
@@ -800,6 +886,7 @@ const presets = [
     }).observe(stage);
 
     setMotion(!paused, false);
+    setClock(clockOn, false);
     showControls();
 
     // Don't burn a GPU on a hidden tab — but a wallpaper left on a second
