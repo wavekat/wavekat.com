@@ -14,21 +14,25 @@
 // marketing page, so it's excluded from the sitemap (see astro.config.mjs) and
 // isn't linked from the nav.
 import Base from '../../layouts/Base.astro';
-import { Clock, Maximize2, Moon, Pause, Play, Sun } from '@lucide/astro';
+import { Clock, Download, Maximize2, Moon, Pause, Play, Sun } from '@lucide/astro';
 
-// `ratio` null = fill the whole viewport; otherwise the stage is letterboxed to
-// that aspect. Labels name the device or the pixel size people actually think
-// in, not the bare ratio. Every entry is a *distinct* aspect — a 4K chip would
-// letterbox identically to the 1080p one, so pixel counts that only differ in
-// scale aren't worth a button on a live-only page.
+// Each preset does two jobs: it letterboxes the on-screen stage to that aspect,
+// and it's the pixel size the PNG export writes. Labels name the device or the
+// size people actually think in, not the bare ratio.
+//
+// `w: 0` means "fit the viewport" on screen and "match this display" on export —
+// the real screen resolution including devicePixelRatio. That's also why there's
+// no separate 4K chip: on a 4K monitor, Fit screen already exports 3840 × 2160,
+// and every fixed preset here is a distinct aspect rather than the same shape at
+// another scale.
 const presets = [
-  { id: 'fit', label: 'Fit screen', ratio: null },
-  { id: '1080p', label: '16:9 (1920 × 1080)', ratio: 1920 / 1080 },
-  { id: 'ultrawide', label: '34-inch (3440 × 1440)', ratio: 3440 / 1440 },
-  { id: '16-10', label: '16:10 (2560 × 1600)', ratio: 2560 / 1600 },
-  { id: 'macbook', label: 'MacBook (3024 × 1964)', ratio: 3024 / 1964 },
-  { id: 'square', label: 'Square (1080 × 1080)', ratio: 1 },
-  { id: 'vertical', label: 'Vertical (1080 × 1920)', ratio: 1080 / 1920 },
+  { id: 'fit', label: 'Fit screen', w: 0, h: 0 },
+  { id: '1080p', label: '16:9 (1920 × 1080)', w: 1920, h: 1080 },
+  { id: 'ultrawide', label: '34-inch (3440 × 1440)', w: 3440, h: 1440 },
+  { id: '16-10', label: '16:10 (2560 × 1600)', w: 2560, h: 1600 },
+  { id: 'macbook', label: 'MacBook (3024 × 1964)', w: 3024, h: 1964 },
+  { id: 'square', label: 'Square (1080 × 1080)', w: 1080, h: 1080 },
+  { id: 'vertical', label: 'Vertical (1080 × 1920)', w: 1080, h: 1920 },
 ];
 ---
 
@@ -87,7 +91,9 @@ const presets = [
                 type="button"
                 class="chip"
                 data-preset={p.id}
-                data-ratio={p.ratio ?? ''}
+                data-ratio={p.w ? String(p.w / p.h) : ''}
+                data-w={String(p.w)}
+                data-h={String(p.h)}
                 aria-pressed="false"
               >
                 {p.label}
@@ -118,9 +124,12 @@ const presets = [
         <button type="button" class="icon-btn" id="fullscreen-toggle" aria-label="Fullscreen">
           <Maximize2 class="w-4 h-4" />
         </button>
+        <button type="button" class="icon-btn" id="export-png" aria-label="Download PNG">
+          <Download class="w-4 h-4" />
+        </button>
       </div>
       <p class="hint"><kbd>F</kbd> fullscreen · <kbd>H</kbd> hide controls · <kbd>C</kbd> clock ·
-        <kbd>1</kbd>–<kbd>7</kbd> presets</p>
+        <kbd>S</kbd> save PNG · <kbd>1</kbd>–<kbd>7</kbd> presets</p>
     </div>
   </main>
 </Base>
@@ -583,51 +592,47 @@ const presets = [
     let wroteX = 0;
     let wroteY = 0;
 
-    function render(t: number) {
-      ctx!.clearRect(0, 0, w, h);
-      // The palette can't just be re-alpha'd per theme: amber on white is
-      // low-contrast at any opacity, so light mode drops to the deeper end of
-      // the brand ramp and dark mode keeps the bright one.
-      const dark = document.documentElement.classList.contains('dark');
-      const ramp = dark
+    const isDark = () => document.documentElement.classList.contains('dark');
+
+    // The palette can't just be re-alpha'd per theme: amber on white is
+    // low-contrast at any opacity, so light mode drops to the deeper end of the
+    // brand ramp and dark mode keeps the bright one.
+    const rampFor = (dark: boolean) =>
+      dark
         ? { a: '255, 109, 0', b: '255, 160, 64', c: '255, 215, 64', boost: 1.9 }
         : { a: '230, 81, 0', b: '255, 109, 0', c: '255, 145, 0', boost: 2.4 };
 
-      // Let go of the cursor a beat after it stops, then ease back to calm.
-      if (ptr.target > 0 && performance.now() - lastMove > 1800) ptr.target = 0;
-      ptr.x += (ptr.tx - ptr.x) * 0.1;
-      ptr.y += (ptr.ty - ptr.y) * 0.1;
-      // Rises quickly, falls slowly — the swell should arrive with the cursor
-      // and drain away like the water settling.
-      ptr.energy += (ptr.target - ptr.energy) * (ptr.target > ptr.energy ? 0.14 : 0.035);
-      const E = ptr.energy;
-
-      // Reach scales with the stage so the effect reads the same on a phone-
-      // shaped preset and on an ultrawide.
-      const RX = Math.max(120, Math.min(w, h) * 0.3);
-      const RY = Math.max(90, h * 0.2);
-      const scale = h / 900;
-
-      // Retire spent ripples before the per-x loop reads them.
-      for (let i = ripples.length - 1; i >= 0; i--) {
-        if (t - ripples[i].t0 > RIPPLE_LIFE) ripples.splice(i, 1);
-      }
-      const rippleSpeed = Math.max(w, h) * 0.62; // px/s the ring travels
+    /**
+     * Draws the wave field into any 2D context at any size. Shared by the live
+     * canvas and the PNG export, so an exported wallpaper is the same artwork
+     * rather than a lookalike that drifts as the on-screen version is tuned.
+     *
+     * `cursor` is off for the export: an exported wallpaper shouldn't have a
+     * swell baked in wherever the mouse happened to be.
+     */
+    function drawField(c: CanvasRenderingContext2D, W: number, H: number, t: number, cursor: boolean) {
+      const ramp = rampFor(isDark());
+      const E = cursor ? ptr.energy : 0;
+      const RX = Math.max(120, Math.min(W, H) * 0.3);
+      const RY = Math.max(90, H * 0.2);
+      const scale = H / 900;
+      const rippleSpeed = Math.max(W, H) * 0.62; // px/s the ring travels
       const rippleWidth = 70 * scale; // thickness of the travelling crest
+      const active = cursor ? ripples : [];
 
       for (const L of layers) {
         // Amplitude and brightness breathe on their own slow, prime-ish cycles
         // so no two layers peak together.
         const breath = 1 + 0.28 * Math.sin(t * 0.19 + L.phase);
         const glow = 0.75 + 0.45 * Math.sin(t * 0.13 + L.phase * 1.7);
-        const baseY = h * L.y;
+        const baseY = H * L.y;
 
         // How strongly the cursor reaches this layer's baseline vertically.
         const dyl = baseY - ptr.y;
         const vInf = E > 0.001 ? Math.exp(-(dyl * dyl) / (2 * RY * RY)) * E : 0;
 
-        ctx!.beginPath();
-        for (let x = 0; x <= w; x += 4) {
+        c.beginPath();
+        for (let x = 0; x <= W; x += 4) {
           let amp = L.amp * breath * scale;
           if (vInf > 0.001) {
             const dx = x - ptr.x;
@@ -641,7 +646,7 @@ const presets = [
 
           // Click ripples: a crest travelling out from the click point, fading
           // with both distance behind the front and age.
-          for (const r of ripples) {
+          for (const r of active) {
             const age = t - r.t0;
             const ddx = x - r.x;
             const ddy = baseY - r.y;
@@ -657,8 +662,8 @@ const presets = [
           }
 
           const yy = baseY + y;
-          if (x === 0) ctx!.moveTo(x, yy);
-          else ctx!.lineTo(x, yy);
+          if (x === 0) c.moveTo(x, yy);
+          else c.lineTo(x, yy);
         }
 
         // Brand gradient along the wave, so a single stroke carries the full
@@ -667,24 +672,44 @@ const presets = [
         // they light up.
         const a = L.alpha * glow * ramp.boost;
         if (vInf > 0.02) {
-          const hot = ctx!.createRadialGradient(ptr.x, ptr.y, 0, ptr.x, ptr.y, RX * 1.8);
+          const hot = c.createRadialGradient(ptr.x, ptr.y, 0, ptr.x, ptr.y, RX * 1.8);
           hot.addColorStop(0, `rgba(${ramp.c}, ${Math.min(0.5, a + 0.16 * vInf)})`);
           hot.addColorStop(0.45, `rgba(${ramp.b}, ${a + 0.05 * vInf})`);
           hot.addColorStop(1, `rgba(${ramp.a}, ${a * 0.8})`);
-          ctx!.strokeStyle = hot;
+          c.strokeStyle = hot;
         } else {
-          const g = ctx!.createLinearGradient(0, 0, w, 0);
+          const g = c.createLinearGradient(0, 0, W, 0);
           g.addColorStop(0, `rgba(${ramp.a}, ${a * 0.7})`);
           g.addColorStop(0.5, `rgba(${ramp.b}, ${a})`);
           g.addColorStop(1, `rgba(${ramp.c}, ${a * 0.8})`);
-          ctx!.strokeStyle = g;
+          c.strokeStyle = g;
         }
-        ctx!.lineWidth = L.width;
-        ctx!.stroke();
+        c.lineWidth = L.width * Math.max(1, scale);
+        c.stroke();
       }
+    }
+
+    function render(t: number) {
+      ctx!.clearRect(0, 0, w, h);
+
+      // Let go of the cursor a beat after it stops, then ease back to calm.
+      if (ptr.target > 0 && performance.now() - lastMove > 1800) ptr.target = 0;
+      ptr.x += (ptr.tx - ptr.x) * 0.1;
+      ptr.y += (ptr.ty - ptr.y) * 0.1;
+      // Rises quickly, falls slowly — the swell should arrive with the cursor
+      // and drain away like the water settling.
+      ptr.energy += (ptr.target - ptr.energy) * (ptr.target > ptr.energy ? 0.14 : 0.035);
+
+      // Retire spent ripples before drawField reads them.
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        if (t - ripples[i].t0 > RIPPLE_LIFE) ripples.splice(i, 1);
+      }
+
+      drawField(ctx!, w, h, t, true);
 
       // The wordmark leans toward the cursor. Written as a custom property so
       // it composes with the float animation's transform instead of fighting it.
+      const E = ptr.energy;
       const tpx = E > 0.001 ? ((ptr.x - w / 2) / (w / 2)) * PARALLAX * E : 0;
       const tpy = E > 0.001 ? ((ptr.y - h / 2) / (h / 2)) * PARALLAX * E : 0;
       parallaxX += (tpx - parallaxX) * 0.08;
@@ -713,6 +738,7 @@ const presets = [
         stage!.style.removeProperty('--ratio');
       }
       if (persist) write({ preset: chip.dataset.preset });
+      updateExportLabel();
       // The stage just changed size — the canvas has to follow before the
       // next frame, or one frame renders stretched.
       resize();
@@ -829,6 +855,121 @@ const presets = [
 
     clockBtn?.addEventListener('click', () => setClock(!clockOn));
 
+    // ── PNG export ──────────────────────────────────────────────────────────
+    // Redrawn at the target resolution rather than scaled up from the on-screen
+    // canvas, so a 3440 × 1440 wallpaper is genuinely 3440 × 1440 — sharp on the
+    // display it's meant for.
+    //
+    // Three things are deliberately left out of the file:
+    //   • the cursor swell and any in-flight ripples — a wallpaper shouldn't
+    //     have a bright blob baked in wherever the mouse was;
+    //   • the shimmer, which is a moving highlight, not a resting state;
+    //   • the clock, because a desktop wallpaper frozen at 21:07 forever is a
+    //     bug, not a feature.
+    const exportBtn = document.getElementById('export-png');
+
+    /** Target pixel size: the preset's own, or this display's real resolution. */
+    function exportSize(): [number, number] {
+      const chip = chips.find((c) => c.getAttribute('aria-pressed') === 'true');
+      const pw = Number(chip?.dataset.w || 0);
+      const ph = Number(chip?.dataset.h || 0);
+      if (pw && ph) return [pw, ph];
+      const dpr = window.devicePixelRatio || 1;
+      return [Math.round(screen.width * dpr), Math.round(screen.height * dpr)];
+    }
+
+    /** CSS `radial-gradient(ellipse RX% RY% at CX% CY%, …)` on a 2D context. */
+    function ellipseGradient(
+      c: CanvasRenderingContext2D,
+      W: number,
+      H: number,
+      rx: number,
+      ry: number,
+      cx: number,
+      cy: number,
+      stops: [number, string][],
+    ) {
+      c.save();
+      c.translate(W * cx, H * cy);
+      const a = W * rx;
+      const b = H * ry;
+      c.scale(1, b / a);
+      const g = c.createRadialGradient(0, 0, 0, 0, 0, a);
+      for (const [at, color] of stops) g.addColorStop(at, color);
+      c.fillStyle = g;
+      // Generous rect: the vertical scale shrinks the paintable area, so cover
+      // well past the canvas in the transformed space.
+      c.fillRect(-W * 2, (-H * 2 * a) / b, W * 4, (H * 4 * a) / b);
+      c.restore();
+    }
+
+    function updateExportLabel() {
+      const [W, H] = exportSize();
+      const text = `Download PNG (${W} × ${H})`;
+      exportBtn?.setAttribute('aria-label', text);
+      exportBtn?.setAttribute('title', text);
+    }
+
+    async function exportPng() {
+      const [W, H] = exportSize();
+      const dark = isDark();
+
+      const out = document.createElement('canvas');
+      out.width = W;
+      out.height = H;
+      const c = out.getContext('2d');
+      if (!c) return;
+
+      // 1. Ground — the same radial the stage carries in CSS.
+      c.fillStyle = dark ? '#04070c' : '#eef0f4';
+      c.fillRect(0, 0, W, H);
+      ellipseGradient(c, W, H, 0.9, 0.8, 0.5, 0.45, [
+        [0, dark ? '#0d141f' : '#ffffff'],
+        [1, dark ? 'rgba(4, 7, 12, 0)' : 'rgba(238, 240, 244, 0)'],
+      ]);
+
+      // 2. Waves, drawn on their own canvas so the edge mask can be applied
+      //    with destination-in without eating the background underneath.
+      const field = document.createElement('canvas');
+      field.width = W;
+      field.height = H;
+      const fc = field.getContext('2d');
+      if (fc) {
+        drawField(fc, W, H, lastT, false);
+        fc.globalCompositeOperation = 'destination-in';
+        ellipseGradient(fc, W, H, 1.2, 1.05, 0.5, 0.5, [
+          [0, '#000'],
+          [0.6, '#000'],
+          [1, 'rgba(0, 0, 0, 0)'],
+        ]);
+        fc.globalCompositeOperation = 'source-over';
+        c.drawImage(field, 0, 0);
+      }
+
+      // 3. Wordmark, at the same fraction of the frame the CSS gives it.
+      const img = document.querySelector<HTMLImageElement>(dark ? '.mark-dark' : '.mark-light');
+      if (img) {
+        if (!img.complete) await img.decode().catch(() => {});
+        const mw = Math.min(0.72 * W, 1.0 * H);
+        const mh = (mw * img.naturalHeight) / img.naturalWidth;
+        c.drawImage(img, (W - mw) / 2, (H - mh) / 2, mw, mh);
+      }
+
+      const blob: Blob | null = await new Promise((res) => out.toBlob(res, 'image/png'));
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `wavekat-wallpaper-${W}x${H}${dark ? '' : '-light'}.png`;
+      a.click();
+      // Revoke on the next turn — revoking synchronously can beat the download.
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    }
+
+    exportBtn?.addEventListener('click', () => {
+      exportPng().catch(() => {});
+    });
+
     // ── Fullscreen ──────────────────────────────────────────────────────────
     const toggleFullscreen = () => {
       if (document.fullscreenElement) document.exitFullscreen();
@@ -868,6 +1009,10 @@ const presets = [
       } else if (key === 'f') {
         e.preventDefault();
         toggleFullscreen();
+      } else if (key === 's') {
+        e.preventDefault();
+        exportPng().catch(() => {});
+        showControls();
       } else if (key === 'c') {
         setClock(!clockOn);
         showControls();
