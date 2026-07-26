@@ -1,5 +1,5 @@
 ---
-title: "Common Voice Explorer —— 世界中の声に耳を傾ける"
+title: "Common Voice Explorer —— 世界中の声を聴く"
 description: "Mozilla Common Voice の何千もの本物の人間の声を、ブラウザ上で直接ブラウズ・検索・再生できます。ダウンロードも設定も不要です。"
 date: 2026-04-21
 author: Eason Guo

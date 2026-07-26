@@ -1,6 +1,6 @@
 ---
 title: "Partager un enregistrement d'appel par un lien"
-description: "WaveKat Voice transforme désormais n'importe quel appel enregistré en un lien à partager — privé, sur invitation ou public — avec un contrôle précis de ce que le destinataire peut écouter et lire."
+description: "WaveKat Voice transforme un appel enregistré en lien à partager — privé, sur invitation ou public — et vous choisissez ce que le destinataire écoute et lit."
 date: 2026-06-28
 author: Eason Guo
 tags: [ia-vocale, enregistrements, confidentialité]

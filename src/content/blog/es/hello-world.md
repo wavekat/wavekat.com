@@ -1,6 +1,6 @@
 ---
 title: "Hola, mundo — WaveKat ya está aquí"
-description: "Presentamos WaveKat: herramientas de voz de código abierto, impulsadas por IA y creadas para las pequeñas empresas. Esto es lo que estamos construyendo y por qué."
+description: "Presentamos WaveKat: herramientas de voz de código abierto, con IA y hechas para las pequeñas empresas. Esto es lo que construimos y por qué."
 date: 2026-04-01
 updated: 2026-07-04
 author: Eason Guo

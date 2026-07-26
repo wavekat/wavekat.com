@@ -1,6 +1,6 @@
 ---
-title: "Por qué WaveKat Voice funciona con su propio motor SIP"
-description: "WaveKat Voice ahora funciona con wavekat-sip, nuestro motor SIP/RTP de código abierto hecho desde cero — sin protocolo SIP de terceros ni cajas negras entre usted y sus llamadas."
+title: "Por qué WaveKat Voice tiene su propio motor SIP"
+description: "WaveKat Voice funciona con wavekat-sip, nuestro motor SIP/RTP de código abierto hecho desde cero: sin pilas de terceros ni cajas negras entre usted y sus llamadas."
 date: 2026-07-06
 author: Eason Guo
 tags: [voz-ia, ingeniería, código-abierto, SIP]

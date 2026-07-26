@@ -1,6 +1,6 @@
 ---
-title: "Lascia che il tuo assistente AI effettui vere telefonate"
-description: "WaveKat Voice ora include uno strumento da riga di comando e un server MCP, così un assistente AI come Claude può effettuare e gestire vere telefonate sul tuo computer — con configurazione in un clic."
+title: "Lascia che l'assistente AI telefoni davvero"
+description: "WaveKat Voice include uno strumento da riga di comando e un server MCP, così un assistente AI come Claude può fare e gestire vere telefonate sul tuo computer."
 date: 2026-06-16
 author: Eason Guo
 tags: [voice-ai, automazione, ai-agents]

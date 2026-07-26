@@ -1,6 +1,6 @@
 ---
-title: "Un générateur vocal gratuit pour menus téléphoniques, SVI et messages d'accueil"
-description: "Le générateur de messages vocaux WaveKat crée accueils, menus SVI et annonces prêts pour la téléphonie, avec des voix IA de qualité studio. Gratuit, sans compte."
+title: "Générateur vocal gratuit pour menus téléphoniques"
+description: "Le générateur de messages vocaux WaveKat crée accueils, menus SVI, messagerie et annonces prêts pour la téléphonie. Gratuit, sans compte pour commencer."
 date: 2026-07-19
 author: Eason Guo
 tags: [outils, ia-vocale]
@@ -21,7 +21,7 @@ Chaque système téléphonique qu'une entreprise exploite — un PBX de bureau, 
 
 Le résultat est familier à quiconque a déjà appelé une petite entreprise : un accueil enregistré avec une voix il y a des années, un menu avec une autre, et un message de répondeur qui n'est que celui de l'opérateur par défaut. Le générateur de messages vocaux existe pour que la bonne façon de faire soit aussi la plus simple.
 
-## Ce que vous pouvez créer avec
+## Ce que vous pouvez créer avec le générateur vocal
 
 Chacun de ces cas est une tâche d'audio téléphonique concrète que le générateur accomplit, et ensemble ils couvrent ce qu'un système téléphonique typique diffuse :
 
@@ -41,7 +41,21 @@ C'est le point sur lequel les outils de synthèse vocale génériques se trompen
 
 Le générateur de messages vocaux sort chaque clip dans les formats que demandent les systèmes téléphoniques — **µ-law 8 kHz, WAV ou MP3** — pour que le fichier s'intègre directement à Asterisk, FreePBX, 3CX, Twilio et les autres, sans étape de conversion. Les fichiers se téléchargent avec un nom clair et descriptif, prêts à être chargés vous-même ou remis à celui qui gère votre système téléphonique.
 
-## Comment ça marche
+### Quel format demande votre système téléphonique ?
+
+Si vous ne savez pas lequel des trois télécharger, voici ce qu'attendent les systèmes courants :
+
+| Système téléphonique | Ce qu'il attend | À télécharger |
+|---|---|---|
+| Asterisk | WAV, 8 kHz, PCM 16 bits, mono (lit aussi le µ-law) | WAV — ou µ-law si votre dialplan l'utilise |
+| FreePBX | WAV, 8 kHz, PCM 16 bits, mono | WAV |
+| 3CX | WAV, 8 kHz, 16 bits, mono | WAV |
+| Twilio | MP3 ou WAV ; transcodé en 8 kHz µ-law à la lecture | MP3 ou WAV |
+| VoIP hébergée / portail opérateur | En général WAV, 8 kHz, mono ; certains acceptent le MP3 | WAV, sauf indication contraire de la page d'envoi |
+
+En résumé : **dans le doute, prenez le WAV.** Tous ces systèmes l'acceptent, et quand une page d'envoi refuse votre fichier pour « mauvais format », il s'agit presque toujours d'un MP3 stéréo 44,1 kHz destiné à la vidéo.
+
+## Créer une annonce téléphonique en trois étapes
 
 1. **Saisissez votre script** — rédigez l'accueil, le menu ou le message, ou partez de l'un des exemples intégrés et modifiez-le.
 2. **Choisissez une voix** — choisissez parmi une sélection soignée de voix IA de qualité studio dans plusieurs langues, et écoutez un aperçu de votre texte.
@@ -67,12 +81,20 @@ Oui — les clips sortent dans les formats qu'attendent les systèmes téléphon
 
 Oui — c'est précisément à cela que sert le générateur. Les voix sont des voix de synthèse commerciales, autorisées pour un usage téléphonique. Générez votre accueil, votre menu, votre répondeur et vos annonces d'attente, téléchargez-les, et chargez-les dans votre système téléphonique.
 
+### Quel format audio faut-il pour Asterisk et FreePBX ?
+
+Les deux lisent des fichiers WAV en 8 kHz, PCM 16 bits, mono ; Asterisk lit en plus le µ-law 8 kHz. Le générateur de messages vocaux produit exactement cela : téléchargez le WAV et déposez-le dans votre répertoire de sons ou envoyez-le depuis la page System Recordings de FreePBX, sans aucune étape de conversion.
+
 ### En quoi est-ce différent de WaveKat Voice, l'application ?
 
 [WaveKat Voice](/fr/voice/) est une application de bureau qui transforme votre ordinateur en téléphone professionnel — recevoir et passer des appels, enregistrés et retranscrits. Le générateur de messages vocaux est un outil web gratuit distinct qui crée les messages d'accueil et les menus que votre système téléphonique diffuse. Ils se complètent, mais vous pouvez utiliser l'un ou l'autre séparément.
 
+### Faut-il un système téléphonique pour utiliser les fichiers générés ?
+
+Non — et si vous n'en avez pas, WaveKat Voice peut en tenir lieu. Ses [flux d'appel](/fr/blog/answer-calls-with-a-call-flow/) répondent aux appels entrants avec un accueil, un menu téléphonique et une messagerie, et chaque étape est mise en voix par ce même générateur : vous saisissez le texte de chaque étape, et un seul clic vocalise tout le flux. Vous pouvez donc télécharger des clips pour le système que vous exploitez déjà, ou vous passer entièrement de l'envoi et laisser le flux les diffuser.
+
 ## Essayez
 
-Ouvrez le [générateur de messages vocaux](https://platform.wavekat.com/voice/prompts), saisissez une ligne, choisissez une voix, et téléchargez un clip prêt pour le téléphone — sans compte, sans téléchargement, sans carte. Si vous voulez le récit complet de ce qu'il fait, la [page de l'outil](/fr/voice/prompts/) en donne le tour d'horizon.
+Ouvrez le [générateur de messages vocaux](https://platform.wavekat.com/voice/prompts), saisissez une ligne, choisissez une voix, et téléchargez un clip prêt pour le téléphone — sans compte, sans téléchargement, sans carte. Si vous voulez le récit complet de ce qu'il fait, la [page de l'outil](/fr/voice/prompts/) en donne le tour d'horizon, et les [flux d'appel](/fr/blog/answer-calls-with-a-call-flow/) montrent ces mêmes clips en train de répondre à un vrai appel.
 
 Vos appelants entendent votre système téléphonique avant de vous entendre. Désormais, le faire bien sonner prend une minute.

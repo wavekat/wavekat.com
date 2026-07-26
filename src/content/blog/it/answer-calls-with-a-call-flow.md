@@ -1,19 +1,19 @@
 ---
-title: "Flussi di chiamata: il telefono risponde, tu guardi e puoi prendere la linea"
-description: "WaveKat Voice ora risponde alle chiamate in arrivo con un flusso di chiamata: un saluto, un menu telefonico, un messaggio in segreteria o uno squillo a te. Segui ogni passo in diretta e rispondi mentre lasciano il messaggio."
+title: "Flussi di chiamata: un centralino automatico"
+description: "WaveKat Voice risponde alle chiamate in arrivo con un flusso: un centralino automatico con saluto, menu telefonico e segreteria. Lo segui in diretta."
 date: 2026-07-25
 author: Eason Guo
 tags: [voice-ai, chiamate]
 lang: "it"
 ---
 
-WaveKat Voice — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora può rispondere al posto tuo. A rispondere è un **flusso di chiamata**: saluta chi chiama, controlla se sei aperto, propone un menu, ti fa squillare, registra un messaggio oppure trasferisce la chiamata. Il flusso si costruisce sul web, si assegna a una delle tue linee e da quel momento anche le chiamate che non riesci a prendere ricevono una risposta. Arriva con la versione [0.0.43](/it/voice/changelog/#0.0.43).
+[WaveKat Voice](/it/voice/) — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora può rispondere al posto tuo. A rispondere è un **flusso di chiamata**: saluta chi chiama, controlla se sei aperto, propone un menu, ti fa squillare, registra un messaggio oppure trasferisce la chiamata. Il flusso si costruisce sul web, si assegna a una delle tue linee e da quel momento anche le chiamate che non riesci a prendere ricevono una risposta. Arriva con la versione [0.0.43](/it/voice/changelog/#0.0.43).
 
 È il passo più grande finora verso ciò a cui torniamo sempre: [dare a ogni piccola attività la voce di una grande](/it/blog/hello-world/). Un'azienda grande risponde a tutte le chiamate: ha una reception, un menu telefonico costruito da un consulente, un servizio per il fuori orario. Un negozio di tre persone ha un telefono che squilla finché qualcuno riesce ad asciugarsi le mani, e chi si stanca e riattacca è una prenotazione che non è mai esistita. I flussi di chiamata colmano quella distanza, e girano sul computer che è già sulla tua scrivania.
 
 ## Che cos'è un flusso di chiamata
 
-Un flusso è un breve elenco di passi, e la chiamata li attraversa in ordine. Ogni passo è un mattoncino con un solo compito:
+Un flusso di chiamata in WaveKat Voice è un breve elenco di passi che una chiamata in arrivo attraversa uno alla volta. È esattamente ciò che gli altri sistemi telefonici vendono come **centralino automatico**: il saluto e il menu «premi 1 per prenotare» che risponde quando tu non puoi. Solo che qui sta dentro il softphone che già usi, invece che in una piattaforma a parte pagata per postazione. Ogni passo è un mattoncino con un solo compito:
 
 | Passo | Che cosa vive chi chiama |
 |---|---|
@@ -43,9 +43,9 @@ Il flusso pubblicato compare poi nella nuova sezione **Flussi di chiamata** dell
 
 I flussi girano **sul tuo computer**, dentro l'app, con l'account SIP che hai già. Nulla della chiamata viene gestito sui nostri server: il saluto parte dalla tua macchina, il messaggio viene registrato sulla tua macchina e non c'è alcun costo a chiamata, perché in mezzo non c'è nessun altro. Il prezzo, detto onestamente, è un altro: perché il flusso risponda, l'app deve essere in funzione e il computer acceso, e a ogni linea risponde un solo computer.
 
-## Guardalo rispondere, in diretta
+## Guarda il flusso rispondere, in diretta
 
-La parte di cui siamo più contenti non è che risponda, ma che tu possa vederlo mentre lo fa.
+Mentre un flusso risponde, WaveKat Voice ti mostra passo per passo che cosa sta facendo, nel momento in cui accade. Perché la parte di cui siamo più contenti non è che risponda, ma che tu possa vederlo mentre lo fa.
 
 Quando un flusso risponde, l'app non finge che sia tu al telefono. Sullo schermo compare **«Reception sta rispondendo»** e, sotto, una riga racconta che cosa sta succedendo in quel momento: *Sta parlando con il chiamante… Riproduzione del menu… Ti sta chiamando… Sta registrando un messaggio…*
 
@@ -57,7 +57,7 @@ Questo è filtrare le chiamate, ed è diverso dalla segreteria a cui sei abituat
 
 ## Prendere la linea a metà del messaggio
 
-Proprio perché stai guardando, puoi prenderti la chiamata. Mentre qualcuno lascia un messaggio, l'app mostra il pulsante **Rispondi**: premilo e la chiamata passa al tuo microfono e ai tuoi altoparlanti, esattamente come una chiamata a cui avessi risposto tu. La parte di messaggio già registrata viene conservata.
+Una chiamata a cui ha risposto il flusso puoi prenderla a metà, senza che chi chiama debba ricominciare da capo. Mentre qualcuno lascia un messaggio, l'app mostra il pulsante **Rispondi**: premilo e la chiamata passa al tuo microfono e ai tuoi altoparlanti, esattamente come una chiamata a cui avessi risposto tu. La parte di messaggio già registrata viene conservata.
 
 ![WaveKat Voice su Ubuntu — la mappa in diretta con il passo della segreteria illuminato, il pulsante «Rispondi» e il messaggio di chi chiama che appare come trascrizione in diretta.](/screenshots/flow-takeover/it.webp)
 
@@ -65,7 +65,7 @@ E non devi indovinare se valga la pena rispondere: il messaggio compare come tes
 
 **Rispondi** compare solo nei momenti in cui l'arrivo di una persona ha senso per chi chiama: mentre sta lasciando un messaggio, non a metà del saluto né durante un annuncio del menu. A nessuno fa piacere che una voce si sovrapponga alla registrazione che gli sta ancora parlando.
 
-## Dopo la chiamata
+## Che cosa lascia una chiamata gestita da un flusso
 
 Una chiamata a cui ha risposto un flusso finisce nella cronologia come tutte le altre, con accanto il nome del flusso — *Risposta da «Reception»* — così distingui a colpo d'occhio quali hai gestito tu e quali il flusso. Aprendone una, il riepilogo ti dice in parole semplici com'è finita: **Il chiamante ha lasciato un messaggio**, con un collegamento al flusso che l'ha presa.
 
@@ -89,6 +89,10 @@ Un account gratuito ottiene quindi una segreteria completa, con il tuo saluto, l
 ### Che cos'è un flusso di chiamata in WaveKat Voice?
 
 Un flusso di chiamata è una sequenza di passi che risponde automaticamente alle chiamate in arrivo: un saluto, un controllo degli orari, un menu telefonico, uno squillo a te, la registrazione di un messaggio o un trasferimento. Lo costruisci sul web, su platform.wavekat.com, lo assegni a una delle tue linee e l'app WaveKat Voice sul tuo computer lo esegue quando arriva una chiamata.
+
+### Un flusso di chiamata è la stessa cosa di un centralino automatico o di un IVR?
+
+Un flusso di chiamata è il nome che WaveKat Voice dà al centralino automatico: saluta chi chiama, propone un menu da tastiera, controlla i tuoi orari, ti fa squillare e registra un messaggio. Non è un IVR completo in senso aziendale — non cerca chi chiama in un database e non porta a termine pratiche al posto suo — e per ora non sostiene una vera conversazione. Se stavi cercando un «centralino automatico per piccole imprese», un flusso di chiamata fa esattamente quel lavoro, ma sul tuo computer invece che su una piattaforma pagata a postazione al mese.
 
 ### Il computer deve essere acceso perché un flusso risponda?
 

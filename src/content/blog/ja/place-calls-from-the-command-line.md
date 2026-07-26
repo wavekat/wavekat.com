@@ -1,6 +1,6 @@
 ---
 title: "AI アシスタントに本物の電話をかけさせる"
-description: "WaveKat Voice はコマンドラインツールと MCP サーバーを提供するようになりました。Claude のような AI アシスタントが、あなたのコンピューター上で本物の電話をかけたり管理したりできます —— ワンクリックでセットアップ完了。"
+description: "WaveKat Voice がコマンドラインツールと MCP サーバーを提供。Claude のような AI アシスタントが、あなたのパソコンで本物の電話をかけて管理できます。"
 date: 2026-06-16
 author: Eason Guo
 tags: [音声AI, 自動化, AIエージェント]

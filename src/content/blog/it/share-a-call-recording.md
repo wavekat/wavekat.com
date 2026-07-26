@@ -1,6 +1,6 @@
 ---
-title: "Condividi la registrazione di una chiamata con un link"
-description: "WaveKat Voice ora trasforma qualsiasi chiamata registrata in un link da condividere — privato, su invito o pubblico — con il controllo esatto su ciò che il destinatario può ascoltare e leggere."
+title: "Condividi la registrazione di una chiamata"
+description: "WaveKat Voice trasforma una chiamata registrata in un link da condividere — privato, su invito o pubblico — e decidi tu che cosa il destinatario sente e legge."
 date: 2026-06-28
 author: Eason Guo
 tags: [voice-ai, registrazioni, privacy]

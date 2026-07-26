@@ -1,19 +1,19 @@
 ---
-title: "Flux d'appel : votre téléphone décroche, vous regardez, vous reprenez la main"
-description: "WaveKat Voice répond désormais aux appels entrants avec un flux d'appel : accueil, menu téléphonique, message vocal ou sonnerie chez vous. Vous suivez chaque étape en direct et décrochez en plein message."
+title: "Flux d'appel : un standard automatique pour TPE"
+description: "WaveKat Voice répond aux appels entrants avec un flux d'appel : un standard automatique avec accueil, menu téléphonique et messagerie, suivi en direct."
 date: 2026-07-25
 author: Eason Guo
 tags: [ia-vocale, appels]
 lang: "fr"
 ---
 
-WaveKat Voice — le softphone SIP pour Mac et Linux qui enregistre et transcrit chaque appel — peut désormais répondre à vos appels entrants à votre place. Ce qui décroche, c'est un **flux d'appel** : il accueille l'appelant, vérifie si vous êtes ouvert, propose un menu, vous fait sonner, prend un message ou transfère l'appel. Vous construisez le flux sur le web, vous l'affectez à l'une de vos lignes, et à partir de là, les appels que vous ne pouvez pas prendre trouvent quand même une réponse. C'est arrivé avec la version [0.0.43](/fr/voice/changelog/#0.0.43).
+[WaveKat Voice](/fr/voice/) — le softphone SIP pour Mac et Linux qui enregistre et transcrit chaque appel — peut désormais répondre à vos appels entrants à votre place. Ce qui décroche, c'est un **flux d'appel** : il accueille l'appelant, vérifie si vous êtes ouvert, propose un menu, vous fait sonner, prend un message ou transfère l'appel. Vous construisez le flux sur le web, vous l'affectez à l'une de vos lignes, et à partir de là, les appels que vous ne pouvez pas prendre trouvent quand même une réponse. C'est arrivé avec la version [0.0.43](/fr/voice/changelog/#0.0.43).
 
 C'est le plus grand pas à ce jour vers ce à quoi nous revenons toujours : [donner à chaque petite entreprise la voix d'une grande](/fr/blog/hello-world/). Une grande entreprise répond à chaque appel : il y a un accueil, un menu téléphonique qu'un consultant a construit, un service en dehors des heures d'ouverture. Un commerce de trois personnes, lui, a un téléphone qui sonne jusqu'à ce que quelqu'un puisse s'essuyer les mains — et un appelant qui renonce, c'est une réservation qui n'a jamais eu lieu. Les flux d'appel comblent cet écart, et ils tournent sur l'ordinateur déjà posé sur votre bureau.
 
 ## Ce qu'est un flux d'appel
 
-Un flux, c'est une courte liste d'étapes, et l'appel les parcourt dans l'ordre. Chaque étape est une brique avec une seule fonction :
+Un flux d'appel dans WaveKat Voice, c'est une courte liste d'étapes qu'un appel entrant parcourt une à une. C'est exactement ce que les autres systèmes téléphoniques vendent sous le nom de **standard automatique** : l'accueil et le menu « tapez 1 pour réserver » qui répond quand vous ne pouvez pas. Sauf qu'ici, c'est intégré au softphone que vous utilisez déjà, au lieu d'une plateforme séparée facturée par poste. Chaque étape est une brique avec une seule fonction :
 
 | Étape | Ce que vit l'appelant |
 |---|---|
@@ -43,9 +43,9 @@ Le flux publié apparaît alors dans la nouvelle section **Flux d'appel** de l'a
 
 Les flux tournent **sur votre ordinateur**, dans l'application, avec le compte SIP que vous avez déjà. Rien de l'appel n'est traité sur nos serveurs : l'accueil est joué depuis votre machine, le message y est enregistré, et il n'y a aucun coût à l'appel puisque personne ne s'interpose. La contrepartie est honnête : l'application doit tourner et l'ordinateur être allumé pour que le flux décroche, et une ligne n'est prise en charge que par un seul ordinateur.
 
-## Le voir répondre, en direct
+## Voir le flux répondre, en direct
 
-Ce dont nous sommes le plus contents, ce n'est pas qu'il décroche — c'est que vous puissiez le voir faire.
+Pendant qu'un flux répond, WaveKat Voice vous montre étape par étape ce qu'il est en train de faire. Car ce dont nous sommes le plus contents, ce n'est pas qu'il décroche — c'est que vous puissiez le voir faire.
 
 Quand un flux répond, l'application ne fait pas semblant que vous êtes en communication. L'écran affiche **« Accueil répond »**, et une ligne en dessous vous dit ce qui se passe à l'instant : *Parle à l'appelant… Lecture du menu… Vous appelle… Prise d'un message…*
 
@@ -57,7 +57,7 @@ C'est du filtrage d'appel, et cela n'a rien à voir avec la messagerie vocale qu
 
 ## Reprendre la main en plein message
 
-Comme vous regardez, vous pouvez récupérer l'appel. Pendant qu'un appelant laisse un message, l'application affiche un bouton **Décrocher** : appuyez, et l'appel bascule sur votre micro et vos haut-parleurs, exactement comme un appel que vous auriez pris vous-même. La partie du message déjà enregistrée est conservée.
+Vous pouvez reprendre un appel auquel le flux a répondu, sans que l'appelant ait à tout recommencer. Pendant qu'un appelant laisse un message, l'application affiche un bouton **Décrocher** : appuyez, et l'appel bascule sur votre micro et vos haut-parleurs, exactement comme un appel que vous auriez pris vous-même. La partie du message déjà enregistrée est conservée.
 
 ![WaveKat Voice sous Ubuntu — le plan en direct avec l'étape de messagerie allumée, un bouton « Décrocher », et le message de l'appelant qui s'affiche en transcription en direct.](/screenshots/flow-takeover/fr.webp)
 
@@ -65,7 +65,7 @@ Et vous n'avez pas à deviner si l'appel vaut la peine : le message s'affiche en
 
 **Décrocher** n'apparaît qu'aux moments où l'arrivée d'un humain a du sens pour l'appelant — pendant qu'il laisse un message, pas au milieu de votre accueil ni pendant une annonce de menu. Personne n'a envie qu'une voix se superpose à l'enregistrement qui est encore en train de lui parler.
 
-## Après l'appel
+## Ce que laisse un appel pris par un flux
 
 Un appel pris par un flux arrive dans votre historique comme les autres, avec le nom du flux à côté — *Répondu par « Accueil »* — pour distinguer d'un coup d'œil les appels que vous avez traités de ceux qu'il a pris. Ouvrez-en un et le résumé vous dit en clair comment il s'est terminé : **L'appelant a laissé un message**, avec un lien vers le flux qui l'a reçu.
 
@@ -89,6 +89,10 @@ Un compte gratuit obtient donc un répondeur complet, avec votre accueil, vos mo
 ### Qu'est-ce qu'un flux d'appel dans WaveKat Voice ?
 
 Un flux d'appel est une suite d'étapes qui répond automatiquement à vos appels entrants : un accueil, une vérification de vos horaires, un menu téléphonique, une sonnerie chez vous, la prise d'un message ou un transfert. Vous le construisez sur le web, sur platform.wavekat.com, vous l'affectez à l'une de vos lignes, et l'application WaveKat Voice de votre ordinateur l'exécute à chaque appel entrant.
+
+### Un flux d'appel, est-ce la même chose qu'un standard automatique ou un SVI ?
+
+Un flux d'appel, c'est le nom que WaveKat Voice donne au standard automatique : il accueille l'appelant, propose un menu au clavier, vérifie vos horaires, vous fait sonner et prend un message. Ce n'est pas un SVI (IVR) complet au sens des grandes entreprises — il ne va pas chercher l'appelant dans une base de données et ne traite pas de démarche à sa place — et il ne tient pas encore de vraie conversation. Si vous cherchiez un « standard téléphonique automatique pour petite entreprise », un flux d'appel fait ce travail-là, sur votre propre ordinateur plutôt que sur une plateforme facturée par poste et par mois.
 
 ### Mon ordinateur doit-il être allumé pour qu'un flux réponde ?
 

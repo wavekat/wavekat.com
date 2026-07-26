@@ -1,6 +1,6 @@
 ---
-title: "WaveKat Voice 为什么运行在自研 SIP 引擎上"
-description: "WaveKat Voice 现已运行在 wavekat-sip 上——我们从零编写的开源 SIP 与 RTP 引擎，不依赖任何第三方协议栈。为什么要自己写，这对你的通话意味着什么。"
+title: "为什么要自研 SIP 引擎"
+description: "WaveKat Voice 运行在 wavekat-sip 上——我们从零编写的开源 SIP 与 RTP 引擎，不依赖任何第三方协议栈，你和通话之间没有黑盒。"
 date: 2026-07-06
 author: Eason Guo
 tags: [语音AI, 工程, 开源, SIP]

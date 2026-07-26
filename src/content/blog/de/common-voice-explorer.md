@@ -1,5 +1,5 @@
 ---
-title: "Common Voice Explorer — Hören Sie die Stimmen der Welt"
+title: "Common Voice Explorer — Stimmen der Welt"
 description: "Durchsuchen Sie Tausende echter menschlicher Stimmen aus Mozilla Common Voice und hören Sie sie an — direkt im Browser. Kein Download, keine Einrichtung."
 date: 2026-04-21
 author: Eason Guo

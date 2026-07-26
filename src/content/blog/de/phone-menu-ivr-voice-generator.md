@@ -1,5 +1,5 @@
 ---
-title: "Ein kostenloser Sprachgenerator für Telefonmenüs, IVR und Ansagen"
+title: "Kostenloser Sprachgenerator für Telefonmenüs"
 description: "Der WaveKat Voice Prompt Generator macht aus Text telefonfertige Ansagen, IVR-Menüs und Voicemail — KI-Stimmen in Studioqualität. Kostenlos testen, ohne Konto."
 date: 2026-07-19
 author: Eason Guo
@@ -21,7 +21,7 @@ Jede Telefonanlage, die ein Unternehmen betreibt — eine Büro-PBX, eine gehost
 
 Das Ergebnis kennt jeder, der schon einmal bei einem kleinen Unternehmen angerufen hat: eine Begrüßung, vor Jahren in einer Stimme aufgenommen, ein Menü in einer anderen und eine Anrufbeantworter-Ansage, die einfach die Standardansage des Anbieters ist. Der Voice Prompt Generator ist dafür da, den richtigen Weg zum einfachen zu machen.
 
-## Was Sie damit erstellen können
+## Was Sie mit dem Sprachgenerator erstellen können
 
 Jedes davon ist eine konkrete Telefonaudio-Aufgabe, die der Generator erledigt — zusammen decken sie ab, was eine typische Telefonanlage abspielt:
 
@@ -41,7 +41,21 @@ Das ist der Teil, den generische Text-to-Speech-Werkzeuge falsch machen. Telefon
 
 Der Voice Prompt Generator gibt jeden Clip in den Formaten aus, die Telefonanlagen verlangen — **8 kHz µ-law, WAV oder MP3** — sodass die Datei ohne Umwandlungsschritt direkt in Asterisk, FreePBX, 3CX, Twilio und den Rest einspielbar ist. Dateien werden mit klaren, sprechenden Namen heruntergeladen — bereit zum Hochladen oder zur Übergabe an die Person, die Ihre Telefonanlage betreut.
 
-## So funktioniert es
+### Welches Format braucht Ihre Telefonanlage?
+
+Wenn Sie nicht sicher sind, welches der drei Formate Sie herunterladen sollen — das erwarten die gängigen Systeme:
+
+| Telefonsystem | Was es erwartet | Das herunterladen |
+|---|---|---|
+| Asterisk | WAV, 8 kHz, 16 Bit PCM, mono (spielt auch µ-law) | WAV — oder µ-law, wenn Ihr Dialplan es nutzt |
+| FreePBX | WAV, 8 kHz, 16 Bit PCM, mono | WAV |
+| 3CX | WAV, 8 kHz, 16 Bit, mono | WAV |
+| Twilio | MP3 oder WAV; wird beim Abspielen in 8 kHz µ-law umgewandelt | MP3 oder WAV |
+| Gehostete VoIP-/Anbieterportale | Meist WAV, 8 kHz, mono; manche nehmen MP3 | WAV, sofern die Upload-Seite nichts anderes sagt |
+
+Kurz gesagt: **Im Zweifel das WAV nehmen.** Jedes dieser Systeme akzeptiert es. Und wenn eine Upload-Seite Ihre Datei als „falsches Format" ablehnt, ist es fast immer ein 44,1-kHz-Stereo-MP3, das fürs Video gemacht wurde.
+
+## In drei Schritten zur Telefonansage
 
 1. **Text eingeben** — schreiben Sie die Begrüßung, das Menü oder die Ansage, oder starten Sie mit einem der eingebauten Beispiele und passen Sie es an.
 2. **Stimme wählen** — wählen Sie aus einer kuratierten Auswahl von KI-Stimmen in Studioqualität in mehreren Sprachen und hören Sie vorab, wie Ihr Text klingt.
@@ -67,12 +81,20 @@ Ja — die Clips kommen in den Formaten heraus, die Telefonanlagen erwarten: 8 k
 
 Ja — genau dafür ist der Generator da. Die Stimmen sind kommerzielle Text-to-Speech-Stimmen, freigegeben für den Telefoneinsatz. Erzeugen Sie Ihre Begrüßung, Ihr Menü, Ihre Anrufbeantworter- und Warteschleifen-Ansagen, laden Sie sie herunter und spielen Sie sie in Ihre Telefonanlage ein.
 
+### Welches Audioformat brauchen Asterisk und FreePBX für Ansagen?
+
+Beide spielen WAV-Dateien mit 8 kHz, 16 Bit PCM, mono; Asterisk spielt zusätzlich 8 kHz µ-law. Der Voice Prompt Generator gibt genau das aus — Sie laden das WAV herunter und legen es in Ihr sounds-Verzeichnis oder laden es auf der FreePBX-Seite „System Recordings" hoch, ganz ohne Konvertierungsschritt.
+
 ### Wie unterscheidet sich das von WaveKat Voice, der App?
 
 [WaveKat Voice](/de/voice/) ist eine Desktop-App, die Ihren Computer zu Ihrem Geschäftstelefon macht — Anrufe entgegennehmen und tätigen, aufgezeichnet und transkribiert. Der Voice Prompt Generator ist ein separates, kostenloses Web-Werkzeug, das die aufgenommenen Begrüßungen und Menüs erstellt, die Ihre Telefonanlage abspielt. Sie ergänzen einander, aber Sie können jedes für sich nutzen.
 
+### Brauche ich überhaupt eine Telefonanlage für die erzeugten Ansagen?
+
+Nein — und wenn Sie keine haben, kann WaveKat Voice sie sein. Seine [Anrufabläufe](/de/blog/answer-calls-with-a-call-flow/) nehmen eingehende Anrufe mit Begrüßung, Telefonmenü und Anrufbeantworter an, und vertont werden sie von genau diesem Generator: Sie tippen den Text für jeden Schritt, ein Klick vertont den ganzen Ablauf. Sie können also Clips für eine vorhandene Anlage herunterladen — oder das Hochladen ganz überspringen und den Ablauf abspielen lassen.
+
 ## Probieren Sie es aus
 
-Öffnen Sie den [Voice Prompt Generator](https://platform.wavekat.com/voice/prompts), tippen Sie eine Zeile, wählen Sie eine Stimme und laden Sie einen telefonfertigen Clip herunter — kein Konto, kein Download, keine Karte. Wenn Sie die längere Geschichte dazu lesen möchten, finden Sie auf der [Seite des Werkzeugs](/de/voice/prompts/) den vollständigen Überblick.
+Öffnen Sie den [Voice Prompt Generator](https://platform.wavekat.com/voice/prompts), tippen Sie eine Zeile, wählen Sie eine Stimme und laden Sie einen telefonfertigen Clip herunter — kein Konto, kein Download, keine Karte. Wenn Sie die längere Geschichte dazu lesen möchten, finden Sie auf der [Seite des Werkzeugs](/de/voice/prompts/) den vollständigen Überblick — und die [Anrufabläufe](/de/blog/answer-calls-with-a-call-flow/) zeigen, wie dieselben Clips einen echten Anruf annehmen.
 
 Ihre Anrufer hören Ihre Telefonanlage, bevor sie Sie hören. Jetzt dauert es nur noch eine Minute, sie gut klingen zu lassen.

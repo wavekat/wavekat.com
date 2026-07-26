@@ -1,6 +1,6 @@
 ---
-title: "Warum WaveKat Voice auf einer eigenen SIP-Engine läuft"
-description: "WaveKat Voice läuft jetzt auf wavekat-sip — unserer von Grund auf selbst gebauten, quelloffenen SIP/RTP-Engine. Kein fremder SIP-Stack, keine Blackbox zwischen Ihnen und Ihren Anrufen."
+title: "Warum WaveKat Voice eine eigene SIP-Engine hat"
+description: "WaveKat Voice läuft auf wavekat-sip — unserer selbst gebauten, quelloffenen SIP/RTP-Engine. Kein fremder Stack, keine Blackbox zwischen Ihnen und Ihren Anrufen."
 date: 2026-07-06
 author: Eason Guo
 tags: [Sprach-KI, Technik, Open-Source, SIP]

@@ -1,6 +1,6 @@
 ---
 title: "Comparte la grabación de una llamada con un enlace"
-description: "WaveKat Voice ahora convierte cualquier llamada grabada en un enlace para compartir —privado, solo por invitación o público— con control sobre exactamente qué puede escuchar y leer el destinatario."
+description: "WaveKat Voice convierte una llamada grabada en un enlace para compartir —privado, por invitación o público— y usted decide qué oye y lee quien lo abra."
 date: 2026-06-28
 author: Eason Guo
 tags: [voz-ia, grabaciones, privacidad]

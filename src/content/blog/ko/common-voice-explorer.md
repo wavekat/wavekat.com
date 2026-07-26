@@ -1,6 +1,6 @@
 ---
-title: "Common Voice Explorer — 세계 각지의 목소리를 들어보세요"
-description: "Mozilla Common Voice의 수천 개에 달하는 실제 사람의 목소리를 브라우저에서 바로 탐색하고, 검색하고, 들어보세요 — 다운로드도, 설정도 필요 없습니다."
+title: "Common Voice Explorer — 세계의 목소리"
+description: "Mozilla Common Voice의 실제 사람 목소리 수천 개를 브라우저에서 바로 탐색하고 들어보세요. 다운로드도, 설정도 필요 없습니다."
 date: 2026-04-21
 author: Eason Guo
 tags: [도구, 오픈데이터, 음성AI]
