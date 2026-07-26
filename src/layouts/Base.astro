@@ -18,6 +18,12 @@ interface Props {
   ogImageAlt?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  /**
+   * Mount the shared animated waveform backdrop. Off only for pages that draw
+   * their own full-bleed field (the /brand/wallpaper/ live wallpaper), so two
+   * canvases never animate at once.
+   */
+  siteBackground?: boolean;
   article?: {
     publishedTime?: Date;
     modifiedTime?: Date;
@@ -33,6 +39,7 @@ const {
   ogImageAlt = 'WaveKat — open-source AI voice tools for small business',
   ogType = 'website',
   noindex = false,
+  siteBackground = true,
   article,
 } = Astro.props;
 
@@ -175,7 +182,7 @@ const orgSchema = {
     </script>
   </head>
   <body class="min-h-screen bg-white dark:bg-wk-bg text-gray-900 dark:text-gray-100 transition-colors duration-200">
-    <SiteBackground />
+    {siteBackground && <SiteBackground />}
 
     {bannerOffers.length > 0 && (
       <div
