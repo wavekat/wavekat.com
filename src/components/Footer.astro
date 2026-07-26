@@ -39,6 +39,11 @@ const groups = [
     links: [
       { href: localeHref('/blog/'), label: ui.navBlog },
       { href: localeHref('/about/'), label: ui.footerAbout },
+      // English-only, deliberately: the wallpaper page itself isn't translated,
+      // so it's offered where the reader is already reading English rather than
+      // pointing a localized footer at an English destination. That also keeps
+      // it from costing a ninth translation of a label for a brand extra.
+      ...(lang === 'en' ? [{ href: '/brand/wallpaper/', label: 'Wallpaper' }] : []),
     ],
   },
 ];
