@@ -1,16 +1,16 @@
 ---
-title: "Click a Phone Number on a Website to Call It"
-description: "WaveKat Voice now handles tel: and sip: links on Mac and Linux — click a phone number on any website and the app opens with it ready to dial. Optional one-click auto-dial, off by default."
+title: "Click-to-Call: Dial Phone Links From Any Website"
+description: "WaveKat Voice now opens tel: and sip: links on Mac and Linux — click a phone number on any website and it lands in the dial field, ready to call."
 date: 2026-07-25
 author: Eason Guo
 tags: [voice-ai, calls]
 ---
 
-WaveKat Voice — the SIP softphone for Mac and Linux that records and transcribes every call — can now be the app your computer opens when you click a phone number on a website. Click a `tel:` or `sip:` link anywhere — a company's contact page, a search result, a supplier's invoice — and WaveKat Voice comes to the front with the number already filled in, ready for you to press Call. It lands in [0.0.43](/voice/changelog/#0.0.43).
+Click-to-call means a phone number on a web page is a link you can click to dial, instead of something you copy out and retype by hand. [WaveKat Voice](/voice/) — the SIP softphone for Mac and Linux that records and transcribes every call — can now be the app your computer opens for those links. Click a `tel:` or `sip:` link anywhere — a company's contact page, a search result, a supplier's invoice — and WaveKat Voice comes to the front with the number already filled in, ready for you to press Call. It lands in [0.0.43](/voice/changelog/#0.0.43).
 
-Click-to-call means a phone number on a web page is a link you can click to dial, instead of something you copy out and retype by hand. It's table-stakes on a business desk phone, and one of those features you only notice when it's missing: you see a number on a page, you click it, the phone dials. WaveKat Voice — the [SIP softphone](/voice/) that records and transcribes every call and [runs on its own SIP engine](/blog/our-own-sip-engine/) — now dials the numbers you click, too.
+It's table-stakes on a business desk phone, and one of those features you only notice when it's missing: you see a number on a page, you click it, the phone dials. This is the outgoing half of the same release that taught WaveKat Voice to [answer your incoming calls with a call flow](/blog/answer-calls-with-a-call-flow/) — and, like the rest of the calling, it runs on [our own from-scratch SIP engine](/blog/our-own-sip-engine/).
 
-## What it does
+## What happens when you click a phone number
 
 Turn on **Phone links** and any phone number that's a clickable link becomes a way into WaveKat Voice. Click `tel:+14155550123` in your browser and the app takes focus and opens the New Call sheet with `+14155550123` already in the To field. You look at it, and you press Call. Both `tel:` links (ordinary phone numbers) and `sip:` links (SIP addresses like `sip:alice@example.com`) work — the SIP address goes straight through to your account.
 
@@ -18,14 +18,14 @@ Turn on **Phone links** and any phone number that's a clickable link becomes a w
 
 The default is deliberately the safe one: the number is filled in, but **you** place the call. A web page can *ask* to start a call; it can't actually dial without a human pressing Call. That matters, because a link on a page is something anyone can put there.
 
-## Turning it on
+## How to turn on phone links
 
 Phone links are **off until you turn them on**, because claiming the phone-number links on your whole computer is the kind of thing that should be your choice, not a surprise from an app you just installed. Flip **Phone links** on in **Settings → General** — the same place as "Open at login" — and WaveKat Voice registers with your operating system as a handler for phone links. What that looks like depends on the OS, and the setting is honest about it:
 
 | Platform | What happens when you turn it on |
 |---|---|
 | **macOS** | WaveKat Voice becomes the handler right away, taking `tel:` links over from FaceTime. |
-| **Linux** | Works as soon as you turn it on. |
+| **Linux** | WaveKat Voice becomes the handler right away, registered with your desktop as the `tel:`/`sip:` app. |
 
 ![WaveKat Voice on Ubuntu — Settings → General with the Phone links toggle switched on.](/screenshots/settings-general-phone-links/en.webp)
 

@@ -1,18 +1,18 @@
 ---
-title: "Call Flows — Your Phone Answers, You Watch, You Take Over"
-description: "WaveKat Voice now answers incoming calls with a call flow: a greeting, a phone menu, voicemail, or a ring to you. Watch each step live and pick up mid-message."
+title: "Call Flows — an Auto Attendant for Small Business"
+description: "WaveKat Voice answers incoming calls with a call flow — an auto attendant with a greeting, phone menu, and voicemail. Watch each step live, pick up mid-message."
 date: 2026-07-25
 author: Eason Guo
 tags: [voice-ai, calls]
 ---
 
-WaveKat Voice — the SIP softphone for Mac and Linux that records and transcribes every call — can now answer your incoming calls for you. A **call flow** is the thing that answers: it greets the caller, checks whether you're open, offers a menu, rings you, takes a message, or transfers the call on. You build the flow on the web, point it at one of your phone lines, and from then on the calls you can't get to still get answered. It lands in [0.0.43](/voice/changelog/#0.0.43).
+[WaveKat Voice](/voice/) — the SIP softphone for Mac and Linux that records and transcribes every call — can now answer your incoming calls for you. A **call flow** is the thing that answers: it greets the caller, checks whether you're open, offers a menu, rings you, takes a message, or transfers the call on. You build the flow on the web, point it at one of your phone lines, and from then on the calls you can't get to still get answered. It lands in [0.0.43](/voice/changelog/#0.0.43).
 
 This is the biggest step yet toward the thing we keep coming back to: [giving every small business the voice of a big one](/blog/hello-world/). A big company answers every call — there's a receptionist, a phone menu somebody paid a consultant to build, an after-hours service. A three-person shop has a phone that rings until someone can wipe their hands, and a caller who gives up is a booking that never happened. Call flows close that gap, and they run on the computer already sitting on your desk.
 
 ## What a call flow is
 
-A flow is a short list of steps, and the call walks through them. Each step is a building block with one job:
+A call flow in WaveKat Voice is a short list of steps that an incoming call walks through, one at a time. It's the thing other phone systems sell as an **auto attendant** — the greeting and "press 1 for…" menu that answers when you can't — except here it's built into the softphone you already use, not a separate platform you pay per seat for. Each step is a building block with one job:
 
 | Step | What the caller experiences |
 |---|---|
@@ -42,9 +42,9 @@ The published flow then shows up in the app's new **Flows** section, on every co
 
 Flows run **on your computer**, inside the app, using the SIP account you already have. Nothing about the call is answered on our servers: the greeting is played from your machine, the message is recorded on your machine, and it costs nothing per call because nobody else is in the middle of it. The trade is the honest one — the app has to be running and the computer awake for the flow to pick up, and one computer answers for a given line.
 
-## Watch it answer, live
+## Watch the flow answer, live
 
-The part we're most pleased with isn't the answering — it's that you can see it happen.
+While a flow is answering, WaveKat Voice shows you what it's doing, step by step, as it happens — the part we're most pleased with isn't the answering, it's that you can see it.
 
 When a flow answers, the app doesn't pretend you're on a call. The screen says **"Reception is answering"** with a line telling you what's happening right now: *Speaking to the caller… Playing the menu… Ringing you… Taking a message…*
 
@@ -56,7 +56,7 @@ That's call screening, and it's different from the voicemail you're used to. A c
 
 ## Take over mid-message
 
-Because you're watching, you can grab the call. While a caller is leaving a message, the app shows a **Pick up** button: press it and the call moves onto your microphone and speakers, exactly like a call you'd answered yourself. The message that was recorded up to that point is kept.
+You can take over a call the flow answered, without the caller starting again. While a caller is leaving a message, the app shows a **Pick up** button: press it and the call moves onto your microphone and speakers, exactly like a call you'd answered yourself. The message that was recorded up to that point is kept.
 
 ![WaveKat Voice on Ubuntu — the live flow map with the voicemail step lit, a Pick up button, and the caller's message appearing as a live transcript.](/screenshots/flow-takeover/en.webp)
 
@@ -64,7 +64,7 @@ And you don't have to guess whether it's worth taking: the message appears as te
 
 Pick up only appears at the moments where a human joining makes sense to the caller — while they're leaving a message, not halfway through your greeting or in the middle of a menu prompt. Nobody wants a voice to cut in over the recording that's still talking to them.
 
-## After the call
+## What a flow-answered call leaves behind
 
 A flow-answered call lands in your history like any other, with the flow's name on it — *Answered by "Reception"* — so you can tell at a glance which calls you handled and which the flow did. Open one and the summary tells you how it ended in plain words: **The caller left a message**, with a link to the flow that took it.
 
@@ -88,6 +88,10 @@ So a Free account gets a complete answering machine with your own greeting, your
 ### What is a call flow in WaveKat Voice?
 
 A call flow is a set of steps that answers your incoming calls automatically — a greeting, a check of your business hours, a phone menu, ringing you, taking a message, or transferring the call. You build it on the web at platform.wavekat.com, point it at one of your phone lines, and the WaveKat Voice app on your computer runs it when a call comes in.
+
+### Is a call flow the same as an auto attendant or an IVR?
+
+A call flow is WaveKat Voice's name for an auto attendant: it greets callers, offers a keypad menu, checks your opening hours, rings you, and takes a message. It is not a full IVR in the enterprise sense — it doesn't look callers up in a database or complete transactions for them — and it doesn't hold a spoken conversation yet. If you've been shopping for an "auto attendant for small business", a call flow is the same job, running on your own computer instead of a monthly-per-seat platform.
 
 ### Does my computer have to be on for a flow to answer?
 

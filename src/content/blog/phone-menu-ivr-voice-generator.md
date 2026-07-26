@@ -1,6 +1,6 @@
 ---
-title: "A Free Voice Generator for Phone Menus, IVR, and Greetings"
-description: "The WaveKat voice prompt generator turns text into telephony-ready phone audio — greetings, IVR menus, voicemail, on-hold messages — with studio-quality AI voices. Free to try, no account required."
+title: "A Free Voice Generator for Phone Menus and IVR"
+description: "The WaveKat voice prompt generator turns text into telephony-ready audio — greetings, IVR menus, voicemail, on-hold messages — free, and no account to start."
 date: 2026-07-19
 author: Eason Guo
 tags: [tools, voice-ai]
@@ -20,9 +20,9 @@ Every phone system a business runs — an office PBX, a hosted VoIP line, a Twil
 
 The result is familiar to anyone who's called a small business: a greeting recorded in one voice years ago, a menu in another, and a voicemail message that's just the carrier default. The voice prompt generator exists to make the right way the easy way.
 
-## What you can make with it
+## What you can make with the voice generator
 
-Each of these is a concrete phone-audio job the generator does, and they cover what a typical phone system plays:
+Each of these is a concrete phone-audio job the generator does, and together they cover what a typical phone system plays:
 
 | Prompt | Example |
 |---|---|
@@ -40,7 +40,21 @@ This is the part generic text-to-speech tools get wrong. Phone systems don't wan
 
 The voice prompt generator outputs every clip in the formats phone systems ask for — **8 kHz µ-law, WAV, or MP3** — so the file drops straight into Asterisk, FreePBX, 3CX, Twilio, and the rest with no conversion step. Files download with clear, descriptive names, ready to upload yourself or hand to whoever runs your phone system.
 
-## How it works
+### Which format does your phone system need?
+
+If you're not sure which of the three to download, here's what the common systems ask for:
+
+| Phone system | What it expects | Download this |
+|---|---|---|
+| Asterisk | WAV, 8 kHz, 16-bit PCM, mono (it also plays µ-law) | WAV — or µ-law if your dialplan uses it |
+| FreePBX | WAV, 8 kHz, 16-bit PCM, mono | WAV |
+| 3CX | WAV, 8 kHz, 16-bit, mono | WAV |
+| Twilio | MP3 or WAV; transcoded to 8 kHz µ-law on playback | MP3 or WAV |
+| Hosted VoIP / carrier portal | Usually WAV, 8 kHz, mono; some accept MP3 | WAV, unless the upload page says otherwise |
+
+The short version: **when in doubt, download the WAV.** It's the format every one of these accepts, and it's what an upload page means when it rejects your file for being "the wrong format" — almost always a 44.1 kHz stereo MP3 made for video.
+
+## How to make a phone prompt in three steps
 
 1. **Type your script** — write the greeting, menu, or message, or start from one of the built-in examples and edit it.
 2. **Pick a voice** — choose from a curated set of studio-quality AI voices across multiple languages, and preview how your text sounds.
@@ -66,12 +80,20 @@ Yes — clips come out in the formats phone systems expect: 8 kHz µ-law, WAV, a
 
 Yes — that's exactly what the generator is for. The voices are commercial text-to-speech voices cleared for phone use. Generate your greeting, menu, voicemail, and on-hold prompts, download them, and load them into your phone system.
 
+### What audio format do Asterisk and FreePBX need for prompts?
+
+Both play WAV files that are 8 kHz, 16-bit PCM, mono; Asterisk will also play 8 kHz µ-law. The voice prompt generator outputs exactly those, so downloading the WAV and dropping it into your sounds directory or the FreePBX System Recordings page works without a conversion step.
+
 ### How is this different from WaveKat Voice, the app?
 
 [WaveKat Voice](/voice/) is a desktop app that turns your computer into your business phone — answering and placing calls, recorded and transcribed. The voice prompt generator is a separate free web tool that creates the recorded greetings and menus your phone system plays. They complement each other, but you can use either on its own.
 
+### Do I need a phone system at all to use the generated audio?
+
+No — but if you don't have one, WaveKat Voice can be it. Its [call flows](/blog/answer-calls-with-a-call-flow/) answer your incoming calls with a greeting, a menu, and voicemail, and they're voiced by this same generator: you type the wording for each step and one press voices the whole flow. So you can either download clips for a phone system you already run, or skip the upload entirely and let the flow play them.
+
 ## Try it
 
-Open the [voice prompt generator](https://platform.wavekat.com/voice/prompts), type a line, pick a voice, and download a phone-ready clip — no account, no download, no card. If you want the longer story of what it does, the [tool's page](/voice/prompts/) has the full rundown.
+Open the [voice prompt generator](https://platform.wavekat.com/voice/prompts), type a line, pick a voice, and download a phone-ready clip — no account, no download, no card. If you want the longer story of what it does, the [tool's page](/voice/prompts/) has the full rundown, and [call flows](/blog/answer-calls-with-a-call-flow/) show what the same clips sound like answering a real call.
 
 Your callers hear your phone system before they hear you. Now making it sound good takes a minute.
