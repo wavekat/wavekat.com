@@ -159,6 +159,10 @@ export default defineConfig({
     // pages that exist in multiple locales. Keys are URL slugs, values are the
     // hreflang codes — so /zh/ is advertised as zh-Hans.
     sitemap({
+      // Keep noindex pages out of the sitemap — advertising a URL we then tell
+      // crawlers to ignore is a contradictory signal. /brand/wallpaper/ is an
+      // internal brand tool, not a page we want indexed.
+      filter: (page) => !page.includes('/brand/wallpaper/'),
       i18n: {
         defaultLocale: 'en',
         locales: {
