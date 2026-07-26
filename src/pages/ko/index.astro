@@ -7,7 +7,32 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
+import HeroCarousel from '../../components/HeroCarousel.astro';
 import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+
+// The hero screenshots, read as one story: a flow you drew answers the phone,
+// you can still take the call over mid-message, and the recording is yours
+// afterwards. Shared assets under /screenshots/<scene>/<code>.webp.
+const heroShots = [
+  {
+    scene: 'flow-detail',
+    alt: 'WaveKat Voice의 통화 플로우 지도 — 인사말, 영업시간 확인, 내 자리 울리기, 마지막으로 음성 메시지',
+    label: '통화 플로우',
+    caption: '인사말, 영업시간, 내 자리 울리기, 그리고 음성 메시지 — 한 장의 지도로.',
+  },
+  {
+    scene: 'flow-takeover',
+    alt: '통화 플로우가 메시지를 받는 동안의 WaveKat Voice — 실시간 전사와 받기 버튼',
+    label: '손이 빌 때까지 대신 받기',
+    caption: '대신 받아 줍니다 — 상대의 말을 읽으면서 도중에 넘겨받을 수 있습니다.',
+  },
+  {
+    scene: 'share-sheet',
+    alt: 'WaveKat Voice의 통화 녹음 공유 — 비공개·초대 전용·링크를 아는 누구나 중에서 고르고 발신자 정보는 가려집니다',
+    label: '녹음은 링크로 공유',
+    caption: '모든 통화가 녹음되고 글로 남습니다. 링크로 보내고, 누가 들을지 정하세요.',
+  },
+];
 
 const voicePipeline = [
   {
@@ -122,23 +147,8 @@ const pipelineBase = voicePipeline.slice(4);
         </div>
       </div>
 
-      <div class="animate-rise-late relative">
-        <div
-          class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
-          style="background: radial-gradient(closest-side, #ff6d00, transparent);"
-          aria-hidden="true"
-        >
-        </div>
-        <img
-          src="/screenshots/in-call/ko.webp"
-          alt="통화 중인 WaveKat Voice — 대화를 실시간으로 받아 적는 모습"
-          width="1200"
-          height="872"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="relative w-full rounded-xl shadow-2xl shadow-black/25 ring-1 ring-gray-900/10 transition-transform duration-500 [transform:perspective(1400px)_rotateY(-8deg)_rotateX(1deg)] hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)] dark:ring-white/10"
-        />
+      <div class="animate-rise-late">
+        <HeroCarousel imgCode="ko" shots={heroShots} />
       </div>
     </div>
   </section>
