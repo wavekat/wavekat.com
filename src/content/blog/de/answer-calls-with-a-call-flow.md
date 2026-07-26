@@ -1,19 +1,19 @@
 ---
-title: "Anrufabläufe — Ihr Telefon nimmt ab, Sie sehen zu und übernehmen jederzeit"
-description: "WaveKat Voice beantwortet eingehende Anrufe jetzt mit einem Anrufablauf: Begrüßung, Telefonmenü, Nachricht oder ein Anruf an Sie. Sie sehen jeden Schritt live und übernehmen mitten in der Nachricht."
+title: "Anrufabläufe — Telefonzentrale für kleine Firmen"
+description: "WaveKat Voice nimmt Anrufe mit einem Anrufablauf an — eine automatische Telefonzentrale mit Begrüßung, Menü und Anrufbeantworter, live mitzuverfolgen."
 date: 2026-07-25
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
 lang: "de"
 ---
 
-WaveKat Voice — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — nimmt eingehende Anrufe jetzt für Sie an. Das, was abnimmt, ist ein **Anrufablauf**: Er begrüßt die Anruferin, prüft, ob Sie geöffnet haben, spielt ein Menü ab, ruft Sie, nimmt eine Nachricht auf oder leitet den Anruf weiter. Sie bauen den Ablauf im Web, weisen ihn einer Ihrer Leitungen zu — und ab dann bekommen auch die Anrufe eine Antwort, zu denen Sie es nicht schaffen. Enthalten ab [0.0.43](/de/voice/changelog/#0.0.43).
+[WaveKat Voice](/de/voice/) — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — nimmt eingehende Anrufe jetzt für Sie an. Das, was abnimmt, ist ein **Anrufablauf**: Er begrüßt die Anruferin, prüft, ob Sie geöffnet haben, spielt ein Menü ab, ruft Sie, nimmt eine Nachricht auf oder leitet den Anruf weiter. Sie bauen den Ablauf im Web, weisen ihn einer Ihrer Leitungen zu — und ab dann bekommen auch die Anrufe eine Antwort, zu denen Sie es nicht schaffen. Enthalten ab [0.0.43](/de/voice/changelog/#0.0.43).
 
 Das ist der bisher größte Schritt zu dem, worauf wir immer wieder zurückkommen: [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Ein großes Unternehmen beantwortet jeden Anruf — es gibt einen Empfang, ein Telefonmenü, das jemand von einem Berater bauen ließ, einen Dienst für die Zeit nach Feierabend. Ein Drei-Personen-Laden hat ein Telefon, das klingelt, bis sich jemand die Hände abtrocknen kann — und wer auflegt, ist eine Buchung, die nie zustande kam. Anrufabläufe schließen diese Lücke, und sie laufen auf dem Computer, der ohnehin auf Ihrem Schreibtisch steht.
 
 ## Was ein Anrufablauf ist
 
-Ein Ablauf ist eine kurze Liste von Schritten, die der Anruf der Reihe nach durchläuft. Jeder Schritt ist ein Baustein mit genau einer Aufgabe:
+Ein Anrufablauf in WaveKat Voice ist eine kurze Liste von Schritten, die ein eingehender Anruf nacheinander durchläuft. Es ist genau das, was andere Telefonsysteme als **automatische Telefonzentrale** (Auto Attendant) verkaufen — die Begrüßung und das „Für Termine die 1"-Menü, das abnimmt, wenn Sie es nicht schaffen. Nur steckt es hier im Softphone, das Sie ohnehin benutzen, statt in einer eigenen Plattform, die pro Arbeitsplatz abgerechnet wird. Jeder Schritt ist ein Baustein mit genau einer Aufgabe:
 
 | Schritt | Was die anrufende Person erlebt |
 |---|---|
@@ -43,9 +43,9 @@ Der veröffentlichte Ablauf erscheint anschließend im neuen Bereich **Anrufabl�
 
 Abläufe laufen **auf Ihrem Computer**, in der App, über das SIP-Konto, das Sie bereits haben. Nichts am Anruf wird auf unseren Servern beantwortet: Die Begrüßung kommt von Ihrem Rechner, die Nachricht wird auf Ihrem Rechner aufgezeichnet, und pro Anruf entstehen keine Kosten, weil niemand dazwischensteht. Der ehrliche Preis dafür: Die App muss laufen und der Computer wach sein, damit der Ablauf abnimmt — und pro Leitung nimmt genau ein Computer ab.
 
-## Live zusehen, wie er abnimmt
+## Live zusehen, wie der Ablauf abnimmt
 
-Am meisten freut uns nicht, *dass* abgenommen wird — sondern dass Sie dabei zusehen können.
+Während ein Ablauf abnimmt, zeigt Ihnen WaveKat Voice Schritt für Schritt, was er gerade tut. Am meisten freut uns nämlich nicht, *dass* abgenommen wird — sondern dass Sie dabei zusehen können.
 
 Wenn ein Ablauf abnimmt, tut die App nicht so, als würden Sie telefonieren. Auf dem Bildschirm steht **„Empfang nimmt an"**, darunter eine Zeile, die sagt, was gerade passiert: *Spricht mit dem Anrufer… Menü wird abgespielt… Ruft Sie an… Nimmt eine Nachricht auf…*
 
@@ -57,7 +57,7 @@ Das ist Anrufvorschau statt Mailbox, wie Sie sie kennen. Eine Mailbox beim Anbie
 
 ## Mitten in der Nachricht übernehmen
 
-Weil Sie zusehen, können Sie den Anruf an sich ziehen. Während jemand eine Nachricht hinterlässt, zeigt die App eine Schaltfläche **Annehmen**: ein Druck, und der Anruf wechselt auf Ihr Mikrofon und Ihre Lautsprecher — genau wie ein Anruf, den Sie selbst angenommen hätten. Der bis dahin aufgezeichnete Teil der Nachricht bleibt erhalten.
+Einen Anruf, den der Ablauf angenommen hat, können Sie mittendrin übernehmen, ohne dass die anrufende Person von vorn anfangen muss. Während jemand eine Nachricht hinterlässt, zeigt die App eine Schaltfläche **Annehmen**: ein Druck, und der Anruf wechselt auf Ihr Mikrofon und Ihre Lautsprecher — genau wie ein Anruf, den Sie selbst angenommen hätten. Der bis dahin aufgezeichnete Teil der Nachricht bleibt erhalten.
 
 ![WaveKat Voice unter Ubuntu — das Live-Schaubild mit hervorgehobenem Anrufbeantworter-Schritt, darunter die Schaltfläche „Annehmen" und die Nachricht des Anrufers als Live-Transkript.](/screenshots/flow-takeover/de.webp)
 
@@ -65,7 +65,7 @@ Und Sie müssen nicht raten, ob sich das Abnehmen lohnt: Die Nachricht erscheint
 
 **Annehmen** erscheint nur in den Momenten, in denen ein Mensch für die anrufende Person nachvollziehbar dazukommt — während sie eine Nachricht spricht, nicht mitten in Ihrer Begrüßung oder in einer Menüansage. Niemand möchte, dass sich eine Stimme über die Ansage legt, die gerade noch mit ihm spricht.
 
-## Nach dem Anruf
+## Was ein vom Ablauf angenommener Anruf hinterlässt
 
 Ein vom Ablauf angenommener Anruf landet wie jeder andere in Ihrem Verlauf, mit dem Namen des Ablaufs daneben — *Angenommen von „Empfang"*. So sehen Sie sofort, welche Anrufe Sie selbst erledigt haben und welche der Ablauf. Öffnen Sie einen, sagt Ihnen die Zusammenfassung in klaren Worten, wie er endete: **Der Anrufer hat eine Nachricht hinterlassen** — samt Link zu dem Ablauf, der ihn entgegengenommen hat.
 
@@ -89,6 +89,10 @@ Ein kostenloses Konto bekommt damit einen vollwertigen Anrufbeantworter mit eige
 ### Was ist ein Anrufablauf in WaveKat Voice?
 
 Ein Anrufablauf ist eine Folge von Schritten, die eingehende Anrufe automatisch beantwortet — Begrüßung, Prüfung Ihrer Öffnungszeiten, Telefonmenü, ein Anruf an Sie, Aufnahme einer Nachricht oder Weiterleitung. Sie bauen ihn im Web auf platform.wavekat.com, weisen ihn einer Ihrer Leitungen zu, und die WaveKat-Voice-App auf Ihrem Computer führt ihn aus, sobald ein Anruf eingeht.
+
+### Ist ein Anrufablauf dasselbe wie eine automatische Telefonzentrale oder ein IVR?
+
+Ein Anrufablauf ist der Name, den WaveKat Voice der automatischen Telefonzentrale (Auto Attendant) gibt: Er begrüßt Anrufende, bietet ein Tastenmenü an, prüft Ihre Öffnungszeiten, ruft Sie und nimmt eine Nachricht auf. Ein vollwertiges IVR im Unternehmenssinn ist er nicht — er schlägt niemanden in einer Datenbank nach und wickelt keine Vorgänge für Anrufende ab, und ein echtes Gespräch führt er bisher auch nicht. Wenn Sie nach einer „Telefonzentrale für kleine Unternehmen" gesucht haben: Ein Anrufablauf erledigt genau diese Aufgabe, nur auf Ihrem eigenen Computer statt auf einer Plattform mit Preis pro Arbeitsplatz.
 
 ### Muss mein Computer an sein, damit ein Ablauf abnimmt?
 

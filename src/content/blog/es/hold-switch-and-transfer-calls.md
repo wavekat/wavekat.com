@@ -1,6 +1,6 @@
 ---
-title: "Retenga, alterne y transfiera llamadas como una recepción"
-description: "WaveKat Voice ahora pone llamadas en espera, contesta una segunda llamada mientras atiende la primera y transfiere llamadas — de forma ciega o atendida — en Mac y Linux, y la grabación se pausa automáticamente durante la espera."
+title: "Retener, alternar y transferir llamadas"
+description: "WaveKat Voice pone llamadas en espera, contesta una segunda y transfiere — de forma ciega o atendida — en Mac y Linux. La grabación se pausa en espera."
 date: 2026-07-05
 author: Eason Guo
 tags: [voz-ia, llamadas]
@@ -41,6 +41,8 @@ El botón **Transferir** envía a quien llama a otra persona — otro número, o
 Para una transferencia ciega, pulse Transferir, escriba el destino y listo — en cuanto la nueva persona contesta, su lado de la llamada termina. Para una atendida, elija **Hablar primero**: quien llama pasa a espera, WaveKat Voice marca el destino como una segunda llamada y usted habla en privado («tengo un cliente preguntando por la factura, ¿puede atenderlo?»). Cuando estén listos, pulse **Completar transferencia** y los dos quedan conectados mientras usted se retira. Si la persona está ocupada, rechaza o resulta no ser la indicada, simplemente cuelgue la llamada de consulta y reanude a quien llamó — nunca sabrá que el primer intento no funcionó.
 
 ![WaveKat Voice en Ubuntu — una transferencia atendida: quien llama en espera y el botón Completar transferencia para conectarlos.](/screenshots/in-call-transfer/es.webp)
+
+Estos son los movimientos que hace usted a mano, en una llamada que ya contestó. Si prefiere que el teléfono los haga sin usted, un [flujo de llamada](/es/blog/answer-calls-with-a-call-flow/) contesta las llamadas entrantes por su cuenta y puede transferirlas: las mismas piezas, funcionando antes de que usted descuelgue.
 
 Las transferencias también quedan registradas con honestidad en su historial. Una llamada transferida termina como **Transferida**, y la página de detalle muestra exactamente adónde fue — «Transferida a …» — en lugar de fingir que usted colgó.
 

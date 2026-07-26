@@ -1,6 +1,6 @@
 ---
-title: "WaveKat Voice가 자체 SIP 엔진 위에서 돌아가는 이유"
-description: "WaveKat Voice가 이제 wavekat-sip 위에서 돌아갑니다 — 처음부터 직접 만든 오픈소스 SIP·RTP 엔진으로, 제3자 SIP 스택도, 당신과 통화 사이를 가로막는 블랙박스도 없습니다."
+title: "자체 SIP 엔진 위에서 돌아가는 이유"
+description: "WaveKat Voice는 직접 만든 오픈소스 SIP·RTP 엔진 wavekat-sip 위에서 돌아갑니다. 제3자 스택도, 통화 사이를 가로막는 블랙박스도 없습니다."
 date: 2026-07-06
 author: Eason Guo
 tags: [음성AI, 엔지니어링, 오픈소스, SIP]

@@ -1,6 +1,6 @@
 ---
-title: "Pourquoi WaveKat Voice tourne sur son propre moteur SIP"
-description: "WaveKat Voice tourne désormais sur wavekat-sip, notre moteur SIP/RTP open source écrit de zéro — aucune pile SIP tierce, et plus aucune boîte noire entre vous et vos appels."
+title: "Pourquoi WaveKat Voice a son propre moteur SIP"
+description: "WaveKat Voice tourne sur wavekat-sip, notre moteur SIP/RTP open source écrit de zéro : aucune pile tierce, aucune boîte noire entre vous et vos appels."
 date: 2026-07-06
 author: Eason Guo
 tags: [ia-vocale, ingénierie, open-source, SIP]

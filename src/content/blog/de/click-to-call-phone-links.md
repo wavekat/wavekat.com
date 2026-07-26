@@ -1,17 +1,17 @@
 ---
-title: "Telefonnummern auf Websites anklicken und anrufen"
-description: "WaveKat Voice verarbeitet jetzt tel:- und sip:-Links auf Mac und Linux — eine Telefonnummer auf einer Website anklicken, und die App öffnet sich bereit zum Wählen. Optionale Sofortwahl, standardmäßig aus."
+title: "Click-to-Call: Telefonnummern im Web anklicken"
+description: "WaveKat Voice öffnet jetzt tel:- und sip:-Links auf Mac und Linux — Telefonnummer auf einer Website anklicken, und sie steht wählbereit im Anruffeld."
 date: 2026-07-25
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
 lang: "de"
 ---
 
-WaveKat Voice — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die App sein, die Ihr Computer öffnet, wenn Sie auf einer Website auf eine Telefonnummer klicken. Klicken Sie irgendwo auf einen `tel:`- oder `sip:`-Link — die Kontaktseite eines Unternehmens, ein Suchergebnis, die Rechnung eines Lieferanten — und WaveKat Voice rückt in den Vordergrund, mit der bereits eingetragenen Nummer und bereit für Ihren Druck auf „Anrufen". Das kommt mit [0.0.43](/de/voice/changelog/#0.0.43).
+Click-to-Call bedeutet, dass eine Telefonnummer auf einer Webseite ein anklickbarer Link ist, den Sie zum Wählen anklicken, statt sie herauszukopieren und von Hand neu einzutippen. [WaveKat Voice](/de/voice/) — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die App sein, die Ihr Computer für solche Links öffnet. Klicken Sie irgendwo auf einen `tel:`- oder `sip:`-Link — die Kontaktseite eines Unternehmens, ein Suchergebnis, die Rechnung eines Lieferanten — und WaveKat Voice rückt in den Vordergrund, mit der bereits eingetragenen Nummer und bereit für Ihren Druck auf „Anrufen". Das kommt mit [0.0.43](/de/voice/changelog/#0.0.43).
 
-Click-to-call bedeutet, dass eine Telefonnummer auf einer Webseite ein anklickbarer Link ist, den Sie zum Wählen anklicken, statt sie herauszukopieren und von Hand neu einzutippen. Auf einem Bürotelefon ist das eine Selbstverständlichkeit und eine jener Funktionen, die man erst bemerkt, wenn sie fehlt: Man sieht eine Nummer auf einer Seite, klickt sie an, das Telefon wählt. WaveKat Voice — das [SIP-Softphone](/de/voice/), das jeden Anruf aufzeichnet und transkribiert und auf einer [eigenen SIP-Engine läuft](/de/blog/our-own-sip-engine/) — wählt jetzt auch die Nummern, die Sie anklicken.
+Auf einem Bürotelefon ist das eine Selbstverständlichkeit und eine jener Funktionen, die man erst bemerkt, wenn sie fehlt: Man sieht eine Nummer auf einer Seite, klickt sie an, das Telefon wählt. Das ist die ausgehende Hälfte derselben Version, in der WaveKat Voice gelernt hat, [eingehende Anrufe mit einem Anrufablauf zu beantworten](/de/blog/answer-calls-with-a-call-flow/) — und wie der Rest der Telefonie läuft es auf [unserer eigenen SIP-Engine](/de/blog/our-own-sip-engine/).
 
-## Was es kann
+## Was passiert, wenn Sie eine Telefonnummer anklicken
 
 Schalten Sie **Telefon-Links** ein, und jede Telefonnummer, die ein anklickbarer Link ist, wird zu einem Weg in WaveKat Voice. Klicken Sie in Ihrem Browser auf `tel:+14155550123`, und die App rückt in den Vordergrund und öffnet das Fenster „Neuer Anruf" mit `+14155550123` bereits im Feld „An". Sie schauen es sich an und drücken auf „Anrufen". Es funktionieren sowohl `tel:`-Links (gewöhnliche Telefonnummern) als auch `sip:`-Links (SIP-Adressen wie `sip:alice@example.com`) — die SIP-Adresse geht direkt an Ihr Konto.
 
@@ -19,14 +19,14 @@ Schalten Sie **Telefon-Links** ein, und jede Telefonnummer, die ein anklickbarer
 
 Die Voreinstellung ist bewusst die sichere: Die Nummer wird eingetragen, aber **Sie** tätigen den Anruf. Eine Webseite kann darum *bitten*, einen Anruf zu starten; wählen kann sie nicht, ohne dass ein Mensch auf „Anrufen" drückt. Das ist wichtig, denn einen Link auf einer Seite kann jeder dort platzieren.
 
-## So schalten Sie es ein
+## So schalten Sie Telefon-Links ein
 
 Telefon-Links sind **aus, bis Sie sie einschalten**, denn die Telefonnummern-Links auf Ihrem ganzen Computer für sich zu beanspruchen, sollte Ihre Entscheidung sein und keine Überraschung einer gerade installierten App. Schalten Sie **Telefon-Links** unter **Einstellungen → Allgemein** ein — an derselben Stelle wie „Beim Anmelden starten" — und WaveKat Voice registriert sich bei Ihrem Betriebssystem als Handler für Telefon-Links. Wie das aussieht, hängt vom Betriebssystem ab, und die Einstellung ist dabei ehrlich:
 
 | Plattform | Was passiert, wenn Sie es einschalten |
 |---|---|
 | **macOS** | WaveKat Voice wird sofort zum Handler und übernimmt `tel:`-Links von FaceTime. |
-| **Linux** | Funktioniert, sobald Sie es einschalten. |
+| **Linux** | WaveKat Voice wird sofort zum Handler und ist bei Ihrer Desktop-Umgebung als `tel:`/`sip:`-App registriert. |
 
 ![WaveKat Voice auf Ubuntu — Einstellungen → Allgemein mit dem eingeschalteten Schalter „Telefon-Links".](/screenshots/settings-general-phone-links/de.webp)
 

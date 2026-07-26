@@ -1,6 +1,6 @@
 ---
-title: "Anrufe halten, wechseln und weiterleiten wie eine Telefonzentrale"
-description: "WaveKat Voice kann Anrufe jetzt halten, einen zweiten Anruf während des ersten annehmen und Anrufer weiterleiten — ohne oder mit Rückfrage — auf Mac und Linux, und die Aufnahme pausiert beim Halten automatisch."
+title: "Anrufe halten, wechseln und weiterleiten"
+description: "WaveKat Voice hält Anrufe, nimmt einen zweiten Anruf an und leitet weiter — ohne oder mit Rückfrage, auf Mac und Linux. Beim Halten pausiert die Aufnahme."
 date: 2026-07-05
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
@@ -41,6 +41,8 @@ Der **Weiterleiten**-Knopf schickt einen laufenden Anrufer zu jemand anderem —
 Für eine Weiterleitung ohne Rückfrage drücken Sie Weiterleiten, geben das Ziel ein — fertig; sobald die neue Person abnimmt, endet Ihre Seite des Anrufs. Für eine Weiterleitung mit Rückfrage wählen Sie **Erst sprechen**: Der Anrufer wird gehalten, WaveKat Voice ruft das Ziel als zweiten Anruf an, und Sie sprechen ungestört („Ich habe einen Kunden mit einer Frage zur Rechnung — können Sie übernehmen?"). Wenn alles passt, drücken Sie **Weiterleitung abschließen**, die beiden werden verbunden, und Sie steigen aus. Ist die Person beschäftigt, lehnt ab oder ist doch die falsche, legen Sie einfach das Rückfrage-Gespräch auf und setzen Ihren Anrufer fort — er erfährt nie, dass der erste Versuch nicht geklappt hat.
 
 ![WaveKat Voice auf Ubuntu — eine Weiterleitung mit Rückfrage: der Anrufer gehalten, daneben der Knopf Weiterleitung abschließen.](/screenshots/in-call-transfer/de.webp)
+
+Das sind die Handgriffe, die Sie selbst machen, bei einem Anruf, den Sie bereits angenommen haben. Soll das Telefon sie ohne Sie erledigen, nimmt ein [Anrufablauf](/de/blog/answer-calls-with-a-call-flow/) eingehende Anrufe selbst an und leitet sie weiter — dieselben Bausteine, nur bevor Sie überhaupt abheben.
 
 Auch in Ihrer Anrufliste bleiben Weiterleitungen ehrlich. Ein weitergeleiteter Anruf endet als **Weitergeleitet**, und die Detailseite zeigt genau, wohin er ging — „Weitergeleitet an …" — statt so zu tun, als hätten Sie aufgelegt.
 

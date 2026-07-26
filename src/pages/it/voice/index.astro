@@ -11,6 +11,8 @@ import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
   PhoneForwarded,
+  PhoneIncoming,
+  MousePointerClick,
   Mic,
   FileText,
   AudioLines,
@@ -55,6 +57,11 @@ const features = [
     body: 'Rispondi ed effettua chiamate direttamente dal computer — niente telefono da scrivania, niente hardware aggiuntivo, nessuna scheda del browser da tenere d’occhio. Resta tranquillo in disparte finché il telefono non squilla.',
   },
   {
+    icon: PhoneIncoming,
+    title: 'Risponde quando non puoi tu',
+    body: 'Assegna un flusso di chiamata alla tua linea e WaveKat Voice risponde al posto tuo: saluto, orari, menu telefonico, segreteria o trasferimento. Il lavoro di un centralino automatico, sul tuo computer. Vedi ogni passo in diretta e puoi prendere la chiamata mentre lasciano il messaggio.',
+  },
+  {
     icon: PhoneForwarded,
     title: 'Metti in attesa, alterna e trasferisci',
     body: 'Metti un interlocutore in attesa, rispondi a una seconda linea e passa dall’una all’altra — poi trasferisci la chiamata subito oppure dopo esserti confrontato prima con un breve scambio. Ciò che accade durante l’attesa resta fuori dalla registrazione e dalla trascrizione.',
@@ -78,6 +85,11 @@ const features = [
     icon: Terminal,
     title: 'Lascia comporre a un assistente AI',
     body: 'Attiva l’automazione e uno strumento da riga di comando — o un assistente AI come Claude — può effettuare, attendere e terminare le chiamate per te. Lui guida il tastierino; a parlare sei tu. Disattivato finché non lo attivi.',
+  },
+  {
+    icon: MousePointerClick,
+    title: 'Clicca un numero e chiama',
+    body: 'Attiva i link telefonici e qualsiasi link tel: o sip: sul web apre WaveKat Voice con il numero già inserito, pronto perché tu prema Chiama. Disattivato di default: una pagina può chiedere una chiamata, mai farla.',
   },
   {
     icon: Server,
@@ -134,6 +146,16 @@ const faqs = [
     link: { href: '/it/blog/hold-switch-and-transfer-calls/', label: 'Come funziona' },
   },
   {
+    q: 'WaveKat Voice può rispondere alle chiamate automaticamente?',
+    a: 'Sì. Un flusso di chiamata risponde alle chiamate in arrivo con un saluto, un controllo dei tuoi orari, un menu telefonico, la segreteria o un trasferimento: il lavoro che gli altri sistemi telefonici chiamano centralino automatico. Costruisci il flusso sul web, lo assegni a una delle tue linee e l’app risponde con quello. Vedi ogni passo mentre accade e puoi prendere la chiamata mentre qualcuno lascia un messaggio.',
+    link: { href: '/it/blog/answer-calls-with-a-call-flow/', label: 'Come funziona' },
+  },
+  {
+    q: 'Posso cliccare un numero di telefono su un sito per chiamarlo?',
+    a: 'Sì. Attiva i link telefonici in Impostazioni → Generali: da lì, cliccare un link tel: o sip: apre WaveKat Voice con il numero già nel campo di chiamata, pronto perché tu prema Chiama. Resta disattivato finché non lo attivi, e una pagina web può soltanto inserire il numero — non può mai effettuare la chiamata da sola.',
+    link: { href: '/it/blog/click-to-call-phone-links/', label: 'Come funziona' },
+  },
+  {
     q: 'WaveKat Voice supporta l’audio in HD?',
     a: 'Sì. Quando il tuo operatore telefonico lo supporta, WaveKat Voice usa il codec Opus per una voce a banda larga — «HD» — più piena e nitida di una normale linea telefonica, e torna automaticamente alla qualità standard (G.711) quando non è possibile. Non c’è nulla da configurare.',
   },
@@ -188,6 +210,16 @@ const appSchema = {
   downloadUrl: 'https://wavekat.com/it/voice/download/',
   description:
     'Un’app desktop che trasforma il tuo computer nel tuo telefono aziendale — rispondi ed effettua chiamate, con ogni chiamata registrata e trascritta. Funziona con l’operatore telefonico che hai già.',
+  featureList: [
+    'Rispondere ed effettuare chiamate via SIP dal computer',
+    'Flussi di chiamata: un centralino automatico con saluto, orari, menu telefonico, segreteria e trasferimento',
+    'Attesa, avviso di chiamata e trasferimento cieco o assistito',
+    'Registrazione automatica delle chiamate e trascrizione in diretta',
+    'Click-to-call dai link tel: e sip: sul web',
+    'Voce HD con il codec Opus quando l’operatore la supporta',
+    'Riga di comando e automazione MCP per gli assistenti AI',
+    'Nove lingue dell’app, su macOS e Linux',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',

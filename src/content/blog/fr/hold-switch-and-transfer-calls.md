@@ -1,6 +1,6 @@
 ---
-title: "Mettre en attente, basculer et transférer des appels comme un standard"
-description: "WaveKat Voice sait désormais mettre un appel en attente, répondre à un second appel pendant le premier et transférer un appelant — en aveugle ou avec supervision — sur Mac et Linux, et l'enregistrement se met en pause automatiquement pendant la mise en attente."
+title: "Mettre en attente, basculer et transférer"
+description: "WaveKat Voice met un appel en attente, répond à un second et transfère — en aveugle ou supervisé — sur Mac et Linux. L'enregistrement se met en pause."
 date: 2026-07-05
 author: Eason Guo
 tags: [ia-vocale, appels]
@@ -41,6 +41,8 @@ Le bouton **Transférer** envoie un appelant en ligne vers quelqu'un d'autre —
 Pour un transfert aveugle, appuyez sur Transférer, saisissez la destination, et c'est terminé — dès que la nouvelle personne décroche, votre côté de l'appel prend fin. Pour un transfert supervisé, choisissez **Parler d'abord** : l'appelant passe en attente, WaveKat Voice compose la destination comme un second appel, et vous lui parlez en privé (« j'ai un client qui a une question sur la facture — vous pouvez le prendre ? »). Quand tout est prêt, appuyez sur **Finaliser le transfert** : les deux sont connectés et vous vous retirez. Si la personne est occupée, refuse, ou n'est finalement pas la bonne, raccrochez simplement l'appel de consultation et reprenez votre appelant — il ne saura jamais que la première tentative n'a pas abouti.
 
 ![WaveKat Voice sur Ubuntu — un transfert supervisé : l'appelant en attente et le bouton Finaliser le transfert pour les connecter.](/screenshots/in-call-transfer/fr.webp)
+
+Ce sont les gestes que vous faites vous-même, sur un appel que vous avez déjà pris. Si vous préférez que le téléphone s'en charge sans vous, un [flux d'appel](/fr/blog/answer-calls-with-a-call-flow/) répond seul aux appels entrants et peut les transférer — les mêmes briques, mais avant même que vous décrochiez.
 
 Les transferts sont aussi consignés honnêtement dans votre historique. Un appel transféré se termine en **Transféré**, et sa page de détail montre exactement où il est parti — « Transféré vers … » — au lieu de faire comme si vous aviez raccroché.
 

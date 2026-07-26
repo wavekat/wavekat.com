@@ -1,6 +1,6 @@
 ---
-title: "Metti in attesa, passa tra le chiamate e trasferisci come una reception"
-description: "WaveKat Voice ora mette le chiamate in attesa, risponde a una seconda chiamata mentre sei sulla prima e trasferisce chi chiama — trasferimento cieco o assistito — su Mac e Linux, e la registrazione si mette in pausa automaticamente durante l'attesa."
+title: "Metti in attesa, alterna e trasferisci le chiamate"
+description: "WaveKat Voice mette le chiamate in attesa, risponde a una seconda e trasferisce — cieco o assistito — su Mac e Linux. In attesa la registrazione si ferma."
 date: 2026-07-05
 author: Eason Guo
 tags: [voice-ai, chiamate]
@@ -41,6 +41,8 @@ Il pulsante **Trasferisci** manda chi è in linea da qualcun altro — un altro 
 Per un trasferimento cieco, premi Trasferisci, inserisci la destinazione e hai finito — appena la nuova persona risponde, il tuo lato della chiamata termina. Per un trasferimento assistito, scegli **Parla prima**: chi chiama va in attesa, WaveKat Voice compone la destinazione come seconda chiamata e tu le parli in privato («ho un cliente che chiede della fattura — puoi prenderlo tu?»). Quando è tutto pronto, premi **Completa trasferimento** e i due vengono collegati mentre tu esci. Se la persona è occupata, rifiuta o si rivela quella sbagliata, ti basta riagganciare la chiamata di consultazione e riprendere chi chiamava — non saprà mai che il primo tentativo non è andato a buon fine.
 
 ![WaveKat Voice su Ubuntu — un trasferimento assistito: chi chiama è in attesa e il pulsante Completa trasferimento li collega.](/screenshots/in-call-transfer/it.webp)
+
+Queste sono le mosse che fai a mano, su una chiamata a cui hai già risposto. Se preferisci che sia il telefono a farle senza di te, un [flusso di chiamata](/it/blog/answer-calls-with-a-call-flow/) risponde da solo alle chiamate in arrivo e può trasferirle: gli stessi mattoncini, solo prima che tu alzi la cornetta.
 
 Anche nella cronologia i trasferimenti restano onesti. Una chiamata trasferita si chiude come **Trasferita**, e la pagina di dettaglio mostra esattamente dov'è andata — «Trasferita a …» — invece di fingere che tu abbia riagganciato.
 

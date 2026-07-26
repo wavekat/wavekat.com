@@ -1,6 +1,6 @@
 ---
 title: "Common Voice Explorer — écoutez les voix du monde"
-description: "Parcourez, recherchez et écoutez des milliers de voix humaines réelles issues de Mozilla Common Voice — directement dans votre navigateur. Aucun téléchargement, aucune configuration."
+description: "Parcourez, recherchez et écoutez des milliers de voix humaines réelles de Mozilla Common Voice, dans votre navigateur. Aucun téléchargement, aucun réglage."
 date: 2026-04-21
 author: Eason Guo
 tags: [outils, données-ouvertes, ia-vocale]

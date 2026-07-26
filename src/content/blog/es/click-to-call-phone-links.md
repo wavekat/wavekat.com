@@ -1,17 +1,17 @@
 ---
-title: "Haz clic en un número de una web para llamar"
-description: "WaveKat Voice ahora maneja los enlaces tel: y sip: en Mac y Linux — haz clic en un número en cualquier web y la app se abre lista para marcar. Marcado automático opcional, desactivado por defecto."
+title: "Click-to-call: pulsa un número web y llama"
+description: "WaveKat Voice abre los enlaces tel: y sip: en Mac y Linux: haz clic en un número de teléfono en cualquier web y queda escrito, listo para marcar."
 date: 2026-07-25
 author: Eason Guo
 tags: [voz-ia, llamadas]
 lang: "es"
 ---
 
-WaveKat Voice — el softphone SIP para Mac y Linux que graba y transcribe cada llamada — ahora puede ser la app que tu computadora abre cuando haces clic en un número de teléfono en una web. Haz clic en un enlace `tel:` o `sip:` en cualquier parte — la página de contacto de una empresa, un resultado de búsqueda, la factura de un proveedor — y WaveKat Voice pasa al frente con el número ya escrito, listo para que pulses Llamar. Llega con [0.0.43](/es/voice/changelog/#0.0.43).
+Hacer clic para llamar (click-to-call) significa que un número de teléfono en una página web es un enlace en el que haces clic para marcar, en vez de algo que copias y vuelves a teclear a mano. [WaveKat Voice](/es/voice/) — el softphone SIP para Mac y Linux que graba y transcribe cada llamada — ahora puede ser la app que tu computadora abre para esos enlaces. Haz clic en un enlace `tel:` o `sip:` en cualquier parte — la página de contacto de una empresa, un resultado de búsqueda, la factura de un proveedor — y WaveKat Voice pasa al frente con el número ya escrito, listo para que pulses Llamar. Llega con [0.0.43](/es/voice/changelog/#0.0.43).
 
-Hacer clic para llamar significa que un número de teléfono en una página web es un enlace en el que haces clic para marcar, en vez de algo que copias y vuelves a teclear a mano. Es lo mínimo en el teléfono de escritorio de una empresa, y una de esas funciones que solo notas cuando falta: ves un número en una página, haces clic, el teléfono marca. WaveKat Voice — el [softphone SIP](/es/voice/) que graba y transcribe cada llamada y [funciona con su propio motor SIP](/es/blog/our-own-sip-engine/) — ahora también marca los números que le haces clic.
+Es lo mínimo en el teléfono de escritorio de una empresa, y una de esas funciones que solo notas cuando falta: ves un número en una página, haces clic, el teléfono marca. Esta es la mitad saliente de la misma versión en la que WaveKat Voice aprendió a [contestar las llamadas entrantes con un flujo de llamada](/es/blog/answer-calls-with-a-call-flow/) y, como el resto de las llamadas, funciona sobre [nuestro propio motor SIP](/es/blog/our-own-sip-engine/).
 
-## Qué hace
+## Qué pasa cuando haces clic en un número de teléfono
 
 Activa **Enlaces de teléfono** y cualquier número de teléfono que sea un enlace en el que se pueda hacer clic se convierte en una vía de entrada a WaveKat Voice. Haz clic en `tel:+14155550123` en tu navegador y la app toma el foco y abre la hoja de Llamada nueva con `+14155550123` ya en el campo Para. Lo miras y pulsas Llamar. Funcionan tanto los enlaces `tel:` (números de teléfono corrientes) como los enlaces `sip:` (direcciones SIP como `sip:alice@example.com`) — la dirección SIP pasa directa a tu cuenta.
 
@@ -19,14 +19,14 @@ Activa **Enlaces de teléfono** y cualquier número de teléfono que sea un enla
 
 El valor por defecto es a propósito el seguro: el número queda escrito, pero **tú** haces la llamada. Una web puede *pedir* iniciar una llamada; no puede marcar de verdad sin que una persona pulse Llamar. Eso importa, porque un enlace en una página es algo que cualquiera puede poner ahí.
 
-## Cómo activarlo
+## Cómo activar los enlaces de teléfono
 
 Los enlaces de teléfono están **desactivados hasta que los activas**, porque quedarse con los enlaces de número de teléfono de toda tu computadora es la clase de cosa que debería ser tu decisión, no una sorpresa de una app que acabas de instalar. Activa **Enlaces de teléfono** en **Ajustes → General** — en el mismo lugar que «Abrir al iniciar sesión» — y WaveKat Voice se registra ante tu sistema operativo como gestor de los enlaces de teléfono. Cómo se ve eso depende del sistema operativo, y el ajuste es honesto al respecto:
 
 | Plataforma | Qué ocurre al activarlo |
 |---|---|
 | **macOS** | WaveKat Voice se vuelve el gestor de inmediato, y le quita los enlaces `tel:` a FaceTime. |
-| **Linux** | Funciona en cuanto lo activas. |
+| **Linux** | WaveKat Voice se vuelve el gestor de inmediato, registrado en tu escritorio como la app de `tel:`/`sip:`. |
 
 ![WaveKat Voice en Ubuntu — Ajustes → General con el interruptor de Enlaces de teléfono activado.](/screenshots/settings-general-phone-links/es.webp)
 

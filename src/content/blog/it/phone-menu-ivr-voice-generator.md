@@ -1,5 +1,5 @@
 ---
-title: "Un generatore vocale gratuito per menu telefonici, IVR e messaggi di benvenuto"
+title: "Generatore vocale gratuito per menu telefonici"
 description: "Il generatore di prompt vocali WaveKat trasforma il testo in audio telefonico — benvenuto, menu IVR, segreteria — con voci AI da studio. Gratis, senza account."
 date: 2026-07-19
 author: Eason Guo
@@ -21,7 +21,7 @@ Ogni sistema telefonico che un'azienda usa — un PBX in ufficio, una linea VoIP
 
 Il risultato lo conosce chiunque abbia chiamato una piccola impresa: un benvenuto registrato con una voce anni fa, un menu con un'altra, e un messaggio di segreteria che è solo quello predefinito dell'operatore. Il generatore di prompt vocali esiste per rendere la via giusta anche quella facile.
 
-## Cosa puoi creare
+## Cosa puoi creare con il generatore vocale
 
 Ognuno di questi è un compito concreto di audio telefonico che il generatore svolge, e insieme coprono ciò che un centralino tipico riproduce:
 
@@ -41,7 +41,21 @@ Questa è la parte che gli strumenti generici di text-to-speech sbagliano. I cen
 
 Il generatore di prompt vocali produce ogni clip nei formati che i centralini richiedono — **µ-law 8 kHz, WAV o MP3** — così il file si inserisce direttamente in Asterisk, FreePBX, 3CX, Twilio e simili, senza alcun passaggio di conversione. I file si scaricano con nomi chiari e descrittivi, pronti da caricare tu stesso o da consegnare a chi gestisce il tuo centralino.
 
-## Come funziona
+### Quale formato serve al tuo centralino?
+
+Se non sai quale dei tre scaricare, ecco che cosa chiedono i sistemi più diffusi:
+
+| Sistema telefonico | Che cosa si aspetta | Scarica questo |
+|---|---|---|
+| Asterisk | WAV, 8 kHz, PCM a 16 bit, mono (riproduce anche µ-law) | WAV — oppure µ-law se il dialplan lo usa |
+| FreePBX | WAV, 8 kHz, PCM a 16 bit, mono | WAV |
+| 3CX | WAV, 8 kHz, 16 bit, mono | WAV |
+| Twilio | MP3 o WAV; in riproduzione viene convertito in 8 kHz µ-law | MP3 o WAV |
+| VoIP in cloud / portale dell'operatore | Di solito WAV, 8 kHz, mono; alcuni accettano MP3 | WAV, salvo diversa indicazione della pagina di caricamento |
+
+In breve: **nel dubbio, scarica il WAV.** Lo accettano tutti questi sistemi, e quando una pagina di caricamento rifiuta il file perché «di formato sbagliato», quasi sempre si tratta di un MP3 stereo a 44,1 kHz pensato per i video.
+
+## Come creare un messaggio telefonico in tre passi
 
 1. **Scrivi il tuo copione** — componi il messaggio di benvenuto, il menu o l'annuncio, oppure parti da uno degli esempi integrati e modificalo.
 2. **Scegli una voce** — scegli da una selezione curata di voci AI di qualità da studio in più lingue, e ascolta un'anteprima di come suona il tuo testo.
@@ -67,12 +81,20 @@ Sì — le clip escono nei formati attesi dai centralini: µ-law 8 kHz, WAV e MP
 
 Sì — è esattamente lo scopo del generatore. Le voci sono voci text-to-speech commerciali, autorizzate per l'uso telefonico. Genera i messaggi di benvenuto, il menu, la segreteria e gli annunci di attesa, scaricali e caricali sul tuo centralino.
 
+### Che formato audio serve ad Asterisk e FreePBX?
+
+Entrambi riproducono file WAV a 8 kHz, PCM a 16 bit, mono; Asterisk riproduce anche µ-law a 8 kHz. Il generatore di prompt vocali produce esattamente questi formati: scarichi il WAV e lo metti nella cartella dei suoni o lo carichi dalla pagina System Recordings di FreePBX, senza alcun passaggio di conversione.
+
 ### In che cosa differisce da WaveKat Voice, l'app?
 
 [WaveKat Voice](/it/voice/) è un'app desktop che trasforma il tuo computer nel tuo telefono aziendale — rispondendo ed effettuando chiamate, registrate e trascritte. Il generatore di prompt vocali è uno strumento web gratuito separato che crea i messaggi e i menu registrati che il tuo centralino riproduce. Si completano a vicenda, ma puoi usare l'uno o l'altro anche da solo.
 
+### Serve per forza un centralino per usare l'audio generato?
+
+No — e se non ne hai uno, può farlo WaveKat Voice. I suoi [flussi di chiamata](/it/blog/answer-calls-with-a-call-flow/) rispondono alle chiamate in arrivo con un saluto, un menu telefonico e la segreteria, e ogni passo è doppiato da questo stesso generatore: scrivi il testo di ciascun passo e una sola pressione dà voce all'intero flusso. Puoi quindi scaricare le clip per il centralino che già usi, oppure saltare del tutto il caricamento e lasciarle riprodurre al flusso.
+
 ## Provalo
 
-Apri il [generatore di prompt vocali](https://platform.wavekat.com/voice/prompts), scrivi una frase, scegli una voce e scarica una clip pronta per il telefono — niente account, niente download, niente carta. Se vuoi il racconto completo di cosa fa, la [pagina dello strumento](/it/voice/prompts/) ha tutti i dettagli.
+Apri il [generatore di prompt vocali](https://platform.wavekat.com/voice/prompts), scrivi una frase, scegli una voce e scarica una clip pronta per il telefono — niente account, niente download, niente carta. Se vuoi il racconto completo di cosa fa, la [pagina dello strumento](/it/voice/prompts/) ha tutti i dettagli, e i [flussi di chiamata](/it/blog/answer-calls-with-a-call-flow/) mostrano le stesse clip mentre rispondono a una chiamata vera.
 
 Chi ti chiama sente il tuo centralino prima di sentire te. Ora farlo suonare bene richiede un minuto.
