@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.49](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.48...wavekat-com-v0.0.49) (2026-07-26)
+
+
+### Features
+
+* **seo:** sharpen posts and voice pages sitewide ([#133](https://github.com/wavekat/wavekat.com/issues/133)) ([4971509](https://github.com/wavekat/wavekat.com/commit/4971509c793a54a79f45f122a14a6b74d15bbd10))
+
 ## [0.0.48](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.47...wavekat-com-v0.0.48) (2026-07-25)
 
 
