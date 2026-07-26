@@ -3,7 +3,32 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import VoiceDownload from '../components/VoiceDownload.astro';
+import HeroCarousel from '../components/HeroCarousel.astro';
 import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+
+// The hero screenshots, read as one story: a flow you drew answers the phone,
+// you can still take the call over mid-message, and the recording is yours
+// afterwards. Shared assets under /screenshots/<scene>/<code>.webp.
+const heroShots = [
+  {
+    scene: 'flow-detail',
+    alt: 'A WaveKat Voice call flow drawn as a map — a greeting, a business-hours check, ringing your desk, and voicemail',
+    label: 'Call flows',
+    caption: 'A greeting, your opening hours, ring your desk, then voicemail — drawn as a map.',
+  },
+  {
+    scene: 'flow-takeover',
+    alt: 'WaveKat Voice while a call flow takes a message, showing the live transcript and a Pick up button to take the call over',
+    label: "Answers when you can't",
+    caption: 'It picks up for you — read what they say and take the call over mid-message.',
+  },
+  {
+    scene: 'share-sheet',
+    alt: 'WaveKat Voice sharing a call recording, with private, specific-people and anyone-with-the-link options and the caller identity masked',
+    label: 'Recorded and shareable',
+    caption: 'Every call is recorded and written down. Send one by link, and choose who hears it.',
+  },
+];
 
 const voicePipeline = [
   {
@@ -116,23 +141,8 @@ const pipelineBase = voicePipeline.slice(4);
         </div>
       </div>
 
-      <div class="animate-rise-late relative">
-        <div
-          class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
-          style="background: radial-gradient(closest-side, #ff6d00, transparent);"
-          aria-hidden="true"
-        >
-        </div>
-        <img
-          src="/screenshots/in-call/en.webp"
-          alt="WaveKat Voice during a live call, with the transcript written down in real time"
-          width="1200"
-          height="872"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="relative w-full rounded-xl shadow-2xl shadow-black/25 ring-1 ring-gray-900/10 transition-transform duration-500 [transform:perspective(1400px)_rotateY(-8deg)_rotateX(1deg)] hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)] dark:ring-white/10"
-        />
+      <div class="animate-rise-late">
+        <HeroCarousel imgCode="en" shots={heroShots} />
       </div>
     </div>
   </section>

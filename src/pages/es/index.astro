@@ -7,7 +7,32 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
+import HeroCarousel from '../../components/HeroCarousel.astro';
 import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+
+// The hero screenshots, read as one story: a flow you drew answers the phone,
+// you can still take the call over mid-message, and the recording is yours
+// afterwards. Shared assets under /screenshots/<scene>/<code>.webp.
+const heroShots = [
+  {
+    scene: 'flow-detail',
+    alt: 'Un flujo de llamada de WaveKat Voice dibujado como un mapa: saludo, comprobación del horario, suena su equipo y buzón de voz',
+    label: 'Flujos de llamada',
+    caption: 'Saludo, su horario, suena su equipo y, si no, buzón de voz: dibujado como un mapa.',
+  },
+  {
+    scene: 'flow-takeover',
+    alt: 'WaveKat Voice mientras un flujo de llamada toma un mensaje, con la transcripción en vivo y un botón para contestar',
+    label: 'Contesta por usted',
+    caption: 'El flujo contesta: usted lee lo que dicen y toma la llamada a mitad del mensaje.',
+  },
+  {
+    scene: 'share-sheet',
+    alt: 'WaveKat Voice compartiendo la grabación de una llamada: privado, por invitación o cualquiera con el enlace, con la identidad enmascarada',
+    label: 'Grabada y compartible',
+    caption: 'Cada llamada se graba y se escribe. Compártala con un enlace y decida quién la oye.',
+  },
+];
 
 const voicePipeline = [
   {
@@ -122,23 +147,8 @@ const pipelineBase = voicePipeline.slice(4);
         </div>
       </div>
 
-      <div class="animate-rise-late relative">
-        <div
-          class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
-          style="background: radial-gradient(closest-side, #ff6d00, transparent);"
-          aria-hidden="true"
-        >
-        </div>
-        <img
-          src="/screenshots/in-call/es.webp"
-          alt="WaveKat Voice durante una llamada, con la transcripción escrita en tiempo real"
-          width="1200"
-          height="872"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="relative w-full rounded-xl shadow-2xl shadow-black/25 ring-1 ring-gray-900/10 transition-transform duration-500 [transform:perspective(1400px)_rotateY(-8deg)_rotateX(1deg)] hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)] dark:ring-white/10"
-        />
+      <div class="animate-rise-late">
+        <HeroCarousel imgCode="es" shots={heroShots} />
       </div>
     </div>
   </section>

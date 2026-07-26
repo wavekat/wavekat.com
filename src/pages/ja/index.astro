@@ -7,7 +7,32 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
+import HeroCarousel from '../../components/HeroCarousel.astro';
 import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+
+// The hero screenshots, read as one story: a flow you drew answers the phone,
+// you can still take the call over mid-message, and the recording is yours
+// afterwards. Shared assets under /screenshots/<scene>/<code>.webp.
+const heroShots = [
+  {
+    scene: 'flow-detail',
+    alt: 'WaveKat Voice の通話フロー図——挨拶、営業時間の判定、手元を鳴らす、最後に留守番メッセージ',
+    label: '通話フロー',
+    caption: '挨拶、営業時間、手元を鳴らす、そして留守番メッセージ——一枚の地図に。',
+  },
+  {
+    scene: 'flow-takeover',
+    alt: '通話フローが伝言を預かっている WaveKat Voice——リアルタイム文字起こしと応答ボタン',
+    label: '手が離せないときに応答',
+    caption: '代わりに応答します——相手の話を読みながら、途中で代わることもできます。',
+  },
+  {
+    scene: 'share-sheet',
+    alt: 'WaveKat Voice の通話録音の共有——非公開・招待制・リンクを知っている全員から選べ、発信者情報は伏せられる',
+    label: '録音はリンクで共有',
+    caption: 'すべての通話を録音して文字に。リンクで送れて、誰が聞けるかも選べます。',
+  },
+];
 
 const voicePipeline = [
   {
@@ -121,23 +146,8 @@ const pipelineBase = voicePipeline.slice(4);
         </div>
       </div>
 
-      <div class="animate-rise-late relative">
-        <div
-          class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
-          style="background: radial-gradient(closest-side, #ff6d00, transparent);"
-          aria-hidden="true"
-        >
-        </div>
-        <img
-          src="/screenshots/in-call/ja.webp"
-          alt="通話中の WaveKat Voice——会話をリアルタイムで文字起こし"
-          width="1200"
-          height="872"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="relative w-full rounded-xl shadow-2xl shadow-black/25 ring-1 ring-gray-900/10 transition-transform duration-500 [transform:perspective(1400px)_rotateY(-8deg)_rotateX(1deg)] hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)] dark:ring-white/10"
-        />
+      <div class="animate-rise-late">
+        <HeroCarousel imgCode="ja" shots={heroShots} />
       </div>
     </div>
   </section>

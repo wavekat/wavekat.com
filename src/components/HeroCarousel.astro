@@ -1,0 +1,247 @@
+---
+// The homepage hero screenshot, rotating through abilities WaveKat Voice
+// already ships — one screenshot with a short label + caption beneath it.
+//
+// Auto-plays, and the progress bar in the active dot *is* the timer: the
+// slide advances on the animation's `animationend`, so pausing is a pure CSS
+// `animation-play-state` flip and bar and slide can never drift apart. It
+// pauses on hover/focus (the same hover that flattens the tilt, so you can
+// read the shot you stopped on), while the tab is hidden, and while the hero
+// is scrolled out of view. Under `prefers-reduced-motion` it doesn't rotate
+// at all — the dots still work.
+//
+// Reused by every locale homepage; only `imgCode` and the `shots` copy change.
+interface Shot {
+  scene: string;
+  alt: string;
+  /** Short feature name, shown above the caption. */
+  label: string;
+  caption: string;
+}
+
+interface Props {
+  imgCode: string;
+  shots: Shot[];
+  /** How long each slide is held, in milliseconds. */
+  interval?: number;
+}
+
+const { imgCode, shots, interval = 4500 } = Astro.props;
+---
+
+<div class="hero-carousel relative" style={`--hc-interval: ${interval}ms`}>
+  <div
+    class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
+    style="background: radial-gradient(closest-side, #ff6d00, transparent);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Screenshot and caption sit on one tilted plane, so the caption leans with
+       the shot it describes and both come square-on together on hover. -->
+  <div
+    class="transition-transform duration-500 [transform:perspective(1400px)_rotateY(-8deg)_rotateX(1deg)] hover:[transform:perspective(1400px)_rotateY(0deg)_rotateX(0deg)]"
+  >
+    <div
+      class="relative overflow-hidden rounded-xl shadow-2xl shadow-black/25 ring-1 ring-gray-900/10 dark:ring-white/10"
+      style="aspect-ratio: 1200 / 872;"
+    >
+      {
+        shots.map((shot, i) => (
+          <img
+            src={`/screenshots/${shot.scene}/${imgCode}.webp`}
+            alt={shot.alt}
+            width="1200"
+            height="872"
+            decoding="async"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'low'}
+            aria-hidden={i === 0 ? undefined : 'true'}
+            data-slide={i}
+            class:list={[
+              'hc-slide absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out',
+              i === 0 ? 'opacity-100' : 'opacity-0',
+            ]}
+          />
+        ))
+      }
+    </div>
+
+    <div class="mt-6 flex flex-col items-center gap-3">
+      <!-- Every caption is rendered, not swapped in by script: AI crawlers
+           mostly read raw HTML, so copy that only exists after JS runs is copy
+           they can never quote. They stack in one grid cell, so the box is as
+           tall as the longest caption and the dots never move. -->
+      <div class="grid w-full max-w-sm">
+        {
+          shots.map((shot, i) => (
+            <p
+              data-caption={i}
+              aria-hidden={i === 0 ? undefined : 'true'}
+              class:list={[
+                'hc-caption col-start-1 row-start-1 flex flex-col gap-1 text-center',
+                i === 0 ? 'opacity-100' : 'opacity-0',
+              ]}
+            >
+              {/* 11px, not 10: `uppercase` does nothing for CJK labels, so they
+                  lean on size alone to read as a label. */}
+              <span class="font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-orange uppercase">
+                {shot.label}
+              </span>
+              <span class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{shot.caption}</span>
+            </p>
+          ))
+        }
+      </div>
+
+      {
+        shots.length > 1 && (
+          <div class="flex gap-1.5">
+            {shots.map((shot, i) => (
+              <button
+                type="button"
+                class="hc-dot relative h-1.5 w-6 overflow-hidden rounded-full bg-gray-300 transition-colors hover:bg-gray-400 dark:bg-white/15 dark:hover:bg-white/25"
+                data-index={i}
+                aria-label={shot.label}
+                aria-current={i === 0 ? 'true' : 'false'}
+              >
+                <span class="hc-fill absolute inset-0 rounded-full bg-wk-orange" />
+              </button>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  /* The bar starts empty, so the track has to say which slide is current. */
+  .hc-dot[aria-current='true'] {
+    background-color: rgb(255 109 0 / 0.25);
+  }
+
+  .hc-fill {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  /* Doubles as the slide timer — the script advances on `animationend`. */
+  .hc-fill.hc-running {
+    animation: hc-progress var(--hc-interval, 4500ms) linear forwards;
+  }
+
+  .hero-carousel[data-paused] .hc-fill.hc-running {
+    animation-play-state: paused;
+  }
+
+  @keyframes hc-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Captions cross-fade staggered, not simultaneously. The shots can dissolve
+     into each other because they're opaque, but two texts at half opacity on
+     top of each other are just unreadable — so the outgoing caption clears out
+     first and the incoming one waits for it. */
+  .hc-caption {
+    transition: opacity 180ms ease-in-out;
+  }
+
+  .hc-caption.opacity-100 {
+    transition-delay: 200ms;
+  }
+
+  /* The stacked shots and captions overlap, so the hidden ones would otherwise
+     swallow clicks and text selection meant for the visible one. */
+  .hero-carousel [aria-hidden='true'] {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hc-slide,
+    .hc-caption {
+      transition: none;
+    }
+
+    /* No rotation, so the bar can't fill — mark the current dot instead. */
+    .hc-dot[aria-current='true'] .hc-fill {
+      transform: scaleX(1);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.hero-carousel').forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('.hc-dot'));
+    if (slides.length < 2 || dots.length !== slides.length) return;
+
+    const captions = Array.from(root.querySelectorAll<HTMLElement>('[data-caption]'));
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Several things can hold the carousel still at once; it resumes only
+    // once every one of them has let go.
+    const holds = new Set<string>();
+    const hold = (reason: string, on: boolean) => {
+      if (on) holds.add(reason);
+      else holds.delete(reason);
+      root.toggleAttribute('data-paused', holds.size > 0);
+    };
+
+    let current = 0;
+
+    function show(index: number) {
+      current = (index + slides.length) % slides.length;
+
+      // Only the current shot and caption are exposed — otherwise a screen
+      // reader reads every screenshot's alt text and every caption in a row.
+      for (const group of [slides, captions]) {
+        group.forEach((el, i) => {
+          const active = i === current;
+          el.classList.toggle('opacity-100', active);
+          el.classList.toggle('opacity-0', !active);
+          el.toggleAttribute('aria-hidden', !active);
+        });
+      }
+
+      dots.forEach((dot, i) => dot.setAttribute('aria-current', i === current ? 'true' : 'false'));
+
+      restartTimer();
+    }
+
+    function restartTimer() {
+      dots.forEach((dot, i) => {
+        const fill = dot.querySelector<HTMLElement>('.hc-fill');
+        if (!fill) return;
+        fill.classList.remove('hc-running');
+        if (i === current && !reduced) {
+          void fill.offsetWidth; // reflow, so the animation replays from 0
+          fill.classList.add('hc-running');
+        }
+      });
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => show(i));
+      dot.querySelector('.hc-fill')?.addEventListener('animationend', () => show(current + 1));
+    });
+
+    root.addEventListener('pointerenter', () => hold('hover', true));
+    root.addEventListener('pointerleave', () => hold('hover', false));
+    root.addEventListener('focusin', () => hold('focus', true));
+    root.addEventListener('focusout', () => hold('focus', false));
+    document.addEventListener('visibilitychange', () => hold('hidden', document.hidden));
+
+    new IntersectionObserver((entries) => {
+      for (const entry of entries) hold('offscreen', !entry.isIntersecting);
+    }).observe(root);
+
+    restartTimer();
+  });
+</script>

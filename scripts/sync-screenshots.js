@@ -53,8 +53,10 @@ const destRoot = join(root, "public/screenshots");
 
 // The scenes we actually surface, each tagged with its source repo. Only commit
 // what's referenced — each shot should earn its place on a page, not exist
-// because the pipeline can make it. Keep in sync with the `![](/screenshots/…)`
-// refs across the site (today: the CLI and share-recording blog posts).
+// because the pipeline can make it. Keep in sync with the `/screenshots/…`
+// refs across the site — markdown `![](…)` in the CLI and share-recording blog
+// posts, plus the `scene:` names in the homepage hero carousel and the
+// `/voice/` product carousel.
 //
 // `frame` (voice scenes only): the desktop pipeline composites both macOS and
 // Ubuntu window chrome; each scene picks which one it ships. The CLI post shots
