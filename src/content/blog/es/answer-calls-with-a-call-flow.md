@@ -1,19 +1,19 @@
 ---
-title: "Flujos de llamada: tu teléfono contesta, tú lo ves y puedes tomar la llamada"
-description: "WaveKat Voice ya contesta las llamadas entrantes con un flujo de llamada: un saludo, un menú telefónico, un mensaje de voz o un aviso a ti. Mira cada paso en vivo y toma la llamada mientras dejan el mensaje."
+title: "Flujos de llamada: operadora automática para pymes"
+description: "WaveKat Voice contesta las llamadas entrantes con un flujo de llamada: una operadora automática con saludo, menú telefónico y buzón de voz. Míralo en vivo."
 date: 2026-07-25
 author: Eason Guo
 tags: [voz-ia, llamadas]
 lang: "es"
 ---
 
-WaveKat Voice —el softphone SIP para Mac y Linux que graba y transcribe cada llamada— ya puede contestar por ti. Lo que contesta es un **flujo de llamada**: saluda a quien llama, comprueba si estás abierto, ofrece un menú, te llama a ti, toma un mensaje o transfiere la llamada. El flujo se arma en la web, se asigna a una de tus líneas y, desde ese momento, las llamadas que no alcanzas a atender igual reciben respuesta. Llega en la versión [0.0.43](/es/voice/changelog/#0.0.43).
+[WaveKat Voice](/es/voice/) —el softphone SIP para Mac y Linux que graba y transcribe cada llamada— ya puede contestar por ti. Lo que contesta es un **flujo de llamada**: saluda a quien llama, comprueba si estás abierto, ofrece un menú, te llama a ti, toma un mensaje o transfiere la llamada. El flujo se arma en la web, se asigna a una de tus líneas y, desde ese momento, las llamadas que no alcanzas a atender igual reciben respuesta. Llega en la versión [0.0.43](/es/voice/changelog/#0.0.43).
 
 Es el paso más grande hasta ahora hacia aquello a lo que siempre volvemos: [darle a cada negocio pequeño la voz de uno grande](/es/blog/hello-world/). Una empresa grande contesta todas las llamadas: tiene recepción, un menú telefónico que le armó un consultor y un servicio para fuera de horario. Un local de tres personas tiene un teléfono que suena hasta que alguien puede secarse las manos, y quien se cansa y cuelga es una reserva que nunca ocurrió. Los flujos de llamada cierran esa brecha, y funcionan en la computadora que ya está sobre tu escritorio.
 
 ## Qué es un flujo de llamada
 
-Un flujo es una lista corta de pasos, y la llamada los recorre en orden. Cada paso es una pieza con una sola función:
+Un flujo de llamada en WaveKat Voice es una lista corta de pasos que una llamada entrante recorre uno a uno. Es lo mismo que otros sistemas telefónicos venden como **operadora automática**: el saludo y el menú de «pulse 1 para reservas» que contesta cuando tú no puedes. Solo que aquí viene dentro del softphone que ya usas, en lugar de una plataforma aparte que se paga por puesto. Cada paso es una pieza con una sola función:
 
 | Paso | Qué vive quien llama |
 |---|---|
@@ -43,9 +43,9 @@ El flujo publicado aparece en la nueva sección **Flujos de llamada** de la apli
 
 Los flujos funcionan **en tu computadora**, dentro de la aplicación, con la cuenta SIP que ya tienes. Nada de la llamada se contesta en nuestros servidores: el saludo se reproduce desde tu equipo, el mensaje se graba en tu equipo, y no hay costo por llamada porque nadie está en el medio. El costo real es otro, y lo decimos claro: la aplicación tiene que estar abierta y la computadora despierta para que el flujo conteste, y una línea la contesta una sola computadora.
 
-## Míralo contestar, en vivo
+## Mira al flujo contestar, en vivo
 
-Lo que más nos gusta no es que conteste, sino que puedas verlo hacerlo.
+Mientras un flujo contesta, WaveKat Voice te muestra paso a paso lo que está haciendo, en el momento en que ocurre. Porque lo que más nos gusta no es que conteste, sino que puedas verlo hacerlo.
 
 Cuando un flujo contesta, la aplicación no finge que estás en una llamada. La pantalla dice **«Recepción está contestando»** y, debajo, una línea cuenta qué ocurre en ese momento: *Hablando con la persona que llama… Reproduciendo el menú… Llamándote… Tomando un mensaje…*
 
@@ -57,7 +57,7 @@ Eso es filtrar llamadas, y no es el buzón de voz al que estás acostumbrado. El
 
 ## Toma la llamada mientras dejan el mensaje
 
-Como lo estás viendo, puedes quedarte con la llamada. Mientras alguien deja un mensaje, la aplicación muestra un botón **Contestar**: al pulsarlo, la llamada pasa a tu micrófono y tus altavoces, igual que si la hubieras atendido tú. Lo que ya se grabó del mensaje se conserva.
+Puedes tomar una llamada que contestó el flujo sin que quien llama tenga que empezar de nuevo. Mientras alguien deja un mensaje, la aplicación muestra un botón **Contestar**: al pulsarlo, la llamada pasa a tu micrófono y tus altavoces, igual que si la hubieras atendido tú. Lo que ya se grabó del mensaje se conserva.
 
 ![WaveKat Voice en Ubuntu: el mapa en vivo con el paso del buzón resaltado, el botón «Contestar» y el mensaje de quien llama apareciendo como transcripción en vivo.](/screenshots/flow-takeover/es.webp)
 
@@ -65,7 +65,7 @@ Y no tienes que adivinar si vale la pena atender: el mensaje aparece en texto mi
 
 **Contestar** solo aparece en los momentos en que la entrada de una persona tiene sentido para quien llama: mientras deja un mensaje, no a mitad de tu saludo ni durante un aviso del menú. A nadie le gusta que una voz se superponga a la grabación que todavía le está hablando.
 
-## Después de la llamada
+## Qué deja una llamada contestada por un flujo
 
 Una llamada contestada por un flujo queda en tu historial como cualquier otra, con el nombre del flujo al lado —*Contestada por «Recepción»*—, así que de un vistazo distingues cuáles atendiste tú y cuáles el flujo. Al abrir una, el resumen te dice en palabras simples cómo terminó: **La persona que llamó dejó un mensaje**, con un enlace al flujo que la atendió.
 
@@ -89,6 +89,10 @@ Así que una cuenta gratuita tiene un contestador completo, con tu saludo, tus p
 ### ¿Qué es un flujo de llamada en WaveKat Voice?
 
 Un flujo de llamada es un conjunto de pasos que contesta automáticamente las llamadas entrantes: un saludo, una comprobación de tu horario, un menú telefónico, un aviso a ti, la toma de un mensaje o una transferencia. Se arma en la web, en platform.wavekat.com, se asigna a una de tus líneas y la aplicación WaveKat Voice de tu computadora lo ejecuta cuando entra una llamada.
+
+### ¿Un flujo de llamada es lo mismo que una operadora automática o un IVR?
+
+Un flujo de llamada es como WaveKat Voice llama a la operadora automática: saluda a quien llama, ofrece un menú de teclas, comprueba tu horario, te llama a ti y toma un mensaje. No es un IVR completo en el sentido empresarial —no consulta a nadie en una base de datos ni resuelve trámites por quien llama— y todavía no mantiene una conversación. Si estabas buscando una «operadora automática para pymes», un flujo de llamada hace ese mismo trabajo, pero en tu propia computadora y no en una plataforma que se paga por puesto al mes.
 
 ### ¿Mi computadora tiene que estar encendida para que un flujo conteste?
 

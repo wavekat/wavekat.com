@@ -11,6 +11,8 @@ import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
   PhoneForwarded,
+  PhoneIncoming,
+  MousePointerClick,
   AudioLines,
   Mic,
   FileText,
@@ -56,6 +58,11 @@ const features = [
     body: '直接在電腦上接聽和撥打電話——不需要話機、不需要額外硬體，也不用盯著瀏覽器分頁。它安靜地待在一旁，電話響起時才出現。',
   },
   {
+    icon: PhoneIncoming,
+    title: '你忙不過來時它來接',
+    body: '把一個通話流程指給你的線路，WaveKat Voice 就會替你接聽——問候語、營業時間、按鍵選單、留言或轉接。這正是自動總機做的事，只不過跑在你自己的電腦上；每一步你都看得到，還能在留言途中把電話接過來。',
+  },
+  {
     icon: PhoneForwarded,
     title: '保留、切換與轉接',
     body: '把一通來電轉為保留，接起第二條線路，並在兩者之間切換——接著可以直接轉接，或先低聲交代幾句再轉。保留期間發生的一切都不會進入錄音和文字稿。',
@@ -79,6 +86,11 @@ const features = [
     icon: Terminal,
     title: '讓 AI 助理替你撥號',
     body: '開啟自動化，命令列工具——或像 Claude 這樣的 AI 助理——就能替你撥號、等待接聽並結束通話。助理負責操作撥號盤；說話的依然是你。在你主動開啟之前一直關閉。',
+  },
+  {
+    icon: MousePointerClick,
+    title: '點一下號碼就能撥',
+    body: '打開電話連結，網頁上任何 tel: 或 sip: 連結都會在 WaveKat Voice 裡開啟，號碼已填好，只等你按下撥號。預設關閉——網頁只能請求通話，不能替你撥出。',
   },
   {
     icon: Server,
@@ -135,6 +147,16 @@ const faqs = [
     link: { href: '/zh-hant/blog/hold-switch-and-transfer-calls/', label: '了解運作方式' },
   },
   {
+    q: 'WaveKat Voice 可以自動接聽來電嗎？',
+    a: '可以。通話流程會用問候語、營業時間判斷、按鍵選單、留言或轉接來接聽你的來電——也就是別的電話系統所說的自動總機。你在網頁上建好流程，把它指給某條線路，應用程式就用它來接聽。每一步都能即時看到，來電者留言時你還能把電話接過來。',
+    link: { href: '/zh-hant/blog/answer-calls-with-a-call-flow/', label: '了解運作方式' },
+  },
+  {
+    q: '我可以點按網頁上的電話號碼直接撥打嗎？',
+    a: '可以。在設定 → 一般裡打開電話連結，之後點按 tel: 或 sip: 連結，WaveKat Voice 就會開啟，號碼已經填在撥號欄裡，只等你按下撥號。這項設定預設關閉；網頁只能把號碼填進來，永遠不能自己把電話撥出去。',
+    link: { href: '/zh-hant/blog/click-to-call-phone-links/', label: '了解運作方式' },
+  },
+  {
     q: 'WaveKat Voice 支援 HD 高清通話嗎？',
     a: '支援。在你的電話電信業者支援時，WaveKat Voice 會採用 Opus 編解碼器帶來寬頻——「HD」——語音，比一般電話線路更飽滿、更清晰；不支援時則自動退回標準音質（G.711）。完全無須設定。',
   },
@@ -189,6 +211,16 @@ const appSchema = {
   downloadUrl: 'https://wavekat.com/zh-hant/voice/download/',
   description:
     '一款把你的電腦變成辦公電話的桌面應用程式——接聽和撥打電話，每通電話都自動錄音並轉寫。相容你已經在用的電話電信業者。',
+  featureList: [
+    '在電腦上透過 SIP 接聽和撥打電話',
+    '通話流程：用問候語、營業時間、按鍵選單、留言或轉接自動接聽的自動總機',
+    '保留、話中插接，以及盲轉或詢問轉接',
+    '自動錄音與即時轉寫',
+    '點按網頁上的 tel: 與 sip: 連結直接撥號',
+    '電信業者支援時使用 Opus 編解碼的高清語音',
+    '面向 AI 助理的命令列與 MCP 自動化',
+    '九種應用語言，支援 macOS 與 Linux',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',

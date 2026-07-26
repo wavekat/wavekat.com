@@ -4,6 +4,8 @@ import TalkCTA from '../../components/TalkCTA.astro';
 import {
   PhoneCall,
   PhoneForwarded,
+  PhoneIncoming,
+  MousePointerClick,
   AudioLines,
   Mic,
   FileText,
@@ -49,6 +51,11 @@ const features = [
     body: 'Answer and place calls right from your computer — no desk phone, no extra hardware, no browser tab to babysit. It waits quietly out of the way until the phone rings.',
   },
   {
+    icon: PhoneIncoming,
+    title: 'Answers when you can\'t',
+    body: 'Point a call flow at your line and WaveKat Voice answers for you — a greeting, your opening hours, a phone menu, voicemail, or a transfer. It\'s the job an auto attendant does, running on your own computer, and you watch each step live and can pick the call up mid-message.',
+  },
+  {
     icon: PhoneForwarded,
     title: 'Hold, switch, and transfer',
     body: 'Put a caller on hold, pick up a second line, and switch between them — then transfer either straight through or after a quiet word first. Whatever happens on hold stays out of the recording and the transcript.',
@@ -72,6 +79,11 @@ const features = [
     icon: Terminal,
     title: 'Let an AI assistant dial',
     body: 'Switch on automation and a command-line tool — or an AI assistant like Claude — can place, wait on, and end calls for you. It works the dialpad; you do the talking. Off until you turn it on.',
+  },
+  {
+    icon: MousePointerClick,
+    title: 'Click a number to call it',
+    body: 'Switch on phone links and any tel: or sip: link on a web page opens WaveKat Voice with the number filled in, ready for you to press Call. Off until you turn it on — a page can ask for a call, never place one.',
   },
   {
     icon: Server,
@@ -121,6 +133,16 @@ const faqs = [
   {
     q: 'Do I need any special hardware?',
     a: 'No. If you have a computer and an account with a phone provider, you have everything you need. No desk phone, no extra equipment — a headset is nice but not required.',
+  },
+  {
+    q: 'Can WaveKat Voice answer calls automatically?',
+    a: 'Yes. A call flow answers your incoming calls with a greeting, a check of your opening hours, a phone menu, voicemail, or a transfer — the job other phone systems call an auto attendant. You build the flow on the web, point it at one of your lines, and the app answers with it. You see each step as it happens and can take the call over while a caller is leaving a message.',
+    link: { href: '/blog/answer-calls-with-a-call-flow/', label: 'How it works' },
+  },
+  {
+    q: 'Can I click a phone number on a website to dial it?',
+    a: 'Yes. Turn on phone links in Settings → General and clicking a tel: or sip: link opens WaveKat Voice with the number already in the dial field, ready for you to press Call. It stays off until you turn it on, and a web page can only fill in a number — it can never place the call by itself.',
+    link: { href: '/blog/click-to-call-phone-links/', label: 'How it works' },
   },
   {
     q: 'Can I put a caller on hold or transfer a call?',
@@ -182,6 +204,16 @@ const appSchema = {
   downloadUrl: 'https://wavekat.com/voice/download/',
   description:
     'A desktop app that turns your computer into your business phone — answer and place calls, with every call recorded and transcribed. Works with the phone provider you already have.',
+  featureList: [
+    'Answer and place calls from your desktop over SIP',
+    'Call flows: an auto attendant that answers with a greeting, business hours, phone menu, voicemail, or transfer',
+    'Hold, call waiting, and blind or attended transfer',
+    'Automatic call recording and live transcription',
+    'Click-to-call from tel: and sip: links on any website',
+    'HD voice with the Opus codec when the provider supports it',
+    'Command line and MCP automation for AI assistants',
+    'Nine app languages, on macOS and Linux',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',

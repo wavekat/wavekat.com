@@ -11,6 +11,8 @@ import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
   PhoneForwarded,
+  PhoneIncoming,
+  MousePointerClick,
   AudioLines,
   Mic,
   FileText,
@@ -56,6 +58,11 @@ const features = [
     body: '直接在电脑上接听和拨打电话——不需要话机、不需要额外硬件，也不用盯着浏览器标签页。它安静地待在一旁，电话响起时才出现。',
   },
   {
+    icon: PhoneIncoming,
+    title: '你忙不过来时它来接',
+    body: '把一个来电流程指给你的线路，WaveKat Voice 就会替你接听——问候语、营业时间、按键菜单、留言或转接。这正是自动总机做的事，只不过跑在你自己的电脑上；每一步你都看得见，还能在留言途中把电话接过来。',
+  },
+  {
     icon: PhoneForwarded,
     title: '保持、切换与转接',
     body: '把一通来电设为保持，接起第二条线路，在两者之间随意切换——之后既可以直接转接，也可以先私下交代几句再转过去。保持期间发生的一切都不会进入录音和文字稿。',
@@ -79,6 +86,11 @@ const features = [
     icon: Terminal,
     title: '让 AI 助手替你拨号',
     body: '开启自动化后，一个命令行工具——或者像 Claude 这样的 AI 助手——就能替你拨打、等待并结束通话。它负责操作拨号盘；说话的依然是你。默认关闭，你主动开启后才生效。',
+  },
+  {
+    icon: MousePointerClick,
+    title: '点一下号码就能拨',
+    body: '打开电话链接，网页上任何 tel: 或 sip: 链接都会在 WaveKat Voice 里打开，号码已填好，只等你按下拨打。默认关闭——网页只能请求通话，不能替你拨出。',
   },
   {
     icon: Server,
@@ -135,6 +147,16 @@ const faqs = [
     link: { href: '/zh/blog/hold-switch-and-transfer-calls/', label: '了解工作原理' },
   },
   {
+    q: 'WaveKat Voice 可以自动接听来电吗？',
+    a: '可以。来电流程会用问候语、营业时间判断、按键菜单、留言或转接来接听你的来电——也就是别的电话系统所说的自动总机。你在网页上搭好流程，把它指给某条线路，应用就用它来接听。每一步都能实时看到，来电者留言时你还能把电话接过来。',
+    link: { href: '/zh/blog/answer-calls-with-a-call-flow/', label: '了解工作原理' },
+  },
+  {
+    q: '我可以点击网页上的电话号码直接拨打吗？',
+    a: '可以。在设置 → 通用里打开电话链接，之后点击 tel: 或 sip: 链接，WaveKat Voice 就会打开，号码已经填在拨号栏里，只等你按下拨打。这项设置默认关闭；网页只能把号码填进来，永远不能自己把电话拨出去。',
+    link: { href: '/zh/blog/click-to-call-phone-links/', label: '了解工作原理' },
+  },
+  {
     q: 'WaveKat Voice 支持 HD 高清通话吗？',
     a: '支持。只要你的电话运营商支持，WaveKat Voice 就会使用 Opus 编解码器带来宽频——即“HD 高清”——语音，比普通电话线更饱满、更清晰；不支持时也会自动回落到标准音质（G.711）。没有任何需要配置的地方。',
   },
@@ -189,6 +211,16 @@ const appSchema = {
   downloadUrl: 'https://wavekat.com/zh/voice/download/',
   description:
     '一款把你的电脑变成办公电话的桌面应用——接听和拨打电话，每通电话都自动录音并转写。兼容你已经在用的电话运营商。',
+  featureList: [
+    '在电脑上通过 SIP 接听和拨打电话',
+    '来电流程：用问候语、营业时间、按键菜单、留言或转接自动接听的自动总机',
+    '保持、呼叫等待，以及盲转或询问转接',
+    '自动录音与实时转写',
+    '点击网页上的 tel: 与 sip: 链接直接拨号',
+    '运营商支持时使用 Opus 编解码的高清语音',
+    '面向 AI 助手的命令行与 MCP 自动化',
+    '九种应用语言，支持 macOS 与 Linux',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',

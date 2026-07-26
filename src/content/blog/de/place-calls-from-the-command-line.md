@@ -1,6 +1,6 @@
 ---
-title: "Lassen Sie Ihren KI-Assistenten echte Telefonanrufe tätigen"
-description: "WaveKat Voice liefert jetzt ein Kommandozeilenwerkzeug und einen MCP-Server, sodass ein KI-Assistent wie Claude echte Telefonanrufe auf Ihrem Computer tätigen und verwalten kann — mit Einrichtung per Klick."
+title: "KI-Assistenten echte Anrufe tätigen lassen"
+description: "WaveKat Voice bringt Kommandozeile und MCP-Server mit, damit ein KI-Assistent wie Claude echte Telefonanrufe auf Ihrem Computer tätigen und verwalten kann."
 date: 2026-06-16
 author: Eason Guo
 tags: [Sprach-KI, Automatisierung, KI-Agenten]

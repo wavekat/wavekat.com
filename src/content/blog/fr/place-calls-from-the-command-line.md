@@ -1,6 +1,6 @@
 ---
-title: "Laissez votre assistant IA passer de vrais appels téléphoniques"
-description: "WaveKat Voice propose désormais un outil en ligne de commande et un serveur MCP, pour qu'un assistant IA comme Claude puisse passer et gérer de vrais appels téléphoniques sur votre ordinateur — avec une configuration en un clic."
+title: "Laissez votre assistant IA passer de vrais appels"
+description: "WaveKat Voice fournit un outil en ligne de commande et un serveur MCP, pour qu'un assistant IA comme Claude passe de vrais appels depuis votre ordinateur."
 date: 2026-06-16
 author: Eason Guo
 tags: [ia-vocale, automatisation, agents-ia]

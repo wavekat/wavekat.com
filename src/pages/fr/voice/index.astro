@@ -11,6 +11,8 @@ import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
   PhoneForwarded,
+  PhoneIncoming,
+  MousePointerClick,
   Mic,
   FileText,
   AudioLines,
@@ -56,6 +58,11 @@ const features = [
     body: 'Recevez et passez vos appels directement depuis votre ordinateur — sans poste téléphonique, sans matériel supplémentaire, sans onglet de navigateur à surveiller. L’application reste discrètement en retrait jusqu’à ce que le téléphone sonne.',
   },
   {
+    icon: PhoneIncoming,
+    title: 'Décroche quand vous ne pouvez pas',
+    body: 'Affectez un flux d’appel à votre ligne et WaveKat Voice décroche pour vous : accueil, horaires, menu téléphonique, messagerie ou transfert. Le travail d’un standard automatique, sur votre propre ordinateur. Vous voyez chaque étape en direct et pouvez reprendre l’appel en plein message.',
+  },
+  {
     icon: PhoneForwarded,
     title: 'Mettez en attente, basculez, transférez',
     body: 'Mettez un appelant en attente, prenez une deuxième ligne, et basculez de l’un à l’autre — puis transférez l’appel, directement ou après un mot en aparté. Tout ce qui se passe pendant l’attente reste hors de l’enregistrement et de la transcription.',
@@ -79,6 +86,11 @@ const features = [
     icon: Terminal,
     title: 'Laissez un assistant IA composer',
     body: 'Activez l’automatisation et un outil en ligne de commande — ou un assistant IA comme Claude — peut passer, suivre et terminer les appels à votre place. Il pilote le clavier ; c’est vous qui parlez. Désactivé jusqu’à ce que vous l’activiez.',
+  },
+  {
+    icon: MousePointerClick,
+    title: 'Cliquez un numéro pour appeler',
+    body: 'Activez les liens téléphoniques et tout lien tel: ou sip: du web ouvre WaveKat Voice avec le numéro rempli, prêt à ce que vous appuyiez sur Appeler. Désactivé par défaut : une page peut demander un appel, jamais le passer.',
   },
   {
     icon: Server,
@@ -135,6 +147,16 @@ const faqs = [
     link: { href: '/fr/blog/hold-switch-and-transfer-calls/', label: 'Comment ça marche' },
   },
   {
+    q: 'WaveKat Voice peut-il répondre aux appels automatiquement ?',
+    a: 'Oui. Un flux d’appel répond à vos appels entrants avec un accueil, une vérification de vos horaires, un menu téléphonique, une messagerie ou un transfert — le travail que les autres systèmes téléphoniques appellent standard automatique. Vous construisez le flux sur le web, vous l’affectez à une ligne, et l’application répond avec. Vous suivez chaque étape en direct et pouvez reprendre l’appel pendant qu’un appelant laisse un message.',
+    link: { href: '/fr/blog/answer-calls-with-a-call-flow/', label: 'Comment ça marche' },
+  },
+  {
+    q: 'Puis-je cliquer sur un numéro de téléphone d’un site pour l’appeler ?',
+    a: 'Oui. Activez les liens téléphoniques dans Réglages → Général : ensuite, cliquer sur un lien tel: ou sip: ouvre WaveKat Voice avec le numéro déjà dans le champ d’appel, prêt à ce que vous appuyiez sur Appeler. La fonction reste désactivée tant que vous ne l’activez pas, et une page web peut seulement remplir le numéro — jamais passer l’appel elle-même.',
+    link: { href: '/fr/blog/click-to-call-phone-links/', label: 'Comment ça marche' },
+  },
+  {
     q: 'WaveKat Voice prend-il en charge l’audio HD ?',
     a: 'Oui. Lorsque votre opérateur téléphonique le permet, WaveKat Voice utilise le codec Opus pour une voix large bande — « HD » —, plus riche et plus claire qu’une ligne téléphonique ordinaire, et revient automatiquement à la qualité standard (G.711) lorsqu’il ne le peut pas. Il n’y a rien à configurer.',
   },
@@ -189,6 +211,16 @@ const appSchema = {
   downloadUrl: 'https://wavekat.com/fr/voice/download/',
   description:
     'Une application de bureau qui transforme votre ordinateur en téléphone professionnel — recevez et passez des appels, chaque appel étant enregistré et retranscrit. Compatible avec l’opérateur téléphonique que vous utilisez déjà.',
+  featureList: [
+    'Recevoir et passer des appels en SIP depuis le bureau',
+    'Flux d’appel : un standard automatique avec accueil, horaires, menu téléphonique, messagerie et transfert',
+    'Mise en attente, double appel, transfert en aveugle ou supervisé',
+    'Enregistrement automatique des appels et transcription en direct',
+    'Click-to-call depuis les liens tel: et sip: du web',
+    'Voix HD avec le codec Opus quand l’opérateur le permet',
+    'Ligne de commande et automatisation MCP pour les assistants IA',
+    'Neuf langues d’interface, sur macOS et Linux',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',

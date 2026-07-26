@@ -11,6 +11,8 @@ import TalkCTA from '../../../components/TalkCTA.astro';
 import {
   PhoneCall,
   PhoneForwarded,
+  PhoneIncoming,
+  MousePointerClick,
   Mic,
   FileText,
   AudioLines,
@@ -55,6 +57,11 @@ const features = [
     body: 'Nehmen Sie Anrufe entgegen und tätigen Sie sie direkt von Ihrem Computer aus — kein Tischtelefon, keine zusätzliche Hardware, kein Browser-Tab, das Sie im Auge behalten müssen. Es wartet unauffällig im Hintergrund, bis das Telefon klingelt.',
   },
   {
+    icon: PhoneIncoming,
+    title: 'Nimmt ab, wenn Sie nicht können',
+    body: 'Weisen Sie Ihrer Leitung einen Anrufablauf zu, und WaveKat Voice nimmt für Sie ab — Begrüßung, Öffnungszeiten, Telefonmenü, Anrufbeantworter oder Weiterleitung. Die Arbeit einer automatischen Telefonzentrale, auf Ihrem eigenen Computer. Sie sehen jeden Schritt live und können den Anruf mitten in der Nachricht übernehmen.',
+  },
+  {
     icon: PhoneForwarded,
     title: 'Halten, wechseln und weiterleiten',
     body: 'Legen Sie einen Anrufer in die Warteschleife, nehmen Sie eine zweite Leitung an und wechseln Sie zwischen beiden — leiten Sie ihn dann direkt weiter oder erst nach einem kurzen Wort unter vier Augen. Was in der Warteschleife passiert, bleibt aus der Aufzeichnung und dem Transkript heraus.',
@@ -78,6 +85,11 @@ const features = [
     icon: Terminal,
     title: 'Einen KI-Assistenten wählen lassen',
     body: 'Schalten Sie die Automatisierung ein, und ein Kommandozeilenwerkzeug — oder ein KI-Assistent wie Claude — kann Anrufe für Sie tätigen, darauf warten und sie beenden. Es bedient das Wählfeld; sprechen tun Sie. Standardmäßig ausgeschaltet, bis Sie es aktivieren.',
+  },
+  {
+    icon: MousePointerClick,
+    title: 'Nummer anklicken und anrufen',
+    body: 'Schalten Sie Telefon-Links ein, und jeder tel:- oder sip:-Link im Web öffnet WaveKat Voice mit eingetragener Nummer, bereit für Ihren Druck auf Anrufen. Standardmäßig aus — eine Seite kann um einen Anruf bitten, ihn aber nie selbst starten.',
   },
   {
     icon: Server,
@@ -134,6 +146,16 @@ const faqs = [
     link: { href: '/de/blog/hold-switch-and-transfer-calls/', label: 'So funktioniert es' },
   },
   {
+    q: 'Kann WaveKat Voice Anrufe automatisch annehmen?',
+    a: 'Ja. Ein Anrufablauf beantwortet eingehende Anrufe mit Begrüßung, Öffnungszeiten-Prüfung, Telefonmenü, Anrufbeantworter oder Weiterleitung — die Aufgabe, die andere Telefonsysteme automatische Telefonzentrale nennen. Sie bauen den Ablauf im Web, weisen ihn einer Leitung zu, und die App nimmt damit ab. Jeden Schritt sehen Sie live, und während jemand eine Nachricht hinterlässt, können Sie den Anruf übernehmen.',
+    link: { href: '/de/blog/answer-calls-with-a-call-flow/', label: 'So funktioniert es' },
+  },
+  {
+    q: 'Kann ich eine Telefonnummer auf einer Website anklicken, um sie anzurufen?',
+    a: 'Ja. Schalten Sie Telefon-Links unter Einstellungen → Allgemein ein; danach öffnet ein Klick auf einen tel:- oder sip:-Link WaveKat Voice mit der Nummer bereits im Anruffeld, bereit für Ihren Druck auf Anrufen. Die Funktion bleibt aus, bis Sie sie einschalten, und eine Webseite kann nur die Nummer eintragen — den Anruf selbst startet sie nie.',
+    link: { href: '/de/blog/click-to-call-phone-links/', label: 'So funktioniert es' },
+  },
+  {
     q: 'Unterstützt WaveKat Voice HD-Audio?',
     a: 'Ja. Wenn Ihr Telefonanbieter es unterstützt, nutzt WaveKat Voice den Opus-Codec für breitbandige — „HD“-Sprache, voller und klarer als eine gewöhnliche Telefonleitung, und fällt automatisch auf Standardqualität (G.711) zurück, wenn das nicht möglich ist. Es gibt nichts zu konfigurieren.',
   },
@@ -188,6 +210,16 @@ const appSchema = {
   downloadUrl: 'https://wavekat.com/de/voice/download/',
   description:
     'Eine Desktop-App, die Ihren Computer zu Ihrem Geschäftstelefon macht — Anrufe entgegennehmen und tätigen, wobei jeder Anruf automatisch aufgezeichnet und transkribiert wird. Funktioniert mit dem Telefonanbieter, den Sie bereits haben.',
+  featureList: [
+    'Anrufe per SIP am Computer annehmen und tätigen',
+    'Anrufabläufe: eine automatische Telefonzentrale mit Begrüßung, Öffnungszeiten, Telefonmenü, Anrufbeantworter und Weiterleitung',
+    'Halten, Anklopfen sowie Weiterleiten mit und ohne Rückfrage',
+    'Automatische Anrufaufzeichnung und Live-Transkription',
+    'Click-to-Call über tel:- und sip:-Links im Web',
+    'HD-Sprache mit dem Opus-Codec, wenn der Anbieter sie unterstützt',
+    'Kommandozeile und MCP-Automatisierung für KI-Assistenten',
+    'Neun App-Sprachen, auf macOS und Linux',
+  ],
   offers: {
     '@type': 'Offer',
     price: '0',

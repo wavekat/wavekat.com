@@ -1,6 +1,6 @@
 ---
 title: "Hold, Switch, and Transfer Calls Like a Front Desk"
-description: "WaveKat Voice now puts callers on hold, answers a second call, and transfers them — blind or attended — on Mac and Linux. Recording pauses automatically on hold."
+description: "WaveKat Voice puts callers on hold, answers a second call, and transfers them — blind or attended — on Mac and Linux. Recording pauses while a call is held."
 date: 2026-07-05
 author: Eason Guo
 tags: [voice-ai, calls]
@@ -40,6 +40,8 @@ The **Transfer** button sends a live caller to someone else — another number, 
 For a blind transfer, press Transfer, enter the destination, and you're done — once the new person answers, your side of the call ends. For an attended transfer, choose **Talk first**: the caller goes on hold, WaveKat Voice dials the destination as a second call, and you talk to them privately ("I've got a customer asking about the invoice — can you take it?"). When they're ready, press **Complete transfer** and the two are connected while you drop out. If they're busy, decline, or turn out to be the wrong person, just hang up the consult call and resume your caller — they never know the first attempt didn't work out.
 
 ![WaveKat Voice on Ubuntu — an attended transfer: the caller on hold and a Complete transfer button to connect them.](/screenshots/in-call-transfer/en.webp)
+
+These are the moves you make by hand, on a call you've already answered. If you'd rather the phone made them without you, a [call flow](/blog/answer-calls-with-a-call-flow/) answers incoming calls on its own and can transfer them on — the same building blocks, running before you ever pick up.
 
 Transfers are recorded honestly in your history, too. A transferred call ends as **Transferred**, and the call's detail page shows exactly where it went — "Transferred to …" — instead of pretending you hung up.
 

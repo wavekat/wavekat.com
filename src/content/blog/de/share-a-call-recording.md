@@ -1,6 +1,6 @@
 ---
 title: "Eine Anrufaufnahme per Link teilen"
-description: "WaveKat Voice verwandelt jetzt jede aufgezeichnete Anrufaufnahme in einen teilbaren Link — privat, nur auf Einladung oder öffentlich — mit genauer Kontrolle darüber, was der Empfänger hören und lesen kann."
+description: "WaveKat Voice macht aus jeder Anrufaufnahme einen teilbaren Link — privat, auf Einladung oder öffentlich — und Sie bestimmen, was der Empfänger hört und liest."
 date: 2026-06-28
 author: Eason Guo
 tags: [Sprach-KI, Anrufaufnahmen, Datenschutz]

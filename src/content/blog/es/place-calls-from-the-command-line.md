@@ -1,6 +1,6 @@
 ---
-title: "Deje que su asistente de IA realice llamadas telefónicas reales"
-description: "WaveKat Voice ahora incluye una herramienta de línea de comandos y un servidor MCP, para que un asistente de IA como Claude pueda realizar y gestionar llamadas telefónicas reales en su computadora, con configuración en un solo clic."
+title: "Deje que su asistente de IA llame de verdad"
+description: "WaveKat Voice incluye una herramienta de línea de comandos y un servidor MCP para que un asistente como Claude haga y gestione llamadas reales en su equipo."
 date: 2026-06-16
 author: Eason Guo
 tags: [voz-ia, automatización, agentes-ia]

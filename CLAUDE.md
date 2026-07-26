@@ -59,6 +59,15 @@ This repo uses **release-please**. Since GitHub squash-merges use the PR title a
 
 This site is optimized for classic search (SEO) **and** generative answer engines (GEO — being quoted by ChatGPT, Perplexity, Google AI Overviews, Claude). The two overlap but aren't identical: SEO wants crawlable, well-described, linkable pages; GEO wants self-contained, factual, extractable passages an LLM can lift verbatim. Build for both on every page.
 
+### Always review with the SEO skills — every page, every post, every language
+
+**Any page or blog post you add or edit — including a translation, including a "small" copy tweak — gets an SEO/GEO review with the `claude-seo` skills before it ships.** This is not optional and not only for new pages: an edited heading, a reworded intro, or a re-translated description all move the signals the rest of this section is about.
+
+- Start with **`claude-seo:seo-content`** (E-E-A-T, heading hierarchy, quotable leads, meta length, internal linking), then add the specialist that matches what changed: **`seo-schema`** for JSON-LD, **`seo-geo`** for AI-answer surfaces, **`seo-technical`** for routes/robots/sitemap, **`seo-hreflang`** when locales or `translatedRoutes` change.
+- Finish with `npm run build && npm run check:links` (add `SYNC_DOCS=1 WAVEKAT_LOCAL_REPOS=<path>` for link-heavy changes).
+- **Length budgets are hard limits, and translations break them constantly.** A `<title>` must be ≤ ~50 chars (`Post.astro`/`Base` append ` — WaveKat`, so the SERP title lands near 60) and a `description` 150–160. In CJK the SERP truncates on pixel width, not characters — budget **≤ 28 chars for a title and ≤ 85 for a description** in `zh`/`zh-Hant`/`ja`/`ko`. A faithful de/es/fr/it translation runs 30–60% longer than its English source, so re-measure every localized `title`/`description` instead of translating the English one verbatim.
+- **Keep the entity term and the demand term apart.** Product nouns (`call flow`, `phone links`) are what the app calls things and must stay consistent everywhere; the words people actually search (`auto attendant`, `click-to-call`, `IVR`) go in titles, descriptions, and a bridging sentence or FAQ that says plainly which is which. Never let the title claim something the FAQ then denies (e.g. don't title a page "IVR" when the page correctly explains it isn't a full IVR).
+
 ### What's already wired (don't reinvent it)
 
 - **`Base.astro` is the SEO baseline** (established in #81, `feat(seo)`). It emits the canonical URL, `<meta name="description">`, the `robots` directive (with a `noindex` prop to opt a page out of indexing), the full Open Graph + Twitter card set, light/dark `theme-color`, and the sitewide `Organization` + `WebSite` JSON-LD graph (`@id`s `https://wavekat.com/#organization` and `#website`). It also takes `ogType` / `article` props so child layouts can emit article semantics. Every layout (`Voice`, `Post`, `Docs`) wraps `Base`, so every page gets this for free.
