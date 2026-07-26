@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.50](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.49...wavekat-com-v0.0.50) (2026-07-26)
+
+
+### Features
+
+* **brand:** live wallpaper page ([#136](https://github.com/wavekat/wavekat.com/issues/136)) ([4aafecf](https://github.com/wavekat/wavekat.com/commit/4aafecf6ecd3188c027aaddd1df6d6545ce78a81))
+* **home:** link hero carousel screenshots to their blog posts ([#139](https://github.com/wavekat/wavekat.com/issues/139)) ([7271776](https://github.com/wavekat/wavekat.com/commit/7271776062492a8059ce095417b68115aac05e03))
+* **home:** rotating hero screenshot carousel ([#137](https://github.com/wavekat/wavekat.com/issues/137)) ([a673831](https://github.com/wavekat/wavekat.com/commit/a6738317649628da1178a74a16f8c1f2b9f48170))
+
 ## [0.0.49](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.48...wavekat-com-v0.0.49) (2026-07-26)
 
 
