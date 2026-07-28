@@ -91,6 +91,24 @@ function parseRangeMs(raw: string | undefined): number | null {
 
 const app = new Hono<Env>();
 
+// Matches a bare IPv4 (127.0.0.1) or bracketed IPv6 (`[::1]`) host — how
+// `URL#hostname` renders each. Covers `wrangler dev --ip 0.0.0.0` and
+// LAN-IP access during local testing, not just localhost.
+const IP_HOST_RE = /^(\d{1,3}\.){3}\d{1,3}$|^\[[0-9a-f:]+\]$/i;
+
+// GSC flagged http://stars.wavekat.com/ as a duplicate of the https:// URL
+// with no canonical declared. Cloudflare's edge "Always Use HTTPS" redirect
+// doesn't cover every path to this Worker, so enforce it here too. Skip
+// localhost and IP hosts so `wrangler dev` (plain HTTP) keeps working.
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.protocol === 'http:' && url.hostname !== 'localhost' && !IP_HOST_RE.test(url.hostname)) {
+    url.protocol = 'https:';
+    return c.redirect(url.toString(), 301);
+  }
+  await next();
+});
+
 // Resolve the current user (if any) from the session cookie on every request.
 app.use('*', async (c, next) => {
   const userId = await readSession(c, c.env.JWT_SECRET);
@@ -218,7 +236,7 @@ app.get('/favicon.svg', () => {
 
 // -- Landing ----------------------------------------------------------------
 
-app.get('/', (c) => c.html(pages.landing(c.get('user'))));
+app.get('/', (c) => c.html(pages.landing(c.get('user'), c.env.PUBLIC_URL)));
 
 // -- OAuth ------------------------------------------------------------------
 
@@ -289,7 +307,7 @@ app.get('/_admin', async (c) => {
   const user = c.get('user');
   if (!isAdmin(user, c.env.ADMIN_USERNAMES)) return c.notFound();
   const tenants = await db.listAllTenantsWithStats(c.env.DB);
-  return c.html(pages.adminTenants(user!, tenants));
+  return c.html(pages.adminTenants(user!, tenants, c.env.PUBLIC_URL));
 });
 
 // -- Tenant creation --------------------------------------------------------
