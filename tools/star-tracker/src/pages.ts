@@ -25,7 +25,7 @@ function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function shell(title: string, user: User | null, body: string): string {
+function shell(title: string, user: User | null, body: string, canonicalUrl?: string, noindex = false): string {
   const nav = user
     ? `<a href="/dashboard">${esc(user.username)}</a> · <form method="POST" action="/auth/logout" style="display:inline"><button class="link" type="submit">Sign out</button></form>`
     : `<a href="/auth/login">Sign in with GitHub</a>`;
@@ -34,6 +34,8 @@ function shell(title: string, user: User | null, body: string): string {
 <html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>${esc(title)}</title>
+${canonicalUrl ? `<link rel="canonical" href="${esc(canonicalUrl)}"/>` : ''}
+${noindex ? '<meta name="robots" content="noindex, nofollow"/>' : ''}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2YBZ0W8HQ"></script>
 <script>
@@ -288,7 +290,7 @@ ${body}
 </body></html>`;
 }
 
-export function landing(user: User | null): string {
+export function landing(user: User | null, publicUrl: string): string {
   return shell(
     'stars.wavekat.com',
     user,
@@ -312,10 +314,11 @@ export function landing(user: User | null): string {
 </ol>
 <h2>Free, open source</h2>
 <p>Source: <a href="https://github.com/wavekat/wavekat.com/tree/main/tools/star-tracker">github.com/wavekat/wavekat.com</a> · Apache-2.0.</p>`,
+    `${publicUrl}/`,
   );
 }
 
-export function dashboard(user: User, tenants: Tenant[], _publicUrl: string, flash?: string): string {
+export function dashboard(user: User, tenants: Tenant[], publicUrl: string, flash?: string): string {
   const list = tenants.length === 0
     ? `<p class="muted">No tenants yet. Register your first below.</p>`
     : `<ul class="tenants">${tenants.map((t) => `<li class="card">
@@ -335,6 +338,8 @@ ${list}
   <p><button type="submit">Register</button></p>
 </form>
 <p class="muted">We'll verify you're an admin of the org (or that the login matches your GitHub username) before creating it.</p>`,
+    `${publicUrl}/dashboard`,
+    /* noindex */ true,
   );
 }
 
@@ -710,6 +715,8 @@ ${flash ? `<p class="warn">${esc(flash)}</p>` : ''}
 </details>
 ${repos.length > 0 ? `<h2>Tracked repos</h2>
 <ul class="repo-list">${repos.map((r) => repoListItem(r, /* showBadges */ true)).join('')}</ul>` : ''}`,
+    `${publicUrl}/${tenant.slug}`,
+    /* noindex */ true,
   );
 }
 
@@ -737,6 +744,7 @@ ${visibleCount > 0 ? `<h2>Tracked repos</h2>
 
 <h2>Track your own org</h2>
 <p>stars.wavekat.com is a free, open-source star-history service. ${user ? `<a href="/dashboard">Open your dashboard →</a>` : `<a href="/auth/login">Sign in with GitHub</a> to register a tracker for your org or personal account.`}</p>`,
+    `${publicUrl}/${tenant.slug}`,
   );
 }
 
@@ -744,7 +752,7 @@ ${visibleCount > 0 ? `<h2>Tracked repos</h2>
 // arrive here from a shared link (a README that anticipated tracking, a
 // blog post). The copy is share-friendly: admins get a register CTA,
 // non-admins get a forwardable explanation.
-export function notTrackedInvite(user: User | null, slug: string, _publicUrl: string): string {
+export function notTrackedInvite(user: User | null, slug: string, publicUrl: string): string {
   const isOwnAccount = user && user.username.toLowerCase() === slug;
   const cta = isOwnAccount
     ? `<p><a class="btn-github" href="/dashboard">Register ${esc(slug)} on your dashboard →</a></p>
@@ -763,6 +771,10 @@ export function notTrackedInvite(user: User | null, slug: string, _publicUrl: st
 ${cta}
 <h2>Not an admin?</h2>
 <p class="muted">Forward this page to someone who is — once they install the webhook (one minute) and click "backfill all", the chart at <code>stars.wavekat.com/${esc(slug)}/chart.svg</code> will start working and any README that already embeds it will light up.</p>`,
+    `${publicUrl}/${slug}`,
+    // Near-identical boilerplate text for every unregistered slug — keep
+    // these out of the index so they don't read as duplicate/thin content.
+    /* noindex */ true,
   );
 }
 
@@ -804,12 +816,13 @@ ${views ? viewsPanel(views) : ''}
 
 <h2>Other repos in ${esc(slug)}</h2>
 <p>See the <a href="/${esc(slug)}">full ${esc(slug)} chart</a> for all tracked repos in this account.</p>`,
+    `${publicUrl}/${slug}/${name}`,
   );
 }
 
 // Operator admin: every registered tenant, newest first. Reached only by
 // users listed in ADMIN_USERNAMES; non-admins 404 before this renders.
-export function adminTenants(user: User, tenants: TenantWithStats[]): string {
+export function adminTenants(user: User, tenants: TenantWithStats[], publicUrl: string): string {
   const sevenDays = 7 * 86400_000;
   const now = Date.now();
   const active7d = tenants.filter((t) => t.last_event_at && now - Date.parse(t.last_event_at) <= sevenDays).length;
@@ -861,9 +874,11 @@ export function adminTenants(user: User, tenants: TenantWithStats[]): string {
 <p class="muted">Operator view — every org/user that's registered a tracker, newest first.</p>
 ${summary}
 ${rows}`,
+    `${publicUrl}/_admin`,
+    /* noindex */ true,
   );
 }
 
 export function error(user: User | null, status: number, message: string): string {
-  return shell(`Error ${status}`, user, `<h1>${status}</h1><p>${esc(message)}</p>`);
+  return shell(`Error ${status}`, user, `<h1>${status}</h1><p>${esc(message)}</p>`, undefined, /* noindex */ true);
 }
