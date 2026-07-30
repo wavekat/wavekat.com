@@ -1,13 +1,14 @@
 ---
 // Simplified-Chinese version of the WaveKat Voice landing page. Mirrors
 // src/pages/voice/index.astro section-for-section so the two never drift
-// structurally. Body copy is translated here; the surrounding chrome (header
-// nav, sub-nav, download control, talk CTA) is localised by the shared
-// components via the URL-derived locale, so the page is fully Chinese. hreflang
-// and the language switcher are wired automatically in Base/Header from the
-// route registry in src/lib/i18n.ts — this page declares no i18n props.
+// structurally. Body copy is translated here; the layout and chrome (header
+// nav, sub-nav, download control, talk CTA) come from the shared
+// VoiceOverview component, localised via the URL-derived locale, so the page
+// is fully Chinese. hreflang and the language switcher are wired
+// automatically in Base/Header from the route registry in src/lib/i18n.ts —
+// this page declares no i18n props.
 import Voice from '../../../layouts/Voice.astro';
-import TalkCTA from '../../../components/TalkCTA.astro';
+import VoiceOverview from '../../../components/VoiceOverview.astro';
 import {
   PhoneCall,
   PhoneForwarded,
@@ -21,10 +22,7 @@ import {
   Cloud,
   Languages,
   Lock,
-  ArrowRight,
 } from '@lucide/astro';
-import VoiceDownload from '../../../components/VoiceDownload.astro';
-import ProductCarousel from '../../../components/ProductCarousel.astro';
 import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 
 const macDownload = await getMacDownload();
@@ -33,21 +31,32 @@ const linuxDownload = await getLinuxDownload();
 // Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
 const imgCode = 'zh-Hans';
 
-const productShots = [
+// The three headline capabilities, each shown next to the screenshot that
+// proves it. The rest of the features render as a grid below.
+const spotlights = [
   {
-    scene: 'in-call',
-    alt: '通话进行中的 WaveKat 桌面应用——拨号盘与通话控制，旁边同步滚动着实时文字稿。',
-    caption: '一通实时通话——左侧是通话控制，右侧的文字稿正自动书写。',
+    icon: PhoneIncoming,
+    title: '你忙不过来时它来接',
+    body: '把一个来电流程指给你的线路，WaveKat Voice 就会替你接听——问候语、营业时间、按键菜单、留言或转接。这正是自动总机做的事，只不过跑在你自己的电脑上；每一步你都看得见，还能在留言途中把电话接过来。',
+    scene: 'flow-answering',
+    alt: 'Ubuntu 上的 WaveKat Voice —— 一通由流程接听的电话：「前台接待 正在接听」，下方显示「正在录留言……」和来电者的名字。',
+    link: { href: '/zh/blog/answer-calls-with-a-call-flow/', label: '了解工作原理' },
   },
   {
+    icon: PhoneForwarded,
+    title: '保持、切换与转接',
+    body: '把一通来电设为保持，接起第二条线路，在两者之间随意切换——之后既可以直接转接，也可以先私下交代几句再转过去。保持期间发生的一切都不会进入录音和文字稿。',
     scene: 'in-call-transfer',
     alt: '桌面上的 WaveKat Voice，正在进行询问转接——来电者处于保持状态，旁边是完成转接按钮。',
-    caption: '先和对方沟通一句，再把通话转接过去。',
+    link: { href: '/zh/blog/hold-switch-and-transfer-calls/', label: '了解工作原理' },
   },
   {
+    icon: Terminal,
+    title: '让 AI 助手替你拨号',
+    body: '开启自动化后，一个命令行工具——或者像 Claude 这样的 AI 助手——就能替你拨打、等待并结束通话。它负责操作拨号盘；说话的依然是你。默认关闭，你主动开启后才生效。',
     scene: 'settings-automation-agents',
     alt: 'WaveKat Voice 的 设置 → 自动化——通过一键连接按钮接入 Claude、Cursor 等 AI 助手。',
-    caption: '一键连接 AI 助手，让它替你拨打电话。',
+    link: { href: '/zh/blog/place-calls-from-the-command-line/', label: '了解工作原理' },
   },
 ];
 
@@ -56,16 +65,6 @@ const features = [
     icon: PhoneCall,
     title: '在电脑上打电话',
     body: '直接在电脑上接听和拨打电话——不需要话机、不需要额外硬件，也不用盯着浏览器标签页。它安静地待在一旁，电话响起时才出现。',
-  },
-  {
-    icon: PhoneIncoming,
-    title: '你忙不过来时它来接',
-    body: '把一个来电流程指给你的线路，WaveKat Voice 就会替你接听——问候语、营业时间、按键菜单、留言或转接。这正是自动总机做的事，只不过跑在你自己的电脑上；每一步你都看得见，还能在留言途中把电话接过来。',
-  },
-  {
-    icon: PhoneForwarded,
-    title: '保持、切换与转接',
-    body: '把一通来电设为保持，接起第二条线路，在两者之间随意切换——之后既可以直接转接，也可以先私下交代几句再转过去。保持期间发生的一切都不会进入录音和文字稿。',
   },
   {
     icon: Mic,
@@ -81,11 +80,6 @@ const features = [
     icon: AudioLines,
     title: 'HD 高清通话',
     body: '只要你的运营商支持，WaveKat Voice 就会协商启用 Opus 编解码器，带来宽频、HD 般清晰的语音——不支持时也会自动回落到标准音质。无需任何开关。',
-  },
-  {
-    icon: Terminal,
-    title: '让 AI 助手替你拨号',
-    body: '开启自动化后，一个命令行工具——或者像 Claude 这样的 AI 助手——就能替你拨打、等待并结束通话。它负责操作拨号盘；说话的依然是你。默认关闭，你主动开启后才生效。',
   },
   {
     icon: MousePointerClick,
@@ -246,149 +240,34 @@ const faqSchema = {
   title="WaveKat Voice — 把电脑变成你的办公电话"
   description="WaveKat Voice 是一款适用于 Mac 和 Linux 的桌面应用，把你的电脑变成办公电话——接听和拨打电话，每通对话都为你自动录音并写成文字。公测免费。"
 >
-  <!-- Hero -->
-  <section class="relative mb-20 pt-4">
-    <!-- brand-orange glow -->
-    <div
-      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
-      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
-      aria-hidden="true"
-    >
-    </div>
-
-    <div class="flex items-center gap-2 mb-5">
-      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
-        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
-        免费公测
-      </span>
-    </div>
-    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
-      你的办公电话，<br />就在桌面上。<br />
-      <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">自动录音，自动转写。</span>
-    </h1>
-    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
-      WaveKat Voice 是一款运行在你电脑上的电话应用。连接你已经在用的电话运营商，就能直接在桌面上
-      接听和拨打电话——每通对话都自动为你录音并写成文字，除非你愿意，否则数据不会离开你的电脑。
-    </p>
-
-    <div class="flex flex-wrap items-center gap-4">
-      <VoiceDownload />
-      <a
-        href="/zh/voice/download/"
-        class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-      >
-        安装详情
-        <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-      </a>
-    </div>
-    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · 公测期间免费</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · 公测期间免费</p>
-    </div>
-  </section>
-
-  <!-- Product shots -->
-  <section class="mb-16 -mt-6">
-    <ProductCarousel imgCode={imgCode} shots={productShots} />
-  </section>
-
-  <!-- Features -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">功能一览</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {features.map((f) => (
-        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
-          <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
-            <f.icon class="w-4 h-4" style="color: #ff6d00" />
-          </span>
-          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
-          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">如何运作</h2>
-    <ol class="space-y-4">
-      {steps.map((s) => (
-        <li class="flex gap-4">
-          <span
-            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
-            style="background-color: #ff6d00"
-          >
-            {s.n}
-          </span>
-          <div>
-            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- Who it's for -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">适合谁用</h2>
-    <a
-      href="/zh/voice/use-cases/"
-      class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
-    >
-      <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">靠电话运转的生意</span>
-      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-        诊所、美容院、各类工匠、律所、餐厅、物业管理——凡是把每通来电都当作一位客户的人。
-        看看 WaveKat Voice 适合你的哪些场景。
-      </p>
-      <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
-        wavekat.com/voice/use-cases →
-      </span>
-    </a>
-  </section>
-
-  <!-- Download CTA -->
-  <section class="mb-16">
-    <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
-      <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">想试试看？</h2>
-      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
-        公测期间免费。一分钟装好，连接你的号码，下一通电话就从桌面接起。
-      </p>
-      <div class="flex justify-center">
-        <VoiceDownload variant="cta" />
-      </div>
-    </div>
-  </section>
-
-  <!-- Q&A -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">问答</h2>
-    <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
-      {faqs.map((f) => (
-        <details class="group">
-          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
-            {f.q}
-            <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
-          </summary>
-          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
-            {f.a}
-            {f.link && (
-              <a
-                href={f.link.href}
-                class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
-                style="color: #ff6d00"
-              >
-                {f.link.label}
-                <ArrowRight class="w-3 h-3" />
-              </a>
-            )}
-          </p>
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <TalkCTA />
+  <VoiceOverview
+    imgCode={imgCode}
+    badge="免费公测"
+    h1Lines={['你的办公电话，', '就在桌面上。']}
+    h1Accent="自动录音，自动转写。"
+    intro="WaveKat Voice 是一款运行在你电脑上的电话应用。连接你已经在用的电话运营商，就能直接在桌面上接听和拨打电话——每通对话都自动为你录音并写成文字，除非你愿意，否则数据不会离开你的电脑。"
+    installHref="/zh/voice/download/"
+    installLabel="安装详情"
+    changelogHref="/zh/voice/changelog/"
+    changelogTitle="查看此版本的更新内容"
+    freeLabel="公测期间免费"
+    heroAlt="通话进行中的 WaveKat 桌面应用——拨号盘与通话控制，旁边同步滚动着实时文字稿。"
+    headingFeatures="功能一览"
+    headingHow="如何运作"
+    headingWho="适合谁用"
+    headingFaq="问答"
+    spotlights={spotlights}
+    features={features}
+    steps={steps}
+    whoTitle="靠电话运转的生意"
+    whoBody="诊所、美容院、各类工匠、律所、餐厅、物业管理——凡是把每通来电都当作一位客户的人。看看 WaveKat Voice 适合你的哪些场景。"
+    whoHref="/zh/voice/use-cases/"
+    ctaTitle="想试试看？"
+    ctaBody="公测期间免费。一分钟装好，连接你的号码，下一通电话就从桌面接起。"
+    faqs={faqs}
+    macDownload={macDownload}
+    linuxDownload={linuxDownload}
+  />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
