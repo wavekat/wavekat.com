@@ -58,6 +58,7 @@ interface Props {
   changelogTitle: string;
   freeLabel: string;
   heroAlt: string;
+  heroCaption: string;
   headingFeatures: string;
   headingHow: string;
   headingWho: string;
@@ -87,6 +88,7 @@ const {
   changelogTitle,
   freeLabel,
   heroAlt,
+  heroCaption,
   headingFeatures,
   headingHow,
   headingWho,
@@ -152,7 +154,7 @@ const {
   </div>
 
   <!-- Product shot — a bare floating window over a soft brand glow -->
-  <div class="relative mx-auto w-full max-w-md lg:max-w-none animate-rise-late">
+  <figure class="relative mx-auto w-full max-w-md lg:max-w-none animate-rise-late">
     <div
       class="pointer-events-none absolute inset-4 -z-10 opacity-[0.13] blur-2xl dark:opacity-[0.17]"
       style="background: radial-gradient(ellipse at center, #ff6d00 0%, transparent 65%);"
@@ -168,7 +170,10 @@ const {
       fetchpriority="high"
       class="w-full h-auto"
     />
-  </div>
+    <figcaption class="mt-1 text-center text-xs text-gray-400 dark:text-gray-600 leading-relaxed">
+      {heroCaption}
+    </figcaption>
+  </figure>
   </div>
 </section>
 
