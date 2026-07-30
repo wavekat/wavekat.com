@@ -57,8 +57,6 @@ interface Props {
   changelogHref: string;
   changelogTitle: string;
   freeLabel: string;
-  heroAlt: string;
-  heroCaption: string;
   headingFeatures: string;
   headingHow: string;
   headingWho: string;
@@ -87,8 +85,6 @@ const {
   changelogHref,
   changelogTitle,
   freeLabel,
-  heroAlt,
-  heroCaption,
   headingFeatures,
   headingHow,
   headingWho,
@@ -117,15 +113,13 @@ const {
   >
   </div>
 
-  <div class="grid items-center gap-10 lg:grid-cols-[11fr_9fr] lg:gap-8">
-  <div>
   <div class="flex items-center gap-2 mb-6">
     <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
       <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
       {badge}
     </span>
   </div>
-  <h1 class="text-3xl sm:text-4xl font-bold leading-[1.12] tracking-tight mb-6 text-gray-900 dark:text-white">
+  <h1 class="text-3xl sm:text-5xl font-bold leading-[1.12] tracking-tight mb-6 text-gray-900 dark:text-white">
     {h1Lines.map((line) => (
       <>
         {line}<br />
@@ -133,7 +127,7 @@ const {
     ))}
     <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">{h1Accent}</span>
   </h1>
-  <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-8">
+  <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-8">
     {intro}
   </p>
 
@@ -150,30 +144,6 @@ const {
   <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
     <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href={changelogHref} title={changelogTitle} class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {freeLabel}</p>
     <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href={changelogHref} title={changelogTitle} class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {freeLabel}</p>
-  </div>
-  </div>
-
-  <!-- Product shot — a bare floating window over a soft brand glow -->
-  <figure class="relative mx-auto w-full max-w-md lg:max-w-none animate-rise-late">
-    <div
-      class="pointer-events-none absolute inset-4 -z-10 opacity-[0.13] blur-2xl dark:opacity-[0.17]"
-      style="background: radial-gradient(ellipse at center, #ff6d00 0%, transparent 65%);"
-      aria-hidden="true"
-    >
-    </div>
-    <img
-      src={`/screenshots/in-call/${imgCode}.webp`}
-      alt={heroAlt}
-      width="1200"
-      height="872"
-      decoding="async"
-      fetchpriority="high"
-      class="w-full h-auto"
-    />
-    <figcaption class="mt-1 text-center text-xs text-gray-400 dark:text-gray-600 leading-relaxed">
-      {heroCaption}
-    </figcaption>
-  </figure>
   </div>
 </section>
 
