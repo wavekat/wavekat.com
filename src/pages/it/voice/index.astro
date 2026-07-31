@@ -7,46 +7,55 @@
 // and the language switcher are wired automatically in Base/Header from the
 // route registry in src/lib/i18n.ts — this page declares no i18n props.
 import Voice from '../../../layouts/Voice.astro';
-import TalkCTA from '../../../components/TalkCTA.astro';
+import VoiceOverview from '../../../components/VoiceOverview.astro';
 import {
   PhoneCall,
   PhoneForwarded,
   PhoneIncoming,
   MousePointerClick,
+  AudioLines,
   Mic,
   FileText,
-  AudioLines,
   Terminal,
   Server,
   Cloud,
   Languages,
   Lock,
-  ArrowRight,
 } from '@lucide/astro';
-import VoiceDownload from '../../../components/VoiceDownload.astro';
-import ProductCarousel from '../../../components/ProductCarousel.astro';
 import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
 
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
+
 // Locale code for the per-language app screenshots (/screenshots/<scene>/<code>.webp).
 const imgCode = 'it';
 
-const productShots = [
+// The three headline capabilities, each shown next to the screenshot that
+// proves it. The rest of the features render as a grid below.
+const spotlights = [
   {
-    scene: 'in-call',
-    alt: 'WaveKat Voice sul desktop durante una chiamata dal vivo — il tastierino e i comandi di chiamata, con la trascrizione in tempo reale che scorre accanto.',
-    caption: 'Una chiamata dal vivo — i comandi a sinistra, la trascrizione che si scrive da sola a destra.',
+    icon: PhoneIncoming,
+    title: 'Risponde quando non puoi tu',
+    body: 'Assegna un flusso di chiamata alla tua linea e WaveKat Voice risponde al posto tuo: saluto, orari, menu telefonico, segreteria o trasferimento. Il lavoro di un centralino automatico, sul tuo computer. Vedi ogni passo in diretta e puoi prendere la chiamata mentre lasciano il messaggio.',
+    scene: 'flow-answering',
+    alt: 'WaveKat Voice su Ubuntu — una chiamata a cui risponde un flusso: «Reception sta rispondendo», con «Sta registrando un messaggio…» e il nome di chi chiama.',
+    link: { href: '/it/blog/answer-calls-with-a-call-flow/', label: 'Come funziona' },
   },
   {
+    icon: PhoneForwarded,
+    title: 'Metti in attesa, alterna e trasferisci',
+    body: 'Metti un interlocutore in attesa, rispondi a una seconda linea e passa dall’una all’altra — poi trasferisci la chiamata subito oppure dopo esserti confrontato prima con un breve scambio. Ciò che accade durante l’attesa resta fuori dalla registrazione e dalla trascrizione.',
     scene: 'in-call-transfer',
     alt: 'WaveKat Voice sul desktop durante un trasferimento assistito — chi chiama è in attesa, accanto al pulsante Completa trasferimento.',
-    caption: 'Trasferimento di una chiamata dopo un breve scambio privato con l’altra parte.',
+    link: { href: '/it/blog/hold-switch-and-transfer-calls/', label: 'Come funziona' },
   },
   {
+    icon: Terminal,
+    title: 'Lascia comporre a un assistente AI',
+    body: 'Attiva l’automazione e uno strumento da riga di comando — o un assistente AI come Claude — può effettuare, attendere e terminare le chiamate per te. Lui guida il tastierino; a parlare sei tu. Disattivato finché non lo attivi.',
     scene: 'settings-automation-agents',
     alt: 'WaveKat Voice, Impostazioni → Automazione — collegamento di assistenti AI come Claude e Cursor con un pulsante Connetti con un clic.',
-    caption: 'Collegamento di un assistente AI per effettuare chiamate, con un clic.',
+    link: { href: '/it/blog/place-calls-from-the-command-line/', label: 'Come funziona' },
   },
 ];
 
@@ -55,16 +64,6 @@ const features = [
     icon: PhoneCall,
     title: 'Chiamate dal tuo desktop',
     body: 'Rispondi ed effettua chiamate direttamente dal computer — niente telefono da scrivania, niente hardware aggiuntivo, nessuna scheda del browser da tenere d’occhio. Resta tranquillo in disparte finché il telefono non squilla.',
-  },
-  {
-    icon: PhoneIncoming,
-    title: 'Risponde quando non puoi tu',
-    body: 'Assegna un flusso di chiamata alla tua linea e WaveKat Voice risponde al posto tuo: saluto, orari, menu telefonico, segreteria o trasferimento. Il lavoro di un centralino automatico, sul tuo computer. Vedi ogni passo in diretta e puoi prendere la chiamata mentre lasciano il messaggio.',
-  },
-  {
-    icon: PhoneForwarded,
-    title: 'Metti in attesa, alterna e trasferisci',
-    body: 'Metti un interlocutore in attesa, rispondi a una seconda linea e passa dall’una all’altra — poi trasferisci la chiamata subito oppure dopo esserti confrontato prima con un breve scambio. Ciò che accade durante l’attesa resta fuori dalla registrazione e dalla trascrizione.',
   },
   {
     icon: Mic,
@@ -80,11 +79,6 @@ const features = [
     icon: AudioLines,
     title: 'Chiamate in HD',
     body: 'Quando il tuo operatore lo supporta, WaveKat Voice negozia il codec Opus per una voce a banda larga, nitida in HD — e torna da solo alla qualità standard quando non è possibile. Niente da attivare.',
-  },
-  {
-    icon: Terminal,
-    title: 'Lascia comporre a un assistente AI',
-    body: 'Attiva l’automazione e uno strumento da riga di comando — o un assistente AI come Claude — può effettuare, attendere e terminare le chiamate per te. Lui guida il tastierino; a parlare sei tu. Disattivato finché non lo attivi.',
   },
   {
     icon: MousePointerClick,
@@ -245,150 +239,33 @@ const faqSchema = {
   title="WaveKat Voice — il tuo telefono aziendale, sul tuo desktop"
   description="WaveKat Voice è un’app desktop per Mac e Linux che trasforma il tuo computer nel tuo telefono aziendale — rispondi ed effettua chiamate, con ogni chiamata registrata e trascritta per te. Beta pubblica gratuita."
 >
-  <!-- Hero -->
-  <section class="relative mb-20 pt-4">
-    <!-- brand-orange glow -->
-    <div
-      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
-      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
-      aria-hidden="true"
-    >
-    </div>
-
-    <div class="flex items-center gap-2 mb-5">
-      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: #ff6d00; border-color: #ff6d0040;">
-        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: #ff6d00"></span>
-        beta pubblica gratuita
-      </span>
-    </div>
-    <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
-      La tua linea aziendale,<br />sul tuo desktop.<br />
-      <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">Registrata e trascritta.</span>
-    </h1>
-    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
-      WaveKat Voice è un’app telefonica per il tuo computer. Collega l’operatore telefonico che già usi
-      e rispondi ed effettua chiamate direttamente dal desktop — con ogni conversazione registrata e
-      trascritta automaticamente per te, e nulla che lascia il tuo computer a meno che tu non lo voglia.
-    </p>
-
-    <div class="flex flex-wrap items-center gap-4">
-      <VoiceDownload />
-      <a
-        href="/it/voice/download/"
-        class="group inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-      >
-        Dettagli di installazione
-        <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-      </a>
-    </div>
-    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/it/voice/changelog/" title="Scopri le novità di questa versione" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · gratis durante la beta</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/it/voice/changelog/" title="Scopri le novità di questa versione" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · gratis durante la beta</p>
-    </div>
-  </section>
-
-  <!-- Product shots -->
-  <section class="mb-16 -mt-6">
-    <ProductCarousel imgCode={imgCode} shots={productShots} />
-  </section>
-
-  <!-- Features -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Cosa fa</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {features.map((f) => (
-        <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5">
-          <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 transition-colors" style="background-color: #ff6d0014;">
-            <f.icon class="w-4 h-4" style="color: #ff6d00" />
-          </span>
-          <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">{f.title}</span>
-          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{f.body}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Come funziona</h2>
-    <ol class="space-y-4">
-      {steps.map((s) => (
-        <li class="flex gap-4">
-          <span
-            class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
-            style="background-color: #ff6d00"
-          >
-            {s.n}
-          </span>
-          <div>
-            <span class="text-sm font-bold block mb-1 text-gray-900 dark:text-white">{s.title}</span>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.body}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- Who it's for -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Per chi è</h2>
-    <a
-      href="/it/voice/use-cases/"
-      class="group block rounded border border-gray-200 dark:border-white/10 p-5 dark:bg-wk-surface bg-gray-50 hover:bg-gray-100 dark:hover:bg-[#0d1520] transition-colors"
-    >
-      <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">Attività che vivono al telefono</span>
-      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-        Cliniche, saloni, artigiani, studi legali, ristoranti, amministratori di immobili — chiunque
-        per cui una chiamata sia un cliente. Scopri dove si inserisce WaveKat Voice.
-      </p>
-      <span class="text-xs text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
-        wavekat.com/voice/use-cases →
-      </span>
-    </a>
-  </section>
-
-  <!-- Download CTA -->
-  <section class="mb-16">
-    <div class="rounded p-6 bg-gray-50 dark:bg-wk-surface text-center">
-      <h2 class="text-base font-bold mb-2 text-gray-900 dark:text-white">Pronto a provarlo?</h2>
-      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-5 max-w-md mx-auto">
-        Gratis durante la beta pubblica. Installa in un minuto, collega il tuo numero e rispondi alla prossima chiamata dal tuo desktop.
-      </p>
-      <div class="flex justify-center">
-        <VoiceDownload variant="cta" />
-      </div>
-    </div>
-  </section>
-
-  <!-- Q&A -->
-  <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Domande e risposte</h2>
-    <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
-      {faqs.map((f) => (
-        <details class="group">
-          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
-            {f.q}
-            <span class="shrink-0 text-gray-400 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
-          </summary>
-          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
-            {f.a}
-            {f.link && (
-              <a
-                href={f.link.href}
-                class="inline-flex items-center gap-1 font-bold whitespace-nowrap hover:opacity-70 transition-opacity"
-                style="color: #ff6d00"
-              >
-                {f.link.label}
-                <ArrowRight class="w-3 h-3" />
-              </a>
-            )}
-          </p>
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <TalkCTA />
+  <VoiceOverview
+    imgCode={imgCode}
+    badge="beta pubblica gratuita"
+    h1Lines={['La tua linea aziendale,', 'sul tuo desktop.']}
+    h1Accent="Registrata e trascritta."
+    intro="WaveKat Voice è un’app telefonica per il tuo computer. Collega l’operatore telefonico che già usi e rispondi ed effettua chiamate direttamente dal desktop — con ogni conversazione registrata e trascritta automaticamente per te, e nulla che lascia il tuo computer a meno che tu non lo voglia."
+    installHref="/it/voice/download/"
+    installLabel="Dettagli di installazione"
+    changelogHref="/it/voice/changelog/"
+    changelogTitle="Scopri le novità di questa versione"
+    freeLabel="gratis durante la beta"
+    headingFeatures="Cosa fa"
+    headingHow="Come funziona"
+    headingWho="Per chi è"
+    headingFaq="Domande e risposte"
+    spotlights={spotlights}
+    features={features}
+    steps={steps}
+    whoTitle="Attività che vivono al telefono"
+    whoBody="Cliniche, saloni, artigiani, studi legali, ristoranti, amministratori di immobili — chiunque per cui una chiamata sia un cliente. Scopri dove si inserisce WaveKat Voice."
+    whoHref="/it/voice/use-cases/"
+    ctaTitle="Pronto a provarlo?"
+    ctaBody="Gratis durante la beta pubblica. Installa in un minuto, collega il tuo numero e rispondi alla prossima chiamata dal tuo desktop."
+    faqs={faqs}
+    macDownload={macDownload}
+    linuxDownload={linuxDownload}
+  />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
