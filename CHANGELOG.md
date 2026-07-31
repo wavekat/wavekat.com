@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.51](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.50...wavekat-com-v0.0.51) (2026-07-31)
+
+
+### Features
+
+* **voice:** redesign overview landing page ([#142](https://github.com/wavekat/wavekat.com/issues/142)) ([f29a7df](https://github.com/wavekat/wavekat.com/commit/f29a7df8c6e4b74e7fe6cc7f13b638d24b991896))
+
+
+### Bug Fixes
+
+* **star-tracker:** add canonical tags, redirect HTTP to HTTPS ([#140](https://github.com/wavekat/wavekat.com/issues/140)) ([9d4511e](https://github.com/wavekat/wavekat.com/commit/9d4511e3d5bf1b181446b9591368eda0b492fa47))
+
 ## [0.0.50](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.49...wavekat-com-v0.0.50) (2026-07-26)
 
 
