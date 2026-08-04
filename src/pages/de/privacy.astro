@@ -1,0 +1,776 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Mail } from '@lucide/astro';
+
+// Mirrors /privacy/ section-for-section (see src/pages/privacy.astro).
+// Keep the date in sync with the English page — one policy, one revision.
+const updated = new Date('2026-08-04');
+const updatedLabel = updated.toLocaleDateString('de-DE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+// Section id → heading, in document order. Ids match the English page so a
+// deep link survives a language switch.
+const S = {
+  controller: 'Wer für Ihre Daten verantwortlich ist',
+  website: 'Was diese Website erfasst',
+  cookies: 'Cookies und Browser-Speicher',
+  signin: 'Anmeldung, und was Ihr Konto enthält',
+  app: 'Was WaveKat Voice auf Ihrem Rechner speichert',
+  account: 'Was in ein WaveKat-Konto synchronisiert wird',
+  sharing: 'Eine Aufnahme mit jemandem teilen',
+  integrations: 'Ihre Anrufe an Dienste senden, die Sie verbinden',
+  prompts: 'Der Ansagen-Generator',
+  telemetry: 'Absturzberichte und Installationszählung',
+  providers: 'Wer Ihre Daten sonst noch verarbeitet',
+  retention: 'Wie lange wir Daten aufbewahren',
+  deletion: 'Ihre Daten löschen',
+  rights: 'Ihre Rechte',
+  security: 'Sicherheit — und was wir nicht versprechen können',
+  children: 'Kinder',
+  changes: 'Änderungen an dieser Erklärung',
+  faq: 'Fragen & Antworten',
+  contact: 'Kontakt',
+};
+
+const faqs = [
+  {
+    q: 'Hört WaveKat meine Anrufe mit?',
+    a: 'Nein. WaveKat Voice zeichnet Anrufe auf Ihrem eigenen Rechner auf und transkribiert sie dort — die Spracherkennung läuft lokal, es wird kein Audio zum Transkribieren irgendwohin geschickt. Aufnahmen und Transkripte verlassen Ihren Rechner nur, wenn Sie sich in ein WaveKat-Konto anmelden und die Cloud-Synchronisierung eingeschaltet lassen. Absturzberichte enthalten niemals Anrufaudio, Telefonnummern oder Kontakte.',
+  },
+  {
+    q: 'Verwendet wavekat.com Cookies?',
+    a: 'Ja. Google Analytics und Google Ads setzen Cookies, um Besuche zu zählen und die Wirkung von Anzeigen zu messen. WaveKat selbst speichert nur zwei Dinge in Ihrem Browser — Ihre Hell/Dunkel-Einstellung und ob Sie den Sprachhinweis geschlossen haben — und keines davon wird an uns gesendet. Ein Cookie-Banner gibt es derzeit nicht; Analyse-Cookies können Sie in den Browser-Einstellungen blockieren.',
+  },
+  {
+    q: 'Verkaufen Sie meine personenbezogenen Daten?',
+    a: 'Nein. WaveKat hat nie personenbezogene Daten verkauft und hat es nicht vor. Wir nutzen auf dieser Website Google-Ads-Conversion-Messung, was einige US-Datenschutzgesetze als werbebezogenes „Teilen" einstufen — eine E-Mail an hello@wavekat.com genügt, um zu widersprechen.',
+  },
+  {
+    q: 'Brauche ich für WaveKat Voice ein WaveKat-Konto?',
+    a: 'Nein. Ohne Konto arbeitet die App vollständig lokal: Anrufe, Aufnahmen, Transkripte und SIP-Passwörter bleiben auf Ihrem Rechner. Nur anonyme Absturzberichte und eine anonyme Installationszählung verlassen ihn — und ein einziger Schalter unter Einstellungen → Über schaltet beides ab.',
+  },
+  {
+    q: 'Ist es legal, meine Anrufe mit WaveKat aufzuzeichnen?',
+    a: 'Das hängt ganz davon ab, wo Sie und Ihr Gesprächspartner sich befinden — und es ist Ihre Verantwortung, nicht unsere. Mancherorts genügt Ihre eigene Zustimmung; anderswo müssen alle Gesprächsteilnehmer einwilligen, und ein Fehler kann strafbar sein. WaveKat Voice spielt zu Beginn aufgezeichneter Anrufe einen Hinweiston als Geste der Höflichkeit — ein Ton ist aber keine rechtswirksame Einwilligung. Im Zweifel sagen Sie, dass Sie aufzeichnen, oder schalten die Aufnahme aus.',
+  },
+  {
+    q: 'Was verlässt WaveKat, wenn ich HubSpot oder einen Webhook verbinde?',
+    a: 'Jeder Anruf nach dem Verbinden: die Nummer der Gegenseite, Zeitpunkt, Richtung, Ausgang und Dauer des Anrufs sowie — sofern Sie es nicht abschalten — das Transkript und Zugriff auf die Aufnahme. HubSpot erhält zusätzlich einen Anrufeintrag am Kontakt der Person und kann den Kontakt anlegen, wenn keiner existiert. Nichts ist standardmäßig verbunden, jeder Teil ist abschaltbar, und Trennen stoppt den Fluss sofort — bereits in Ihr HubSpot geschriebene Einträge bleiben jedoch dort und sind von Ihnen selbst zu löschen.',
+  },
+  {
+    q: 'Wie lösche ich alles, was WaveKat über mich hat?',
+    a: 'Für diesen Rechner: Einstellungen → WaveKat-Konto → Lokale Daten löschen entfernt Anrufliste, Aufnahmen, Transkripte und Ihre Anmeldung. Für alles, was in ein WaveKat-Konto synchronisiert wurde: eine E-Mail an hello@wavekat.com, und wir löschen es.',
+  },
+];
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://wavekat.com/de/privacy/',
+      url: 'https://wavekat.com/de/privacy/',
+      name: 'Datenschutzerklärung',
+      description:
+        'Wie WaveKat Ihre Daten behandelt: was wavekat.com misst, was WaveKat Voice lokal speichert, was Ihr Konto synchronisiert und wie Sie alles löschen.',
+      inLanguage: 'de',
+      dateModified: updated.toISOString().slice(0, 10),
+      isPartOf: { '@id': 'https://wavekat.com/#website' },
+      about: { '@id': 'https://wavekat.com/#organization' },
+      publisher: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'de',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const sec = 'mb-12';
+const h2 = 'text-base font-bold text-gray-900 dark:text-white mb-4';
+const p = 'text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const li = 'flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const dot = 'mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600';
+const strong = 'font-bold text-gray-900 dark:text-gray-200';
+const link =
+  'text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors';
+const wrap = 'overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4';
+const th = 'px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase';
+const td = 'px-4 py-3 text-xs text-gray-600 dark:text-gray-400 leading-relaxed';
+const tdKey = 'px-4 py-3 text-xs font-bold text-gray-900 dark:text-white';
+const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-top';
+---
+
+<Base
+  title="Datenschutzerklärung — WaveKat"
+  description="Wie WaveKat Ihre Daten behandelt: was wavekat.com misst, was WaveKat Voice lokal speichert, was Ihr Konto synchronisiert und wie Sie alles löschen."
+>
+  <Header />
+
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="mx-auto max-w-3xl">
+
+      <header class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white">
+          Datenschutzerklärung
+        </h1>
+        <p class="text-xs text-gray-400 dark:text-gray-600 mb-6">Zuletzt aktualisiert am {updatedLabel}</p>
+        <p class={`${p} mb-3`}>
+          WaveKat erfasst so wenig wie möglich. Ihre Anrufe — Audio, Transkripte, Anrufliste —
+          bleiben auf Ihrem eigenen Rechner, es sei denn, Sie melden sich in einem WaveKat-Konto an
+          und lassen die Cloud-Synchronisierung eingeschaltet, oder Sie verbinden Ihr Konto selbst
+          mit einem anderen Dienst. Diese Website nutzt Google Analytics und Google Ads zur
+          Reichweitenmessung. Wir haben nie personenbezogene Daten verkauft und haben es nicht vor.
+        </p>
+        <p class={p}>
+          Diese Erklärung deckt alles ab, was WaveKat betreibt: die Website wavekat.com, die
+          Desktop-App <a href="/de/voice/" class={link}>WaveKat Voice</a> und WaveKat-Konten.
+        </p>
+      </header>
+
+      <aside
+        class="mb-14 rounded-lg border p-5"
+        style="border-color: #ff6d0040; background-color: #ff6d0008;"
+      >
+        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">Drei Dinge vorab</p>
+        <ul class="space-y-3">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>WaveKat Voice zeichnet Telefonate auf, und die Aufnahme ist
+              standardmäßig eingeschaltet.</strong> Ob Sie einen Anruf aufzeichnen dürfen — und ob Sie
+              die Gegenseite informieren müssen — hängt davon ab, wo Sie und Ihr Gesprächspartner sich
+              befinden. Das ist Ihre Verantwortung, nicht unsere. Im Zweifel informieren Sie die
+              andere Person oder schalten die Aufnahme aus.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>WaveKat ist ein kleines unabhängiges Projekt in öffentlicher
+              Beta.</strong> Es ist kein großes Unternehmen mit Compliance-Abteilung. Rechnen Sie mit
+              Fehlern, rechnen Sie mit Änderungen, und behalten Sie eigene Kopien von allem, dessen
+              Verlust Sie sich nicht leisten können.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Leiten Sie keine streng regulierten Informationen durch
+              WaveKat.</strong> Es ist weder gebaut noch zertifiziert für Kreditkartennummern,
+              Patientendaten oder alles, was unter Regelwerke wie PCI DSS oder HIPAA fällt. Wenn Ihre
+              Anrufe regelmäßig solche Daten betreffen, ist WaveKat das falsche Werkzeug.
+            </span>
+          </li>
+        </ul>
+      </aside>
+
+      <nav
+        aria-label="Auf dieser Seite"
+        class="mb-14 border-t border-b border-gray-200 py-5 dark:border-white/10"
+      >
+        <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">Auf dieser Seite</p>
+        <ul class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          {Object.entries(S).map(([id, label]) => (
+            <li>
+              <a
+                href={`#${id}`}
+                class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <section id="controller" class={sec}>
+        <h2 class={h2}>{S.controller}</h2>
+        <p class={p}>
+          WaveKat ist der Verantwortliche für wavekat.com, WaveKat Voice und WaveKat-Konten. Schreiben
+          Sie mit jeder Datenschutzfrage an
+          <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> — dieselbe Adresse
+          dient auch der Ausübung der weiter unten beschriebenen Rechte. Wir lesen jede Nachricht.
+        </p>
+      </section>
+
+      <section id="website" class={sec}>
+        <h2 class={h2}>{S.website}</h2>
+        <p class={`${p} mb-4`}>
+          Zum Lesen von wavekat.com brauchen Sie kein Konto, und es gibt keine Formulare — der einzige
+          Weg, uns zu erreichen, ist E-Mail. Was die Website erfasst, sind Messdaten:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Analytics 4</strong> (Mess-ID
+              <code class="font-mono text-xs">G-H8ZGBL04R7</code>) erfasst, welche Seiten Sie ansehen,
+              Ihren ungefähren Standort anhand der IP-Adresse, Ihr Gerät und Ihren Browser sowie die
+              Website, die Sie hierher geschickt hat.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google-Ads-Conversion-Messung</strong> erfasst, dass jemand, der
+              über eine unserer Anzeigen kam, später auf einen „E-Mail schreiben"-Link geklickt hat.
+              Erfasst wird der Klick, nie die Nachricht, die Sie danach schreiben.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Fonts</strong> werden von Googles Servern geladen, sodass
+              Google Ihre IP-Adresse sieht, wenn eine Seite ihre Schriften lädt.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Cloudflare</strong>, das die Website hostet und die App-Downloads
+              ausliefert, führt gewöhnliche Server-Logs — IP-Adresse, angeforderte Datei, Zeitpunkt,
+              Browser — um Seiten auszuliefern und Missbrauch abzuwehren.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>E-Mails, die Sie uns schicken,</strong> behalten wir so lange,
+              wie es dauert, Ihnen zu antworten und den Verlauf des Gesprächs festzuhalten.
+            </span>
+          </li>
+        </ul>
+        <p class={p}>
+          Rechtsgrundlage für Analyse und Anzeigenmessung ist Ihre Einwilligung, wo eine Einwilligung
+          erforderlich ist, und ansonsten unser berechtigtes Interesse zu verstehen, wie die Website
+          genutzt wird. Hosting-Logs stützen sich auf unser berechtigtes Interesse, die Website
+          verfügbar und sicher zu halten.
+        </p>
+      </section>
+
+      <section id="cookies" class={sec}>
+        <h2 class={h2}>{S.cookies}</h2>
+        <div class={wrap}>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+                <th class={`${th} w-[30%]`}>Was</th>
+                <th class={`${th} w-[20%]`}>Gesetzt von</th>
+                <th class={th}>Zweck</th>
+                <th class={`${th} w-[18%]`}>Dauer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>_ga, _ga_*</td>
+                <td class={td}>Google Analytics</td>
+                <td class={td}>Unterscheidet wiederkehrende Besuche und zählt Sitzungen</td>
+                <td class={td}>Bis zu 2 Jahre</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>_gcl_au</td>
+                <td class={td}>Google Ads</td>
+                <td class={td}>Verknüpft einen Anzeigenklick mit einer späteren Aktion auf dieser Website</td>
+                <td class={td}>90 Tage</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>theme</td>
+                <td class={td}>WaveKat (lokaler Speicher)</td>
+                <td class={td}>Merkt sich, ob Sie Hell oder Dunkel gewählt haben</td>
+                <td class={td}>Bis Sie ihn löschen</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>lang-pref-dismissed</td>
+                <td class={td}>WaveKat (lokaler Speicher)</td>
+                <td class={td}>Merkt sich, dass Sie den Hinweis „Diese Seite in Ihrer Sprache lesen" geschlossen haben</td>
+                <td class={td}>Bis Sie ihn löschen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class={p}>
+          Die beiden WaveKat-Einträge verlassen Ihren Browser nie. Ein Cookie-Banner zeigt die Website
+          derzeit nicht; wenn Sie lieber nicht gemessen werden möchten, blockieren Sie Drittanbieter-
+          oder Analyse-Cookies in Ihren Browser-Einstellungen oder installieren Googles
+          <a
+            href="https://tools.google.com/dlpage/gaoptout"
+            target="_blank"
+            rel="noopener noreferrer"
+            class={link}>Deaktivierungs-Add-on für Analytics</a
+          >. Sie können uns auch eine E-Mail schreiben, und wir nehmen Sie aus.
+        </p>
+      </section>
+
+      <section id="signin" class={sec}>
+        <h2 class={h2}>{S.signin}</h2>
+        <p class={`${p} mb-3`}>
+          Ein WaveKat-Konto ist optional — die Desktop-App funktioniert auch ohne. Wenn Sie eines
+          anlegen, melden Sie sich über <strong class={strong}>GitHub oder Google</strong> an, nicht
+          mit einem Passwort, das wir verwahren. Ihr GitHub- oder Google-Passwort sehen wir nie.
+        </p>
+        <p class={`${p} mb-3`}>
+          Was uns diese Anmeldung übergibt und was wir speichern: Ihren Benutzernamen, Ihren
+          Anzeigenamen, Ihre E-Mail-Adresse, die Adresse Ihres Profilbilds, die Konto-Kennung des
+          Anbieters und den Zeitpunkt Ihrer letzten Anmeldung. Damit erkennen wir Sie beim nächsten
+          Mal wieder und zeigen Sie als angemeldet an. Sie können GitHub und Google mit demselben
+          Konto verknüpfen und jede der beiden Verknüpfungen wieder lösen, solange sie nicht Ihr
+          letzter Zugang ist.
+        </p>
+        <p class={p}>
+          Wenn Sie das Kommandozeilenwerkzeug <code class="font-mono text-xs">wk</code> nutzen, meldet
+          es sich auf dieselbe Weise an und speichert ein Zugriffstoken, beschriftet mit dem Namen des
+          Rechners, der es angefordert hat — so können Sie Ihre Geräte auseinanderhalten.
+        </p>
+      </section>
+
+      <section id="app" class={sec}>
+        <h2 class={h2}>{S.app}</h2>
+        <p class={`${p} mb-4`}>
+          WaveKat Voice ist eine Desktop-App für Mac und Linux und arbeitet standardmäßig lokal. Wenn
+          Sie sich nie in ein WaveKat-Konto anmelden, bleibt alles Folgende auf Ihrem Rechner und
+          erreicht uns nie:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Anrufaufnahmen.</strong> Die Aufnahme ist standardmäßig
+              eingeschaltet; jeder Anruf wird als Audiodatei mit beiden Gesprächsseiten gespeichert.
+              Abschalten unter Einstellungen → Aufnahme. Eine automatische Bereinigung gibt es nicht —
+              Aufnahmen bleiben, bis Sie sie löschen.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Anrufliste</strong> — Datum, Nummer, Dauer und wie jeder Anruf
+              endete, in einer lokalen Datenbank.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Transkripte.</strong> Die Live-Transkription ist standardmäßig
+              aus. Wenn Sie sie einschalten, läuft die Spracherkennung vollständig auf Ihrem Rechner —
+              es wird kein Audio zum Transkribieren irgendwohin gesendet.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Ihre SIP-Passwörter</strong>, gespeichert auf Ihrem Rechner und
+              von Ihrem Betriebssystem verschlüsselt. Sie werden nie an WaveKat gesendet.
+            </span>
+          </li>
+        </ul>
+        <p class={p}>
+          <strong class={strong}>Aufnahme und Einwilligung.</strong> Das Recht der Anrufaufzeichnung
+          ist von Land zu Land verschieden: Mancherorts genügt Ihre eigene Einwilligung, anderswo
+          müssen alle Gesprächsteilnehmer zustimmen. WaveKat Voice spielt zu Beginn aufgezeichneter
+          Anrufe einen kurzen Hinweiston, damit die Gegenseite Bescheid weiß. Der Ton ist eine
+          Höflichkeit, keine rechtliche Garantie — die Einhaltung des Einwilligungsrechts dort, wo Sie
+          und Ihre Gesprächspartner sich befinden, ist Ihre Verantwortung.
+        </p>
+      </section>
+
+      <section id="account" class={sec}>
+        <h2 class={h2}>{S.account}</h2>
+        <p class={`${p} mb-4`}>
+          Nichts, bis Sie sich anmelden. Wenn Sie sich anmelden und
+          <strong class={strong}>In die Cloud synchronisieren</strong> eingeschaltet lassen — nach der
+          Anmeldung ist es standardmäßig an — lädt die App Ihre Anrufliste (Datum, Nummer,
+          Zeitstempel, Dauer und Ausgang des Anrufs), Ihre Aufnahmen und Ihre Transkripte in Ihr
+          privates WaveKat-Konto hoch, damit Ihre Anrufe auf jedem Gerät erscheinen, auf dem Sie sich
+          anmelden. Die Anmeldung registriert außerdem den Rechner — Name, Betriebssystem und
+          App-Version — damit Sie sehen können, welche Geräte verbunden sind.
+        </p>
+        <p class={p}>
+          Schalten Sie <strong class={strong}>In die Cloud synchronisieren</strong> aus, bleibt alles
+          auf diesem Rechner; lokale Aufnahme und Anrufliste funktionieren weiter. Die App weigert
+          sich außerdem, Daten hochzuladen, die zu einem anderen WaveKat-Konto gehören als dem, das
+          auf diesem Rechner zuerst synchronisiert hat. Synchronisierte Aufnahmen, Transkripte und
+          Anruflisten liegen in unserem Konto bei <strong class={strong}>Cloudflare</strong>, auf
+          dessen Infrastruktur die gesamte Plattform läuft. Wir trainieren mit Ihren Anrufen kein
+          Modell, und wir verkaufen sie nicht.
+        </p>
+      </section>
+
+      <section id="sharing" class={sec}>
+        <h2 class={h2}>{S.sharing}</h2>
+        <p class={`${p} mb-3`}>
+          Sie können einen aufgezeichneten Anruf in einen Link verwandeln und ihn jemandem schicken.
+          Jeder, der diesen Link hat, kann ihn öffnen — auf der anderen Seite gibt es keine Anmeldung —
+          behandeln Sie den Link also selbst als Schlüssel. Teilen geht immer von Ihnen aus; nichts
+          wird automatisch geteilt.
+        </p>
+        <p class={`${p} mb-3`}>
+          Beim Erstellen des Links wählen Sie, was die Person am anderen Ende bekommt. Standardmäßig
+          hört sie das Audio, das Transkript ist verborgen und die Identität der Gegenseite maskiert.
+          Sie können jedes davon ein- oder ausschalten, das Herunterladen erlauben oder sperren und
+          wählen, welche Gesprächsseite zu hören ist. Widerrufen Sie den Link, funktioniert er nicht
+          mehr.
+        </p>
+        <p class={p}>
+          Bitte denken Sie nach, bevor Sie einen verschicken. Eine geteilte Aufnahme enthält die
+          Stimme eines anderen Menschen und das, was er im Glauben sagte, nur mit Ihnen zu sprechen.
+          Das Teilen ist Ihre Entscheidung und Ihre Verantwortung — die Maskierungs-Voreinstellungen
+          sollen helfen, nicht die Entscheidung für Sie treffen.
+        </p>
+      </section>
+
+      <section id="integrations" class={sec}>
+        <h2 class={h2}>{S.integrations}</h2>
+        <p class={`${p} mb-4`}>
+          Ein WaveKat-Konto kann Ihre Anrufe an andere Systeme weiterreichen, die Sie verbinden.
+          Standardmäßig ist nichts verbunden — jedes Ziel fügen Sie selbst hinzu, und das Entfernen
+          stoppt den Fluss sofort. Solange ein Ziel verbunden ist, verlassen Anrufdaten WaveKat in
+          Richtung eines Dienstes, den nicht wir betreiben. Es gibt zwei Arten:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Webhooks.</strong> Sie geben WaveKat eine URL, und es sendet
+              dorthin einen Eintrag zu jedem Anruf. Standardmäßig enthält dieser Eintrag die Nummer
+              und Anruferkennung der Gegenseite, das vollständige Transkript und einen Link, mit dem
+              sein Inhaber 24 Stunden lang das Anrufaudio herunterladen kann. Drei Schalter pro
+              Endpunkt schalten Identität, Transkript oder Aufnahme ab — ein abgeschaltetes Feld
+              fehlt in der Nachricht ganz, statt leer mitzukommen. Jede Anfrage ist signiert, damit
+              Ihr Endpunkt prüfen kann, dass sie wirklich von uns stammt.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>HubSpot.</strong> Sie verbinden Ihr HubSpot-Konto auf HubSpots
+              eigener Zustimmungsseite. Nach jedem Anruf sucht WaveKat die Gegenseite anhand der
+              Telefonnummer in Ihren HubSpot-Kontakten und legt dort einen Anrufeintrag an: Zeitpunkt,
+              Richtung, Ausgang, Dauer, die Nummern, eine Zusammenfassungszeile, einen Link zurück zum
+              Anruf in WaveKat und — sofern Sie die Transkript-Synchronisierung nicht abschalten — den
+              Gesprächsinhalt. Wurde der Anruf aufgezeichnet, trägt der Eintrag zusätzlich, was
+              HubSpot zum Abspielen des Audios braucht. Zwei optionale Schalter lassen WaveKat einen
+              HubSpot-Kontakt anlegen, wenn niemand zur Nummer passt, und den HubSpot-Eintrag
+              archivieren, wenn Sie den Anruf in WaveKat löschen.
+            </span>
+          </li>
+        </ul>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Ihre HubSpot-Zugangsdaten.</strong> Mit dem Verbinden erhält WaveKat
+          ein Zugriffs- und ein Aktualisierungstoken für Ihr HubSpot-Konto. Beide werden vor dem
+          Speichern verschlüsselt, von keinem Teil unserer API je zurückgegeben und beim Trennen
+          gelöscht — wir bitten HubSpot zugleich, sie zu widerrufen. Bereits in Ihrem HubSpot
+          angelegte Einträge bleiben, wo sie sind: Das sind die Daten Ihres CRM, und eine Verbindung
+          zu trennen ist nicht dasselbe wie Ihre Historie zu löschen.
+        </p>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Einmal angekommen, gehört es dem Ziel.</strong> Daten, die Ihren
+          Webhook-Endpunkt oder Ihr HubSpot-Konto erreichen, haben WaveKat verlassen. Was dort mit
+          ihnen geschieht, regelt die Datenschutzerklärung jenes Systems — und wie sie verwendet
+          werden, entscheiden Sie.
+        </p>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Ein Wort zur anderen Person im Gespräch.</strong> Diese Ziele
+          erhalten die Nummer Ihres Gesprächspartners, sein Transkript und — wenn Sie es zulassen —
+          einen für ihn angelegten Kontakteintrag in Ihrem CRM. Diese Person ist kein WaveKat-Nutzer
+          und hat mit uns nie etwas vereinbart. Zu entscheiden, ob Sie ihre Nummer, ihre Stimme und
+          ihre Worte protokollieren dürfen, ist dieselbe Verantwortung wie die, den Anruf überhaupt
+          aufzuzeichnen.
+        </p>
+        <p class={p}>
+          Wir führen ein Zustellprotokoll über 30 Tage — welches Ereignis wohin ging, was das Ziel
+          antwortete und wie lange es dauerte — damit sich ein Fehler diagnostizieren lässt. Ein Ziel,
+          das dauerhaft fehlschlägt, wird abgeschaltet statt endlos wiederholt. Webhooks sind während
+          der Beta kostenlos; die HubSpot-Integration ist eine Pro-Funktion.
+        </p>
+      </section>
+
+      <section id="prompts" class={sec}>
+        <h2 class={h2}>{S.prompts}</h2>
+        <p class={`${p} mb-3`}>
+          WaveKat bietet ein Werkzeug, das getippten Text in eine gesprochene Telefonansage
+          verwandelt. Der Text, den Sie eingeben, wird an <strong class={strong}>ElevenLabs</strong>
+          gesendet, den Sprachsynthese-Dienst, den wir nutzen, und der das Audio zurückliefert. Tippen
+          Sie dort nichts ein, das WaveKat nicht verlassen soll — es ist ein Ansagen-Generator, kein
+          privater Notizblock.
+        </p>
+        <p class={p}>
+          Sie können es ohne Konto nutzen. Dann zählen wir die Nutzung gegen eine
+          <strong class={strong}>verfremdete Form Ihrer IP-Adresse</strong>, damit ein einzelner
+          Besucher nicht das Tagesbudget aller aufbraucht. Es ist ein Einweg-Wert für die Zählung des
+          Tages, kein Profil von Ihnen, und wir verwenden ihn nicht, um Sie über die Website hinweg zu
+          verfolgen.
+        </p>
+      </section>
+
+      <section id="telemetry" class={sec}>
+        <h2 class={h2}>{S.telemetry}</h2>
+        <p class={`${p} mb-3`}>
+          Stürzt die App ab oder trifft auf einen internen Fehler, kann sie einen anonymen Bericht
+          senden, damit wir den Fehler beheben können: den Fehler, wo in der App er auftrat und was
+          die App unmittelbar davor tat. Berichte gehen an Sentry, den Fehlerberichtsdienst, den wir
+          nutzen. Bevor etwas gesendet wird, entfernt die App Benutzernamen, E-Mail-Adressen,
+          IP-Adressen, Dateipfade mit Ihrem Benutzernamen und alles, was wie ein Zugangsdatum
+          aussieht. Absturzberichte enthalten nie Anrufaudio, Anruflisten, Telefonnummern oder
+          Kontakte.
+        </p>
+        <p class={`${p} mb-3`}>
+          Einmal pro Start sendet die App außerdem ein anonymes Signal, damit wir wissen, wie viele
+          Installationen existieren und welche Versionen und Betriebssysteme wir unterstützen müssen.
+          Es enthält eine zufällige Installationskennung, die App-Version, Ihr Betriebssystem samt
+          Version, den Prozessortyp und die Sprache — keinen Namen, kein Konto, keinen Rechnernamen.
+        </p>
+        <p class={p}>
+          Beides ist standardmäßig an, und beides schaltet der eine Schalter
+          <strong class={strong}>Fehlerberichte senden</strong> unter Einstellungen → Über ab. Die
+          Suche nach App-Updates lädt Dateien von unserem Update-Server — gewöhnliche Web-Anfragen
+          ohne angehängte personenbezogene Daten.
+        </p>
+      </section>
+
+      <section id="providers" class={sec}>
+        <h2 class={h2}>{S.providers}</h2>
+        <p class={`${p} mb-4`}>
+          WaveKat läuft auf den Diensten einer kleinen Zahl anderer Unternehmen. Jedes erhält nur, was
+          hier beschrieben ist, und wir nutzen jedes zu seinen üblichen Geschäftsbedingungen — aber es
+          sind große Unternehmen, deren eigene Praktiken ihnen gehören, nicht uns, und deren
+          Datenschutzerklärungen regeln, was sie tun. Dies sind die Anbieter, die <em>wir</em> gewählt
+          haben; Dienste, die <em>Sie</em> verbinden, sind ein eigenes Thema — siehe
+          <a href="#integrations" class={link}>{S.integrations}</a>.
+        </p>
+        <div class={wrap}>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+                <th class={`${th} w-[18%]`}>Dienst</th>
+                <th class={`${th} w-[34%]`}>Wofür wir ihn nutzen</th>
+                <th class={th}>Was er erhält</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class={row}>
+                <td class={tdKey}>Google</td>
+                <td class={td}>Website-Analyse, Anzeigenmessung, Webschriften</td>
+                <td class={td}>Seitenaufrufe, IP-Adresse, Gerät und Browser, Anzeigenklick-Zuordnung</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>Cloudflare</td>
+                <td class={td}>Website-Hosting, App-Downloads und der Speicher hinter WaveKat-Konten</td>
+                <td class={td}>Server-Logs, und — bei eingeschalteter Cloud-Synchronisierung — Ihre synchronisierten Aufnahmen, Transkripte und Anruflisten</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>ElevenLabs</td>
+                <td class={td}>Getippten Text in gesprochene Telefonansagen verwandeln</td>
+                <td class={td}>Den Text, den Sie eingeben. Nie Anrufaudio, Transkripte oder Kontakte</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>Sentry</td>
+                <td class={td}>Anonyme Absturzberichte der Desktop-App</td>
+                <td class={td}>Fehlerdetails mit entfernten persönlichen Feldern — nie Anrufdaten</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>GitHub / Google</td>
+                <td class={td}>Ihre Anmeldung</td>
+                <td class={td}>Sie sagen uns, wer Sie sind; wir senden ihnen nichts über Ihre Anrufe</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class={p}>
+          Diese Anbieter sitzen in den USA, sodass von dieser Erklärung erfasste Daten dort verarbeitet
+          werden können — unter den Übermittlungsgarantien ihrer standardmäßigen
+          Datenverarbeitungsbedingungen. Wir verkaufen keine personenbezogenen Daten. Wir nutzen
+          Google-Ads-Conversion-Messung, die mehrere US-Datenschutzgesetze als werbebezogenes „Teilen"
+          einstufen — der unten beschriebene Widerspruch deckt sie ab.
+        </p>
+      </section>
+
+      <section id="retention" class={sec}>
+        <h2 class={h2}>{S.retention}</h2>
+        <ul class="space-y-2.5">
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Website-Analyse</strong> — von Google gemäß unserer Google-Analytics-Aufbewahrungseinstellung gehalten, derzeit das Standardfenster von etwa 14 Monaten.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Absturzberichte</strong> — von Sentry gemäß der Aufbewahrungsfrist unseres Tarifs gehalten, eine Sache von Monaten, nicht Jahren.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Zustellprotokolle für Integrationen und Webhooks</strong> — 30 Tage, danach automatisch gelöscht.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Aufnahmen, Anruflisten und Transkripte auf Ihrem Rechner</strong> — bis Sie sie löschen. Wir löschen sie nie für Sie.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>In ein WaveKat-Konto synchronisierte Daten</strong> — bis Sie sie in der App löschen oder uns darum bitten.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>E-Mail</strong> — so lange, wie wir sie brauchen, um Ihnen zu antworten und den Austausch festzuhalten.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="deletion" class={sec}>
+        <h2 class={h2}>{S.deletion}</h2>
+        <ul class="space-y-2.5">
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Eine Aufnahme</strong> — öffnen Sie den Anruf auf seiner Detailseite und löschen Sie die Aufnahme dort.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Alle Aufnahmen</strong> — Einstellungen → Aufnahme → Alle Aufnahmen löschen.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Alles auf diesem Rechner</strong> — Einstellungen → WaveKat-Konto → Lokale Daten löschen entfernt Anrufliste, Aufnahmen, Transkripte und Ihre Anmeldung von diesem Gerät.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>In Ihr WaveKat-Konto synchronisierte Daten</strong> — eine E-Mail an <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>, und wir löschen sie.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="rights" class={sec}>
+        <h2 class={h2}>{S.rights}</h2>
+        <p class={`${p} mb-3`}>
+          Wenn Sie in der EU, in Großbritannien oder einer anderen Region mit vergleichbarem Recht
+          leben, können Sie von uns eine Kopie Ihrer Daten verlangen, sie berichtigen oder löschen
+          lassen, ihre Verwendung einschränken oder ihr widersprechen, sie in übertragbarer Form
+          mitnehmen oder eine früher erteilte Einwilligung widerrufen. Sie können sich außerdem bei
+          Ihrer Datenschutz-Aufsichtsbehörde beschweren.
+        </p>
+        <p class={`${p} mb-3`}>
+          Wenn Sie in Kalifornien oder einem anderen US-Bundesstaat mit Datenschutzgesetz leben,
+          können Sie erfragen, was wir erheben, Löschung oder Berichtigung verlangen und jedem Verkauf
+          oder werbebezogenen Teilen widersprechen. Wir behandeln Sie nie anders, weil Sie ein Recht
+          ausgeübt haben.
+        </p>
+        <p class={p}>
+          Für all das schreiben Sie an
+          <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>. WaveKat ist ein
+          kleiner Betrieb — geben Sie uns bitte etwas Zeit. Wir antworten so schnell wir können, und
+          wo das Gesetz gilt, innerhalb des einen Monats, den es einräumt. Wir bitten Sie
+          möglicherweise zu bestätigen, dass Sie das betreffende Konto oder die E-Mail-Adresse
+          kontrollieren — diese Prüfung verhindert, dass jemand anderes Ihre Daten beansprucht.
+        </p>
+      </section>
+
+      <section id="security" class={sec}>
+        <h2 class={h2}>{S.security}</h2>
+        <p class={`${p} mb-3`}>
+          Die vernünftigen Maßnahmen sind getroffen. Alles, was zwischen Ihnen und WaveKat unterwegs
+          ist — diese Website, die Cloud-Synchronisierung, Downloads — läuft über verschlüsselte
+          Verbindungen. Die Anmeldung führt über GitHub oder Google, es gibt also kein Passwort von
+          Ihnen, das wir verlieren könnten. Zugangsdaten verbundener Dienste werden vor dem Speichern
+          verschlüsselt. Per Link geteilte Aufnahmen erfordern den Link. Ihre SIP-Passwörter verlassen
+          Ihren Rechner gar nicht erst.
+        </p>
+        <p class={`${p} mb-3`}>
+          Ein ehrlicher Vorbehalt: Das Telefonat selbst läuft über das Netz Ihres SIP-Anbieters, und
+          ob diese Strecke verschlüsselt ist, liegt zwischen Ihnen und Ihrem Anbieter — der meiste
+          geschäftliche SIP-Verkehr ist es heute nicht. Das gilt für jedes Telefon an dieser Leitung
+          und ist nichts, was WaveKat hinzufügt — aber eine Seite über Datenschutz sollte es nicht
+          verschweigen.
+        </p>
+        <p class={`${p} mb-3`}>
+          Was wir Ihnen nicht sagen werden: dass all das irgendetwas unmöglich macht. Kein
+          Online-Dienst ist vollkommen sicher, und WaveKat wird von einem sehr kleinen Team ohne
+          eigene Sicherheitsabteilung gebaut und betrieben. Sollten wir je entdecken, dass Ihre Daten
+          offengelegt wurden, sagen wir Ihnen, was wir wissen, so bald wir vernünftigerweise können —
+          und sagen offen, was wir nicht wissen.
+        </p>
+        <p class={p}>
+          Der stärkste Schutz bleibt der in Ihrer Hand: WaveKat Voice behält alles auf Ihrem eigenen
+          Rechner, sofern Sie nichts anderes wählen. Ist ein Anruf so heikel, dass ein Datenleck ernst
+          wäre, hält ihn ausgeschaltete Cloud-Synchronisierung — und der Verzicht auf Teilen und
+          Weiterleiten — vollständig außerhalb unserer Reichweite.
+        </p>
+      </section>
+
+      <section id="children" class={sec}>
+        <h2 class={h2}>{S.children}</h2>
+        <p class={p}>
+          WaveKat Voice ist ein Geschäftswerkzeug und richtet sich nicht an Kinder. Wir erheben
+          wissentlich keine personenbezogenen Daten von Personen unter 16 Jahren. Wenn Sie glauben,
+          dass ein Kind uns Daten übermittelt hat, schreiben Sie uns, und wir löschen sie.
+        </p>
+      </section>
+
+      <section id="changes" class={sec}>
+        <h2 class={h2}>{S.changes}</h2>
+        <p class={`${p} mb-3`}>
+          Ändert sich diese Erklärung, ändert sich das Datum oben mit. Betrifft eine Änderung
+          wesentlich, was wir erheben oder wer es erhält, sagen wir das hier deutlich, statt still
+          einen Satz umzuschreiben.
+        </p>
+        <p class={p}>
+          Diese Seite ist eine Beschreibung in einfacher Sprache, wie WaveKat tatsächlich
+          funktioniert — geschrieben von den Leuten, die es bauen, nicht von Anwälten. Sie ist keine
+          Rechtsberatung und ersetzt nicht Ihr eigenes Urteil darüber, was Sie dort, wo Sie leben und
+          arbeiten, aufzeichnen, speichern oder teilen dürfen. Wenn etwas hier für Ihr Geschäft
+          wichtig ist und Sie Gewissheit brauchen, fragen Sie bitte jemanden, der in Ihrem Land dafür
+          qualifiziert ist — und sagen Sie uns, wenn Sie auf dieser Seite etwas finden, das sich als
+          falsch herausstellt. Wir korrigieren es lieber, als es zu verteidigen.
+        </p>
+      </section>
+
+      <section id="faq" class={sec}>
+        <h2 class={h2}>{S.faq}</h2>
+        <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+          {faqs.map((f) => (
+            <details class="group">
+              <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+                {f.q}
+                <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+              </summary>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pb-4 -mt-1">
+                {f.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" class="mb-8">
+        <h2 class={h2}>{S.contact}</h2>
+        <p class={`${p} mb-5`}>
+          Datenschutzfragen, Datenanfragen oder etwas auf dieser Seite, das unklar ist — schreiben Sie
+          uns, und ein Mensch antwortet.
+        </p>
+        <a
+          href="mailto:hello@wavekat.com"
+          class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+          style="background-color: #ff6d00"
+        >
+          <Mail class="w-4 h-4" />
+          hello@wavekat.com
+        </a>
+      </section>
+
+    </div>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Base>

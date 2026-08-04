@@ -85,16 +85,13 @@ const fullSite = [
   '/blog/phone-menu-ivr-voice-generator/',
   '/blog/answer-calls-with-a-call-flow/',
   '/about/',
+  '/privacy/',
 ];
 
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
 export const translatedRoutes: Record<string, string[]> = {
-  // /privacy/ is the one page that isn't in `fullSite` yet: it ships in English
-  // and Simplified Chinese first, and joins `fullSite` once the other seven
-  // locales are translated. Until then only zh-Hans may claim an hreflang for
-  // it — the rest link to the English policy from their footer.
-  'zh-Hans': [...fullSite, '/privacy/'],
+  'zh-Hans': fullSite,
   'zh-Hant': fullSite,
   ja: fullSite,
   ko: fullSite,
