@@ -23,6 +23,7 @@ const S = {
   cookies: 'Cookies and browser storage',
   app: 'What WaveKat Voice keeps on your computer',
   account: 'What syncs to a WaveKat account',
+  integrations: 'Sending your calls to services you connect',
   telemetry: 'Crash reports and install counts',
   providers: 'Who else processes your data',
   retention: 'How long we keep things',
@@ -52,6 +53,10 @@ const faqs = [
   {
     q: 'Do I need a WaveKat account to use WaveKat Voice?',
     a: 'No. Without an account the app is entirely local: calls, recordings, transcripts, and SIP passwords stay on your computer. The only things that leave are anonymous crash reports and an anonymous install count, and one switch in Settings → About turns both off.',
+  },
+  {
+    q: 'What leaves WaveKat if I connect HubSpot or a webhook?',
+    a: 'Each call you make after connecting: the other person\'s number, the call\'s time, direction, outcome and duration, and — unless you turn it off — the transcript and access to the recording. HubSpot also gets a call record filed against that person\'s contact, and can create the contact if none exists. Nothing is connected by default, every part is switchable, and disconnecting stops the flow immediately, though records already written into your HubSpot stay yours to delete there.',
   },
   {
     q: 'How do I delete everything WaveKat has about me?',
@@ -127,8 +132,8 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         <p class={`${p} mb-3`}>
           WaveKat collects as little as it can. Your calls — the audio, the transcripts, the history
           — stay on your own computer unless you sign in to a WaveKat account and leave cloud sync
-          on. This website uses Google Analytics and Google Ads to measure traffic. We have never
-          sold personal data and we don't intend to.
+          on, or connect your account to another service yourself. This website uses Google Analytics
+          and Google Ads to measure traffic. We have never sold personal data and we don't intend to.
         </p>
         <p class={p}>
           This policy covers three things: the website at wavekat.com, the
@@ -341,6 +346,69 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         </p>
       </section>
 
+      <section id="integrations" class={sec}>
+        <h2 class={h2}>{S.integrations}</h2>
+        <p class={`${p} mb-4`}>
+          A WaveKat account can pass your calls on to other systems you connect. Nothing is connected
+          by default — every destination is one you add yourself, and removing it stops the flow
+          immediately. While a destination is connected, call data leaves WaveKat for a service we
+          don't run. There are two kinds:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Webhooks.</strong> You give WaveKat a URL and it posts a record
+              of each call to it. By default that record carries the other person's number and caller
+              ID, the full transcript, and a link that lets whoever holds it download the call audio
+              for 24 hours. Three switches on each endpoint turn identity, transcript, or recording
+              off — a field you switch off is left out of the message entirely, not blanked. Every
+              request is signed so your endpoint can check it really came from us.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>HubSpot.</strong> You connect your HubSpot account on HubSpot's
+              own consent screen. After each call, WaveKat looks the other person up in your HubSpot
+              contacts by phone number and files a call record on them: time, direction, outcome,
+              duration, the numbers, a summary line, a link back to the call in WaveKat, and — unless
+              you turn transcript sync off — what was said. When the call was recorded, that record
+              also carries what HubSpot needs to play the audio. Two optional switches let WaveKat
+              create a HubSpot contact when nobody matches the number, and archive the HubSpot record
+              when you delete the call in WaveKat.
+            </span>
+          </li>
+        </ul>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Your HubSpot credentials.</strong> Connecting gives WaveKat an access
+          token and a refresh token for your HubSpot account. Both are encrypted before they are
+          stored, are never returned by any part of our API, and are wiped when you disconnect — we
+          also ask HubSpot to revoke them. Records already created in your HubSpot stay where they
+          are: that is your CRM's data, and disconnecting an integration is not the same as deleting
+          your history.
+        </p>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Once it arrives, it is theirs.</strong> Data that reaches your
+          webhook endpoint or your HubSpot account has left WaveKat. What happens to it there is
+          governed by that system's own privacy policy, and you are the one who decides how it is
+          used.
+        </p>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>A word about the other person on the call.</strong> These
+          destinations receive the number of whoever you spoke to, their transcript, and — if you
+          allow it — a contact record created for them in your CRM. That person is not a WaveKat user
+          and never agreed to anything with us. Deciding whether you may log their number, their
+          voice, and their words is the same responsibility as recording the call in the first place.
+        </p>
+        <p class={p}>
+          We keep a delivery log for 30 days — which event went where, what the destination answered,
+          and how long it took — so a failure can be diagnosed. A destination that keeps failing is
+          switched off rather than retried forever. Webhooks are free during the beta; the HubSpot
+          integration is a Pro feature.
+        </p>
+      </section>
+
       <section id="telemetry" class={sec}>
         <h2 class={h2}>{S.telemetry}</h2>
         <p class={`${p} mb-3`}>
@@ -369,7 +437,9 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         <h2 class={h2}>{S.providers}</h2>
         <p class={`${p} mb-4`}>
           WaveKat uses a small number of service providers. Each one receives only what is described
-          above, and none of them is permitted to use it for their own purposes.
+          above, and none of them is permitted to use it for their own purposes. These are the
+          providers <em>we</em> chose; services <em>you</em> connect are a separate matter, covered in
+          <a href="#integrations" class={link}>{S.integrations.toLowerCase()}</a>.
         </p>
         <div class={wrap}>
           <table class="w-full text-left border-collapse">
@@ -417,6 +487,10 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           <li class={li}>
             <span class={dot}></span>
             <span><strong class={strong}>Crash reports</strong> — up to 90 days in Sentry.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Integration and webhook delivery logs</strong> — 30 days, then deleted automatically.</span>
           </li>
           <li class={li}>
             <span class={dot}></span>
