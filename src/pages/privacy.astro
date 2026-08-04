@@ -145,8 +145,7 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         </p>
         <p class={p}>
           This policy covers everything WaveKat runs: the website at wavekat.com, the
-          <a href="/voice/" class={link}>WaveKat Voice</a> desktop app, and WaveKat accounts. It is
-          the complete picture — there is nothing you need to read elsewhere.
+          <a href="/voice/" class={link}>WaveKat Voice</a> desktop app, and WaveKat accounts.
         </p>
       </header>
 
@@ -672,10 +671,17 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
       <section id="security" class={sec}>
         <h2 class={h2}>{S.security}</h2>
         <p class={`${p} mb-3`}>
-          The sensible measures are in place. Everything travels over encrypted connections. Sign-in
-          runs through GitHub or Google, so there is no password of yours for us to lose. Credentials
-          for services you connect are encrypted before they are stored. Recordings shared by link
-          require the link. Your SIP passwords never leave your computer at all.
+          The sensible measures are in place. Everything that moves between you and WaveKat — this
+          website, cloud sync, downloads — travels over encrypted connections. Sign-in runs through
+          GitHub or Google, so there is no password of yours for us to lose. Credentials for services
+          you connect are encrypted before they are stored. Recordings shared by link require the
+          link. Your SIP passwords never leave your computer at all.
+        </p>
+        <p class={`${p} mb-3`}>
+          One honest caveat: the phone call itself travels over your SIP provider's network, and
+          whether that leg is encrypted is between you and your provider — most business SIP traffic
+          today is not. That is true of any phone using that line, not something WaveKat adds, but a
+          page about privacy shouldn't leave it unsaid.
         </p>
         <p class={`${p} mb-3`}>
           What we won't tell you is that this makes anything impossible. No online service is
