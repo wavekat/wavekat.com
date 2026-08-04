@@ -21,14 +21,18 @@ const S = {
   controller: 'Who is responsible for your data',
   website: 'What this website collects',
   cookies: 'Cookies and browser storage',
+  signin: 'Signing in, and what your account holds',
   app: 'What WaveKat Voice keeps on your computer',
   account: 'What syncs to a WaveKat account',
+  sharing: 'Sharing a recording with someone',
   integrations: 'Sending your calls to services you connect',
+  prompts: 'The voice prompt generator',
   telemetry: 'Crash reports and install counts',
   providers: 'Who else processes your data',
   retention: 'How long we keep things',
   deletion: 'Deleting your data',
   rights: 'Your rights',
+  security: 'Security, and what we can’t promise',
   children: 'Children',
   changes: 'Changes to this policy',
   faq: 'Questions & answers',
@@ -53,6 +57,10 @@ const faqs = [
   {
     q: 'Do I need a WaveKat account to use WaveKat Voice?',
     a: 'No. Without an account the app is entirely local: calls, recordings, transcripts, and SIP passwords stay on your computer. The only things that leave are anonymous crash reports and an anonymous install count, and one switch in Settings → About turns both off.',
+  },
+  {
+    q: 'Is it legal for me to record my calls with WaveKat?',
+    a: 'That depends entirely on where you are and where the person you are calling is, and it is your responsibility rather than ours. Some places need only your consent; others require everyone on the call to agree, and getting it wrong can be a criminal matter. WaveKat Voice plays a notice beep at the start of recorded calls as a courtesy, but a beep is not legal consent. If you are unsure, say you are recording, or turn recording off in Settings.',
   },
   {
     q: 'What leaves WaveKat if I connect HubSpot or a webhook?',
@@ -142,6 +150,46 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           <a href="/docs/voice/privacy/" class={link}>privacy documentation</a> goes further.
         </p>
       </header>
+
+      {/* Three things a reader must not miss, hoisted above the fold rather than
+          left to the section that covers each. Recording law is the one that
+          can actually cost a user something. */}
+      <aside
+        class="mb-14 rounded-lg border p-5"
+        style="border-color: #ff6d0040; background-color: #ff6d0008;"
+      >
+        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">
+          Three things to know first
+        </p>
+        <ul class="space-y-3">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>WaveKat Voice records phone calls, and recording is on by
+              default.</strong> Whether you are allowed to record a call — and whether you must tell
+              the other person — depends on where you and they are. That is your responsibility, not
+              ours. If you are unsure, tell the other person, or turn recording off.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>WaveKat is a small independent project in public beta.</strong>
+              It is not a large company with a compliance department. Expect bugs, expect things to
+              change, and keep your own copies of anything you can't afford to lose.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Don't put highly regulated information through WaveKat.</strong>
+              It isn't built or certified for payment card numbers, medical records, or anything
+              covered by a regime like PCI DSS or HIPAA. If your calls routinely involve that kind of
+              data, WaveKat is the wrong tool.
+            </span>
+          </li>
+        </ul>
+      </aside>
 
       <nav
         aria-label="On this page"
@@ -279,6 +327,27 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         </p>
       </section>
 
+      <section id="signin" class={sec}>
+        <h2 class={h2}>{S.signin}</h2>
+        <p class={`${p} mb-3`}>
+          A WaveKat account is optional — the desktop app works without one. When you do create an
+          account, you sign in through <strong class={strong}>GitHub or Google</strong> rather than
+          with a password we hold. We never see your GitHub or Google password.
+        </p>
+        <p class={`${p} mb-3`}>
+          What that sign-in hands us, and what we store: your username or handle, your display name,
+          your email address, your profile picture's address, the provider's account identifier, and
+          the time you last signed in. It's what lets us recognise you next time and show you as
+          signed in. You can connect both GitHub and Google to the same account, and disconnect
+          either one as long as it isn't your last way in.
+        </p>
+        <p class={p}>
+          If you use the <code class="font-mono text-xs">wk</code> command-line tool, it signs in the
+          same way and stores an access token, labelled with the name of the machine that requested
+          it so you can tell your devices apart.
+        </p>
+      </section>
+
       <section id="app" class={sec}>
         <h2 class={h2}>{S.app}</h2>
         <p class={`${p} mb-4`}>
@@ -341,8 +410,30 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         <p class={p}>
           Turn <strong class={strong}>Sync to cloud</strong> off to keep everything on that computer;
           local recording and history keep working. The app also refuses to upload data belonging to a
-          different WaveKat account than the one that first synced on that computer. Synced data is
-          stored on servers WaveKat controls, is not used to train any model, and is never sold.
+          different WaveKat account than the one that first synced on that computer. Synced
+          recordings, transcripts, and history are stored in our account with
+          <strong class={strong}>Cloudflare</strong>, whose infrastructure the whole platform runs on.
+          We do not use your calls to train any model, and we do not sell them.
+        </p>
+      </section>
+
+      <section id="sharing" class={sec}>
+        <h2 class={h2}>{S.sharing}</h2>
+        <p class={`${p} mb-3`}>
+          You can turn a recorded call into a link and send it to someone. Anyone who has that link
+          can open it — there is no sign-in on the other end — so treat the link itself as the key.
+          Sharing is always something you start; nothing is shared automatically.
+        </p>
+        <p class={`${p} mb-3`}>
+          When you create a link you choose what the person on the other end gets. By default they
+          hear the audio, the transcript is hidden, and the other party's identity is masked. You can
+          turn each of those on or off, allow or block downloading, and choose which side's voice
+          plays. Revoking the link stops it working.
+        </p>
+        <p class={p}>
+          Please think before you send one. A shared recording contains someone else's voice and
+          whatever they said believing they were talking to you. Sharing it is your decision and your
+          responsibility — the masking defaults exist to help, not to make the decision for you.
         </p>
       </section>
 
@@ -409,6 +500,22 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         </p>
       </section>
 
+      <section id="prompts" class={sec}>
+        <h2 class={h2}>{S.prompts}</h2>
+        <p class={`${p} mb-3`}>
+          WaveKat offers a tool that turns typed text into a spoken phone greeting. The text you type
+          is sent to <strong class={strong}>ElevenLabs</strong>, the speech synthesis service we use,
+          which returns the audio. Don't type anything into it you wouldn't want to leave WaveKat —
+          it is a greeting generator, not a private notepad.
+        </p>
+        <p class={p}>
+          You can use it without an account. When you do, we count usage against a
+          <strong class={strong}>scrambled form of your IP address</strong> so that one visitor can't
+          exhaust the daily budget for everyone. It's a one-way scramble kept for the day's counting,
+          not a profile of you, and we don't use it to track you across the site.
+        </p>
+      </section>
+
       <section id="telemetry" class={sec}>
         <h2 class={h2}>{S.telemetry}</h2>
         <p class={`${p} mb-3`}>
@@ -436,9 +543,11 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
       <section id="providers" class={sec}>
         <h2 class={h2}>{S.providers}</h2>
         <p class={`${p} mb-4`}>
-          WaveKat uses a small number of service providers. Each one receives only what is described
-          above, and none of them is permitted to use it for their own purposes. These are the
-          providers <em>we</em> chose; services <em>you</em> connect are a separate matter, covered in
+          WaveKat runs on a small number of other companies' services. Each receives only what is
+          described here, and we use each under its standard business terms — but they are large
+          companies whose own practices are theirs, not ours, and their privacy policies govern what
+          they do. These are the providers <em>we</em> chose; services <em>you</em> connect are a
+          separate matter, covered in
           <a href="#integrations" class={link}>{S.integrations.toLowerCase()}</a>.
         </p>
         <div class={wrap}>
@@ -458,13 +567,23 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
               </tr>
               <tr class={row}>
                 <td class={tdKey}>Cloudflare</td>
-                <td class={td}>Website hosting and app download delivery</td>
-                <td class={td}>Server logs: IP address, requested file, time, browser</td>
+                <td class={td}>Website hosting, app downloads, and the storage behind WaveKat accounts</td>
+                <td class={td}>Server logs, and — if you turn cloud sync on — your synced recordings, transcripts and call history</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>ElevenLabs</td>
+                <td class={td}>Turning typed text into spoken phone greetings</td>
+                <td class={td}>The prompt text you type. Never call audio, transcripts, or contacts</td>
               </tr>
               <tr class={row}>
                 <td class={tdKey}>Sentry</td>
                 <td class={td}>Anonymous crash reports from the desktop app</td>
                 <td class={td}>Error details with personal fields stripped — never call data</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>GitHub / Google</td>
+                <td class={td}>Signing you in</td>
+                <td class={td}>They tell us who you are; we don't send them anything about your calls</td>
               </tr>
             </tbody>
           </table>
@@ -482,11 +601,11 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         <ul class="space-y-2.5">
           <li class={li}>
             <span class={dot}></span>
-            <span><strong class={strong}>Website analytics</strong> — up to 14 months, then Google deletes the user-level records.</span>
+            <span><strong class={strong}>Website analytics</strong> — kept by Google under our Google Analytics retention setting, currently the standard window of about 14 months.</span>
           </li>
           <li class={li}>
             <span class={dot}></span>
-            <span><strong class={strong}>Crash reports</strong> — up to 90 days in Sentry.</span>
+            <span><strong class={strong}>Crash reports</strong> — kept by Sentry under our plan's retention window, a matter of months rather than years.</span>
           </li>
           <li class={li}>
             <span class={dot}></span>
@@ -544,8 +663,32 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
         </p>
         <p class={p}>
           To use any of these, email <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>.
-          We reply within 30 days and may ask you to confirm you control the account or email address
-          in question — that check exists to stop someone else claiming your data.
+          WaveKat is a small operation, so please allow a little time — we answer as quickly as we can,
+          and within the one month the law allows where it applies. We may ask you to confirm you
+          control the account or email address in question, which exists to stop someone else claiming
+          your data.
+        </p>
+      </section>
+
+      <section id="security" class={sec}>
+        <h2 class={h2}>{S.security}</h2>
+        <p class={`${p} mb-3`}>
+          The sensible measures are in place. Everything travels over encrypted connections. Sign-in
+          runs through GitHub or Google, so there is no password of yours for us to lose. Credentials
+          for services you connect are encrypted before they are stored. Recordings shared by link
+          require the link. Your SIP passwords never leave your computer at all.
+        </p>
+        <p class={`${p} mb-3`}>
+          What we won't tell you is that this makes anything impossible. No online service is
+          completely secure, and WaveKat is built and run by a very small team without a dedicated
+          security department. If we ever discover that your data has been exposed, we will tell you
+          what we know, as soon as we reasonably can, and say plainly what we don't know.
+        </p>
+        <p class={p}>
+          The strongest protection remains the one in your hands: WaveKat Voice keeps everything on
+          your own computer unless you choose otherwise. If a call is sensitive enough that a breach
+          would be serious, leaving cloud sync off — and not sharing or forwarding it — keeps it out
+          of our reach entirely.
         </p>
       </section>
 
@@ -560,10 +703,18 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
 
       <section id="changes" class={sec}>
         <h2 class={h2}>{S.changes}</h2>
-        <p class={p}>
+        <p class={`${p} mb-3`}>
           When this policy changes, the date at the top changes with it. If a change materially
           affects what we collect or who receives it, we will say so plainly on this page rather than
           quietly editing a sentence.
+        </p>
+        <p class={p}>
+          This page is a plain-language description of how WaveKat actually works, written by the
+          people who build it rather than by lawyers. It is not legal advice, and it doesn't replace
+          your own judgement about what you may record, store, or share where you live and work. If
+          something here matters to your business and you need certainty, please check with someone
+          qualified in your own country — and tell us if you find anything on this page that turns
+          out to be wrong, because we would rather fix it than defend it.
         </p>
       </section>
 

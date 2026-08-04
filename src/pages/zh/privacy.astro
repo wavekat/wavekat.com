@@ -15,14 +15,18 @@ const S = {
   controller: '谁为你的数据负责',
   website: '本网站采集什么',
   cookies: 'Cookie 与浏览器存储',
+  signin: '登录方式，以及账户中保存了什么',
   app: 'WaveKat Voice 在你电脑上保存什么',
   account: '哪些内容会同步到 WaveKat 账户',
+  sharing: '把录音分享给别人',
   integrations: '把通话发送到你连接的其他服务',
+  prompts: '语音提示生成器',
   telemetry: '崩溃报告与安装计数',
   providers: '还有谁会处理你的数据',
   retention: '各类数据保留多久',
   deletion: '如何删除你的数据',
   rights: '你的权利',
+  security: '安全，以及我们无法承诺的事',
   children: '儿童',
   changes: '本政策的变更',
   faq: '常见问题',
@@ -45,6 +49,10 @@ const faqs = [
   {
     q: '使用 WaveKat Voice 必须注册账户吗？',
     a: '不必。不登录账户时，应用完全在本地运行：通话、录音、转写文字和 SIP 账号密码都留在你的电脑上。唯一会离开电脑的是匿名崩溃报告和匿名安装计数，而“设置 → 关于”里的一个开关就能同时关掉这两项。',
+  },
+  {
+    q: '我用 WaveKat 录音合法吗？',
+    a: '这完全取决于你和通话对方所在的地区，而且这是你的责任，不是我们的。有的地方只需你一方同意；有的则要求通话各方都同意，弄错甚至可能构成刑事问题。WaveKat Voice 会在录音通话开始时播放提示音作为一种礼貌，但提示音并不等于法律上的同意。如果不确定，请说明你正在录音，或在设置中关闭录音。',
   },
   {
     q: '连接 HubSpot 或 Webhook 后，哪些数据会离开 WaveKat？',
@@ -123,6 +131,19 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <p class={`${p} mb-3`}>WaveKat 只采集必需的最少数据。你的通话——音频、转写文字、通话记录——都留在你自己的电脑上，除非你登录 WaveKat 账户并保持云同步开启，或者你自己把账户连接到了其他服务。本网站使用 Google Analytics 和 Google Ads 统计访问情况。我们从未出售过个人数据，也不打算这样做。</p>
         <p class={p} set:html={`本政策涵盖三部分：wavekat.com 网站、<a href="/zh/voice/" class="${linkCls}">WaveKat Voice</a> 桌面应用，以及 WaveKat 账户。关于应用内的每一项设置和开关，应用的<a href="/docs/voice/privacy/" class="${linkCls}">隐私文档</a>（英文）有更详细的说明。`} />
       </header>
+
+      {/* 三件读者不该错过的事，提到目录之前，而不是留在各自的小节里。 */}
+      <aside
+        class="mb-14 rounded-lg border p-5"
+        style="border-color: #ff6d0040; background-color: #ff6d0008;"
+      >
+        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">请先了解这三件事</p>
+        <ul class="space-y-3">
+          <li class={li} set:html={`${dot}<span>${b('WaveKat Voice 会录制通话，且录音默认开启。')}你是否有权录制一通电话、是否必须告知对方，取决于你和对方所在的地区。这是你的责任，不是我们的。如果不确定，请告知对方，或者关闭录音。</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('WaveKat 是一个处于公测阶段的小型独立项目。')}它不是拥有合规部门的大公司。请预期会有缺陷、会有变动，并为任何你承受不起丢失的内容自行保留备份。</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('请不要用 WaveKat 处理受严格监管的信息。')}它没有为支付卡号、医疗记录，或 PCI DSS、HIPAA 等制度所涵盖的数据做过设计或认证。如果你的通话经常涉及这类数据，WaveKat 并不是合适的工具。</span>`} />
+        </ul>
+      </aside>
 
       <nav
         aria-label="本页目录"
@@ -204,6 +225,13 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <p class={p} set:html={`上表中 WaveKat 的两项永远不会离开你的浏览器。本站目前不显示 Cookie 同意横幅；如果你不希望被统计，可以在浏览器设置中屏蔽第三方或分析类 Cookie，或安装 Google 的<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" class="${linkCls}">分析停用插件</a>。你也可以给我们发邮件，我们会将你排除在统计之外。`} />
       </section>
 
+      <section id="signin" class={sec}>
+        <h2 class={h2}>{S.signin}</h2>
+        <p class={`${p} mb-3`} set:html={`WaveKat 账户是可选的——桌面应用不注册也能使用。当你确实要创建账户时，你通过 ${b('GitHub 或 Google')} 登录，而不是使用一个由我们保管的密码。我们永远看不到你的 GitHub 或 Google 密码。`} />
+        <p class={`${p} mb-3`}>这次登录交给我们、并由我们保存的内容是：你的用户名或账号标识、显示名称、电子邮件地址、头像地址、该服务方的账户标识符，以及你最近一次登录的时间。它们用于下次认出你，并显示你已登录。你可以把 GitHub 和 Google 同时关联到同一个账户，也可以解除其中之一——只要它不是你最后的登录方式。</p>
+        <p class={p} set:html={`如果你使用 <code class="font-mono text-xs">wk</code> 命令行工具，它以同样的方式登录，并保存一个访问令牌，令牌上标注着请求它的那台机器的名称，方便你区分自己的设备。`} />
+      </section>
+
       <section id="app" class={sec}>
         <h2 class={h2}>{S.app}</h2>
         <p class={`${p} mb-4`}>WaveKat Voice 是一款适用于 Mac 和 Linux 的桌面应用，默认在本地运行。如果你从未登录 WaveKat 账户，以下内容全部留在你的机器上，绝不会传到我们这里：</p>
@@ -219,7 +247,14 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
       <section id="account" class={sec}>
         <h2 class={h2}>{S.account}</h2>
         <p class={`${p} mb-4`} set:html={`在你登录之前，什么都不会同步。登录后如果保持${b('云同步')}开启（登录后默认开启），应用会将你的通话记录（日期、号码、时间戳、时长以及通话结束方式）、通话录音和转写文字上传到你的私人 WaveKat 账户，这样你在任何已登录的设备上都能看到自己的通话。登录同时会登记这台电脑——它的名称、操作系统和应用版本——方便你查看哪些设备已连接。`} />
-        <p class={p} set:html={`关闭${b('云同步')}即可让一切留在那台电脑上，本地录音和通话记录照常工作。应用还会拒绝上传属于其他 WaveKat 账户的数据（以该电脑首次同步的账户为准）。已同步的数据存放在 WaveKat 自己控制的服务器上，不会用于训练任何模型，也绝不出售。`} />
+        <p class={p} set:html={`关闭${b('云同步')}即可让一切留在那台电脑上，本地录音和通话记录照常工作。应用还会拒绝上传属于其他 WaveKat 账户的数据（以该电脑首次同步的账户为准）。已同步的录音、转写文字和通话记录存放在我们位于 ${b('Cloudflare')} 的账户中——整个平台都运行在其基础设施上。我们不会用你的通话训练任何模型，也不会出售它们。`} />
+      </section>
+
+      <section id="sharing" class={sec}>
+        <h2 class={h2}>{S.sharing}</h2>
+        <p class={`${p} mb-3`}>你可以把一段通话录音变成链接发给别人。拿到该链接的任何人都能打开它——对方无需登录——因此请把链接本身当作钥匙看待。分享始终由你发起，不会有任何内容被自动分享。</p>
+        <p class={`${p} mb-3`}>创建链接时，你可以决定对方能获得什么。默认情况下，对方可以听到音频，转写文字被隐藏，通话另一方的身份被遮蔽。你可以逐项开关，允许或禁止下载，并选择播放哪一方的声音。撤销链接后它即刻失效。</p>
+        <p class={p}>发送之前请再想一想。一段被分享的录音里有另一个人的声音，以及他以为只是在对你说的话。分享与否是你的决定，也是你的责任——默认的遮蔽设置是为了帮你，而不是替你做决定。</p>
       </section>
 
       <section id="integrations" class={sec}>
@@ -235,6 +270,12 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <p class={p}>我们会保留 30 天的投递日志——哪个事件发往了何处、目标返回了什么、耗时多久——以便排查失败原因。持续失败的目标会被关闭，而不是无限重试。Webhook 在公测期间免费；HubSpot 集成是 Pro 功能。</p>
       </section>
 
+      <section id="prompts" class={sec}>
+        <h2 class={h2}>{S.prompts}</h2>
+        <p class={`${p} mb-3`} set:html={`WaveKat 提供一个把文字转成电话问候语音的工具。你输入的文字会发送给我们使用的语音合成服务 ${b('ElevenLabs')}，由它返回音频。请不要在其中输入任何你不希望离开 WaveKat 的内容——它是一个问候语生成器，不是私密记事本。`} />
+        <p class={p} set:html={`不注册账户也可以使用。此时我们会按${b('你 IP 地址的加扰形式')}统计用量，以免单个访客耗尽所有人的每日额度。这是一个用于当天计数的单向加扰值，不是关于你的画像，我们也不用它在站内追踪你。`} />
+      </section>
+
       <section id="telemetry" class={sec}>
         <h2 class={h2}>{S.telemetry}</h2>
         <p class={`${p} mb-3`}>当应用崩溃或遇到内部错误时，它可以发送一份匿名报告，帮助我们修复问题：错误内容、发生在应用的哪个位置，以及出错前应用正在做什么。报告发送给我们使用的错误上报服务 Sentry。在发送之前，应用会剔除用户名、电子邮件地址、IP 地址、包含你用户名的文件路径，以及任何看起来像凭据的内容。崩溃报告中永远不包含通话音频、通话记录、电话号码或联系人。</p>
@@ -244,7 +285,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
 
       <section id="providers" class={sec}>
         <h2 class={h2}>{S.providers}</h2>
-        <p class={`${p} mb-4`} set:html={`WaveKat 只使用少数几家服务提供商。每一家收到的都仅限于上文所述的内容，且都不得将其用于自身目的。下表是<em>我们</em>选择的服务商；<em>你</em>自己连接的服务属于另一回事，见<a href="#integrations" class="${linkCls}">${S.integrations}</a>。`} />
+        <p class={`${p} mb-4`} set:html={`WaveKat 运行在少数几家其他公司的服务之上。每一家收到的都仅限于本页所述的内容，我们也都按其标准商业条款使用——但它们是大公司，其自身的做法归它们所有，而非由我们决定，它们各自的隐私政策规定了它们会做什么。下表是<em>我们</em>选择的服务商；<em>你</em>自己连接的服务属于另一回事，见<a href="#integrations" class="${linkCls}">${S.integrations}</a>。`} />
         <div class={wrap}>
           <table class="w-full text-left border-collapse">
             <thead>
@@ -262,13 +303,23 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
               </tr>
               <tr class={row}>
                 <td class={tdKey}>Cloudflare</td>
-                <td class={td}>网站托管与应用安装包分发</td>
-                <td class={td}>服务器日志：IP 地址、请求的文件、时间、浏览器</td>
+                <td class={td}>网站托管、应用分发，以及 WaveKat 账户背后的存储</td>
+                <td class={td}>服务器日志；以及在你开启云同步时，你同步的录音、转写文字和通话记录</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>ElevenLabs</td>
+                <td class={td}>把输入的文字合成为电话问候语音</td>
+                <td class={td}>你输入的提示文字。绝不含通话音频、转写文字或联系人</td>
               </tr>
               <tr class={row}>
                 <td class={tdKey}>Sentry</td>
                 <td class={td}>桌面应用的匿名崩溃报告</td>
                 <td class={td}>已剔除个人信息字段的错误详情——绝不含通话数据</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>GitHub / Google</td>
+                <td class={td}>为你提供登录</td>
+                <td class={td}>由它们告诉我们你是谁；我们不会向它们发送任何与你通话有关的内容</td>
               </tr>
             </tbody>
           </table>
@@ -279,8 +330,8 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
       <section id="retention" class={sec}>
         <h2 class={h2}>{S.retention}</h2>
         <ul class="space-y-2.5">
-          <li class={li} set:html={`${dot}<span>${b('网站统计数据')}——最长 14 个月，之后 Google 会删除用户级记录。</span>`} />
-          <li class={li} set:html={`${dot}<span>${b('崩溃报告')}——在 Sentry 中最长保留 90 天。</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('网站统计数据')}——由 Google 按我们的 Google Analytics 保留设置留存，目前是约 14 个月的标准时长。</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('崩溃报告')}——由 Sentry 按我们所用方案的保留时长留存，以月计，而非以年计。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('集成与 Webhook 投递日志')}——30 天，之后自动删除。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('你电脑上的录音、通话记录和转写文字')}——直到你自己删除为止。我们绝不会替你删除。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('已同步到 WaveKat 账户的数据')}——直到你在应用中删除，或来信要求我们删除为止。</span>`} />
@@ -302,7 +353,14 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <h2 class={h2}>{S.rights}</h2>
         <p class={`${p} mb-3`}>如果你身处英国、欧盟或其他有类似法律的地区，你可以要求我们提供你数据的副本、更正数据、删除数据、限制或反对我们的使用方式、以可携格式转移数据，或撤回你此前给出的同意。你也可以向当地数据保护机构投诉。</p>
         <p class={`${p} mb-3`}>如果你身处加利福尼亚州或其他已立隐私法的美国州，你可以询问我们采集了什么，要求删除或更正，并退出任何出售或与广告相关的共享。我们绝不会因为你行使权利而区别对待你。</p>
-        <p class={p} set:html={`要行使以上任何一项权利，请发邮件至 <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>。我们会在 30 天内回复，并可能请你确认你确实拥有相关账户或邮箱——这道核验是为了防止他人冒领你的数据。`} />
+        <p class={p} set:html={`要行使以上任何一项权利，请发邮件至 <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>。WaveKat 是一个很小的团队，请稍给一点时间——我们会尽快回复，并在法律适用时于其允许的一个月内答复。我们可能请你确认你确实拥有相关账户或邮箱，这是为了防止他人冒领你的数据。`} />
+      </section>
+
+      <section id="security" class={sec}>
+        <h2 class={h2}>{S.security}</h2>
+        <p class={`${p} mb-3`}>该有的措施都已就位。所有数据都通过加密连接传输。登录经由 GitHub 或 Google 完成，因此我们这里没有你的密码可供丢失。你所连接服务的凭据在存储前会被加密。通过链接分享的录音必须持有链接才能打开。你的 SIP 密码则根本不会离开你的电脑。</p>
+        <p class={`${p} mb-3`}>我们不会告诉你的是：这些措施能让任何事情变得不可能。没有哪个在线服务是绝对安全的，而 WaveKat 由一个非常小的团队构建和运营，没有专门的安全部门。如果我们发现你的数据曾被泄露，我们会尽合理可能尽快告知你我们已知的情况，并明确说明哪些我们还不知道。</p>
+        <p class={p}>最有力的保护始终掌握在你手中：除非你另作选择，WaveKat Voice 会把一切留在你自己的电脑上。如果某通电话敏感到一旦泄露后果严重，那么保持云同步关闭——并且不分享、不转发——就能让它完全不进入我们的范围。</p>
       </section>
 
       <section id="children" class={sec}>
@@ -312,7 +370,8 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
 
       <section id="changes" class={sec}>
         <h2 class={h2}>{S.changes}</h2>
-        <p class={p}>本政策变更时，页面顶部的日期也会随之更新。如果某项变更实质性影响到我们采集什么或谁会收到这些数据，我们会在本页明确说明，而不是悄悄改掉一句话。</p>
+        <p class={`${p} mb-3`}>本政策变更时，页面顶部的日期也会随之更新。如果某项变更实质性影响到我们采集什么或谁会收到这些数据，我们会在本页明确说明，而不是悄悄改掉一句话。</p>
+        <p class={p}>本页是对 WaveKat 实际运作方式的通俗说明，由构建它的人撰写，而非出自律师之手。它不构成法律意见，也不能替代你自己的判断——在你生活和工作的地方，你可以录制、保存或分享什么，仍需你自行判断。如果其中某些内容对你的业务很重要且你需要确定的答案，请咨询你所在国家的专业人士；也请在发现本页有任何不实之处时告诉我们，比起为它辩解，我们更愿意把它改对。</p>
       </section>
 
       <section id="faq" class={sec}>
