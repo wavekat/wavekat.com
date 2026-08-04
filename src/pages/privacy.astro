@@ -13,6 +13,27 @@ const updatedLabel = updated.toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 
+// Section id → heading, in document order. The "on this page" nav and the
+// headings themselves both read from this, so a renamed section can never
+// leave a stale link behind. Anchors land correctly under the sticky header
+// via the sitewide `scroll-padding-top` in global.css.
+const S = {
+  controller: 'Who is responsible for your data',
+  website: 'What this website collects',
+  cookies: 'Cookies and browser storage',
+  app: 'What WaveKat Voice keeps on your computer',
+  account: 'What syncs to a WaveKat account',
+  telemetry: 'Crash reports and install counts',
+  providers: 'Who else processes your data',
+  retention: 'How long we keep things',
+  deletion: 'Deleting your data',
+  rights: 'Your rights',
+  children: 'Children',
+  changes: 'Changes to this policy',
+  faq: 'Questions & answers',
+  contact: 'Contact us',
+};
+
 // The same array renders the on-page Q&A and feeds FAQPage, so the visible
 // answers and the structured data can never drift apart.
 const faqs = [
@@ -69,13 +90,21 @@ const faqSchema = {
 
 // Shared class strings — a policy page is mostly repeated prose, and naming
 // them keeps the markup readable instead of a wall of identical utilities.
-const h2 = 'text-xs font-bold tracking-widest text-gray-400 uppercase mb-5';
-const p = 'text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl';
-const li = 'flex gap-2.5 text-sm text-gray-500 dark:text-gray-400 leading-relaxed';
+// Nothing sets its own max-width: the reading column below governs the measure
+// for prose, lists, and tables alike.
+const sec = 'mb-12';
+const h2 = 'text-base font-bold text-gray-900 dark:text-white mb-4';
+const p = 'text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const li = 'flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const dot = 'mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600';
+const strong = 'font-bold text-gray-900 dark:text-gray-200';
 const link =
   'text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors';
+const wrap = 'overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4';
 const th = 'px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase';
-const td = 'px-4 py-3 text-xs text-gray-500 dark:text-gray-400 leading-relaxed';
+const td = 'px-4 py-3 text-xs text-gray-600 dark:text-gray-400 leading-relaxed';
+const tdKey = 'px-4 py-3 text-xs font-bold text-gray-900 dark:text-white';
+const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-top';
 ---
 
 <Base
@@ -85,396 +114,419 @@ const td = 'px-4 py-3 text-xs text-gray-500 dark:text-gray-400 leading-relaxed';
   <Header />
 
   <div class="max-w-6xl mx-auto px-6 py-12">
+    {/* Page container matches the sitewide 6xl width; the policy itself stays a
+        centered reading column so prose, lists, and tables share one measure —
+        the same arrangement blog posts use (see Post.astro). */}
+    <div class="mx-auto max-w-3xl">
 
-    <section class="mb-16">
-      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white">
-        Privacy Policy
-      </h1>
-      <p class="text-xs text-gray-400 dark:text-gray-600 mb-5">Last updated {updatedLabel}</p>
-      <p class={`${p} mb-3`}>
-        WaveKat collects as little as it can. Your calls — the audio, the transcripts, the history —
-        stay on your own computer unless you sign in to a WaveKat account and leave cloud sync on.
-        This website uses Google Analytics and Google Ads to measure traffic. We have never sold
-        personal data and we don't intend to.
-      </p>
-      <p class={p}>
-        This policy covers three things: the website at wavekat.com, the
-        <a href="/voice/" class={link}>WaveKat Voice</a> desktop app, and WaveKat accounts. For the
-        in-app detail — every setting, every switch — the app's
-        <a href="/docs/voice/privacy/" class={link}>privacy documentation</a> goes further.
-      </p>
-    </section>
+      <header class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white">
+          Privacy Policy
+        </h1>
+        <p class="text-xs text-gray-400 dark:text-gray-600 mb-6">Last updated {updatedLabel}</p>
+        <p class={`${p} mb-3`}>
+          WaveKat collects as little as it can. Your calls — the audio, the transcripts, the history
+          — stay on your own computer unless you sign in to a WaveKat account and leave cloud sync
+          on. This website uses Google Analytics and Google Ads to measure traffic. We have never
+          sold personal data and we don't intend to.
+        </p>
+        <p class={p}>
+          This policy covers three things: the website at wavekat.com, the
+          <a href="/voice/" class={link}>WaveKat Voice</a> desktop app, and WaveKat accounts. For the
+          in-app detail — every setting, every switch — the app's
+          <a href="/docs/voice/privacy/" class={link}>privacy documentation</a> goes further.
+        </p>
+      </header>
 
-    <section class="mb-16">
-      <h2 class={h2}>Who is responsible for your data</h2>
-      <p class={p}>
-        WaveKat is the data controller for wavekat.com, WaveKat Voice, and WaveKat accounts. Write to
-        <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> with any privacy
-        question — that is also the address for exercising the rights described further down. We read
-        every message.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>What this website collects</h2>
-      <p class={`${p} mb-4`}>
-        You don't need an account to read wavekat.com and there are no forms on it — the only way to
-        contact us is email. What the site does collect is measurement data:
-      </p>
-      <ul class="space-y-2.5 mb-4">
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Google Analytics 4</strong> (measurement
-            ID <code class="font-mono text-xs">G-H8ZGBL04R7</code>) records which pages you view, roughly
-            where you are based on your IP address, your device and browser, and which site sent you
-            here.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Google Ads conversion measurement</strong>
-            records that someone who arrived from one of our ads later clicked an "email us" link. It
-            records the click, never the message you then write.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Google Fonts</strong> are loaded from
-            Google's servers, so Google sees your IP address when a page loads its typefaces.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Cloudflare</strong>, which hosts the site
-            and serves app downloads, keeps ordinary server logs — IP address, the file requested,
-            time, browser — to deliver pages and block abuse.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Email you send us</strong> is kept for as
-            long as it takes to answer you and to keep a record of the conversation.
-          </span>
-        </li>
-      </ul>
-      <p class={p}>
-        The legal basis for analytics and ad measurement is your consent where consent is required,
-        and our legitimate interest in understanding how the site is used everywhere else. Hosting
-        logs rest on our legitimate interest in keeping the site up and secure.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Cookies and browser storage</h2>
-      <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
-              <th class={th}>What</th>
-              <th class={th}>Set by</th>
-              <th class={th}>Why</th>
-              <th class={th}>How long</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-100 dark:border-white/5 align-top">
-              <td class="px-4 py-3 text-xs font-mono font-bold text-gray-900 dark:text-white">_ga, _ga_*</td>
-              <td class={td}>Google Analytics</td>
-              <td class={td}>Tells repeat visits apart and counts sessions</td>
-              <td class={td}>Up to 2 years</td>
-            </tr>
-            <tr class="border-b border-gray-100 dark:border-white/5 align-top">
-              <td class="px-4 py-3 text-xs font-mono font-bold text-gray-900 dark:text-white">_gcl_au</td>
-              <td class={td}>Google Ads</td>
-              <td class={td}>Links an ad click to a later action on this site</td>
-              <td class={td}>90 days</td>
-            </tr>
-            <tr class="border-b border-gray-100 dark:border-white/5 align-top">
-              <td class="px-4 py-3 text-xs font-mono font-bold text-gray-900 dark:text-white">theme</td>
-              <td class={td}>WaveKat (local storage)</td>
-              <td class={td}>Remembers whether you chose light or dark</td>
-              <td class={td}>Until you clear it</td>
-            </tr>
-            <tr class="align-top">
-              <td class="px-4 py-3 text-xs font-mono font-bold text-gray-900 dark:text-white">lang-pref-dismissed</td>
-              <td class={td}>WaveKat (local storage)</td>
-              <td class={td}>Remembers you closed the "read this in your language" banner</td>
-              <td class={td}>Until you clear it</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class={p}>
-        The two WaveKat entries never leave your browser. The site does not show a cookie consent
-        banner today; if you would rather not be measured, block third-party or analytics cookies in
-        your browser settings, or install Google's
-        <a
-          href="https://tools.google.com/dlpage/gaoptout"
-          target="_blank"
-          rel="noopener noreferrer"
-          class={link}>Analytics opt-out add-on</a
-        >. You can also email us and we will exclude you.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>What WaveKat Voice keeps on your computer</h2>
-      <p class={`${p} mb-4`}>
-        WaveKat Voice is a desktop app for Mac and Linux, and it is local by default. If you never
-        sign in to a WaveKat account, all of the following stays on your machine and never reaches us:
-      </p>
-      <ul class="space-y-2.5 mb-4">
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Call recordings.</strong> Recording is on
-            by default, and each call is saved as an audio file with both sides of the conversation.
-            Turn it off in Settings → Recording. There is no automatic cleanup — recordings stay until
-            you delete them.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Call history</strong> — date, number,
-            duration, and how each call ended, in a local database.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Transcripts.</strong> Live transcription
-            is off by default. When you turn it on, the speech-to-text runs entirely on your computer
-            — no audio is sent anywhere to be transcribed.
-          </span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span>
-            <strong class="text-gray-700 dark:text-gray-200">Your SIP account passwords</strong>,
-            stored on your computer and encrypted by your operating system. They are never sent to
-            WaveKat.
-          </span>
-        </li>
-      </ul>
-      <p class={p}>
-        <strong class="text-gray-700 dark:text-gray-200">Recording and consent.</strong> Call-recording
-        law differs by country: some places need only your consent, others need everyone on the call to
-        agree. WaveKat Voice plays a short notice beep at the start of recorded calls so the other
-        person knows. The beep is a courtesy, not a legal guarantee — complying with recording-consent
-        law where you and the people you call are located is your responsibility.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>What syncs to a WaveKat account</h2>
-      <p class={`${p} mb-4`}>
-        Nothing, until you sign in. If you sign in and leave <strong class="text-gray-700 dark:text-gray-200">Sync to cloud</strong>
-        on — it is on by default once signed in — the app uploads your call history (date, number,
-        timestamps, duration, and how the call ended), your call recordings, and your transcripts to
-        your private WaveKat account, so your calls appear on every device you sign in on. Signing in
-        also registers the computer — its name, operating system, and app version — so you can see
-        which devices are connected.
-      </p>
-      <p class={p}>
-        Turn <strong class="text-gray-700 dark:text-gray-200">Sync to cloud</strong> off to keep
-        everything on that computer; local recording and history keep working. The app also refuses to
-        upload data belonging to a different WaveKat account than the one that first synced on that
-        computer. Synced data is stored on servers WaveKat controls, is not used to train any model,
-        and is never sold.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Crash reports and install counts</h2>
-      <p class={`${p} mb-3`}>
-        When the app crashes or hits an internal error it can send an anonymous report so we can fix
-        the bug: the error, where in the app it happened, and what the app was doing just before.
-        Reports go to Sentry, the error-reporting service we use. Before anything is sent, the app
-        strips usernames, email addresses, IP addresses, file paths containing your username, and
-        anything that looks like a credential. Crash reports never include call audio, call history,
-        phone numbers, or contacts.
-      </p>
-      <p class={`${p} mb-3`}>
-        Once per launch the app also sends one anonymous ping so we know how many installs exist and
-        which versions and operating systems to support. It contains a random install identifier, the
-        app version, your operating system and its version, processor type, and language — no name, no
-        account, no computer name.
-      </p>
-      <p class={p}>
-        Both are on by default and both are turned off by the single
-        <strong class="text-gray-700 dark:text-gray-200">Send error reports</strong> switch in Settings
-        → About. Checking for app updates downloads files from our update server — ordinary web
-        requests with no personal data attached.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Who else processes your data</h2>
-      <p class={`${p} mb-4`}>
-        WaveKat uses a small number of service providers. Each one receives only what is described
-        above, and none of them is permitted to use it for their own purposes.
-      </p>
-      <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
-              <th class={th}>Provider</th>
-              <th class={th}>What it does for us</th>
-              <th class={th}>What it receives</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-100 dark:border-white/5 align-top">
-              <td class="px-4 py-3 text-xs font-bold text-gray-900 dark:text-white">Google</td>
-              <td class={td}>Website analytics, ad measurement, web fonts</td>
-              <td class={td}>Page views, IP address, device and browser, ad click attribution</td>
-            </tr>
-            <tr class="border-b border-gray-100 dark:border-white/5 align-top">
-              <td class="px-4 py-3 text-xs font-bold text-gray-900 dark:text-white">Cloudflare</td>
-              <td class={td}>Website hosting and app download delivery</td>
-              <td class={td}>Server logs: IP address, requested file, time, browser</td>
-            </tr>
-            <tr class="align-top">
-              <td class="px-4 py-3 text-xs font-bold text-gray-900 dark:text-white">Sentry</td>
-              <td class={td}>Anonymous crash reports from the desktop app</td>
-              <td class={td}>Error details with personal fields stripped — never call data</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class={p}>
-        These providers are US-based, so data covered by this policy may be processed in the United
-        States under the transfer safeguards in their standard data-processing terms. We do not sell
-        personal data. We do run Google Ads conversion measurement, which several US state privacy
-        laws treat as "sharing" for cross-context advertising — the opt-out below covers it.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>How long we keep things</h2>
-      <ul class="space-y-2.5">
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Website analytics</strong> — up to 14 months, then Google deletes the user-level records.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Crash reports</strong> — up to 90 days in Sentry.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Recordings, history, and transcripts on your computer</strong> — until you delete them. We never delete them for you.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Data synced to a WaveKat account</strong> — until you delete it in the app or ask us to.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Email</strong> — as long as we need it to answer you and keep a record of the exchange.</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Deleting your data</h2>
-      <ul class="space-y-2.5">
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">One recording</strong> — open the call on its details page and delete the recording there.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">All recordings</strong> — Settings → Recording → Clear all recordings.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Everything on this computer</strong> — Settings → WaveKat account → Delete local data removes call history, recordings, transcripts, and your sign-in from that machine.</span>
-        </li>
-        <li class={li}>
-          <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-          <span><strong class="text-gray-700 dark:text-gray-200">Data synced to your WaveKat account</strong> — email <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> and we will delete it.</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Your rights</h2>
-      <p class={`${p} mb-3`}>
-        If you are in the UK, the EU, or another region with comparable law, you can ask us for a copy
-        of your data, correct it, delete it, restrict or object to how we use it, take it elsewhere in
-        a portable form, or withdraw consent you previously gave. You can also complain to your local
-        data protection authority.
-      </p>
-      <p class={`${p} mb-3`}>
-        If you are in California or another US state with a privacy law, you can ask what we collect,
-        ask us to delete or correct it, and opt out of any sale or advertising-related sharing. We will
-        never treat you differently for exercising a right.
-      </p>
-      <p class={p}>
-        To use any of these, email <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>.
-        We reply within 30 days and may ask you to confirm you control the account or email address in
-        question — that check exists to stop someone else claiming your data.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Children</h2>
-      <p class={p}>
-        WaveKat Voice is a business tool and is not directed at children. We do not knowingly collect
-        personal data from anyone under 16. If you believe a child has provided us with data, email us
-        and we will delete it.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Changes to this policy</h2>
-      <p class={p}>
-        When this policy changes, the date at the top changes with it. If a change materially affects
-        what we collect or who receives it, we will say so plainly on this page rather than quietly
-        editing a sentence.
-      </p>
-    </section>
-
-    <section class="mb-16">
-      <h2 class={h2}>Questions &amp; answers</h2>
-      <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
-        {faqs.map((f) => (
-          <details class="group">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
-              {f.q}
-              <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
-            </summary>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
-              {f.a}
-            </p>
-          </details>
-        ))}
-      </div>
-    </section>
-
-    <section class="mb-20">
-      <h2 class={h2}>Contact us</h2>
-      <p class={`${p} mb-5`}>
-        Privacy questions, data requests, or something on this page that isn't clear — email us and a
-        person will answer.
-      </p>
-      <a
-        href="mailto:hello@wavekat.com"
-        class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
-        style="background-color: #ff6d00"
+      <nav
+        aria-label="On this page"
+        class="mb-14 border-t border-b border-gray-200 py-5 dark:border-white/10"
       >
-        <Mail class="w-4 h-4" />
-        hello@wavekat.com
-      </a>
-    </section>
+        <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">On this page</p>
+        <ul class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          {Object.entries(S).map(([id, label]) => (
+            <li>
+              <a
+                href={`#${id}`}
+                class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
+      <section id="controller" class={sec}>
+        <h2 class={h2}>{S.controller}</h2>
+        <p class={p}>
+          WaveKat is the data controller for wavekat.com, WaveKat Voice, and WaveKat accounts. Write
+          to <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> with any privacy
+          question — that is also the address for exercising the rights described further down. We
+          read every message.
+        </p>
+      </section>
+
+      <section id="website" class={sec}>
+        <h2 class={h2}>{S.website}</h2>
+        <p class={`${p} mb-4`}>
+          You don't need an account to read wavekat.com and there are no forms on it — the only way
+          to contact us is email. What the site does collect is measurement data:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Analytics 4</strong> (measurement ID
+              <code class="font-mono text-xs">G-H8ZGBL04R7</code>) records which pages you view,
+              roughly where you are based on your IP address, your device and browser, and which site
+              sent you here.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Ads conversion measurement</strong> records that someone
+              who arrived from one of our ads later clicked an "email us" link. It records the click,
+              never the message you then write.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Fonts</strong> are loaded from Google's servers, so Google
+              sees your IP address when a page loads its typefaces.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Cloudflare</strong>, which hosts the site and serves app
+              downloads, keeps ordinary server logs — IP address, the file requested, time, browser —
+              to deliver pages and block abuse.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Email you send us</strong> is kept for as long as it takes to
+              answer you and to keep a record of the conversation.
+            </span>
+          </li>
+        </ul>
+        <p class={p}>
+          The legal basis for analytics and ad measurement is your consent where consent is required,
+          and our legitimate interest in understanding how the site is used everywhere else. Hosting
+          logs rest on our legitimate interest in keeping the site up and secure.
+        </p>
+      </section>
+
+      <section id="cookies" class={sec}>
+        <h2 class={h2}>{S.cookies}</h2>
+        <div class={wrap}>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+                <th class={`${th} w-[30%]`}>What</th>
+                <th class={`${th} w-[20%]`}>Set by</th>
+                <th class={th}>Why</th>
+                <th class={`${th} w-[18%]`}>How long</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>_ga, _ga_*</td>
+                <td class={td}>Google Analytics</td>
+                <td class={td}>Tells repeat visits apart and counts sessions</td>
+                <td class={td}>Up to 2 years</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>_gcl_au</td>
+                <td class={td}>Google Ads</td>
+                <td class={td}>Links an ad click to a later action on this site</td>
+                <td class={td}>90 days</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>theme</td>
+                <td class={td}>WaveKat (local storage)</td>
+                <td class={td}>Remembers whether you chose light or dark</td>
+                <td class={td}>Until you clear it</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>lang-pref-dismissed</td>
+                <td class={td}>WaveKat (local storage)</td>
+                <td class={td}>Remembers you closed the "read this in your language" banner</td>
+                <td class={td}>Until you clear it</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class={p}>
+          The two WaveKat entries never leave your browser. The site does not show a cookie consent
+          banner today; if you would rather not be measured, block third-party or analytics cookies in
+          your browser settings, or install Google's
+          <a
+            href="https://tools.google.com/dlpage/gaoptout"
+            target="_blank"
+            rel="noopener noreferrer"
+            class={link}>Analytics opt-out add-on</a
+          >. You can also email us and we will exclude you.
+        </p>
+      </section>
+
+      <section id="app" class={sec}>
+        <h2 class={h2}>{S.app}</h2>
+        <p class={`${p} mb-4`}>
+          WaveKat Voice is a desktop app for Mac and Linux, and it is local by default. If you never
+          sign in to a WaveKat account, all of the following stays on your machine and never reaches
+          us:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Call recordings.</strong> Recording is on by default, and each
+              call is saved as an audio file with both sides of the conversation. Turn it off in
+              Settings → Recording. There is no automatic cleanup — recordings stay until you delete
+              them.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Call history</strong> — date, number, duration, and how each call
+              ended, in a local database.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Transcripts.</strong> Live transcription is off by default. When
+              you turn it on, the speech-to-text runs entirely on your computer — no audio is sent
+              anywhere to be transcribed.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Your SIP account passwords</strong>, stored on your computer and
+              encrypted by your operating system. They are never sent to WaveKat.
+            </span>
+          </li>
+        </ul>
+        <p class={p}>
+          <strong class={strong}>Recording and consent.</strong> Call-recording law differs by
+          country: some places need only your consent, others need everyone on the call to agree.
+          WaveKat Voice plays a short notice beep at the start of recorded calls so the other person
+          knows. The beep is a courtesy, not a legal guarantee — complying with recording-consent law
+          where you and the people you call are located is your responsibility.
+        </p>
+      </section>
+
+      <section id="account" class={sec}>
+        <h2 class={h2}>{S.account}</h2>
+        <p class={`${p} mb-4`}>
+          Nothing, until you sign in. If you sign in and leave <strong class={strong}>Sync to cloud</strong>
+          on — it is on by default once signed in — the app uploads your call history (date, number,
+          timestamps, duration, and how the call ended), your call recordings, and your transcripts to
+          your private WaveKat account, so your calls appear on every device you sign in on. Signing
+          in also registers the computer — its name, operating system, and app version — so you can
+          see which devices are connected.
+        </p>
+        <p class={p}>
+          Turn <strong class={strong}>Sync to cloud</strong> off to keep everything on that computer;
+          local recording and history keep working. The app also refuses to upload data belonging to a
+          different WaveKat account than the one that first synced on that computer. Synced data is
+          stored on servers WaveKat controls, is not used to train any model, and is never sold.
+        </p>
+      </section>
+
+      <section id="telemetry" class={sec}>
+        <h2 class={h2}>{S.telemetry}</h2>
+        <p class={`${p} mb-3`}>
+          When the app crashes or hits an internal error it can send an anonymous report so we can fix
+          the bug: the error, where in the app it happened, and what the app was doing just before.
+          Reports go to Sentry, the error-reporting service we use. Before anything is sent, the app
+          strips usernames, email addresses, IP addresses, file paths containing your username, and
+          anything that looks like a credential. Crash reports never include call audio, call history,
+          phone numbers, or contacts.
+        </p>
+        <p class={`${p} mb-3`}>
+          Once per launch the app also sends one anonymous ping so we know how many installs exist and
+          which versions and operating systems to support. It contains a random install identifier,
+          the app version, your operating system and its version, processor type, and language — no
+          name, no account, no computer name.
+        </p>
+        <p class={p}>
+          Both are on by default and both are turned off by the single
+          <strong class={strong}>Send error reports</strong> switch in Settings → About. Checking for
+          app updates downloads files from our update server — ordinary web requests with no personal
+          data attached.
+        </p>
+      </section>
+
+      <section id="providers" class={sec}>
+        <h2 class={h2}>{S.providers}</h2>
+        <p class={`${p} mb-4`}>
+          WaveKat uses a small number of service providers. Each one receives only what is described
+          above, and none of them is permitted to use it for their own purposes.
+        </p>
+        <div class={wrap}>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+                <th class={`${th} w-[18%]`}>Provider</th>
+                <th class={`${th} w-[34%]`}>What it does for us</th>
+                <th class={th}>What it receives</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class={row}>
+                <td class={tdKey}>Google</td>
+                <td class={td}>Website analytics, ad measurement, web fonts</td>
+                <td class={td}>Page views, IP address, device and browser, ad click attribution</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>Cloudflare</td>
+                <td class={td}>Website hosting and app download delivery</td>
+                <td class={td}>Server logs: IP address, requested file, time, browser</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>Sentry</td>
+                <td class={td}>Anonymous crash reports from the desktop app</td>
+                <td class={td}>Error details with personal fields stripped — never call data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class={p}>
+          These providers are US-based, so data covered by this policy may be processed in the United
+          States under the transfer safeguards in their standard data-processing terms. We do not sell
+          personal data. We do run Google Ads conversion measurement, which several US state privacy
+          laws treat as "sharing" for cross-context advertising — the opt-out below covers it.
+        </p>
+      </section>
+
+      <section id="retention" class={sec}>
+        <h2 class={h2}>{S.retention}</h2>
+        <ul class="space-y-2.5">
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Website analytics</strong> — up to 14 months, then Google deletes the user-level records.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Crash reports</strong> — up to 90 days in Sentry.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Recordings, history, and transcripts on your computer</strong> — until you delete them. We never delete them for you.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Data synced to a WaveKat account</strong> — until you delete it in the app or ask us to.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Email</strong> — as long as we need it to answer you and keep a record of the exchange.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="deletion" class={sec}>
+        <h2 class={h2}>{S.deletion}</h2>
+        <ul class="space-y-2.5">
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>One recording</strong> — open the call on its details page and delete the recording there.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>All recordings</strong> — Settings → Recording → Clear all recordings.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Everything on this computer</strong> — Settings → WaveKat account → Delete local data removes call history, recordings, transcripts, and your sign-in from that machine.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Data synced to your WaveKat account</strong> — email <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> and we will delete it.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="rights" class={sec}>
+        <h2 class={h2}>{S.rights}</h2>
+        <p class={`${p} mb-3`}>
+          If you are in the UK, the EU, or another region with comparable law, you can ask us for a
+          copy of your data, correct it, delete it, restrict or object to how we use it, take it
+          elsewhere in a portable form, or withdraw consent you previously gave. You can also complain
+          to your local data protection authority.
+        </p>
+        <p class={`${p} mb-3`}>
+          If you are in California or another US state with a privacy law, you can ask what we
+          collect, ask us to delete or correct it, and opt out of any sale or advertising-related
+          sharing. We will never treat you differently for exercising a right.
+        </p>
+        <p class={p}>
+          To use any of these, email <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>.
+          We reply within 30 days and may ask you to confirm you control the account or email address
+          in question — that check exists to stop someone else claiming your data.
+        </p>
+      </section>
+
+      <section id="children" class={sec}>
+        <h2 class={h2}>{S.children}</h2>
+        <p class={p}>
+          WaveKat Voice is a business tool and is not directed at children. We do not knowingly
+          collect personal data from anyone under 16. If you believe a child has provided us with
+          data, email us and we will delete it.
+        </p>
+      </section>
+
+      <section id="changes" class={sec}>
+        <h2 class={h2}>{S.changes}</h2>
+        <p class={p}>
+          When this policy changes, the date at the top changes with it. If a change materially
+          affects what we collect or who receives it, we will say so plainly on this page rather than
+          quietly editing a sentence.
+        </p>
+      </section>
+
+      <section id="faq" class={sec}>
+        <h2 class={h2}>{S.faq}</h2>
+        <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+          {faqs.map((f) => (
+            <details class="group">
+              <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+                {f.q}
+                <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+              </summary>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pb-4 -mt-1">
+                {f.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" class="mb-8">
+        <h2 class={h2}>{S.contact}</h2>
+        <p class={`${p} mb-5`}>
+          Privacy questions, data requests, or something on this page that isn't clear — email us and
+          a person will answer.
+        </p>
+        <a
+          href="mailto:hello@wavekat.com"
+          class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+          style="background-color: #ff6d00"
+        >
+          <Mail class="w-4 h-4" />
+          hello@wavekat.com
+        </a>
+      </section>
+
+    </div>
   </div>
 
   <Footer />
