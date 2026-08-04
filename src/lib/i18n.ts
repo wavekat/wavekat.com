@@ -90,7 +90,11 @@ const fullSite = [
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
 export const translatedRoutes: Record<string, string[]> = {
-  'zh-Hans': fullSite,
+  // /privacy/ is the one page that isn't in `fullSite` yet: it ships in English
+  // and Simplified Chinese first, and joins `fullSite` once the other seven
+  // locales are translated. Until then only zh-Hans may claim an hreflang for
+  // it — the rest link to the English policy from their footer.
+  'zh-Hans': [...fullSite, '/privacy/'],
   'zh-Hant': fullSite,
   ja: fullSite,
   ko: fullSite,
@@ -216,6 +220,7 @@ export interface UIStrings {
   footerEmail: string;
   footerSource: string;
   footerAbout: string;
+  footerPrivacy: string;
   footerPrompts: string;
   footerMore: string;
   footerTools: string;
@@ -271,6 +276,7 @@ const strings: Record<string, UIStrings> = {
     footerEmail: 'Email us',
     footerSource: 'View source on GitHub',
     footerAbout: 'About',
+    footerPrivacy: 'Privacy',
     footerPrompts: 'Prompt Generator',
     footerMore: 'More',
     footerTools: 'Tools',
@@ -306,6 +312,7 @@ const strings: Record<string, UIStrings> = {
     footerEmail: '给我们发邮件',
     footerSource: '在 GitHub 上查看源码',
     footerAbout: '关于',
+    footerPrivacy: '隐私政策',
     footerPrompts: '语音生成器',
     footerMore: '更多',
     footerTools: '工具',

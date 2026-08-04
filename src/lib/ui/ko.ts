@@ -25,6 +25,7 @@ export const ui: UIStrings = {
   talkWritePost: '(으)로 직접 메일을 보내셔도 됩니다.',
   footerEmail: '이메일 보내기',
   footerAbout: '소개',
+  footerPrivacy: '개인정보 처리방침',
   footerPrompts: '음성 생성기',
   footerMore: '기타',
   footerTools: '도구',

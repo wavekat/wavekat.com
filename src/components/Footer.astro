@@ -39,6 +39,10 @@ const groups = [
     links: [
       { href: localeHref('/blog/'), label: ui.navBlog },
       { href: localeHref('/about/'), label: ui.footerAbout },
+      // Reachable from every page in every locale, translated or not: a privacy
+      // policy nobody can find isn't one. Locales without their own translation
+      // yet fall through to the English page via localeHref.
+      { href: localeHref('/privacy/'), label: ui.footerPrivacy },
       // English-only, deliberately: the wallpaper page itself isn't translated,
       // so it's offered where the reader is already reading English rather than
       // pointing a localized footer at an English destination. That also keeps

@@ -25,6 +25,7 @@ export const ui: UIStrings = {
   talkWritePost: '。',
   footerEmail: '寄信給我們',
   footerAbout: '關於',
+  footerPrivacy: '隱私權政策',
   footerPrompts: '語音產生器',
   footerMore: '更多',
   footerTools: '工具',

@@ -25,6 +25,7 @@ export const ui: UIStrings = {
   talkWritePost: ' まで直接ご連絡ください。',
   footerEmail: 'メールを送る',
   footerAbout: 'WaveKat について',
+  footerPrivacy: 'プライバシー',
   footerPrompts: '音声ジェネレーター',
   footerMore: 'その他',
   footerTools: 'ツール',
