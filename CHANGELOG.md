@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.52](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.51...wavekat-com-v0.0.52) (2026-08-05)
+
+
+### Features
+
+* add privacy policy in nine languages ([#143](https://github.com/wavekat/wavekat.com/issues/143)) ([ea47d04](https://github.com/wavekat/wavekat.com/commit/ea47d04cc195a03a17c03af47a7bd097d8d6a953))
+
 ## [0.0.51](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.50...wavekat-com-v0.0.51) (2026-07-31)
 
 
