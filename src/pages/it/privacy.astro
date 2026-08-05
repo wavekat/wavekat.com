@@ -1,0 +1,768 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Mail } from '@lucide/astro';
+
+// Mirrors /privacy/ section-for-section (see src/pages/privacy.astro).
+// Keep the date in sync with the English page — one policy, one revision.
+const updated = new Date('2026-08-04');
+const updatedLabel = updated.toLocaleDateString('it-IT', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+// Section id → heading, in document order. Ids match the English page so a
+// deep link survives a language switch.
+const S = {
+  controller: 'Chi risponde dei tuoi dati',
+  website: 'Cosa raccoglie questo sito',
+  cookies: 'Cookie e archiviazione del browser',
+  signin: 'L’accesso, e cosa contiene il tuo account',
+  app: 'Cosa conserva WaveKat Voice sul tuo computer',
+  account: 'Cosa si sincronizza con un account WaveKat',
+  sharing: 'Condividere una registrazione',
+  integrations: 'Inviare le tue chiamate ai servizi che colleghi',
+  prompts: 'Il generatore di messaggi vocali',
+  telemetry: 'Segnalazioni di crash e conteggio delle installazioni',
+  providers: 'Chi altro tratta i tuoi dati',
+  retention: 'Per quanto tempo conserviamo le cose',
+  deletion: 'Eliminare i tuoi dati',
+  rights: 'I tuoi diritti',
+  security: 'La sicurezza, e ciò che non possiamo promettere',
+  children: 'Minori',
+  changes: 'Modifiche a questa informativa',
+  faq: 'Domande e risposte',
+  contact: 'Contattaci',
+};
+
+const faqs = [
+  {
+    q: 'WaveKat ascolta le mie chiamate?',
+    a: 'No. WaveKat Voice registra e trascrive le chiamate sul tuo computer, e il riconoscimento vocale gira in locale: nessun audio viene inviato altrove per la trascrizione. Registrazioni e trascrizioni lasciano la tua macchina solo se accedi a un account WaveKat lasciando attiva la sincronizzazione cloud. Le segnalazioni di crash non contengono mai audio delle chiamate, numeri di telefono o contatti.',
+  },
+  {
+    q: 'wavekat.com usa i cookie?',
+    a: 'Sì. Google Analytics e Google Ads impostano cookie per contare le visite e misurare l’efficacia degli annunci. WaveKat in sé salva solo due cose nel tuo browser — la preferenza tema chiaro/scuro e l’avvenuta chiusura dell’avviso lingua — e nessuna delle due ci viene inviata. Oggi non c’è un banner cookie; puoi bloccare i cookie di analisi nelle impostazioni del browser.',
+  },
+  {
+    q: 'Vendete i miei dati personali?',
+    a: 'No. WaveKat non ha mai venduto dati personali e non intende farlo. Usiamo però la misurazione delle conversioni di Google Ads su questo sito, che alcune leggi statali USA considerano una «condivisione» a fini pubblicitari: scrivi a hello@wavekat.com per escluderti.',
+  },
+  {
+    q: 'Serve un account WaveKat per usare WaveKat Voice?',
+    a: 'No. Senza account l’app è interamente locale: chiamate, registrazioni, trascrizioni e password SIP restano sul tuo computer. Le uniche cose che escono sono segnalazioni di crash anonime e un conteggio anonimo delle installazioni, e un solo interruttore in Impostazioni → Informazioni spegne entrambi.',
+  },
+  {
+    q: 'È legale registrare le mie chiamate con WaveKat?',
+    a: 'Dipende interamente da dove ti trovi tu e da dove si trova il tuo interlocutore, ed è una tua responsabilità, non nostra. In alcuni luoghi basta il tuo consenso; in altri devono acconsentire tutti i partecipanti, e sbagliare può avere rilievo penale. WaveKat Voice riproduce un segnale acustico all’inizio delle chiamate registrate per cortesia, ma un bip non è un consenso legale. Nel dubbio, dichiara che stai registrando o disattiva la registrazione nelle Impostazioni.',
+  },
+  {
+    q: 'Cosa esce da WaveKat se collego HubSpot o un webhook?',
+    a: 'Ogni chiamata effettuata dopo il collegamento: il numero dell’altra persona, ora, direzione, esito e durata della chiamata e — salvo tu lo disattivi — la trascrizione e l’accesso alla registrazione. HubSpot riceve inoltre una scheda chiamata associata al contatto di quella persona, e può creare il contatto se non esiste. Nulla è collegato di default, ogni parte ha il suo interruttore e scollegare ferma il flusso all’istante; ciò che è già stato scritto nel tuo HubSpot però vi resta, e va cancellato lì da te.',
+  },
+  {
+    q: 'Come elimino tutto ciò che WaveKat ha su di me?',
+    a: 'Per questo computer: Impostazioni → Account WaveKat → Elimina dati locali rimuove cronologia chiamate, registrazioni, trascrizioni e il tuo accesso. Per ciò che è sincronizzato con un account WaveKat, scrivi a hello@wavekat.com e lo elimineremo.',
+  },
+];
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://wavekat.com/it/privacy/',
+      url: 'https://wavekat.com/it/privacy/',
+      name: 'Informativa sulla privacy',
+      description:
+        'Come WaveKat tratta i tuoi dati: cosa misura wavekat.com, cosa conserva WaveKat Voice sul tuo computer, cosa si sincronizza col tuo account e come eliminarlo.',
+      inLanguage: 'it',
+      dateModified: updated.toISOString().slice(0, 10),
+      isPartOf: { '@id': 'https://wavekat.com/#website' },
+      about: { '@id': 'https://wavekat.com/#organization' },
+      publisher: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'it',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const sec = 'mb-12';
+const h2 = 'text-base font-bold text-gray-900 dark:text-white mb-4';
+const p = 'text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const li = 'flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const dot = 'mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600';
+const strong = 'font-bold text-gray-900 dark:text-gray-200';
+const link =
+  'text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors';
+const wrap = 'overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4';
+const th = 'px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase';
+const td = 'px-4 py-3 text-xs text-gray-600 dark:text-gray-400 leading-relaxed';
+const tdKey = 'px-4 py-3 text-xs font-bold text-gray-900 dark:text-white';
+const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-top';
+---
+
+<Base
+  title="Informativa sulla privacy — WaveKat"
+  description="Come WaveKat tratta i tuoi dati: cosa misura wavekat.com, cosa conserva WaveKat Voice sul tuo computer, cosa si sincronizza col tuo account e come eliminarlo."
+>
+  <Header />
+
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="mx-auto max-w-3xl">
+
+      <header class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white">
+          Informativa sulla privacy
+        </h1>
+        <p class="text-xs text-gray-400 dark:text-gray-600 mb-6">Ultimo aggiornamento: {updatedLabel}</p>
+        <p class={`${p} mb-3`}>
+          WaveKat raccoglie il minimo possibile. Le tue chiamate — l’audio, le trascrizioni, la
+          cronologia — restano sul tuo computer, a meno che tu non acceda a un account WaveKat
+          lasciando attiva la sincronizzazione cloud, o colleghi tu stesso il tuo account a un altro
+          servizio. Questo sito usa Google Analytics e Google Ads per misurare il traffico. Non
+          abbiamo mai venduto dati personali e non intendiamo farlo.
+        </p>
+        <p class={p}>
+          Questa informativa copre tutto ciò che WaveKat gestisce: il sito wavekat.com, l’app desktop
+          <a href="/it/voice/" class={link}>WaveKat Voice</a> e gli account WaveKat.
+        </p>
+      </header>
+
+      <aside
+        class="mb-14 rounded-lg border p-5"
+        style="border-color: #ff6d0040; background-color: #ff6d0008;"
+      >
+        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">
+          Tre cose da sapere subito
+        </p>
+        <ul class="space-y-3">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>WaveKat Voice registra le telefonate, e la registrazione è
+              attiva di default.</strong> Se puoi registrare una chiamata — e se devi avvisare l’altra
+              persona — dipende da dove vi trovate tu e lei. È una tua responsabilità, non nostra. Nel
+              dubbio, avvisa l’altra persona o disattiva la registrazione.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>WaveKat è un piccolo progetto indipendente in beta
+              pubblica.</strong> Non è una grande azienda con un reparto conformità. Aspettati bug,
+              aspettati cambiamenti, e conserva copie tue di tutto ciò che non puoi permetterti di
+              perdere.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Non far passare da WaveKat informazioni soggette a
+              regolamentazione severa.</strong> Non è costruito né certificato per numeri di carte,
+              cartelle cliniche o qualunque cosa rientri in regimi come PCI DSS o HIPAA. Se le tue
+              chiamate riguardano spesso quel tipo di dati, WaveKat è lo strumento sbagliato.
+            </span>
+          </li>
+        </ul>
+      </aside>
+
+      <nav
+        aria-label="In questa pagina"
+        class="mb-14 border-t border-b border-gray-200 py-5 dark:border-white/10"
+      >
+        <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">In questa pagina</p>
+        <ul class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          {Object.entries(S).map(([id, label]) => (
+            <li>
+              <a
+                href={`#${id}`}
+                class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <section id="controller" class={sec}>
+        <h2 class={h2}>{S.controller}</h2>
+        <p class={p}>
+          WaveKat è il titolare del trattamento per wavekat.com, WaveKat Voice e gli account WaveKat.
+          Scrivi a <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> per qualunque
+          domanda sulla privacy — lo stesso indirizzo serve per esercitare i diritti descritti più in
+          basso. Leggiamo ogni messaggio.
+        </p>
+      </section>
+
+      <section id="website" class={sec}>
+        <h2 class={h2}>{S.website}</h2>
+        <p class={`${p} mb-4`}>
+          Per leggere wavekat.com non serve un account e non ci sono moduli — l’unico modo per
+          contattarci è l’email. Ciò che il sito raccoglie sono dati di misurazione:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Analytics 4</strong> (ID di misurazione
+              <code class="font-mono text-xs">G-H8ZGBL04R7</code>) registra quali pagine visiti, la
+              tua posizione approssimativa in base all’indirizzo IP, il tuo dispositivo e browser, e
+              quale sito ti ha portato qui.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>La misurazione delle conversioni di Google Ads</strong> registra
+              che qualcuno arrivato da un nostro annuncio ha poi cliccato un link «scrivici». Registra
+              il clic, mai il messaggio che scrivi dopo.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Google Fonts</strong> viene caricato dai server di Google, che
+              quindi vede il tuo indirizzo IP quando una pagina carica i suoi caratteri.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Cloudflare</strong>, che ospita il sito e distribuisce i download
+              dell’app, tiene normali log di server — indirizzo IP, file richiesto, ora, browser — per
+              consegnare le pagine e bloccare gli abusi.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Le email che ci mandi</strong> restano il tempo necessario a
+              risponderti e a conservare traccia della conversazione.
+            </span>
+          </li>
+        </ul>
+        <p class={p}>
+          La base giuridica per analisi e misurazione pubblicitaria è il tuo consenso dove il consenso
+          è richiesto, e altrove il nostro legittimo interesse a capire come viene usato il sito. I
+          log di hosting poggiano sul nostro legittimo interesse a tenere il sito attivo e sicuro.
+        </p>
+      </section>
+
+      <section id="cookies" class={sec}>
+        <h2 class={h2}>{S.cookies}</h2>
+        <div class={wrap}>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+                <th class={`${th} w-[30%]`}>Cosa</th>
+                <th class={`${th} w-[20%]`}>Impostato da</th>
+                <th class={th}>Perché</th>
+                <th class={`${th} w-[18%]`}>Durata</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>_ga, _ga_*</td>
+                <td class={td}>Google Analytics</td>
+                <td class={td}>Distingue le visite ripetute e conta le sessioni</td>
+                <td class={td}>Fino a 2 anni</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>_gcl_au</td>
+                <td class={td}>Google Ads</td>
+                <td class={td}>Collega il clic su un annuncio a un’azione successiva su questo sito</td>
+                <td class={td}>90 giorni</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>theme</td>
+                <td class={td}>WaveKat (archiviazione locale)</td>
+                <td class={td}>Ricorda se hai scelto il tema chiaro o scuro</td>
+                <td class={td}>Finché non lo cancelli</td>
+              </tr>
+              <tr class={row}>
+                <td class={`${tdKey} font-mono`}>lang-pref-dismissed</td>
+                <td class={td}>WaveKat (archiviazione locale)</td>
+                <td class={td}>Ricorda che hai chiuso l’avviso «leggi questa pagina nella tua lingua»</td>
+                <td class={td}>Finché non lo cancelli</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class={p}>
+          Le due voci di WaveKat non lasciano mai il tuo browser. Il sito oggi non mostra un banner di
+          consenso ai cookie; se preferisci non essere misurato, blocca i cookie di terze parti o di
+          analisi nelle impostazioni del browser, oppure installa il
+          <a
+            href="https://tools.google.com/dlpage/gaoptout"
+            target="_blank"
+            rel="noopener noreferrer"
+            class={link}>componente di disattivazione di Analytics</a
+          > di Google. Puoi anche scriverci e ti escluderemo.
+        </p>
+      </section>
+
+      <section id="signin" class={sec}>
+        <h2 class={h2}>{S.signin}</h2>
+        <p class={`${p} mb-3`}>
+          L’account WaveKat è facoltativo — l’app desktop funziona anche senza. Quando ne crei uno,
+          accedi tramite <strong class={strong}>GitHub o Google</strong>, non con una password
+          custodita da noi. Non vediamo mai la tua password di GitHub o Google.
+        </p>
+        <p class={`${p} mb-3`}>
+          Cosa ci consegna quell’accesso, e cosa conserviamo: il tuo nome utente, il nome visibile,
+          l’indirizzo email, l’indirizzo della foto profilo, l’identificativo dell’account presso il
+          provider e l’ora del tuo ultimo accesso. È ciò che ci permette di riconoscerti la volta
+          successiva e mostrarti come connesso. Puoi collegare sia GitHub sia Google allo stesso
+          account, e scollegare uno dei due finché non è il tuo ultimo modo di entrare.
+        </p>
+        <p class={p}>
+          Se usi lo strumento a riga di comando <code class="font-mono text-xs">wk</code>, accede allo
+          stesso modo e salva un token di accesso, etichettato col nome della macchina che l’ha
+          richiesto, così distingui i tuoi dispositivi.
+        </p>
+      </section>
+
+      <section id="app" class={sec}>
+        <h2 class={h2}>{S.app}</h2>
+        <p class={`${p} mb-4`}>
+          WaveKat Voice è un’app desktop per Mac e Linux, locale di default. Se non accedi mai a un
+          account WaveKat, tutto quanto segue resta sulla tua macchina e non ci raggiunge mai:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Registrazioni delle chiamate.</strong> La registrazione è attiva
+              di default, e ogni chiamata viene salvata come file audio con entrambi i lati della
+              conversazione. Disattivala in Impostazioni → Registrazione. Non c’è pulizia automatica —
+              le registrazioni restano finché non le elimini.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Cronologia chiamate</strong> — data, numero, durata e come è
+              finita ogni chiamata, in un database locale.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Trascrizioni.</strong> La trascrizione dal vivo è disattivata di
+              default. Quando la attivi, il riconoscimento vocale gira interamente sul tuo computer —
+              nessun audio viene inviato altrove per la trascrizione.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Le tue password SIP</strong>, salvate sul tuo computer e cifrate
+              dal sistema operativo. Non vengono mai inviate a WaveKat.
+            </span>
+          </li>
+        </ul>
+        <p class={p}>
+          <strong class={strong}>Registrazione e consenso.</strong> La legge sulla registrazione delle
+          chiamate varia da paese a paese: in alcuni basta il tuo consenso, in altri devono
+          acconsentire tutti i partecipanti. WaveKat Voice riproduce un breve segnale acustico
+          all’inizio delle chiamate registrate perché l’altra persona lo sappia. Il bip è una
+          cortesia, non una garanzia legale — rispettare le norme sul consenso là dove ti trovi tu e
+          dove si trovano le persone che chiami è una tua responsabilità.
+        </p>
+      </section>
+
+      <section id="account" class={sec}>
+        <h2 class={h2}>{S.account}</h2>
+        <p class={`${p} mb-4`}>
+          Niente, finché non accedi. Se accedi e lasci attiva
+          <strong class={strong}>Sincronizza nel cloud</strong> — lo è di default una volta dentro —
+          l’app carica nel tuo account WaveKat privato la cronologia chiamate (data, numero, marche
+          temporali, durata e come è finita la chiamata), le registrazioni e le trascrizioni, così le
+          tue chiamate compaiono su ogni dispositivo in cui accedi. L’accesso registra anche il
+          computer — nome, sistema operativo e versione dell’app — perché tu veda quali dispositivi
+          sono collegati.
+        </p>
+        <p class={p}>
+          Disattiva <strong class={strong}>Sincronizza nel cloud</strong> perché tutto resti su quel
+          computer; registrazione locale e cronologia continuano a funzionare. L’app inoltre rifiuta
+          di caricare dati appartenenti a un account WaveKat diverso da quello che per primo ha
+          sincronizzato su quella macchina. Registrazioni, trascrizioni e cronologia sincronizzate
+          sono conservate nel nostro account presso <strong class={strong}>Cloudflare</strong>, sulla
+          cui infrastruttura gira l’intera piattaforma. Non usiamo le tue chiamate per addestrare
+          alcun modello, e non le vendiamo.
+        </p>
+      </section>
+
+      <section id="sharing" class={sec}>
+        <h2 class={h2}>{S.sharing}</h2>
+        <p class={`${p} mb-3`}>
+          Puoi trasformare una chiamata registrata in un link e mandarlo a qualcuno. Chiunque abbia
+          quel link può aprirlo — dall’altra parte non c’è alcun accesso — quindi tratta il link
+          stesso come la chiave. La condivisione parte sempre da te; nulla viene condiviso
+          automaticamente.
+        </p>
+        <p class={`${p} mb-3`}>
+          Quando crei il link scegli cosa riceve la persona dall’altra parte. Di default sente
+          l’audio, la trascrizione è nascosta e l’identità del tuo interlocutore è mascherata. Puoi
+          attivare o disattivare ciascuna cosa, consentire o bloccare il download e scegliere quale
+          lato della conversazione si sente. Revocare il link lo rende inutilizzabile.
+        </p>
+        <p class={p}>
+          Pensaci prima di inviarne uno. Una registrazione condivisa contiene la voce di un’altra
+          persona e ciò che ha detto credendo di parlare solo con te. Condividerla è una tua decisione
+          e una tua responsabilità — i mascheramenti di default esistono per aiutarti, non per
+          decidere al posto tuo.
+        </p>
+      </section>
+
+      <section id="integrations" class={sec}>
+        <h2 class={h2}>{S.integrations}</h2>
+        <p class={`${p} mb-4`}>
+          Un account WaveKat può passare le tue chiamate ad altri sistemi che colleghi tu. Nulla è
+          collegato di default — ogni destinazione la aggiungi tu, e rimuoverla ferma il flusso
+          all’istante. Finché una destinazione è collegata, i dati delle chiamate lasciano WaveKat
+          verso un servizio che non gestiamo noi. Ne esistono due tipi:
+        </p>
+        <ul class="space-y-2.5 mb-4">
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>Webhook.</strong> Dai a WaveKat un URL e questo vi invia una
+              scheda di ogni chiamata. Di default quella scheda porta il numero e l’identità del
+              chiamante dell’altra persona, la trascrizione completa e un link che permette a chi lo
+              possiede di scaricare l’audio per 24 ore. Tre interruttori per endpoint spengono
+              identità, trascrizione o registrazione — un campo spento viene omesso del tutto dal
+              messaggio, non lasciato vuoto. Ogni richiesta è firmata, così il tuo endpoint può
+              verificare che arrivi davvero da noi.
+            </span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span>
+              <strong class={strong}>HubSpot.</strong> Colleghi il tuo account HubSpot sulla schermata
+              di consenso di HubSpot stesso. Dopo ogni chiamata, WaveKat cerca l’altra persona nei
+              tuoi contatti HubSpot per numero di telefono e registra una scheda chiamata sul suo
+              profilo: ora, direzione, esito, durata, i numeri, una riga di riepilogo, un link alla
+              chiamata in WaveKat e — salvo tu disattivi la sincronizzazione delle trascrizioni — ciò
+              che è stato detto. Se la chiamata è stata registrata, la scheda porta anche ciò che
+              serve a HubSpot per riprodurre l’audio. Due interruttori facoltativi permettono a
+              WaveKat di creare un contatto HubSpot quando nessuno corrisponde al numero, e di
+              archiviare la scheda HubSpot quando elimini la chiamata in WaveKat.
+            </span>
+          </li>
+        </ul>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Le tue credenziali HubSpot.</strong> Il collegamento consegna a
+          WaveKat un token di accesso e uno di aggiornamento per il tuo account HubSpot. Entrambi
+          vengono cifrati prima di essere salvati, non vengono mai restituiti da alcuna parte della
+          nostra API e vengono cancellati quando ti scolleghi — chiediamo anche a HubSpot di
+          revocarli. Le schede già create nel tuo HubSpot restano dove sono: sono dati del tuo CRM, e
+          scollegare un’integrazione non equivale a cancellare la tua cronologia.
+        </p>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Una volta arrivati, sono loro.</strong> I dati che raggiungono il tuo
+          endpoint webhook o il tuo account HubSpot hanno lasciato WaveKat. Ciò che vi accade è
+          regolato dall’informativa privacy di quel sistema, e a decidere come usarli sei tu.
+        </p>
+        <p class={`${p} mb-3`}>
+          <strong class={strong}>Una parola sull’altra persona della chiamata.</strong> Queste
+          destinazioni ricevono il numero della persona con cui hai parlato, la sua trascrizione e —
+          se lo consenti — una scheda contatto creata per lei nel tuo CRM. Quella persona non è un
+          utente WaveKat e non ha mai pattuito nulla con noi. Decidere se puoi archiviare il suo
+          numero, la sua voce e le sue parole è la stessa responsabilità di registrare la chiamata in
+          primo luogo.
+        </p>
+        <p class={p}>
+          Teniamo un registro delle consegne per 30 giorni — quale evento è andato dove, cosa ha
+          risposto la destinazione e quanto ha impiegato — per poter diagnosticare un guasto. Una
+          destinazione che continua a fallire viene disattivata invece di essere ritentata
+          all’infinito. I webhook sono gratuiti durante la beta; l’integrazione HubSpot è una funzione
+          Pro.
+        </p>
+      </section>
+
+      <section id="prompts" class={sec}>
+        <h2 class={h2}>{S.prompts}</h2>
+        <p class={`${p} mb-3`}>
+          WaveKat offre uno strumento che trasforma un testo digitato in un messaggio telefonico
+          parlato. Il testo che scrivi viene inviato a <strong class={strong}>ElevenLabs</strong>, il
+          servizio di sintesi vocale che usiamo, che restituisce l’audio. Non scriverci nulla che non
+          vorresti veder uscire da WaveKat — è un generatore di messaggi, non un blocco note privato.
+        </p>
+        <p class={p}>
+          Puoi usarlo senza account. In quel caso conteggiamo l’uso su una
+          <strong class={strong}>forma offuscata del tuo indirizzo IP</strong>, perché un singolo
+          visitatore non esaurisca il budget giornaliero di tutti. È un valore a senso unico tenuto
+          per il conteggio del giorno, non un profilo su di te, e non lo usiamo per seguirti nel sito.
+        </p>
+      </section>
+
+      <section id="telemetry" class={sec}>
+        <h2 class={h2}>{S.telemetry}</h2>
+        <p class={`${p} mb-3`}>
+          Quando l’app va in crash o incontra un errore interno, può inviare una segnalazione anonima
+          perché possiamo correggere il difetto: l’errore, in quale punto dell’app è avvenuto e cosa
+          stava facendo l’app un attimo prima. Le segnalazioni vanno a Sentry, il servizio di
+          segnalazione errori che usiamo. Prima dell’invio, l’app rimuove nomi utente, indirizzi
+          email, indirizzi IP, percorsi di file contenenti il tuo nome utente e qualunque cosa
+          somigli a una credenziale. Le segnalazioni di crash non includono mai audio delle chiamate,
+          cronologia, numeri di telefono o contatti.
+        </p>
+        <p class={`${p} mb-3`}>
+          Una volta per avvio, l’app invia inoltre un segnale anonimo perché sappiamo quante
+          installazioni esistono e quali versioni e sistemi operativi supportare. Contiene un
+          identificativo di installazione casuale, la versione dell’app, il tuo sistema operativo con
+          la sua versione, il tipo di processore e la lingua — nessun nome, nessun account, nessun
+          nome di computer.
+        </p>
+        <p class={p}>
+          Entrambi sono attivi di default ed entrambi si spengono con l’unico interruttore
+          <strong class={strong}>Invia segnalazioni di errore</strong> in Impostazioni → Informazioni.
+          Il controllo degli aggiornamenti scarica file dal nostro server di aggiornamento — normali
+          richieste web senza dati personali allegati.
+        </p>
+      </section>
+
+      <section id="providers" class={sec}>
+        <h2 class={h2}>{S.providers}</h2>
+        <p class={`${p} mb-4`}>
+          WaveKat gira sui servizi di un piccolo numero di altre aziende. Ciascuna riceve solo ciò che
+          è descritto qui, e usiamo ciascuna alle sue condizioni commerciali standard — ma sono grandi
+          aziende le cui pratiche appartengono a loro, non a noi, e le loro informative privacy
+          regolano ciò che fanno. Questi sono i fornitori scelti da <em>noi</em>; i servizi che
+          colleghi <em>tu</em> sono un altro discorso, trattato in
+          <a href="#integrations" class={link}>{S.integrations.toLowerCase()}</a>.
+        </p>
+        <div class={wrap}>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
+                <th class={`${th} w-[18%]`}>Fornitore</th>
+                <th class={`${th} w-[34%]`}>Cosa fa per noi</th>
+                <th class={th}>Cosa riceve</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class={row}>
+                <td class={tdKey}>Google</td>
+                <td class={td}>Analisi del sito, misurazione degli annunci, caratteri web</td>
+                <td class={td}>Pagine viste, indirizzo IP, dispositivo e browser, attribuzione dei clic sugli annunci</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>Cloudflare</td>
+                <td class={td}>Hosting del sito, download dell’app e l’archiviazione dietro gli account WaveKat</td>
+                <td class={td}>Log di server e — se attivi la sincronizzazione cloud — le tue registrazioni, trascrizioni e cronologia sincronizzate</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>ElevenLabs</td>
+                <td class={td}>Trasformare testo digitato in messaggi telefonici parlati</td>
+                <td class={td}>Il testo che scrivi. Mai audio delle chiamate, trascrizioni o contatti</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>Sentry</td>
+                <td class={td}>Segnalazioni di crash anonime dall’app desktop</td>
+                <td class={td}>Dettagli dell’errore con i campi personali rimossi — mai dati delle chiamate</td>
+              </tr>
+              <tr class={row}>
+                <td class={tdKey}>GitHub / Google</td>
+                <td class={td}>Il tuo accesso</td>
+                <td class={td}>Loro ci dicono chi sei; noi non inviamo loro nulla sulle tue chiamate</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class={p}>
+          Questi fornitori hanno sede negli USA, quindi i dati coperti da questa informativa possono
+          essere trattati negli Stati Uniti secondo le garanzie di trasferimento delle loro condizioni
+          standard di trattamento dei dati. Non vendiamo dati personali. Usiamo la misurazione delle
+          conversioni di Google Ads, che diverse leggi statali USA considerano «condivisione»
+          pubblicitaria tra contesti — l’esclusione descritta più in basso la copre.
+        </p>
+      </section>
+
+      <section id="retention" class={sec}>
+        <h2 class={h2}>{S.retention}</h2>
+        <ul class="space-y-2.5">
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Analisi del sito</strong> — conservata da Google secondo la nostra impostazione di conservazione di Google Analytics, oggi la finestra standard di circa 14 mesi.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Segnalazioni di crash</strong> — conservate da Sentry secondo la finestra di conservazione del nostro piano, questione di mesi, non di anni.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Registri di consegna di integrazioni e webhook</strong> — 30 giorni, poi eliminati automaticamente.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Registrazioni, cronologia e trascrizioni sul tuo computer</strong> — finché non le elimini tu. Non le eliminiamo mai al posto tuo.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Dati sincronizzati con un account WaveKat</strong> — finché non li elimini nell’app o non ci chiedi di farlo.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Email</strong> — finché ci serve per risponderti e conservare traccia dello scambio.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="deletion" class={sec}>
+        <h2 class={h2}>{S.deletion}</h2>
+        <ul class="space-y-2.5">
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Una registrazione</strong> — apri la chiamata nella sua pagina di dettaglio ed elimina lì la registrazione.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Tutte le registrazioni</strong> — Impostazioni → Registrazione → Cancella tutte le registrazioni.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Tutto su questo computer</strong> — Impostazioni → Account WaveKat → Elimina dati locali rimuove da quella macchina cronologia chiamate, registrazioni, trascrizioni e il tuo accesso.</span>
+          </li>
+          <li class={li}>
+            <span class={dot}></span>
+            <span><strong class={strong}>Dati sincronizzati col tuo account WaveKat</strong> — scrivi a <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> e li elimineremo.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="rights" class={sec}>
+        <h2 class={h2}>{S.rights}</h2>
+        <p class={`${p} mb-3`}>
+          Se sei nell’UE, nel Regno Unito o in un’altra regione con leggi comparabili, puoi chiederci
+          una copia dei tuoi dati, correggerli, eliminarli, limitarne l’uso o opporti a esso,
+          portarli altrove in formato portabile, o revocare un consenso dato in precedenza. Puoi anche
+          presentare reclamo alla tua autorità di protezione dei dati.
+        </p>
+        <p class={`${p} mb-3`}>
+          Se sei in California o in un altro stato USA con una legge sulla privacy, puoi chiedere cosa
+          raccogliamo, chiederne l’eliminazione o la correzione, ed escluderti da qualunque vendita o
+          condivisione pubblicitaria. Non ti tratteremo mai diversamente per aver esercitato un
+          diritto.
+        </p>
+        <p class={p}>
+          Per tutto questo, scrivi a
+          <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>. WaveKat è una realtà
+          piccola — concedici un po’ di tempo. Rispondiamo il più in fretta possibile e, dove la legge
+          si applica, entro il mese che essa concede. Potremmo chiederti di confermare che controlli
+          l’account o l’indirizzo in questione: quella verifica serve a impedire che qualcun altro
+          reclami i tuoi dati.
+        </p>
+      </section>
+
+      <section id="security" class={sec}>
+        <h2 class={h2}>{S.security}</h2>
+        <p class={`${p} mb-3`}>
+          Le misure ragionevoli ci sono. Tutto ciò che viaggia tra te e WaveKat — questo sito, la
+          sincronizzazione cloud, i download — passa su connessioni cifrate. L’accesso avviene tramite
+          GitHub o Google, quindi non c’è una tua password che possiamo perdere. Le credenziali dei
+          servizi che colleghi vengono cifrate prima di essere salvate. Le registrazioni condivise via
+          link richiedono il link. Le tue password SIP non lasciano affatto il tuo computer.
+        </p>
+        <p class={`${p} mb-3`}>
+          Un’avvertenza onesta: la telefonata in sé viaggia sulla rete del tuo operatore SIP, e se
+          quel tratto sia cifrato è una questione tra te e il tuo operatore — la maggior parte del
+          traffico SIP aziendale oggi non lo è. Vale per qualunque telefono su quella linea e non è
+          qualcosa che WaveKat aggiunge, ma una pagina sulla privacy non dovrebbe tacerlo.
+        </p>
+        <p class={`${p} mb-3`}>
+          Ciò che non ti diremo è che tutto questo renda qualcosa impossibile. Nessun servizio online
+          è completamente sicuro, e WaveKat è costruito e gestito da un team molto piccolo senza un
+          reparto sicurezza dedicato. Se mai scoprissimo che i tuoi dati sono stati esposti, ti
+          diremo ciò che sappiamo, appena ragionevolmente possibile, e diremo con franchezza ciò che
+          non sappiamo.
+        </p>
+        <p class={p}>
+          La protezione più forte resta nelle tue mani: WaveKat Voice tiene tutto sul tuo computer, a
+          meno che tu non scelga diversamente. Se una chiamata è così sensibile che una violazione
+          sarebbe grave, tenere la sincronizzazione spenta — e non condividerla né inoltrarla — la
+          tiene del tutto fuori dalla nostra portata.
+        </p>
+      </section>
+
+      <section id="children" class={sec}>
+        <h2 class={h2}>{S.children}</h2>
+        <p class={p}>
+          WaveKat Voice è uno strumento di lavoro e non è rivolto ai minori. Non raccogliamo
+          consapevolmente dati personali di persone sotto i 16 anni. Se ritieni che un minore ci abbia
+          fornito dati, scrivici e li elimineremo.
+        </p>
+      </section>
+
+      <section id="changes" class={sec}>
+        <h2 class={h2}>{S.changes}</h2>
+        <p class={`${p} mb-3`}>
+          Quando questa informativa cambia, la data in alto cambia con essa. Se una modifica incide in
+          modo sostanziale su cosa raccogliamo o su chi lo riceve, lo diremo chiaramente in questa
+          pagina invece di ritoccare una frase in silenzio.
+        </p>
+        <p class={p}>
+          Questa pagina è una descrizione in linguaggio piano di come WaveKat funziona davvero,
+          scritta da chi lo costruisce e non da avvocati. Non è consulenza legale e non sostituisce il
+          tuo giudizio su cosa puoi registrare, conservare o condividere là dove vivi e lavori. Se
+          qualcosa qui conta per la tua attività e ti serve certezza, consulta una persona qualificata
+          nel tuo paese — e dicci se trovi in questa pagina qualcosa che si rivela sbagliato:
+          preferiamo correggerlo che difenderlo.
+        </p>
+      </section>
+
+      <section id="faq" class={sec}>
+        <h2 class={h2}>{S.faq}</h2>
+        <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
+          {faqs.map((f) => (
+            <details class="group">
+              <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
+                {f.q}
+                <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+              </summary>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pb-4 -mt-1">
+                {f.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" class="mb-8">
+        <h2 class={h2}>{S.contact}</h2>
+        <p class={`${p} mb-5`}>
+          Dubbi sulla privacy, richieste sui dati o un passaggio di questa pagina poco chiaro —
+          scrivici e ti risponderà una persona.
+        </p>
+        <a
+          href="mailto:hello@wavekat.com"
+          class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+          style="background-color: #ff6d00"
+        >
+          <Mail class="w-4 h-4" />
+          hello@wavekat.com
+        </a>
+      </section>
+
+    </div>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Base>

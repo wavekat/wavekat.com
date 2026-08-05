@@ -85,6 +85,7 @@ const fullSite = [
   '/blog/phone-menu-ivr-voice-generator/',
   '/blog/answer-calls-with-a-call-flow/',
   '/about/',
+  '/privacy/',
 ];
 
 // Which base paths exist in which non-default locale. The default locale is
@@ -216,6 +217,7 @@ export interface UIStrings {
   footerEmail: string;
   footerSource: string;
   footerAbout: string;
+  footerPrivacy: string;
   footerPrompts: string;
   footerMore: string;
   footerTools: string;
@@ -271,6 +273,7 @@ const strings: Record<string, UIStrings> = {
     footerEmail: 'Email us',
     footerSource: 'View source on GitHub',
     footerAbout: 'About',
+    footerPrivacy: 'Privacy',
     footerPrompts: 'Prompt Generator',
     footerMore: 'More',
     footerTools: 'Tools',
@@ -306,6 +309,7 @@ const strings: Record<string, UIStrings> = {
     footerEmail: '给我们发邮件',
     footerSource: '在 GitHub 上查看源码',
     footerAbout: '关于',
+    footerPrivacy: '隐私政策',
     footerPrompts: '语音生成器',
     footerMore: '更多',
     footerTools: '工具',

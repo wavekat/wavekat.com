@@ -25,6 +25,7 @@ export const ui: UIStrings = {
   talkWritePost: '.',
   footerEmail: 'Écrivez-nous',
   footerAbout: 'À propos',
+  footerPrivacy: 'Confidentialité',
   footerPrompts: 'Générateur vocal',
   footerMore: 'Plus',
   footerTools: 'Outils',
