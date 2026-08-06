@@ -1,6 +1,6 @@
 ---
 title: "自社製 SIP エンジンで動かす理由"
-description: "WaveKat Voice は、ゼロから書いたオープンソースの SIP/RTP エンジン wavekat-sip で動きます。第三者のスタックも、通話との間のブラックボックスもありません。"
+description: "WaveKat Voice は、ゼロから書いたオープンソース SIP/RTP エンジン wavekat-sip で動きます。第三者のスタックもブラックボックスもなし。"
 date: 2026-07-06
 author: Eason Guo
 tags: [音声AI, エンジニアリング, オープンソース, SIP]

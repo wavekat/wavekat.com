@@ -1,5 +1,5 @@
 ---
-title: "Common Voice Explorer —— 聆聽世界的聲音"
+title: "Common Voice Explorer：聽見世界"
 description: "在瀏覽器中直接瀏覽、搜尋並聆聽來自 Mozilla Common Voice 的成千上萬段真實人聲——無需下載，無需設定。"
 date: 2026-04-21
 author: Eason Guo

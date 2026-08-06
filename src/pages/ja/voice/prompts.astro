@@ -29,9 +29,9 @@ import {
 // sitemap entry (apps/web/public/sitemap.xml).
 const APP_URL = 'https://platform.wavekat.com/voice/prompts';
 
-const title = '無料の電話メニュー・IVR 音声ジェネレーター | WaveKat';
+const title = '無料の電話音声ガイダンス・IVR 生成';
 const description =
-  'テキストを、電話システムがそのまま使える形式で、電話の応答メッセージ・IVR メニュー・留守番電話の案内に変換します——スタジオ品質の AI 音声で。無料で試せて、アカウント登録は不要です。';
+  '電話システムの音声ガイダンスを無料で作成。応答メッセージ、IVR メニュー、留守番電話、保留中のお知らせを、電話システムがそのまま使える形式で。登録不要。';
 
 // What people actually search for and come to make. Each is a concrete,
 // quotable phone-audio job the generator does.
@@ -132,8 +132,8 @@ const faqs = [
     a: 'いいえ。誰でも登録なしで、いくつかのクリップを生成できます。サインインが必要になるのは、無料の範囲を超えて生成を続けたいときや、あとで戻ってこられるライブラリにプロンプトを保存したいときだけです。',
   },
   {
-    q: '自社のビジネス電話システムにクリップを使えますか？',
-    a: 'はい——まさにそのためのジェネレーターです。応答メッセージ、メニュー、留守番電話、保留中のプロンプトを生成し、ダウンロードして、電話システムに読み込ませてください。',
+    q: '電話システム用の音声ガイダンスはどう作りますか？',
+    a: '電話システムに必要な案内の原稿を入力します——応答メッセージ、IVR メニュー、留守番電話の案内、保留中のお知らせ。声を選び、お使いのシステムが求める形式でそれぞれをダウンロードしてください。ファイルを電話システムにアップロードすれば、発信者に再生されます。インストールするものはなく、登録なしで始められます。',
   },
   {
     q: '音声を使うには電話システムが必要ですか？',
@@ -206,8 +206,8 @@ const faqSchema = {
         </span>
       </div>
       <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
-        無料の電話メニュー・IVR<br />
-        <span class="bg-gradient-to-r from-wk-orange to-[#ffa14d] bg-clip-text text-transparent">音声ジェネレーター。</span>
+        無料の電話システム<br />
+        <span class="bg-gradient-to-r from-wk-orange to-[#ffa14d] bg-clip-text text-transparent">音声ガイダンス。</span>
       </h1>
       <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
         WaveKat の音声プロンプトジェネレーターは、どんなテキストも、電話システムがそのまま使える音声に

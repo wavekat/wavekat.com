@@ -69,7 +69,7 @@ export const providers: Provider[] = [
       'Use your 2talk number on Mac or Linux with a subscription-free softphone that records and transcribes every call.',
     seoTitle: '2talk softphone for Mac & Linux',
     seoDescription:
-      'Use your 2talk number on Mac or Linux with WaveKat Voice — a subscription-free SIP softphone that records and transcribes every call. A free alternative to Bria for 2talk.',
+      'Use your 2talk number on Mac or Linux with WaveKat Voice — a subscription-free SIP softphone that records and transcribes every call. A free Bria alternative.',
     heading: 'The subscription-free softphone for 2talk on Mac & Linux',
     intro:
       'WaveKat Voice is a desktop softphone that connects to your 2talk account over SIP and records and transcribes every call automatically. It runs on Mac and Linux, it is free during the public beta, and there is no monthly subscription — so it is a way to put your 2talk number on your computer without paying for Bria.',
@@ -210,7 +210,7 @@ export const providersZhHans: Provider[] = [
     tagline: '在 Mac 或 Linux 上使用你的 2talk 号码——无需订阅，自动录音并转写每一通通话。',
     seoTitle: '2talk 软电话（适用于 Mac 和 Linux）',
     seoDescription:
-      '在 Mac 或 Linux 上用 WaveKat Voice 使用你的 2talk 号码——一款无需订阅的 SIP 软电话，自动录音并转写每一通通话。2talk 上 Bria 的免费替代方案。',
+      '在 Mac 或 Linux 上用 WaveKat Voice 使用 2talk 号码——无需订阅的 SIP 软电话，自动录音并转写每一通通话。',
     heading: '适用于 Mac 和 Linux 的 2talk 免订阅软电话',
     intro:
       'WaveKat Voice 是一款桌面软电话，通过 SIP 连接到你的 2talk 账户，并自动录音、转写每一通通话。它运行在 Mac 和 Linux 上，公测期间免费，且无需按月订阅——因此你无需为 Bria 付费，就能把 2talk 号码放到电脑上使用。',

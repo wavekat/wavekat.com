@@ -6,9 +6,9 @@ export const alternatives: Alternative[] = [
     name: 'Linphone',
     tagline:
       '無料でオープンソースの SIP クライアント。多機能でクロスプラットフォーム——WaveKat Voice は広さよりも一点集中を選び、すべての通話を録音して書き起こすデスクトップ業務用電話を目指します。',
-    seoTitle: 'WaveKat Voice——Mac と Linux 向けの Linphone 代替ツール',
+    seoTitle: 'Linphone 代替ツール（Mac・Linux）',
     seoDescription:
-      'WaveKat Voice と Linphone を Mac と Linux で比較。すべての通話を自動で録音・文字起こしし、プロバイダー設定をガイド付きで行える、業務に特化した電話アプリ。無料パブリックベータ。',
+      'WaveKat Voice と Linphone を Mac・Linux で比較。すべての通話を自動で録音・文字起こしする業務用の電話アプリです。',
     heading: 'Mac と Linux 向けの Linphone 代替ツール',
     intro:
       'Linphone は多機能で無料の SIP クライアントで、ほぼあらゆるプラットフォームで動作します。もしあなたが本当に求めているのが、すべての通話を録音・記録し、SIP の項目を手で入力しなくても設定が済むデスクトップ業務用電話なら、Mac と Linux における両者の比較は次のとおりです。',
