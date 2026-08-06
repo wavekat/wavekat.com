@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.53](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.52...wavekat-com-v0.0.53) (2026-08-06)
+
+
+### Features
+
+* scroll-aware wave background and footer ([#146](https://github.com/wavekat/wavekat.com/issues/146)) ([8bceb81](https://github.com/wavekat/wavekat.com/commit/8bceb81de5981706b8630738d1460af620275ef0))
+
+
+### Bug Fixes
+
+* localize the download hardware requirement ([#145](https://github.com/wavekat/wavekat.com/issues/145)) ([3e00572](https://github.com/wavekat/wavekat.com/commit/3e00572689755979bb8262077a1d4dd95eb2a051))
+* **seo:** trim SERP snippets, add check:meta ([#148](https://github.com/wavekat/wavekat.com/issues/148)) ([7b66b05](https://github.com/wavekat/wavekat.com/commit/7b66b05119a586c0882cb2196cad0bec975e38b1))
+
 ## [0.0.52](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.51...wavekat-com-v0.0.52) (2026-08-05)
 
 
