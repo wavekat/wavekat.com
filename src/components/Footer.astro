@@ -163,9 +163,9 @@ try {
      a spotlight, not a hover swap. Nested masks: this layer is masked by the
      cursor circle, the glyph inside it by the wordmark.
 
-     The radius is deliberately far larger than the watermark strip is tall, so
-     the pointer reaches it from up in the nav and link columns — you never have
-     to hover the wordmark itself to see it respond. */
+     The radius is larger than the watermark strip is tall, so the pointer
+     reaches it from the rows just above — you don't have to hover the wordmark
+     itself for it to respond. */
   .wm-lit {
     position: absolute;
     inset: 0;
@@ -173,12 +173,12 @@ try {
     opacity: 0;
     transition: opacity 350ms ease;
     -webkit-mask-image: radial-gradient(
-      512px circle at var(--wx, 50%) var(--wy, 50%),
+      256px circle at var(--wx, 50%) var(--wy, 50%),
       #000 9%,
       transparent 80%
     );
     mask-image: radial-gradient(
-      512px circle at var(--wx, 50%) var(--wy, 50%),
+      256px circle at var(--wx, 50%) var(--wy, 50%),
       #000 9%,
       transparent 80%
     );
