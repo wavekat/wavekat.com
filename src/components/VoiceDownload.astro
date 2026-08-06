@@ -21,12 +21,25 @@ const { variant = 'hero' } = Astro.props;
 const { code: lang } = resolveLocale(Astro.url.pathname);
 const ui = t(lang);
 
-// Button labels are localised here (the download lib stays language-agnostic).
-const dlLabel: Record<string, string> = { mac: ui.dlMac, linux: ui.dlLinux };
-
+// Button labels and hardware requirements are localised here (the download lib
+// stays language-agnostic — it only knows versions, sizes and URLs).
 const platforms = [
-  { key: 'mac', icon: Apple, conversion: 'download_mac', dl: await getMacDownload() },
-  { key: 'linux', icon: Package, conversion: 'download_linux', dl: await getLinuxDownload() },
+  {
+    key: 'mac',
+    icon: Apple,
+    conversion: 'download_mac',
+    label: ui.dlMac,
+    arch: ui.dlArchMac,
+    dl: await getMacDownload(),
+  },
+  {
+    key: 'linux',
+    icon: Package,
+    conversion: 'download_linux',
+    label: ui.dlLinux,
+    arch: ui.dlArchLinux,
+    dl: await getLinuxDownload(),
+  },
 ];
 
 // Mac is the SSR default primary; the script swaps to Linux when detected.
@@ -52,7 +65,7 @@ const primaryCls =
       style="background-color: #ff6d00"
     >
       <p.icon class="w-5 h-5" />
-      {dlLabel[p.key] ?? p.dl.label}
+      {p.label}
     </a>
   ))}
 
@@ -75,8 +88,8 @@ const primaryCls =
         >
           <p.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
           <span class="flex flex-col">
-            <span class="text-sm font-bold text-gray-900 dark:text-white">{dlLabel[p.key] ?? p.dl.label}</span>
-            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.dl.arch} · {p.dl.size}</span>
+            <span class="text-sm font-bold text-gray-900 dark:text-white">{p.label}</span>
+            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.arch} · {p.dl.size}</span>
           </span>
         </a>
       ))}

@@ -209,6 +209,8 @@ export interface UIStrings {
   dlMac: string;
   dlLinux: string;
   dlOther: string;
+  dlArchMac: string;
+  dlArchLinux: string;
   talkHeading: string;
   talkBody: string;
   talkButton: string;
@@ -264,6 +266,8 @@ const strings: Record<string, UIStrings> = {
     dlMac: 'Download for Mac',
     dlLinux: 'Download for Linux',
     dlOther: 'Other Platforms',
+    dlArchMac: 'Macs with Apple chip (M1 or newer)',
+    dlArchLinux: 'Debian & Ubuntu (.deb, 64-bit)',
     talkHeading: 'Talk to us',
     talkBody:
       'Questions, feedback, or a device you wish we supported? Email is the best way to reach us — we read every message and reply as soon as we can.',
@@ -300,6 +304,8 @@ const strings: Record<string, UIStrings> = {
     dlMac: '下载 Mac 版',
     dlLinux: '下载 Linux 版',
     dlOther: '其他平台',
+    dlArchMac: '搭载 Apple 芯片的 Mac（M1 或更新机型）',
+    dlArchLinux: 'Debian 与 Ubuntu（.deb，64 位）',
     talkHeading: '联系我们',
     talkBody:
       '有疑问、建议，或希望我们支持某种设备？邮件是联系我们的最佳方式——我们会阅读每一条消息，并尽快回复。',

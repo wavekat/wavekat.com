@@ -17,6 +17,8 @@ export const ui: UIStrings = {
   dlMac: 'Scarica per Mac',
   dlLinux: 'Scarica per Linux',
   dlOther: 'Altre piattaforme',
+  dlArchMac: 'Mac con chip Apple (M1 o successivo)',
+  dlArchLinux: 'Debian e Ubuntu (.deb, 64 bit)',
   talkHeading: 'Contattaci',
   talkBody:
     'Domande, suggerimenti o un dispositivo che vorresti vedere supportato? L’email è il modo migliore per raggiungerci: leggiamo ogni messaggio e rispondiamo il prima possibile.',

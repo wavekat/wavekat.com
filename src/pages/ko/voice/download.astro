@@ -3,9 +3,13 @@ import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
 import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getMacDownload();
 const linuxDownload = await getLinuxDownload();
+
+// Hardware requirements are localised chrome, not release data.
+const ui = t(resolveLocale(Astro.url.pathname).code);
 
 const steps = [
   {
@@ -63,8 +67,8 @@ const highlights = [
     <VoiceDownload />
 
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {macDownload.arch} · <a href="/ko/voice/changelog/" title="이 버전의 변경 사항 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {macDownload.size}</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {linuxDownload.arch} · <a href="/ko/voice/changelog/" title="이 버전의 변경 사항 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {linuxDownload.size}</p>
+      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/ko/voice/changelog/" title="이 버전의 변경 사항 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {macDownload.size}</p>
+      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/ko/voice/changelog/" title="이 버전의 변경 사항 보기" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {linuxDownload.size}</p>
     </div>
   </section>
 

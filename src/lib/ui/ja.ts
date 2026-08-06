@@ -17,6 +17,8 @@ export const ui: UIStrings = {
   dlMac: 'Mac 版をダウンロード',
   dlLinux: 'Linux 版をダウンロード',
   dlOther: 'その他のプラットフォーム',
+  dlArchMac: 'Apple シリコン搭載 Mac（M1 以降）',
+  dlArchLinux: 'Debian・Ubuntu（.deb、64ビット）',
   talkHeading: 'お問い合わせ',
   talkBody:
     'ご質問やご意見、対応してほしいデバイスはありますか？メールが一番確実な連絡方法です。いただいたメッセージはすべて読み、できる限り早くお返事します。',
