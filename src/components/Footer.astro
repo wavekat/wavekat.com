@@ -60,7 +60,10 @@ try {
 }
 ---
 
-<footer class="mt-20 border-t border-gray-100 bg-gray-50/60 dark:border-white/10 dark:bg-wk-surface/40">
+<footer
+  class="mt-20 border-t border-gray-100 bg-gray-50/60 dark:border-white/10 dark:bg-wk-surface/40"
+  data-footer
+>
   <div class="mx-auto max-w-6xl px-6 pt-12">
   <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
     <div class="flex flex-col gap-4">
@@ -145,9 +148,107 @@ try {
     </a>
   </div>
   </div>
-  <!-- Giant watermark wordmark peeking from the bottom edge — pure brand, no copy. -->
-  <div class="relative mx-auto h-16 max-w-6xl overflow-hidden px-6 sm:h-24 md:h-32" aria-hidden="true">
+  <!-- Giant watermark wordmark peeking from the bottom edge — pure brand, no
+       copy. It's the only thing the pointer affects: moving through the footer
+       lights the letterforms in a soft circle around the cursor. -->
+  <div class="relative mx-auto h-16 max-w-6xl overflow-hidden px-6 sm:h-24 md:h-32" data-wm aria-hidden="true">
     <img src="/logos/wavekat-tight-light.svg" alt="" class="absolute top-2 left-6 right-6 w-[calc(100%-3rem)] opacity-[0.06] dark:hidden" loading="lazy" />
     <img src="/logos/wavekat-tight-dark.svg" alt="" class="absolute top-2 left-6 right-6 hidden w-[calc(100%-3rem)] opacity-[0.05] dark:block" loading="lazy" />
+    <span class="wm-lit" aria-hidden="true"><span class="wm-glyph"></span></span>
   </div>
 </footer>
+
+<style>
+  /* The watermark's lit state, revealed in a soft circle around the pointer —
+     a spotlight, not a hover swap. Nested masks: this layer is masked by the
+     cursor circle, the glyph inside it by the wordmark.
+
+     The radius is larger than the watermark strip is tall, so the pointer
+     reaches it from the rows just above — you don't have to hover the wordmark
+     itself for it to respond. */
+  .wm-lit {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 350ms ease;
+    -webkit-mask-image: radial-gradient(
+      256px circle at var(--wx, 50%) var(--wy, 50%),
+      #000 9%,
+      transparent 80%
+    );
+    mask-image: radial-gradient(
+      256px circle at var(--wx, 50%) var(--wy, 50%),
+      #000 9%,
+      transparent 80%
+    );
+  }
+
+  :global(.is-lit) .wm-lit {
+    opacity: 1;
+  }
+
+  /* Positioned to match the <img> above it exactly. aspect-ratio stands in for
+     the image's intrinsic height so the mask crops identically. Flat colour —
+     no drop-shadow, no glow; the only thing that reads is the letterform
+     itself, brightened where the cursor is. */
+  .wm-glyph {
+    position: absolute;
+    top: 0.5rem;
+    left: 1.5rem;
+    width: calc(100% - 3rem);
+    aspect-ratio: 184 / 53;
+    background: #ff6d00;
+    opacity: 0.42;
+    -webkit-mask-image: url('/logos/wavekat-tight-light.svg');
+    mask-image: url('/logos/wavekat-tight-light.svg');
+    -webkit-mask-size: 100% auto;
+    mask-size: 100% auto;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  :global(.dark) .wm-glyph {
+    opacity: 0.5;
+  }
+</style>
+
+<script>
+  const footer = document.querySelector<HTMLElement>('[data-footer]');
+  const wm = footer?.querySelector<HTMLElement>('[data-wm]');
+  // Touch and stylus don't hover — a pointermove there would light the footer
+  // once and leave it lit with no way to dismiss it.
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (footer && fine) {
+    let x = 0;
+    let y = 0;
+    let raf = 0;
+
+    function apply() {
+      raf = 0;
+      if (!wm) return;
+      // The pointer has to be in the watermark's own coordinates, not the
+      // footer's, or the spotlight lands offset from the cursor. The pointer is
+      // usually above the strip entirely, giving a negative --wy — which is
+      // exactly right: the circle's lower edge reaches down into it.
+      const wr = wm.getBoundingClientRect();
+      wm.style.setProperty('--wx', `${x - wr.left}px`);
+      wm.style.setProperty('--wy', `${y - wr.top}px`);
+    }
+
+    footer.addEventListener(
+      'pointermove',
+      (e) => {
+        x = e.clientX;
+        y = e.clientY;
+        if (!raf) raf = requestAnimationFrame(apply);
+      },
+      { passive: true },
+    );
+    footer.addEventListener('pointerenter', () => footer.classList.add('is-lit'), { passive: true });
+    footer.addEventListener('pointerleave', () => footer.classList.remove('is-lit'), {
+      passive: true,
+    });
+  }
+</script>
