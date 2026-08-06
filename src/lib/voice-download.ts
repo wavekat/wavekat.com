@@ -25,11 +25,11 @@
 
 const DL_BASE = 'https://dl.wavekat.com/voice';
 
+// Nothing here is user-visible prose: button labels and the hardware/OS
+// requirement are localised chrome and live in the UI strings (i18n.ts
+// `dlMac` / `dlLinux` / `dlArchMac` / `dlArchLinux`), so every locale gets
+// them in its own language.
 export interface Download {
-  /** Button label. */
-  label: string;
-  /** Human-friendly hardware/OS requirement. */
-  arch: string;
   /** Current version, e.g. "0.0.26". */
   version: string;
   /** Human-friendly size, e.g. "120 MB". */
@@ -43,8 +43,6 @@ interface Platform {
   feed: string;
   /** File extension of the human installer, e.g. "dmg" or "deb". */
   ext: string;
-  label: string;
-  arch: string;
   /** Last known-good release, used if the feed can't be reached at build. */
   fallback: { version: string; fileName: string; sizeBytes: number };
 }
@@ -52,8 +50,6 @@ interface Platform {
 const MAC: Platform = {
   feed: `${DL_BASE}/latest-mac.yml`,
   ext: 'dmg',
-  label: 'Download for Mac',
-  arch: 'Macs with Apple chip (M1 or newer)',
   fallback: {
     version: '0.0.40',
     fileName: 'WaveKat Voice-0.0.40-arm64.dmg',
@@ -64,8 +60,6 @@ const MAC: Platform = {
 const LINUX: Platform = {
   feed: `${DL_BASE}/latest-linux.yml`,
   ext: 'deb',
-  label: 'Download for Linux',
-  arch: 'Debian & Ubuntu (.deb, 64-bit)',
   fallback: {
     version: '0.0.40',
     fileName: 'WaveKat Voice-0.0.40.deb',
@@ -99,8 +93,6 @@ async function load(p: Platform): Promise<Download> {
   }
 
   return {
-    label: p.label,
-    arch: p.arch,
     version,
     size: mb(sizeBytes),
     url: `${DL_BASE}/${encodeURIComponent(fileName)}`,

@@ -17,6 +17,8 @@ export const ui: UIStrings = {
   dlMac: '下載 Mac 版',
   dlLinux: '下載 Linux 版',
   dlOther: '其他平台',
+  dlArchMac: '搭載 Apple 晶片的 Mac（M1 或更新機型）',
+  dlArchLinux: 'Debian 與 Ubuntu（.deb，64 位元）',
   talkHeading: '聯絡我們',
   talkBody:
     '有疑問、建議，或希望我們支援某款裝置？電子郵件是聯絡我們的最佳方式——我們會閱讀每一則訊息，並盡快回覆。',
