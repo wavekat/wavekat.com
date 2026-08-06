@@ -3,56 +3,106 @@
 // WaveKat (waves) and the Voice product. Mounted once in Base.astro so it sits
 // behind every page.
 //
-// At rest the waves gently undulate (multiple harmonics + drift), kept subtle
-// so they never fight the content. Where the cursor hovers, the nearby waves
-// grow taller AND brighter — the field comes alive around the mouse, like a
-// finger trailed through water. Fixed (-z-10), pointer-events-none, edge-masked.
-// Renders one still frame and ignores the mouse under prefers-reduced-motion.
+// The canvas is fixed at viewport size (we never allocate a page-height one),
+// but what it draws is anchored to the *document*: every layer's baseline is
+// offset by scrollY at its own parallax rate, so the field has depth and the
+// page reads as moving through water rather than over wallpaper. The field
+// wraps seamlessly, so it never runs out on a long page.
+//
+// Three things drive it beyond the resting animation:
+//   - scroll position — parallax per layer, plus a bold hero crest at the top
+//     of the document that rises away faster and fades out over ~1 screen.
+//   - the cursor — nearby waves grow taller AND brighter, like a finger
+//     trailed through water.
+//   - scroll velocity — flicking the page makes the water briefly choppier,
+//     settling back to calm about a second after you stop.
+//
+// Fixed (-z-10), pointer-events-none, edge-masked. Renders one still frame and
+// ignores both the mouse and the scroll position under prefers-reduced-motion.
+//
+// WHY `is:inline` AND PLAIN JS: Astro's normal <script> compiles to
+// `type="module"`, which is deferred — it can't run until the document has
+// finished parsing. Since this site has no client router, every navigation is
+// a fresh document, so a deferred script means each page paints with no
+// background at all and the waves arrive late. That gap is what reads as a
+// flash, and fading the canvas in only stretches it. A classic inline script
+// placed immediately after the canvas runs *during* parse, so the first frame
+// is part of the first paint and there is nothing to fade. The cost is no
+// TypeScript and no bundling here — keep this file plain ES2020.
 ---
 
 <canvas class="wave-canvas" aria-hidden="true"></canvas>
 
-<style>
-  .wave-canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -10;
-    pointer-events: none;
-    -webkit-mask-image: radial-gradient(ellipse 130% 110% at 50% 45%, #000 55%, transparent 100%);
-    mask-image: radial-gradient(ellipse 130% 110% at 50% 45%, #000 55%, transparent 100%);
-  }
-</style>
+<script is:inline>
+  (() => {
+    const canvas = document.querySelector('.wave-canvas');
+    const ctx = canvas && canvas.getContext('2d');
+    if (!canvas || !ctx) return;
 
-<script>
-  const canvas = document.querySelector<HTMLCanvasElement>('.wave-canvas');
-  const ctx = canvas?.getContext('2d');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (canvas && ctx) {
-    // Wave layers positioned as a fraction of viewport height. Mixed
+    // Ambient field. `y` is the layer's resting position as a fraction of
+    // viewport height; `par` is how fast it answers the scroll. These sit high
+    // (0.55–0.9) on purpose: the field should read as stuck to the document,
+    // with only enough spread between layers to give depth — a wide spread
+    // makes the layers shear apart and float independently of the page. Mixed
     // wavelengths/speeds keep the field from ever looking like it repeats.
-    // baseAmp/baseAlpha are the calm resting state — deliberately low.
     const layers = [
-      { y: 0.16, amp: 14, len: 0.0065, speed: 0.55, phase: 0.0, alpha: 0.09, width: 2 },
-      { y: 0.34, amp: 18, len: 0.0042, speed: -0.4, phase: 1.7, alpha: 0.07, width: 2.5 },
-      { y: 0.52, amp: 16, len: 0.0055, speed: 0.7, phase: 3.1, alpha: 0.08, width: 2 },
-      { y: 0.7, amp: 20, len: 0.0035, speed: -0.5, phase: 4.6, alpha: 0.065, width: 3 },
-      { y: 0.86, amp: 15, len: 0.006, speed: 0.45, phase: 5.9, alpha: 0.075, width: 2 },
+      { y: 0.16, amp: 14, len: 0.0065, speed: 0.55, phase: 0.0, alpha: 0.09, width: 2, par: 0.55 },
+      { y: 0.34, amp: 18, len: 0.0042, speed: -0.4, phase: 1.7, alpha: 0.07, width: 2.5, par: 0.64 },
+      { y: 0.52, amp: 16, len: 0.0055, speed: 0.7, phase: 3.1, alpha: 0.08, width: 2, par: 0.72 },
+      { y: 0.7, amp: 20, len: 0.0035, speed: -0.5, phase: 4.6, alpha: 0.065, width: 3, par: 0.81 },
+      { y: 0.86, amp: 15, len: 0.006, speed: 0.45, phase: 5.9, alpha: 0.075, width: 2, par: 0.9 },
     ];
+
+    // The hero crest — taller, brighter, filled underneath, and gone by the
+    // time you've scrolled a screen. Only ever drawn near the document top,
+    // so unlike the ambient layers it needs no wrapping.
+    const crest = [
+      { y: 0.4, amp: 34, len: 0.0028, speed: 0.32, phase: 0.6, alpha: 0.22, width: 2.5 },
+      { y: 0.46, amp: 26, len: 0.0038, speed: -0.26, phase: 2.4, alpha: 0.16, width: 2 },
+      { y: 0.52, amp: 20, len: 0.005, speed: 0.44, phase: 4.1, alpha: 0.11, width: 1.5 },
+    ];
+
+    const CREST_PAR = 1.0; // pinned 1:1 to the document — it belongs to the hero and leaves with it
+    const CREST_FADE = 0.85; // ...and is fully gone after this many viewports
+
+    // Carry the animation clock across navigations. Without this every page
+    // load restarts the field at t=0, so the waves snap to the same opening
+    // arrangement each time; with it they simply carry on where they were.
+    // sessionStorage (not local) so a new tab starts fresh, and it's wrapped
+    // because Safari's private mode can throw on access.
+    const CLOCK_KEY = 'wk-wave-clock';
+    let seed = 0;
+    try {
+      seed = Number(sessionStorage.getItem(CLOCK_KEY)) || 0;
+    } catch {
+      /* storage unavailable — start from zero, no harm done */
+    }
+    let clock = seed; // seed + elapsed; what we hand to the next page
 
     let w = 0;
     let h = 0;
     let dpr = 1;
+    let period = 0; // vertical wrap distance for the ambient field
+    let xs = []; // shared x sample positions, always ending exactly on w
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = window.innerWidth;
       h = window.innerHeight;
+      // A margin past the viewport keeps the wrap seam off-screen even for the
+      // tallest layer at full amplitude.
+      period = h + 160;
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Sample every 5px, but always include the right edge so neither the
+      // stroke nor the crest fill stops short of it.
+      xs = [];
+      for (let x = 0; x < w; x += 5) xs.push(x);
+      xs.push(w);
     }
     resize();
     window.addEventListener('resize', resize, { passive: true });
@@ -78,74 +128,206 @@
     const AMP_GAIN = 2.0; // extra amplitude at the cursor (x2 taller)
     const GLOW_R = 340; // radius of the brightness halo around the cursor
 
-    function render(t: number) {
-      ctx.clearRect(0, 0, w, h);
+    // Scroll velocity, smoothed asymmetrically: it spikes almost immediately
+    // when you flick the page and bleeds off over about a second, so the water
+    // reacts sharply and then settles.
+    let lastScroll = window.scrollY;
+    let energy = 0;
+    const ATTACK = 0.25;
+    const RELEASE = 0.06;
+    const VEL_REF = 45; // px/frame that counts as "full" energy
 
-      mouse.x += (mouse.tx - mouse.x) * 0.08;
-      mouse.y += (mouse.ty - mouse.y) * 0.08;
+    /** Sample a layer's curve at x. `chop` folds scroll energy into the second
+     *  harmonic so fast scrolling reads as choppy, not merely bigger. */
+    function waveAt(x, L, t, amp, chop) {
+      return (
+        Math.sin(x * L.len + t * L.speed + L.phase) * amp +
+        Math.sin(x * L.len * 0.5 - t * L.speed * 0.6 + L.phase) * amp * (0.35 + chop * 0.5)
+      );
+    }
 
-      for (const L of layers) {
-        const baseY = h * L.y;
-        // Vertical proximity of this layer's baseline to the cursor.
-        const dyl = baseY - mouse.y;
-        const vInf = mouse.active ? Math.exp(-(dyl * dyl) / (2 * RY * RY)) : 0;
+    /** Local amplitude at x for a layer whose baseline sits at `baseY`. */
+    function ampAt(x, base, baseY) {
+      if (!mouse.active) return base;
+      const dyl = baseY - mouse.y;
+      const vInf = Math.exp(-(dyl * dyl) / (2 * RY * RY));
+      if (vInf <= 0.001) return base;
+      const dx = x - mouse.x;
+      const xInf = Math.exp(-(dx * dx) / (2 * RX * RX));
+      return base * (1 + AMP_GAIN * xInf * vInf);
+    }
+
+    /** Brightness — flat and subtle at rest; a bright halo around the cursor
+     *  when active, so the nearby waves stand out. */
+    function strokeFor(alpha) {
+      if (!mouse.active) return `rgba(255, 109, 0, ${alpha})`;
+      const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, GLOW_R);
+      g.addColorStop(0, `rgba(255, 122, 26, ${Math.min(0.4 + alpha, 0.55)})`);
+      g.addColorStop(1, `rgba(255, 109, 0, ${alpha})`);
+      return g;
+    }
+
+    function drawAmbient(L, baseY, t, chop) {
+      // Skip layers parked well outside the viewport.
+      if (baseY < -120 || baseY > h + 120) return;
+
+      const boost = 1 + chop * 0.45;
+      ctx.beginPath();
+      for (let i = 0; i < xs.length; i++) {
+        const x = xs[i];
+        const amp = ampAt(x, L.amp * boost, baseY);
+        const yy = baseY + waveAt(x, L, t, amp, chop);
+        if (i === 0) ctx.moveTo(x, yy);
+        else ctx.lineTo(x, yy);
+      }
+      ctx.strokeStyle = strokeFor(L.alpha);
+      ctx.lineWidth = L.width;
+      ctx.stroke();
+    }
+
+    function drawCrest(scroll, t, chop) {
+      // Eased fade — holds a moment at the top, then clears out.
+      const p = Math.min(scroll / (CREST_FADE * h), 1);
+      const fade = (1 - p) * (1 - p);
+      if (fade <= 0.01) return;
+
+      const boost = 1 + chop * 0.45;
+
+      for (const L of crest) {
+        const baseY = h * L.y - scroll * CREST_PAR;
+        if (baseY < -160) continue;
+
+        // Sample the curve once; the fill and the stroke each trace their own
+        // path from it (a shared path can't be reused — filling needs the two
+        // extra edges down to fillBottom, which must not be stroked).
+        const pts = [];
+        for (let i = 0; i < xs.length; i++) {
+          const x = xs[i];
+          const amp = ampAt(x, L.amp * boost, baseY);
+          pts.push(baseY + waveAt(x, L, t, amp, chop));
+        }
+
+        // Gradient fill under the curve — the "surface of water" read. Its
+        // depth is capped so it never washes the whole viewport.
+        const fillTop = baseY - L.amp * 2;
+        const fillBottom = Math.min(baseY + 260, h);
+        if (fillBottom > fillTop) {
+          ctx.beginPath();
+          ctx.moveTo(xs[0], pts[0]);
+          for (let i = 1; i < xs.length; i++) ctx.lineTo(xs[i], pts[i]);
+          ctx.lineTo(w, fillBottom);
+          ctx.lineTo(0, fillBottom);
+          ctx.closePath();
+          const g = ctx.createLinearGradient(0, fillTop, 0, fillBottom);
+          g.addColorStop(0, `rgba(255, 109, 0, ${0.07 * fade})`);
+          g.addColorStop(1, 'rgba(255, 109, 0, 0)');
+          ctx.fillStyle = g;
+          ctx.fill();
+        }
 
         ctx.beginPath();
-        for (let x = 0; x <= w; x += 5) {
-          // Local amplitude — grows near the cursor so the waves there get bigger.
-          let amp = L.amp;
-          if (vInf > 0.001) {
-            const dx = x - mouse.x;
-            const xInf = Math.exp(-(dx * dx) / (2 * RX * RX));
-            amp *= 1 + AMP_GAIN * xInf * vInf;
-          }
-
-          // Two harmonics → organic, non-repeating curve.
-          const y =
-            Math.sin(x * L.len + t * L.speed + L.phase) * amp +
-            Math.sin(x * L.len * 0.5 - t * L.speed * 0.6 + L.phase) * amp * 0.35;
-
-          const yy = baseY + y;
-          if (x === 0) ctx.moveTo(x, yy);
-          else ctx.lineTo(x, yy);
-        }
-
-        // Brightness — flat and subtle at rest; a bright halo around the cursor
-        // when active, so the nearby waves stand out.
-        if (mouse.active) {
-          const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, GLOW_R);
-          g.addColorStop(0, 'rgba(255, 122, 26, 0.4)');
-          g.addColorStop(1, `rgba(255, 109, 0, ${L.alpha})`);
-          ctx.strokeStyle = g;
-        } else {
-          ctx.strokeStyle = `rgba(255, 109, 0, ${L.alpha})`;
-        }
+        ctx.moveTo(xs[0], pts[0]);
+        for (let i = 1; i < xs.length; i++) ctx.lineTo(xs[i], pts[i]);
+        ctx.strokeStyle = strokeFor(L.alpha * fade);
         ctx.lineWidth = L.width;
         ctx.stroke();
       }
     }
 
-    if (reduce) {
-      render(0);
-    } else {
-      let raf = 0;
-      let running = true;
-      const loop = (ms: number) => {
-        render(ms * 0.001);
-        if (running) raf = requestAnimationFrame(loop);
-      };
-      raf = requestAnimationFrame(loop);
+    function render(t, scroll) {
+      ctx.clearRect(0, 0, w, h);
 
-      // Don't burn cycles when the tab is hidden.
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          running = false;
-          cancelAnimationFrame(raf);
-        } else if (!running) {
-          running = true;
-          raf = requestAnimationFrame(loop);
-        }
-      });
+      mouse.x += (mouse.tx - mouse.x) * 0.08;
+      mouse.y += (mouse.ty - mouse.y) * 0.08;
+
+      const chop = Math.min(energy, 1);
+
+      for (const L of layers) {
+        // Anchor the layer to the document, then wrap it into the visible band.
+        // Drawing the same layer one period up makes the wrap seamless — the
+        // copy leaving the top is already re-entering from the bottom.
+        const raw = h * L.y - scroll * L.par;
+        const baseY = ((raw % period) + period) % period;
+        drawAmbient(L, baseY, t, chop);
+        drawAmbient(L, baseY - period, t, chop);
+      }
+
+      drawCrest(scroll, t, chop);
     }
-  }
+
+    // The first frame, drawn synchronously during parse so it lands in the
+    // very first paint — this is what keeps a navigation from flashing.
+    render(clock, window.scrollY);
+
+    if (reduce) {
+      // Keep the still frame correct if the viewport is resized.
+      window.addEventListener('resize', () => render(clock, window.scrollY), { passive: true });
+      return;
+    }
+
+    let raf = 0;
+    let running = true;
+
+    const loop = (ms) => {
+      // Read scroll once per frame inside rAF — no scroll listener, and no
+      // read-after-write, so this never thrashes layout.
+      const scroll = window.scrollY;
+      const v = Math.min(Math.abs(scroll - lastScroll) / VEL_REF, 1);
+      lastScroll = scroll;
+      energy += (v - energy) * (v > energy ? ATTACK : RELEASE);
+
+      clock = ms * 0.001 + seed;
+      render(clock, scroll);
+      if (running) raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
+    // Hand the clock to the next page. `pagehide` fires on navigation in every
+    // browser including Safari's back/forward cache, where `unload` does not.
+    window.addEventListener('pagehide', () => {
+      try {
+        sessionStorage.setItem(CLOCK_KEY, String(clock));
+      } catch {
+        /* storage unavailable — the next page just starts from zero */
+      }
+    });
+
+    // Browsers restore scroll position *after* the document is shown, and a
+    // bfcache restore skips parsing entirely. Either way the first delta we'd
+    // measure is a jump we didn't scroll — resync so it isn't read as a flick.
+    window.addEventListener('pageshow', () => {
+      lastScroll = window.scrollY;
+      energy = 0;
+    });
+
+    // Don't burn cycles when the tab is hidden.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
+      } else if (!running) {
+        running = true;
+        // The page may have been scrolled while we were away — resync so we
+        // don't read that as one enormous flick.
+        lastScroll = window.scrollY;
+        energy = 0;
+        raf = requestAnimationFrame(loop);
+      }
+    });
+  })();
 </script>
+
+<style>
+  .wave-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    pointer-events: none;
+    /* Opened up from the old 130%/110% at 45% so the hero crest, which now
+       lives near the document top, isn't clipped by the mask. */
+    -webkit-mask-image: radial-gradient(ellipse 140% 125% at 50% 40%, #000 60%, transparent 100%);
+    mask-image: radial-gradient(ellipse 140% 125% at 50% 40%, #000 60%, transparent 100%);
+  }
+</style>
