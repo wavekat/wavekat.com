@@ -7,7 +7,7 @@ export const providers: Provider[] = [
     tagline: '在 Mac 或 Linux 上使用你的 2talk 號碼——無需訂閱，自動錄音並轉寫每一通通話。',
     seoTitle: '2talk 軟體電話（適用於 Mac 和 Linux）',
     seoDescription:
-      '在 Mac 或 Linux 上用 WaveKat Voice 使用你的 2talk 號碼——一款無需訂閱的 SIP 軟體電話，自動錄音並轉寫每一通通話。2talk 上 Bria 的免費替代方案。',
+      '在 Mac 或 Linux 上用 WaveKat Voice 使用 2talk 號碼——無需訂閱的 SIP 軟體電話，自動錄音並轉寫每一通通話。',
     heading: '適用於 Mac 和 Linux 的 2talk 免訂閱軟體電話',
     intro:
       'WaveKat Voice 是一款桌面軟體電話，透過 SIP 連接到你的 2talk 帳戶，並自動錄音、轉寫每一通通話。它可在 Mac 和 Linux 上執行，公測期間免費，且無需按月訂閱——因此你無需為 Bria 付費，就能把 2talk 號碼放到電腦上使用。',

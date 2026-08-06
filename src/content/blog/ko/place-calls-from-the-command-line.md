@@ -1,6 +1,6 @@
 ---
 title: "AI 어시스턴트가 실제 전화를 걸게 하세요"
-description: "WaveKat Voice가 명령줄 도구와 MCP 서버를 제공합니다. Claude 같은 AI 어시스턴트가 내 컴퓨터에서 실제 전화를 걸고 관리할 수 있습니다."
+description: "WaveKat Voice가 명령줄 도구와 MCP 서버를 제공합니다. Claude 같은 AI 어시스턴트가 내 컴퓨터에서 실제 전화를 걸고 관리합니다."
 date: 2026-06-16
 author: Eason Guo
 tags: [음성AI, 자동화, AI에이전트]

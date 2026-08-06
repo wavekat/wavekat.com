@@ -8,7 +8,7 @@ export const providers: Provider[] = [
       'Mac や Linux で 2talk の番号を使えます——サブスク不要で、すべての通話を自動で録音・文字起こしするソフトフォン。',
     seoTitle: '2talk ソフトフォン（Mac・Linux 対応）',
     seoDescription:
-      'Mac や Linux で WaveKat Voice を使って 2talk の番号を利用——すべての通話を自動で録音・文字起こしする、サブスク不要の SIP ソフトフォン。2talk における Bria の無料の代替案。',
+      'Mac や Linux で 2talk の番号を WaveKat Voice で利用。通話を自動で録音・文字起こしする、サブスク不要の SIP ソフトフォンです。',
     heading: 'Mac と Linux 向けの、サブスク不要な 2talk ソフトフォン',
     intro:
       'WaveKat Voice は、SIP であなたの 2talk アカウントに接続し、すべての通話を自動で録音・文字起こしするデスクトップ用ソフトフォンです。Mac と Linux で動作し、パブリックベータ期間中は無料で、月額のサブスクリプションもありません——だから Bria の料金を払わなくても、2talk の番号をお使いのコンピューターで使えます。',

@@ -6,9 +6,9 @@ export const alternatives: Alternative[] = [
     name: 'Linphone',
     tagline:
       'Il client SIP gratuito e open source. Completo e multipiattaforma: WaveKat Voice rinuncia all’ampiezza in favore di un telefono aziendale da scrivania mirato, che registra e trascrive ogni chiamata.',
-    seoTitle: 'WaveKat Voice — un’alternativa a Linphone per Mac e Linux',
+    seoTitle: 'WaveKat Voice — alternativa a Linphone (Mac/Linux)',
     seoDescription:
-      'Come WaveKat Voice si confronta con Linphone su Mac e Linux: un telefono aziendale mirato che registra e trascrive automaticamente ogni chiamata, con configurazione guidata dell’operatore. Beta pubblica gratuita.',
+      'Come WaveKat Voice si confronta con Linphone su Mac e Linux: un telefono aziendale che registra e trascrive ogni chiamata, con setup guidato.',
     heading: 'Un’alternativa a Linphone per Mac e Linux',
     intro:
       'Linphone è un client SIP capace e gratuito che gira quasi ovunque. Se quello che vuoi davvero è un telefono aziendale da scrivania che registra e trascrive ogni chiamata — e che si configura senza dover compilare a mano i campi SIP — ecco come si confrontano i due su Mac e Linux.',

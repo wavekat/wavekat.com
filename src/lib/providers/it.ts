@@ -8,7 +8,7 @@ export const providers: Provider[] = [
       'Usa il tuo numero 2talk su Mac o Linux con un softphone senza abbonamento che registra e trascrive ogni chiamata.',
     seoTitle: 'Softphone 2talk per Mac e Linux',
     seoDescription:
-      'Usa il tuo numero 2talk su Mac o Linux con WaveKat Voice, un softphone SIP senza abbonamento che registra e trascrive ogni chiamata. Alternativa gratuita a Bria.',
+      'Usa il numero 2talk su Mac o Linux con WaveKat Voice, un softphone SIP senza abbonamento che registra e trascrive ogni chiamata. Alternativa a Bria.',
     heading: 'Il softphone senza abbonamento per 2talk su Mac e Linux',
     intro:
       'WaveKat Voice è un softphone da scrivania che si connette al tuo account 2talk tramite SIP e registra e trascrive automaticamente ogni chiamata. Gira su Mac e Linux, è gratuito durante la beta pubblica e non prevede alcun abbonamento mensile: è un modo per usare il tuo numero 2talk sul tuo computer senza pagare Bria.',

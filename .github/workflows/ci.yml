@@ -28,3 +28,8 @@ jobs:
       # Catch broken internal links and locale leaks before they ship. Runs
       # against the full build above (docs synced), so /docs/voice/* is checked.
       - run: npm run check:links
+
+      # Enforce the SERP snippet budgets in CLAUDE.md. Translations bust them
+      # constantly — a truncated description costs clicks at a rank we already
+      # earned, so this gates the build rather than living only in the docs.
+      - run: npm run check:meta
