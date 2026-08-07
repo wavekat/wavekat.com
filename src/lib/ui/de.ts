@@ -29,6 +29,7 @@ export const ui: UIStrings = {
   footerAbout: 'Über uns',
   footerPrivacy: 'Datenschutz',
   footerPrompts: 'Sprachgenerator',
+  footerPlatform: 'Plattform',
   footerMore: 'Mehr',
   footerTools: 'Tools',
   notFoundTitle: "Seite nicht gefunden",

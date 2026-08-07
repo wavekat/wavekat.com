@@ -29,6 +29,7 @@ export const ui: UIStrings = {
   footerAbout: '소개',
   footerPrivacy: '개인정보 처리방침',
   footerPrompts: '음성 생성기',
+  footerPlatform: '플랫폼',
   footerMore: '기타',
   footerTools: '도구',
   notFoundTitle: "페이지를 찾을 수 없습니다",

@@ -9,11 +9,11 @@ const ui = t(lang);
 const localeHref = (path: string) =>
   localesForPath(path).includes(lang) ? localizedPath(path, lang) : path;
 
-// Three columns: the WaveKat Voice desktop app, the hosted tools, then
-// everything sitewide. Tools links straight to the live app rather than to a
-// marketing page — someone reaching for it in the footer wants the tool, not a
-// description of it — and is a separate group because it's a different product
-// from the Voice desktop app.
+// Four columns: the WaveKat Voice desktop app, the hosted tools, the platform
+// web app, then everything sitewide. Tools links straight to the live app
+// rather than to a marketing page — someone reaching for it in the footer wants
+// the tool, not a description of it — and is a separate group because it's a
+// different product from the Voice desktop app.
 const groups = [
   {
     heading: 'WaveKat Voice', // brand name — never translated
@@ -30,6 +30,21 @@ const groups = [
       {
         href: 'https://platform.wavekat.com/voice/prompts',
         label: ui.footerPrompts,
+        external: true,
+      },
+    ],
+  },
+  // The platform web app gets its own heading rather than a row under Tools:
+  // it isn't a tool, it's where an account lives — everything past the root is
+  // behind sign-in, and only /voice/prompts is public. The heading is the brand
+  // name (untranslated, like "WaveKat Voice" above) so the group costs one
+  // translated string instead of two.
+  {
+    heading: 'WaveKat Platform', // brand name — never translated
+    links: [
+      {
+        href: 'https://platform.wavekat.com/',
+        label: ui.footerPlatform,
         external: true,
       },
     ],

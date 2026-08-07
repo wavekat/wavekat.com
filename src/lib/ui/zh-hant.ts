@@ -29,6 +29,7 @@ export const ui: UIStrings = {
   footerAbout: '關於',
   footerPrivacy: '隱私權政策',
   footerPrompts: '語音產生器',
+  footerPlatform: '平台',
   footerMore: '更多',
   footerTools: '工具',
   notFoundTitle: "找不到頁面",

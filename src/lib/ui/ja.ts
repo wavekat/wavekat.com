@@ -29,6 +29,7 @@ export const ui: UIStrings = {
   footerAbout: 'WaveKat について',
   footerPrivacy: 'プライバシー',
   footerPrompts: '音声ジェネレーター',
+  footerPlatform: 'プラットフォーム',
   footerMore: 'その他',
   footerTools: 'ツール',
   notFoundTitle: "ページが見つかりません",

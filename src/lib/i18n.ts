@@ -222,6 +222,7 @@ export interface UIStrings {
   footerAbout: string;
   footerPrivacy: string;
   footerPrompts: string;
+  footerPlatform: string;
   footerMore: string;
   footerTools: string;
   notFoundTitle: string;
@@ -280,6 +281,7 @@ const strings: Record<string, UIStrings> = {
     footerAbout: 'About',
     footerPrivacy: 'Privacy',
     footerPrompts: 'Prompt Generator',
+    footerPlatform: 'Platform',
     footerMore: 'More',
     footerTools: 'Tools',
     notFoundTitle: "Page not found",
@@ -318,6 +320,7 @@ const strings: Record<string, UIStrings> = {
     footerAbout: '关于',
     footerPrivacy: '隐私政策',
     footerPrompts: '语音生成器',
+    footerPlatform: '平台',
     footerMore: '更多',
     footerTools: '工具',
     notFoundTitle: "页面不存在",
