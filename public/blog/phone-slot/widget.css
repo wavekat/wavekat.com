@@ -1,0 +1,182 @@
+/* The one interactive figure for /blog/why-phone-links-dont-work/.
+ *
+ * "The phone-app slot": pick a device, see what (if anything) its slot for
+ * phone links holds, and what therefore happens when you click a number.
+ * widget.js only switches panels and pre-selects the visitor's own OS —
+ * every word lives in the post's HTML, so a translated post localizes its
+ * own markup and reuses the script untouched.
+ *
+ * Loaded with a plain <link> from the markdown; Tailwind never sees this
+ * file. Dark mode keys off the .dark class the site sets on <html>
+ * (localStorage-driven), not prefers-color-scheme.
+ */
+
+.wk-slot {
+  --accent: #ff6d00;
+  --pass: #047857;
+  --fail: #b91c1c;
+  --bd: rgb(0 0 0 / 0.1);
+  --bd-soft: rgb(0 0 0 / 0.06);
+  --surface: #ffffff;
+  --sunken: #f9fafb;
+  --ink: #111827;
+  --ink-soft: #4b5563;
+  --ink-faint: #6b7280;
+
+  margin: 2rem 0;
+  border: 1px solid var(--bd);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+  overflow: hidden;
+}
+
+.dark .wk-slot {
+  --pass: #34d399;
+  --fail: #f87171;
+  --bd: rgb(255 255 255 / 0.12);
+  --bd-soft: rgb(255 255 255 / 0.07);
+  --surface: rgb(255 255 255 / 0.03);
+  --sunken: rgb(0 0 0 / 0.25);
+  --ink: #f3f4f6;
+  --ink-soft: #d1d5db;
+  --ink-faint: #9ca3af;
+}
+
+/* Neutralise the .prose styles the article body applies. */
+.wk-slot p,
+.wk-slot ol,
+.wk-slot li {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.wk-slot ol { list-style: none; }
+.wk-slot li::before,
+.wk-slot li::marker { content: none; }
+.wk-slot button { font: inherit; color: inherit; }
+
+.wk-slot-head {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--bd-soft);
+  background: var(--sunken);
+  font-weight: 600;
+}
+
+.wk-slot-body { padding: 1rem; }
+
+/* ── Device chips ───────────────────────────────────────────────────── */
+
+.wk-slot .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.wk-slot .chips button {
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+.wk-slot .chips button:hover { border-color: var(--accent); color: var(--ink); }
+.wk-slot .chips button[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: rgb(255 109 0 / 0.1);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* "yours" badge the script pins on the chip matching the visitor's OS. */
+.wk-slot .chips .yours {
+  margin-left: 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--accent);
+}
+
+/* ── Panels ─────────────────────────────────────────────────────────── */
+
+.wk-slot .panel[hidden] { display: none; }
+
+.wk-slot .trace { display: grid; gap: 0; }
+
+.wk-slot .trace li {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.625rem 0;
+  border-top: 1px solid var(--bd-soft);
+}
+.wk-slot .trace li:first-child { border-top: 0; }
+
+.wk-slot .who {
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+}
+
+.wk-slot .what { color: var(--ink-soft); line-height: 1.5; }
+.wk-slot .what code { font-size: 0.8125rem; }
+
+/* The slot itself — a literal box, filled or empty. */
+.wk-slot .slotbox {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--bd);
+  background: var(--sunken);
+  font-weight: 500;
+  color: var(--ink);
+}
+.wk-slot .slotbox.is-empty {
+  border-style: dashed;
+  background: transparent;
+  color: var(--ink-faint);
+  font-weight: 400;
+  font-style: italic;
+}
+.wk-slot .slotbox.is-wavekat {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: rgb(255 109 0 / 0.1);
+}
+
+/* Outcome colouring. */
+.wk-slot .what.ok { color: var(--pass); font-weight: 500; }
+.wk-slot .what.no { color: var(--fail); font-weight: 500; }
+.wk-slot .what.meh { color: var(--ink-soft); }
+
+/* Footnote row under a panel (e.g. the FaceTime caveat). */
+.wk-slot .note {
+  margin-top: 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
+/* Without JS: hide the chips and show every panel stacked with its device
+   name, so the figure still reads as a complete comparison. The script
+   removes wk-nojs on boot. */
+.wk-slot.wk-nojs .chips { display: none; }
+.wk-slot.wk-nojs .panel[hidden] { display: block; }
+.wk-slot.wk-nojs .panel + .panel {
+  margin-top: 0.875rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--bd);
+}
+.wk-slot .panel-name {
+  display: none;
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+}
+.wk-slot.wk-nojs .panel-name { display: block; }
+
+@media (max-width: 30rem) {
+  .wk-slot .trace li { grid-template-columns: 1fr; gap: 0.125rem; }
+}

@@ -84,6 +84,7 @@ const fullSite = [
   '/blog/click-to-call-phone-links/',
   '/blog/phone-menu-ivr-voice-generator/',
   '/blog/answer-calls-with-a-call-flow/',
+  '/blog/why-phone-links-dont-work/',
   '/about/',
   '/privacy/',
 ];
