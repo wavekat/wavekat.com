@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>How Click-to-Call Works — recording deck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Recording deck for the click-to-call video.
+
+  NOT part of the site build — it lives in docs/ so it never ships to
+  wavekat.com. Open it in a browser, press F for fullscreen, and screen-record
+  at 1920x1080. Everything is inline and offline: no fonts, scripts or images
+  are fetched, so it renders identically on any machine.
+
+  Keys:  → / space  advance one build step (then next slide)
+         ←          back
+         F          fullscreen        H  hide/show the HUD
+         R          replay the current slide's animation
+         G          go to slide (type number, Enter)
+
+  The stage is a fixed 1920x1080 box scaled to fit the viewport, so what you
+  see is exactly what a 1080p recording captures — no reflow surprises.
+-->
+<style>
+  :root {
+    --bg: #070b14;
+    --surface: #0d131f;
+    --ink: #f3f4f6;
+    --soft: #a9b2c3;
+    --faint: #6b7a90;
+    --accent: #ff6d00;
+    --pass: #34d399;
+    --fail: #f87171;
+    --line: rgb(255 255 255 / 0.1);
+    --mono: 'JetBrains Mono', Menlo, 'SF Mono', Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: #000;
+    color: var(--ink);
+    font-family: var(--sans);
+    overflow: hidden;
+  }
+
+  #fit {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  #stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    background: var(--bg);
+    overflow: hidden;
+    transform-origin: center center;
+  }
+
+  /* Subtle brand wash so flat slides aren't dead black on camera. */
+  #stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(1200px 700px at 82% -10%, rgb(255 109 0 / 0.1), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgb(255 109 0 / 0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 96px 120px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide.on { display: flex; }
+
+  h1 { font-size: 104px; line-height: 1.05; letter-spacing: -0.035em; font-weight: 700; }
+  h2 { font-size: 66px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 700; margin-bottom: 44px; }
+  h2 .accent { color: var(--accent); }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 22px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 30px;
+  }
+  .lede { font-size: 38px; line-height: 1.45; color: var(--soft); max-width: 1380px; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  code, .mono { font-family: var(--mono); }
+  .accent { color: var(--accent); }
+  .pass { color: var(--pass); }
+  .fail { color: var(--fail); }
+
+  /* Build steps: hidden until their step is reached. */
+  [data-step] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-step].shown { opacity: 1; transform: none; }
+
+  /* ── HUD ─────────────────────────────────────────────────────────── */
+  #hud {
+    position: absolute;
+    right: 34px;
+    bottom: 26px;
+    font-family: var(--mono);
+    font-size: 19px;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    z-index: 20;
+  }
+  #hud.hide { display: none; }
+  #bar {
+    position: absolute;
+    left: 0; bottom: 0; height: 4px;
+    background: var(--accent);
+    transition: width 0.35s ease;
+    z-index: 20;
+  }
+  #bar.hide { display: none; }
+
+  /* ── Reusable pieces ─────────────────────────────────────────────── */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--surface);
+    padding: 40px 44px;
+  }
+  .card h3 { font-size: 38px; margin-bottom: 18px; letter-spacing: -0.02em; }
+  .card p { font-size: 27px; line-height: 1.5; color: var(--soft); }
+  .card .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  .tag.free { background: rgb(52 211 153 / 0.14); color: var(--pass); }
+  .tag.cost { background: rgb(255 109 0 / 0.16); color: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 30px; }
+  th, td { text-align: left; padding: 26px 22px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  td:first-child { font-weight: 600; white-space: nowrap; width: 300px; }
+  td { color: var(--soft); line-height: 1.4; }
+
+  .big-code {
+    font-family: var(--mono);
+    font-size: 34px;
+    line-height: 1.65;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 34px 40px;
+    color: var(--soft);
+    overflow-wrap: anywhere;
+  }
+  .big-code .hl { color: var(--accent); }
+
+  ul.points { list-style: none; }
+  ul.points li {
+    font-size: 34px;
+    line-height: 1.45;
+    color: var(--soft);
+    padding-left: 54px;
+    position: relative;
+    margin-bottom: 30px;
+  }
+  ul.points li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 18px;
+    width: 22px; height: 3px;
+    background: var(--accent);
+  }
+  ul.points li strong { color: var(--ink); font-weight: 600; }
+
+  /* ── Slide 3: tel: URI anatomy ───────────────────────────────────── */
+  .uri { font-family: var(--mono); font-size: 58px; letter-spacing: -0.01em; white-space: nowrap; }
+  .uri span { padding: 6px 4px; border-radius: 8px; transition: background-color 0.4s, color 0.4s; }
+  .uri .lit { background: rgb(255 109 0 / 0.18); color: var(--accent); }
+  .notes { margin-top: 52px; display: grid; gap: 26px; }
+  .note { font-size: 30px; color: var(--soft); }
+  .note b { color: var(--ink); font-family: var(--mono); font-weight: 500; }
+
+  /* ── Slide 6: pipeline ───────────────────────────────────────────── */
+  .tracks { display: flex; gap: 18px; margin-bottom: 40px; }
+  .track {
+    font-family: var(--mono);
+    font-size: 22px;
+    padding: 12px 22px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--faint);
+  }
+  .track.on { border-color: var(--accent); color: var(--accent); background: rgb(255 109 0 / 0.1); }
+
+  .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  .lane { display: flex; flex-direction: column; gap: 16px; }
+  .lane-h {
+    font-family: var(--mono);
+    font-size: 21px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 6px;
+  }
+  .node {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 20px 22px;
+    font-size: 24px;
+    line-height: 1.32;
+    color: var(--faint);
+    transition: border-color 0.3s, color 0.3s, background-color 0.3s, transform 0.3s;
+  }
+  .node .m { font-family: var(--mono); font-size: 20px; display: block; margin-top: 6px; color: #55637a; }
+  .node.lit {
+    border-color: var(--accent);
+    background: rgb(255 109 0 / 0.12);
+    color: var(--ink);
+    transform: translateX(8px);
+  }
+  .node.lit .m { color: var(--accent); }
+  .node.done { border-color: rgb(255 109 0 / 0.35); color: var(--soft); }
+
+  /* ── Slide 7: parser ─────────────────────────────────────────────── */
+  .probe {
+    font-family: var(--mono);
+    font-size: 36px;
+    padding: 24px 30px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    margin-bottom: 34px;
+    color: var(--ink);
+  }
+  .stages { display: grid; gap: 12px; }
+  .stg {
+    display: grid;
+    grid-template-columns: 54px 1fr 420px;
+    align-items: center;
+    gap: 20px;
+    font-size: 28px;
+    color: #4d5a70;
+    padding: 12px 18px;
+    border-radius: 10px;
+    transition: color 0.3s, background-color 0.3s;
+  }
+  .stg .mk { font-family: var(--mono); font-size: 32px; text-align: center; }
+  .stg .vl { font-family: var(--mono); font-size: 24px; text-align: right; color: transparent; }
+  .stg.ok { color: var(--soft); background: rgb(255 255 255 / 0.025); }
+  .stg.ok .mk { color: var(--pass); }
+  .stg.ok .vl { color: var(--ink); }
+  .stg.no { color: var(--fail); background: rgb(248 113 113 / 0.08); }
+  .stg.no .mk, .stg.no .vl { color: var(--fail); }
+  .verdict {
+    margin-top: 34px;
+    font-family: var(--mono);
+    font-size: 32px;
+    padding: 22px 28px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+  }
+  .verdict.ok { color: var(--pass); border-color: rgb(52 211 153 / 0.4); background: rgb(52 211 153 / 0.1); }
+  .verdict.no { color: var(--fail); border-color: rgb(248 113 113 / 0.4); background: rgb(248 113 113 / 0.1); }
+
+  /* ── Slide 9: the race ───────────────────────────────────────────── */
+  .timeline { position: relative; margin-top: 30px; }
+  .trk { display: grid; grid-template-columns: 260px 1fr; align-items: center; gap: 28px; margin-bottom: 44px; }
+  .trk-label { font-family: var(--mono); font-size: 25px; color: var(--faint); text-align: right; }
+  .rail { position: relative; height: 74px; border-radius: 12px; background: rgb(255 255 255 / 0.04); border: 1px solid var(--line); }
+  .blip {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    padding: 12px 20px; border-radius: 10px;
+    font-family: var(--mono); font-size: 22px; white-space: nowrap;
+    background: var(--surface); border: 1px solid var(--line); color: var(--soft);
+  }
+  .blip.hot { border-color: var(--accent); color: var(--accent); background: rgb(255 109 0 / 0.14); }
+  .blip.good { border-color: var(--pass); color: var(--pass); background: rgb(52 211 153 / 0.12); }
+
+  /* ── Slide 10: war story ─────────────────────────────────────────── */
+  .chain { display: grid; gap: 16px; }
+  .link-row {
+    display: grid; grid-template-columns: 64px 1fr; gap: 24px; align-items: center;
+    border-left: 3px solid var(--line);
+    padding: 16px 0 16px 26px;
+  }
+  .link-row .n { font-family: var(--mono); font-size: 26px; color: var(--accent); }
+  .link-row .t { font-size: 29px; color: var(--soft); line-height: 1.4; }
+  .link-row .t b { color: var(--ink); font-weight: 600; }
+  .link-row .t code { font-size: 26px; color: var(--accent); }
+  .split-demo { font-family: var(--mono); font-size: 40px; margin: 30px 0 10px; }
+  .split-demo .keep { color: var(--fail); background: rgb(248 113 113 / 0.16); padding: 6px 6px; border-radius: 6px; }
+  .split-demo .drop { color: #4d5a70; }
+
+  .punch { font-size: 52px; line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; }
+  .punch .accent { color: var(--accent); }
+
+  .outro-cta { margin-top: 56px; font-family: var(--mono); font-size: 34px; color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+<!-- 1 ─────────────────────────────────────────────────────────────── -->
+<section class="slide" data-anim="none">
+  <div class="kicker">WaveKat Engineering</div>
+  <h1>How click-to-call<br />actually works</h1>
+  <p class="lede" style="margin-top:44px" data-step="1">
+    One click. Four trust boundaries, three operating-system delivery paths,
+    and a race against a React app that hasn't mounted yet.
+  </p>
+</section>
+
+<!-- 2 ─────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <h2>The browser <span class="accent">gives up</span></h2>
+  <p class="lede">
+    A phone link is a <strong>URI, not an action</strong>. Your browser has no
+    idea how to place a phone call — so it hands the string to the operating
+    system and asks someone else to deal with it.
+  </p>
+  <div class="big-code" style="margin-top:52px" data-step="1">
+    &lt;a href="<span class="hl">tel:+14155550123</span>"&gt;(415) 555-0123&lt;/a&gt;
+  </div>
+  <p class="lede" style="margin-top:48px;font-size:34px" data-step="2">
+    Which means: <strong>a clicked phone link is a request from an untrusted
+    party, delivered to your app as a string.</strong> Everything else follows
+    from taking that sentence literally.
+  </p>
+</section>
+
+<!-- 3 ─────────────────────────────────────────────────────────────── -->
+<section class="slide" data-anim="uri">
+  <h2>A <code class="accent">tel:</code> URI is messier than it looks</h2>
+  <div class="uri">
+    <span id="u-scheme">tel:</span><span id="u-plus">+</span><span id="u-num">1-415-555-01.23</span><span id="u-param">;phone-context=example.com</span>
+  </div>
+  <div class="notes">
+    <p class="note" data-step="1"><b>tel:</b> — the scheme. Also <b>sip:</b>, for a SIP address rather than a number.</p>
+    <p class="note" data-step="2"><b>+</b> — may arrive percent-encoded as <b>%2B</b>, because it travelled through URL machinery.</p>
+    <p class="note" data-step="3"><b>- ( ) . &nbsp;</b> — visual separators. RFC 3966 allows them. Phone books are full of them.</p>
+    <p class="note" data-step="4"><b>;phone-context=…</b> — parameters. Everything after the first semicolon.</p>
+  </div>
+</section>
+
+<!-- 4 ─────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Declaring <span class="accent">≠</span> claiming</h2>
+  <div class="cols">
+    <div class="card" data-step="1">
+      <span class="tag free">build time · free</span>
+      <h3>“I can handle this”</h3>
+      <p>Six lines of <code>electron-builder.yml</code> become
+      <code>CFBundleURLTypes</code>, a Windows registry association, and
+      <code>x-scheme-handler/tel</code> in the Linux <code>.desktop</code>.
+      Changes nothing the user can see.</p>
+    </div>
+    <div class="card" data-step="2">
+      <span class="tag cost">runtime · consent</span>
+      <h3>“I am the default”</h3>
+      <p><code>setAsDefaultProtocolClient("tel")</code> takes the association
+      away from whatever had it. That's the user's decision — so it ships
+      behind a toggle that's off by default.</p>
+    </div>
+  </div>
+  <div class="big-code" style="margin-top:52px;font-size:30px" data-step="3">
+    protocols:<br />
+    &nbsp;&nbsp;- name: Phone call<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;schemes: [<span class="hl">tel</span>, <span class="hl">sip</span>]
+  </div>
+</section>
+
+<!-- 5 ─────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <h2>The same call does three different things</h2>
+  <table>
+    <tr><th>Platform</th><th>What <code>setAsDefaultProtocolClient</code> does</th></tr>
+    <tr data-step="1"><td>macOS</td><td>Sets the default handler immediately — including taking <code>tel:</code> away from FaceTime.</td></tr>
+    <tr data-step="2"><td>Windows 10+</td><td>Deliberately ignores it. Registers you as <em>capable</em>; the user confirms in the OS chooser.</td></tr>
+    <tr data-step="3"><td>Linux</td><td>Shells out to <code>xdg-settings</code>, which needs an installed <code>.desktop</code>. Works on the deb; fails on a bare AppImage.</td></tr>
+  </table>
+  <p class="lede" style="margin-top:52px;font-size:34px" data-step="4">
+    So the boolean it returns is really <strong>capability detection</strong> —
+    and on one platform it lies. Hold that thought.
+  </p>
+</section>
+
+<!-- 6 ─────────────────────────────────────────────────────────────── -->
+<section class="slide" data-anim="flow">
+  <h2 style="margin-bottom:28px">Three delivery paths, <span class="accent">not one</span></h2>
+  <div class="tracks">
+    <div class="track" id="t-macos">macOS</div>
+    <div class="track" id="t-running">Linux / Windows — running</div>
+    <div class="track" id="t-cold">Cold start</div>
+  </div>
+  <div class="flow">
+    <div class="lane">
+      <div class="lane-h">macOS</div>
+      <div class="node" data-lane="macos">Launch Services resolves the bundle<span class="m">CFBundleURLTypes</span></div>
+      <div class="node" data-lane="macos">The <code>open-url</code> event fires<span class="m">never argv — attach before whenReady()</span></div>
+      <div class="node" data-lane="macos" style="opacity:.25;border-style:dashed">—</div>
+    </div>
+    <div class="lane">
+      <div class="lane-h">Linux / Windows — already running</div>
+      <div class="node" data-lane="running">The OS launches a <em>second copy</em><span class="m">Exec=… %U</span></div>
+      <div class="node" data-lane="running">The single-instance lock denies it<span class="m">it forwards argv, then exits</span></div>
+      <div class="node" data-lane="running"><code>second-instance</code> fires<span class="m">findDialUrlInArgv(argv)</span></div>
+    </div>
+    <div class="lane">
+      <div class="lane-h">Cold start</div>
+      <div class="node" data-lane="cold">The OS launches the app, URL in argv<span class="m">nothing is listening yet</span></div>
+      <div class="node" data-lane="cold">Scan <code>process.argv</code> at boot<span class="m">findDialUrlInArgv(process.argv)</span></div>
+      <div class="node" data-lane="cold" style="opacity:.25;border-style:dashed">—</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:46px;font-size:32px" data-step="1">
+    Implement only the one you tested with, and the feature is perfect on your
+    machine and <strong>broken for half your users</strong>.
+  </p>
+</section>
+
+<!-- 7 ─────────────────────────────────────────────────────────────── -->
+<section class="slide" data-anim="parse">
+  <h2 style="margin-bottom:30px">The parser is a <span class="accent">security boundary</span></h2>
+  <div class="probe" id="probe">tel:1;rm -rf /</div>
+  <div class="stages">
+    <div class="stg" data-stg="1"><span class="mk">·</span><span>length ≤ 512</span><span class="vl">14 / 512</span></div>
+    <div class="stg" data-stg="2"><span class="mk">·</span><span>strip control characters</span><span class="vl">none</span></div>
+    <div class="stg" data-stg="3"><span class="mk">·</span><span>scheme allowlist</span><span class="vl">tel</span></div>
+    <div class="stg" data-stg="4"><span class="mk">·</span><span>cut RFC 3966 parameters</span><span class="vl">1</span></div>
+    <div class="stg" data-stg="5"><span class="mk">·</span><span>percent-decode</span><span class="vl">1</span></div>
+    <div class="stg" data-stg="6"><span class="mk">·</span><span>drop visual separators</span><span class="vl">1</span></div>
+    <div class="stg" data-stg="7"><span class="mk">·</span><span>dialable shape</span><span class="vl">1</span></div>
+  </div>
+  <div class="verdict" id="verdict" style="opacity:0">POST /calls/dial receives &nbsp;“1”</div>
+</section>
+
+<!-- 8 ─────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Four decisions worth stealing</h2>
+  <ul class="points">
+    <li data-step="1"><strong>Strip control characters, don't reject on them.</strong> A stray <code>\r</code> shouldn't kill a valid link — but it has no business surviving downstream either.</li>
+    <li data-step="2"><strong>The parameter cut is also an injection cut.</strong> Everything after the first <code>;</code> is a parameter by spec. Correctness and safety pointing the same way.</li>
+    <li data-step="3"><strong>Validate shape; never sanitize toward validity.</strong> A parser that rescues malformed input eventually rescues something it shouldn't.</li>
+    <li data-step="4"><strong>The off-switch is your preference, not the OS association.</strong> Deregistration is best-effort on Linux. Gate the behaviour yourself.</li>
+  </ul>
+</section>
+
+<!-- 9 ─────────────────────────────────────────────────────────────── -->
+<section class="slide" data-anim="race">
+  <h2>The race nobody sees</h2>
+  <p class="lede" style="font-size:34px">
+    On a cold start the URL exists <strong>before the app does</strong>. And
+    <code class="accent">did-finish-load</code> is not “React ran”.
+  </p>
+  <div class="timeline">
+    <div class="trk">
+      <div class="trk-label">main process</div>
+      <div class="rail">
+        <div class="blip hot" style="left:9%" data-race="1">URL in hand</div>
+        <div class="blip" style="left:34%" data-race="2">buffer it</div>
+      </div>
+    </div>
+    <div class="trk">
+      <div class="trk-label">renderer</div>
+      <div class="rail">
+        <div class="blip" style="left:63%" data-race="3">React mounts</div>
+        <div class="blip good" style="left:88%" data-race="4">pulls once</div>
+      </div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:20px;font-size:32px" data-step="1">
+    Push <em>and</em> pull. Whichever side is late drives — delivered exactly
+    once, with <strong>no timing assumption anywhere</strong>.
+  </p>
+</section>
+
+<!-- 10 ────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="kicker">War story</div>
+  <h2 style="margin-bottom:30px">The deb that reported failure<br />while working perfectly</h2>
+  <div class="chain">
+    <div class="link-row" data-step="1"><span class="n">01</span><span class="t">Click-to-call is <b>completely dead</b> on Debian. The toggle refuses to turn on.</span></div>
+    <div class="link-row" data-step="2"><span class="n">02</span><span class="t">…but the OS <b>was routing <code>tel:</code> links correctly the whole time.</b> Since install.</span></div>
+    <div class="link-row" data-step="3"><span class="n">03</span><span class="t"><code>xdg-settings</code> verifies by resolving the desktop <em>name</em> back to a binary — with a naive <code>first_word()</code> of the <code>Exec</code> line.</span></div>
+  </div>
+  <div class="split-demo" data-step="4">
+    Exec=<span class="keep">"/opt/WaveKat</span><span class="drop"> Voice/@wavekatvoice-desktop" %U</span>
+  </div>
+  <p class="lede" style="font-size:30px" data-step="5">
+    It splits inside the quote. <code>which</code> fails. <code>xdg-settings</code>
+    exits 2. Electron reports <code class="fail">false</code>. The preference is
+    only persisted on success — so it never saved, and the dispatch gate dropped
+    every clicked link.
+  </p>
+  <p class="punch" style="margin-top:40px" data-step="6">
+    A <span class="accent">space in a product name</span> broke click-to-call on an entire platform.
+  </p>
+</section>
+
+<!-- 11 ────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <h2>The fix: <span class="accent">ask a question the tool can answer</span></h2>
+  <p class="lede" style="font-size:34px">
+    <code>xdg-settings check</code> has the same defect, so
+    <code>isDefaultProtocolClient</code> is no help either. But the <em>query</em>
+    side of xdg reports the current handler's name instead of resolving a name
+    back to a binary — and it has no such bug.
+  </p>
+  <div class="big-code" style="margin-top:48px;font-size:29px" data-step="1">
+    execFileSync("<span class="hl">xdg-mime</span>", ["query", "default", `x-scheme-handler/${scheme}`])<br />
+    &nbsp;&nbsp;.trim() === `${basename(process.execPath)}.desktop`
+  </div>
+  <p class="lede" style="margin-top:44px;font-size:32px" data-step="2">
+    On Linux, a <code>false</code> isn't taken at face value — it's confirmed
+    against <code>xdg-mime query</code>, and a match counts as success.
+  </p>
+</section>
+
+<!-- 12 ────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <h2>What generalizes</h2>
+  <ul class="points">
+    <li data-step="1"><strong>Declaring and claiming are different operations</strong> with different consent requirements.</li>
+    <li data-step="2"><strong>There are three delivery paths, not one.</strong> The one you'll forget is “already running” — the most common one in real use.</li>
+    <li data-step="3"><strong>The handler entry point is an untrusted-input boundary.</strong> Allowlist, cap, validate, reject.</li>
+    <li data-step="4"><strong>Never let the OS association be your off-switch.</strong></li>
+  </ul>
+</section>
+
+<!-- 13 ────────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="kicker">WaveKat Voice</div>
+  <h1>Click a number.<br />It just calls.</h1>
+  <p class="lede" style="margin-top:40px" data-step="1">
+    The SIP softphone for Mac and Linux that records and transcribes every call
+    — running on a SIP engine we wrote from scratch.
+  </p>
+  <p class="outro-cta" data-step="2">wavekat.com/blog/how-click-to-call-works/</p>
+</section>
+
+<div id="bar"></div>
+<div id="hud"><span id="hud-n">1</span> / <span id="hud-t">13</span></div>
+</div></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var stage = document.getElementById('stage');
+  var slides = [].slice.call(document.querySelectorAll('.slide'));
+  var hudN = document.getElementById('hud-n');
+  var hudT = document.getElementById('hud-t');
+  var bar = document.getElementById('bar');
+  var i = 0;      // slide index
+  var step = 0;   // build step within the slide
+  var timers = [];
+
+  hudT.textContent = slides.length;
+
+  /* Scale the fixed 1920x1080 stage to fit whatever window we're in, so the
+     recording frame is identical everywhere. */
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  function maxStep(slide) {
+    var n = 0;
+    slide.querySelectorAll('[data-step]').forEach(function (el) {
+      n = Math.max(n, parseInt(el.getAttribute('data-step'), 10) || 0);
+    });
+    return n;
+  }
+
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+  function after(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+  function applySteps() {
+    var slide = slides[i];
+    slide.querySelectorAll('[data-step]').forEach(function (el) {
+      var n = parseInt(el.getAttribute('data-step'), 10) || 0;
+      el.classList.toggle('shown', n <= step);
+    });
+  }
+
+  /* ── Per-slide entrance animations ─────────────────────────────── */
+
+  function animate(slide) {
+    clearTimers();
+    var kind = slide.getAttribute('data-anim');
+    if (kind === 'uri') return animUri();
+    if (kind === 'flow') return animFlow();
+    if (kind === 'parse') return animParse();
+    if (kind === 'race') return animRace();
+  }
+
+  // Slide 3 — highlight each part of the URI in turn.
+  function animUri() {
+    var order = ['u-scheme', 'u-plus', 'u-num', 'u-param'];
+    order.forEach(function (id, k) {
+      after(500 + k * 1400, function () {
+        order.forEach(function (o) {
+          var el = document.getElementById(o);
+          if (el) el.classList.toggle('lit', o === id);
+        });
+      });
+    });
+  }
+
+  // Slide 6 — walk each lane, one track at a time.
+  function animFlow() {
+    var lanes = ['macos', 'running', 'cold'];
+    var t = 400;
+    lanes.forEach(function (lane) {
+      var nodes = [].slice.call(
+        document.querySelectorAll('.node[data-lane="' + lane + '"]'),
+      );
+      after(t, function () {
+        ['t-macos', 't-running', 't-cold'].forEach(function (id) {
+          document.getElementById(id).classList.toggle('on', id === 't-' + lane);
+        });
+      });
+      nodes.forEach(function (n, k) {
+        after(t + k * 750, function () {
+          nodes.forEach(function (o) { o.classList.remove('lit'); });
+          n.classList.add('lit');
+        });
+        after(t + k * 750 + 700, function () {
+          n.classList.remove('lit');
+          n.classList.add('done');
+        });
+      });
+      t += nodes.length * 750 + 500;
+    });
+  }
+
+  // Slide 7 — resolve the parse stages top to bottom, then the verdict.
+  function animParse() {
+    var stgs = [].slice.call(document.querySelectorAll('.stg'));
+    var verdict = document.getElementById('verdict');
+    stgs.forEach(function (s) { s.classList.remove('ok', 'no'); s.querySelector('.mk').textContent = '·'; });
+    verdict.style.opacity = '0';
+    verdict.className = 'verdict';
+    stgs.forEach(function (s, k) {
+      after(600 + k * 620, function () {
+        s.classList.add('ok');
+        s.querySelector('.mk').textContent = '✓';
+      });
+    });
+    after(600 + stgs.length * 620 + 300, function () {
+      verdict.classList.add('ok');
+      verdict.style.opacity = '1';
+    });
+  }
+
+  // Slide 9 — main gets the URL long before the renderer exists.
+  function animRace() {
+    var blips = [].slice.call(document.querySelectorAll('[data-race]'));
+    blips.forEach(function (b) { b.style.opacity = '0'; b.style.transform = 'translate(-50%,-50%) scale(0.85)'; });
+    blips.forEach(function (b, k) {
+      after(500 + k * 900, function () {
+        b.style.transition = 'opacity .4s, transform .4s';
+        b.style.opacity = '1';
+        b.style.transform = 'translate(-50%,-50%) scale(1)';
+      });
+    });
+  }
+
+  /* ── Navigation ────────────────────────────────────────────────── */
+
+  function show(n, keepStep) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    step = keepStep === undefined ? 0 : keepStep;
+    applySteps();
+    animate(slides[i]);
+    hudN.textContent = i + 1;
+    bar.style.width = ((i + 1) / slides.length) * 100 + '%';
+  }
+
+  function next() {
+    if (step < maxStep(slides[i])) { step++; applySteps(); return; }
+    if (i < slides.length - 1) show(i + 1);
+  }
+
+  function prev() {
+    if (step > 0) { step--; applySteps(); return; }
+    if (i > 0) show(i - 1, maxStep(slides[i - 1]));
+  }
+
+  var typing = '';
+  document.addEventListener('keydown', function (e) {
+    if (typing !== '' && /^[0-9]$/.test(e.key)) { typing += e.key; return; }
+    switch (e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
+      case 'Home': show(0); break;
+      case 'End': show(slides.length - 1); break;
+      case 'f': case 'F':
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen();
+        break;
+      case 'h': case 'H':
+        document.getElementById('hud').classList.toggle('hide');
+        bar.classList.toggle('hide');
+        break;
+      case 'r': case 'R': animate(slides[i]); break;
+      case 'g': case 'G': typing = '0'; break;
+      case 'Enter':
+        if (typing !== '') { show(parseInt(typing, 10) - 1); typing = ''; }
+        break;
+      case 'Escape': typing = ''; break;
+    }
+  });
+
+  document.addEventListener('click', next);
+
+  show(0);
+})();
+</script>
+</body>
+</html>
