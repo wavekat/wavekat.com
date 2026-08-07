@@ -29,6 +29,7 @@ export const ui: UIStrings = {
   footerAbout: 'Acerca de',
   footerPrivacy: 'Privacidad',
   footerPrompts: 'Generador de voz',
+  footerPlatform: 'Plataforma',
   footerMore: 'Más',
   footerTools: 'Herramientas',
   notFoundTitle: "Página no encontrada",
