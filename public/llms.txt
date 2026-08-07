@@ -13,6 +13,7 @@
 
 ## Blog
 
+- [How Click-to-Call Works in a Desktop App](https://wavekat.com/blog/how-click-to-call-works/): Technical deep dive — declaring vs claiming `tel:`/`sip:` schemes, the three ways an OS delivers a clicked URL, the URL parser as a security boundary, the cold-start/renderer race, and the `xdg-settings` bug that made the feature dead on Debian.
 - [Share a Call Recording With a Link](https://wavekat.com/blog/share-a-call-recording/): Turn any recorded call into a shareable link — private, invite-only, or public.
 - [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls.
 - [Common Voice Explorer](https://wavekat.com/blog/common-voice-explorer/): A free tool to browse and review Mozilla Common Voice dataset clips.
@@ -30,4 +31,4 @@
 
 ## Locales
 
-Full translations of the homepage, all WaveKat Voice pages, and the blog are available under /zh/ (Simplified Chinese), /zh-hant/ (Traditional Chinese), /ja/, /ko/, /de/, /es/, /fr/, and /it/.
+Full translations of the homepage, all WaveKat Voice pages, and the blog are available under /zh/ (Simplified Chinese), /zh-hant/ (Traditional Chinese), /ja/, /ko/, /de/, /es/, /fr/, and /it/. A newly published post may reach some locales before the rest; each page's `<link rel="alternate" hreflang>` set is authoritative for which translations actually exist.

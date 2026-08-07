@@ -219,7 +219,7 @@ Four decisions in there are worth pulling out:
 
 **`sips:` is accepted but not registered.** A deliberate asymmetry: only `tel` and `sip` are claimed from the OS, but if a secure-SIP link ever reaches us through the `sip` association or a manual open, treating it like any other SIP URI beats dropping it.
 
-Past the parser there's a 1-second debounce, because some desktop environments fire the handler twice for one click, and because a page shouldn't be able to spam the dial sheet by firing a burst of `tel:` opens. And the daemon's own dial validator still has the last word — it `400`s anything unroutable. The parser is the first gate, not the only one.
+Past the parser there's a 1-second debounce, because some desktop environments fire the handler twice for one click, and because a page shouldn't be able to spam the dial sheet by firing a burst of `tel:` opens. And the daemon's own dial validator still has the last word — it `400`s anything unroutable. That validator sits on `POST /calls/dial`, the same endpoint [the built-in command-line tool](/blog/place-calls-from-the-command-line/) dials through, so a clicked link gets exactly the scrutiny a scripted call does. The parser is the first gate, not the only one.
 
 ### The off-switch is the preference, not the OS
 
@@ -296,7 +296,7 @@ Strip out the specifics and four things are true of any desktop app that handles
 3. **The handler entry point is an untrusted-input boundary.** Allowlist schemes, cap length, validate shape, reject rather than repair.
 4. **Never let the OS association be your off-switch.** Gate the behavior on your own preference, because deregistration is best-effort on at least one platform you ship to.
 
-Click-to-call landed in [0.0.43](/voice/changelog/#0.0.43). Like everything else in the call path, it sits on top of [our own from-scratch SIP engine](/blog/our-own-sip-engine/) — which is the reason we can reason about a clicked link all the way down to the packet.
+Click-to-call landed in [0.0.43](/voice/changelog/#0.0.43), the same release that taught WaveKat Voice to [answer incoming calls with a call flow](/blog/answer-calls-with-a-call-flow/) — the inbound counterpart to everything above. Like everything else in the call path, it sits on top of [our own from-scratch SIP engine](/blog/our-own-sip-engine/) — which is the reason we can reason about a clicked link all the way down to the packet.
 
 ## Frequently asked questions
 
