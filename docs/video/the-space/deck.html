@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The Space That Broke Our App — recording deck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Recording deck for the "space that broke our app" video (~4 min).
+
+  NOT part of the site build — it lives in docs/ so it never ships to
+  wavekat.com. Open it, press F for fullscreen, H to hide the counter, and
+  screen-record at 1920x1080. Everything is inline and offline.
+
+  Keys:  → / space  advance   ←  back   F  fullscreen
+         H  hide HUD          R  replay this slide's animation
+-->
+<style>
+  :root {
+    --bg: #070b14; --surface: #0d131f; --ink: #f3f4f6; --soft: #a9b2c3;
+    --faint: #6b7a90; --accent: #ff6d00; --pass: #34d399; --fail: #f87171;
+    --line: rgb(255 255 255 / 0.1);
+    --mono: 'JetBrains Mono', Menlo, 'SF Mono', Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #fit { position: absolute; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1920px; height: 1080px; background: var(--bg); overflow: hidden; transform-origin: center; }
+  #stage::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(1200px 700px at 82% -10%, rgb(255 109 0 / 0.1), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgb(255 109 0 / 0.05), transparent 60%);
+  }
+  .slide { position: absolute; inset: 0; padding: 100px 130px; display: none; flex-direction: column; justify-content: center; }
+  .slide.on { display: flex; }
+
+  h1 { font-size: 108px; line-height: 1.03; letter-spacing: -0.04em; font-weight: 700; }
+  h2 { font-size: 70px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; margin-bottom: 48px; }
+  .accent { color: var(--accent); }
+  .kicker { font-family: var(--mono); font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 30px; }
+  .lede { font-size: 40px; line-height: 1.45; color: var(--soft); max-width: 1420px; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .lede + .lede { margin-top: 34px; }
+  code { font-family: var(--mono); }
+
+  [data-step] { opacity: 0; transform: translateY(18px); transition: opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1); }
+  [data-step].shown { opacity: 1; transform: none; }
+
+  #hud { position: absolute; right: 34px; bottom: 26px; font-family: var(--mono); font-size: 19px; color: var(--faint); z-index: 20; }
+  #bar { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--accent); transition: width .35s ease; z-index: 20; }
+  #hud.hide, #bar.hide { display: none; }
+
+  /* Slide 3 — the contradiction, side by side. */
+  .versus { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 20px; }
+  .panel { border: 1px solid var(--line); border-radius: 22px; background: var(--surface); padding: 52px 48px; }
+  .panel .who { font-family: var(--mono); font-size: 24px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-bottom: 26px; }
+  .panel .says { font-size: 46px; line-height: 1.25; font-weight: 600; }
+  .panel.no { border-color: rgb(248 113 113 / .45); }
+  .panel.no .says { color: var(--fail); }
+  .panel.yes { border-color: rgb(52 211 153 / .45); }
+  .panel.yes .says { color: var(--pass); }
+
+  /* Slide 4 — the split. */
+  .execline { font-family: var(--mono); font-size: 46px; line-height: 1.6; margin: 20px 0 46px; white-space: nowrap; }
+  .execline .tok { padding: 8px 6px; border-radius: 8px; transition: background-color .5s, color .5s; }
+  .execline .rest { transition: opacity .5s; }
+  .split .execline .tok { background: rgb(248 113 113 / .2); color: var(--fail); font-weight: 700; }
+  .split .execline .rest { opacity: .28; }
+  .steps { display: grid; gap: 22px; }
+  .stp { display: grid; grid-template-columns: 60px 1fr; gap: 24px; align-items: baseline; font-size: 34px; color: var(--soft); opacity: 0; transform: translateY(10px); transition: opacity .4s, transform .4s; }
+  .stp.shown { opacity: 1; transform: none; }
+  .stp .mk { font-family: var(--mono); font-size: 36px; color: var(--fail); text-align: center; }
+  .stp code { color: var(--fail); }
+
+  /* Slide 5 — every step correct. */
+  .rows { display: grid; gap: 26px; }
+  .row { display: grid; grid-template-columns: 90px 1fr; gap: 28px; align-items: center; font-size: 36px; color: var(--soft); }
+  .row .tick { font-family: var(--mono); font-size: 40px; color: var(--pass); text-align: center; }
+  .row b { color: var(--ink); font-weight: 600; }
+
+  /* Slide 6 — the chain. */
+  .chain { display: grid; gap: 20px; }
+  .clink { font-size: 36px; color: var(--soft); padding-left: 42px; position: relative; line-height: 1.35; }
+  .clink::before { content: '↓'; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+  .clink:first-child::before { content: '·'; }
+  .clink b { color: var(--ink); font-weight: 600; }
+
+  .punch { font-size: 58px; line-height: 1.22; font-weight: 700; letter-spacing: -0.025em; }
+  .outro-cta { margin-top: 52px; font-family: var(--mono); font-size: 34px; color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+<!-- 1 -->
+<section class="slide">
+  <div class="kicker">WaveKat · a debugging story</div>
+  <h1>A space broke<br />our app.</h1>
+  <p class="lede" style="margin-top:46px" data-step="1">
+    Not a space in the code. A space in <strong>our own name</strong>.
+  </p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2>What it was supposed to do</h2>
+  <p class="lede">
+    Click a phone number on a web page — a supplier, a customer, anyone — and
+    our phone app comes up with the number already typed in.
+  </p>
+  <p class="lede" data-step="1">
+    For that, the app asks the operating system a favour: <strong>when someone
+    clicks a phone number, send it to me.</strong> Same kind of request a
+    browser makes when it wants to be your default browser.
+  </p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2>Then two things disagreed</h2>
+  <div class="versus">
+    <div class="panel no" data-step="1">
+      <div class="who">the switch in Settings</div>
+      <div class="says">“Couldn't set up phone links.”</div>
+    </div>
+    <div class="panel yes" data-step="2">
+      <div class="who">the actual operating system</div>
+      <div class="says">Delivering clicked numbers correctly. Since install.</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:52px" data-step="3">
+    The system was doing the thing. The check that asked
+    <strong>“are you doing the thing?”</strong> kept answering no.
+  </p>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-anim="split">
+  <h2 style="margin-bottom:26px">It takes the <span class="accent">first word</span></h2>
+  <p class="lede" style="font-size:34px;margin-bottom:10px">
+    To double-check its own work, the system tool reads the line that says where
+    our app lives — then splits it on spaces.
+  </p>
+  <div class="execline">Exec=<span class="tok">"/opt/WaveKat</span><span class="rest"> Voice/@wavekatvoice-desktop" %U</span></div>
+  <div class="steps">
+    <div class="stp" data-stp="1"><span class="mk">✗</span><span>The quotes exist <em>precisely</em> so a path can contain a space. It doesn't look at them.</span></div>
+    <div class="stp" data-stp="2"><span class="mk">✗</span><span>So it goes looking for a program called <code>"/opt/WaveKat</code>. There isn't one.</span></div>
+    <div class="stp" data-stp="3"><span class="mk">✗</span><span>Lookup fails → tool errors out → the answer that reaches us: <b>you're not the default.</b></span></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2>Nobody chose that folder</h2>
+  <div class="rows">
+    <div class="row" data-step="1"><span class="tick">✓</span><span>Naming the product <b>two words</b> is fine.</span></div>
+    <div class="row" data-step="2"><span class="tick">✓</span><span>Installing under <code>/opt/&lt;product name&gt;</code> is <b>the convention</b>.</span></div>
+    <div class="row" data-step="3"><span class="tick">✓</span><span>Quoting a path that contains a space is <b>exactly right</b>.</span></div>
+  </div>
+  <p class="punch" style="margin-top:60px" data-step="4">
+    Every step correct. Feature dead on <span class="accent">an entire operating system</span>.
+  </p>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2>Why it died completely</h2>
+  <div class="chain">
+    <div class="clink" data-step="1">We only save the setting <b>if the system confirms the change worked</b> — so the switch can never claim “On” while nothing happens.</div>
+    <div class="clink" data-step="2">The check failed, so <b>the setting never saved</b>.</div>
+    <div class="clink" data-step="3">Setting not saved, so <b>the app treated the feature as off</b>.</div>
+    <div class="clink" data-step="4">Feature off, so <b>every clicked number was quietly dropped</b> — while the OS kept faithfully delivering them.</div>
+  </div>
+  <p class="punch" style="margin-top:54px" data-step="5">
+    An honest rule, faithfully passing along <span class="accent">a wrong answer</span>.
+  </p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2>The fix: ask a <span class="accent">different question</span></h2>
+  <p class="lede" data-step="1">
+    Not <strong>“did my change work?”</strong> — that goes back through the same
+    broken machinery.
+  </p>
+  <p class="lede" data-step="2">
+    But <strong>“who is the default for phone links right now?”</strong> — which
+    just reports the name on file. It never works backwards from a name to a
+    program, so it never reads that line, so it never trips over the space.
+  </p>
+  <p class="lede" style="font-size:34px" data-step="3">
+    When it says our name back to us, we call it success — whatever the first
+    tool claimed.
+  </p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2>What I took from it</h2>
+  <p class="punch" data-step="1">
+    When a check disagrees with reality,<br /><span class="accent">suspect the check.</span>
+  </p>
+  <p class="lede" style="margin-top:52px" data-step="2">
+    “Did my change succeed?” and “is this true right now?” look like the same
+    question. They aren't. The first one inherits every bug in the machinery
+    that made the change. The second one <strong>just looks</strong>.
+  </p>
+  <p class="lede" style="font-size:34px" data-step="3">When you can — look.</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="kicker">WaveKat Voice</div>
+  <h1>It works now.<br />Even on Debian.</h1>
+  <p class="lede" style="margin-top:42px" data-step="1">
+    A phone app for Mac and Linux that records and transcribes every call.
+  </p>
+  <p class="outro-cta" data-step="2">wavekat.com/blog/the-space-that-broke-our-app/</p>
+</section>
+
+<div id="bar"></div>
+<div id="hud"><span id="hud-n">1</span> / <span id="hud-t">9</span></div>
+</div></div>
+
+<script>
+(function () {
+  'use strict';
+  var stage = document.getElementById('stage');
+  var slides = [].slice.call(document.querySelectorAll('.slide'));
+  var hudN = document.getElementById('hud-n');
+  var bar = document.getElementById('bar');
+  var i = 0, step = 0, timers = [];
+  document.getElementById('hud-t').textContent = slides.length;
+
+  function fit() {
+    stage.style.transform = 'scale(' + Math.min(window.innerWidth / 1920, window.innerHeight / 1080) + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  function maxStep(s) {
+    var n = 0;
+    s.querySelectorAll('[data-step]').forEach(function (el) {
+      n = Math.max(n, parseInt(el.getAttribute('data-step'), 10) || 0);
+    });
+    return n;
+  }
+
+  function applySteps() {
+    slides[i].querySelectorAll('[data-step]').forEach(function (el) {
+      el.classList.toggle('shown', (parseInt(el.getAttribute('data-step'), 10) || 0) <= step);
+    });
+  }
+
+  // Slide 4: dim the line, highlight the broken token, then land the three
+  // consequences one at a time.
+  function animate(slide) {
+    timers.forEach(clearTimeout);
+    timers = [];
+    slides.forEach(function (s) { s.classList.remove('split'); });
+    slide.querySelectorAll('.stp').forEach(function (s) { s.classList.remove('shown'); });
+    if (slide.getAttribute('data-anim') !== 'split') return;
+    timers.push(setTimeout(function () { slide.classList.add('split'); }, 900));
+    slide.querySelectorAll('.stp').forEach(function (s, k) {
+      timers.push(setTimeout(function () { s.classList.add('shown'); }, 1800 + k * 1500));
+    });
+  }
+
+  function show(n, keepStep) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    step = keepStep === undefined ? 0 : keepStep;
+    applySteps();
+    animate(slides[i]);
+    hudN.textContent = i + 1;
+    bar.style.width = ((i + 1) / slides.length) * 100 + '%';
+  }
+
+  function next() {
+    if (step < maxStep(slides[i])) { step++; applySteps(); return; }
+    if (i < slides.length - 1) show(i + 1);
+  }
+  function prev() {
+    if (step > 0) { step--; applySteps(); return; }
+    if (i > 0) show(i - 1, maxStep(slides[i - 1]));
+  }
+
+  document.addEventListener('keydown', function (e) {
+    switch (e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
+      case 'Home': show(0); break;
+      case 'End': show(slides.length - 1); break;
+      case 'f': case 'F':
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen();
+        break;
+      case 'h': case 'H':
+        document.getElementById('hud').classList.toggle('hide');
+        bar.classList.toggle('hide');
+        break;
+      case 'r': case 'R': animate(slides[i]); break;
+    }
+  });
+  document.addEventListener('click', next);
+  show(0);
+})();
+</script>
+</body>
+</html>

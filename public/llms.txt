@@ -13,7 +13,7 @@
 
 ## Blog
 
-- [How Click-to-Call Works in a Desktop App](https://wavekat.com/blog/how-click-to-call-works/): Technical deep dive — declaring vs claiming `tel:`/`sip:` schemes, the three ways an OS delivers a clicked URL, the URL parser as a security boundary, the cold-start/renderer race, and the `xdg-settings` bug that made the feature dead on Debian.
+- [The Space That Broke Our App on Linux](https://wavekat.com/blog/the-space-that-broke-our-app/): A space in the product name put the app in `/opt/WaveKat Voice/`, so its `Exec` line is quoted — and the system tool that verifies default-app changes splits on spaces without honouring quotes, reporting failure for a feature that worked all along.
 - [Share a Call Recording With a Link](https://wavekat.com/blog/share-a-call-recording/): Turn any recorded call into a shareable link — private, invite-only, or public.
 - [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls.
 - [Common Voice Explorer](https://wavekat.com/blog/common-voice-explorer/): A free tool to browse and review Mozilla Common Voice dataset clips.
