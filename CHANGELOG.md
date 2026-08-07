@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.54](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.53...wavekat-com-v0.0.54) (2026-08-07)
+
+
+### Features
+
+* **footer:** link to WaveKat Platform ([#151](https://github.com/wavekat/wavekat.com/issues/151)) ([98185fa](https://github.com/wavekat/wavekat.com/commit/98185fa5541a228923370cd9501d6eb3bed3c670))
+* phone-links explainer, video and i18n ([#149](https://github.com/wavekat/wavekat.com/issues/149)) ([a662d37](https://github.com/wavekat/wavekat.com/commit/a662d3766ee9fde61c735225d00325211459aceb))
+
 ## [0.0.53](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.52...wavekat-com-v0.0.53) (2026-08-06)
 
 
