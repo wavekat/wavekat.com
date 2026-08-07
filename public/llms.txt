@@ -13,7 +13,7 @@
 
 ## Blog
 
-- [The Space That Broke Our App on Linux](https://wavekat.com/blog/the-space-that-broke-our-app/): A space in the product name put the app in `/opt/WaveKat Voice/`, so its `Exec` line is quoted — and the system tool that verifies default-app changes splits on spaces without honouring quotes, reporting failure for a feature that worked all along.
+- [Why Phone Links Don't Work on Your Computer](https://wavekat.com/blog/why-phone-links-dont-work/): Clickable phone numbers work on a phone because it has exactly one calling app; a computer has a "phone app" slot that is usually empty (macOS puts FaceTime in it, Windows asks, Linux has nothing). WaveKat Voice fills that slot on Mac and Linux.
 - [Share a Call Recording With a Link](https://wavekat.com/blog/share-a-call-recording/): Turn any recorded call into a shareable link — private, invite-only, or public.
 - [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls.
 - [Common Voice Explorer](https://wavekat.com/blog/common-voice-explorer/): A free tool to browse and review Mozilla Common Voice dataset clips.

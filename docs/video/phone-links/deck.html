@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Why phone links don't work — recording deck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Slides for the "why phone links don't work" video (~4 min). The live app
+  shots come from the shot list in script.md; everything else is here.
+
+  NOT part of the site build — docs/ never ships to wavekat.com. Open in a
+  browser, F for fullscreen, H to hide the counter, record at 1920x1080.
+
+  Keys:  → / space  advance   ←  back   F  fullscreen
+         H  hide HUD          R  replay this slide's build
+-->
+<style>
+  :root {
+    --bg: #070b14; --surface: #0d131f; --ink: #f3f4f6; --soft: #a9b2c3;
+    --faint: #6b7a90; --accent: #ff6d00; --pass: #34d399; --fail: #f87171;
+    --line: rgb(255 255 255 / 0.1);
+    --mono: 'JetBrains Mono', Menlo, 'SF Mono', Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #fit { position: absolute; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1920px; height: 1080px; background: var(--bg); overflow: hidden; transform-origin: center; }
+  #stage::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(1200px 700px at 82% -10%, rgb(255 109 0 / 0.1), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgb(255 109 0 / 0.05), transparent 60%);
+  }
+  .slide { position: absolute; inset: 0; padding: 100px 130px; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .slide.left { align-items: flex-start; text-align: left; }
+  .slide.on { display: flex; }
+
+  h1 { font-size: 100px; line-height: 1.05; letter-spacing: -0.035em; font-weight: 700; }
+  h2 { font-size: 64px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 700; margin-bottom: 54px; }
+  .accent { color: var(--accent); }
+  .kicker { font-family: var(--mono); font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 30px; }
+  .lede { font-size: 40px; line-height: 1.45; color: var(--soft); max-width: 1380px; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  code { font-family: var(--mono); }
+
+  [data-step] { opacity: 0; transform: translateY(18px); transition: opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1); }
+  [data-step].shown { opacity: 1; transform: none; }
+
+  #hud { position: absolute; right: 34px; bottom: 26px; font-family: var(--mono); font-size: 19px; color: var(--faint); z-index: 20; }
+  #bar { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--accent); transition: width .35s ease; z-index: 20; }
+  #hud.hide, #bar.hide { display: none; }
+
+  /* ── The slot graphic ───────────────────────────────────────────── */
+  .relay { display: flex; align-items: center; gap: 44px; margin: 30px 0 10px; }
+  .box {
+    border: 1px solid var(--line); border-radius: 20px; background: var(--surface);
+    padding: 38px 48px; font-size: 34px; color: var(--soft); line-height: 1.3;
+  }
+  .box .sub { display: block; font-family: var(--mono); font-size: 22px; color: var(--faint); margin-top: 10px; }
+  .arrow { font-family: var(--mono); font-size: 48px; color: var(--accent); }
+
+  .slotwrap { text-align: center; }
+  .slotlabel { font-family: var(--mono); font-size: 24px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 16px; }
+  .slot {
+    min-width: 560px; min-height: 130px; border-radius: 20px;
+    display: grid; place-items: center; padding: 26px 40px;
+    font-size: 38px; font-weight: 600; line-height: 1.25;
+  }
+  .slot.filled { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .slot.empty { border: 2px dashed rgb(255 255 255 / 0.22); background: transparent; color: var(--faint); font-weight: 400; font-style: italic; }
+  .slot.brand { border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); background: rgb(255 109 0 / 0.12); color: var(--ink); }
+  .slot .sub2 { display: block; font-size: 24px; font-weight: 400; font-style: normal; color: var(--faint); margin-top: 10px; }
+
+  .verdict { margin-top: 46px; font-size: 44px; font-weight: 600; }
+  .verdict.ok { color: var(--pass); }
+  .verdict.no { color: var(--fail); }
+  .verdict.meh { color: var(--soft); font-weight: 400; }
+
+  .punch { font-size: 62px; line-height: 1.2; font-weight: 700; letter-spacing: -0.025em; max-width: 1500px; }
+  .outro-cta { margin-top: 52px; font-family: var(--mono); font-size: 34px; color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+<!-- 1 · 0:30 Where the click goes -->
+<section class="slide left">
+  <h2>Where the click <span class="accent">actually goes</span></h2>
+  <div class="relay">
+    <div class="box" data-step="1">Your browser<span class="sub">"someone wants to call this"</span></div>
+    <div class="arrow" data-step="1">→</div>
+    <div class="box" data-step="2">Your operating system<span class="sub">looks in one place…</span></div>
+    <div class="arrow" data-step="3">→</div>
+    <div class="slotwrap" data-step="3">
+      <div class="slotlabel">the slot: “phone app”</div>
+      <div class="slot empty">empty</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:60px" data-step="4">
+    Whatever sits in that slot gets the number.<br />
+    <strong>That slot is the entire story.</strong>
+  </p>
+</section>
+
+<!-- 2 · 0:55 The phone -->
+<section class="slide">
+  <h2>Your phone</h2>
+  <div class="slotwrap">
+    <div class="slotlabel">the slot: “phone app”</div>
+    <div class="slot filled">The dialer<span class="sub2">built in · can't be removed · always there</span></div>
+  </div>
+  <p class="verdict ok" data-step="1">It rings. Every time.</p>
+  <p class="lede" style="margin-top:40px" data-step="2">It never has to ask. That's why you've never thought about this.</p>
+</section>
+
+<!-- 3 · 1:15 Mac -->
+<section class="slide">
+  <h2>A Mac</h2>
+  <div class="slotwrap">
+    <div class="slotlabel">the slot: “phone app”</div>
+    <div class="slot filled">FaceTime<span class="sub2">Apple put it there</span></div>
+  </div>
+  <p class="verdict meh" data-step="1">Offers to call through your iPhone — if you have one, nearby, set up for it.</p>
+  <p class="lede" style="margin-top:40px" data-step="2"><strong>Almost never what you wanted at a desk.</strong></p>
+</section>
+
+<!-- 4 · Windows -->
+<section class="slide">
+  <h2>Windows</h2>
+  <div class="slotwrap">
+    <div class="slotlabel">the slot: “phone app”</div>
+    <div class="slot empty">empty</div>
+  </div>
+  <p class="verdict no" data-step="1">“How do you want to open this?” — with a list that's usually empty too.</p>
+</section>
+
+<!-- 5 · Linux -->
+<section class="slide">
+  <h2>Linux</h2>
+  <div class="slotwrap">
+    <div class="slotlabel">the slot: “phone app”</div>
+    <div class="slot empty">empty</div>
+  </div>
+  <p class="verdict no" data-step="1">The click just… evaporates.</p>
+</section>
+
+<!-- 6 · 1:55 The beat -->
+<section class="slide">
+  <p class="punch">
+    The link was never broken.<br />
+    <span data-step="1">The website did its job. The browser did its job.<br />The system knocked on the phone app's door.</span>
+  </p>
+  <p class="punch" style="margin-top:70px" data-step="2">There was just <span class="accent">nobody home</span>.</p>
+</section>
+
+<!-- 7 · 2:10 lead-in (cut to live shot after) -->
+<section class="slide">
+  <h2 style="margin-bottom:0">So let's put <span class="accent">somebody home</span></h2>
+  <div class="slotwrap" style="margin-top:60px" data-step="1">
+    <div class="slotlabel">the slot: “phone app”</div>
+    <div class="slot brand">WaveKat Voice<span class="sub2">you put it there — one switch, off by default</span></div>
+  </div>
+</section>
+
+<!-- 8 · 3:05 The question -->
+<section class="slide">
+  <p class="punch">Can a web page phone someone<br />from my computer?</p>
+  <p class="punch" style="margin-top:70px" data-step="1"><span class="accent">No. A link can only ask.</span></p>
+  <p class="lede" style="margin-top:56px" data-step="2">
+    The number is filled in. <strong>A human presses Call.</strong>
+  </p>
+</section>
+
+<!-- 9 · 3:35 Close -->
+<section class="slide">
+  <div class="kicker">WaveKat Voice · free · Mac &amp; Linux</div>
+  <h1>Your clicks<br />can ring.</h1>
+  <p class="outro-cta" data-step="1">wavekat.com/blog/why-phone-links-dont-work/</p>
+</section>
+
+<div id="bar"></div>
+<div id="hud"><span id="hud-n">1</span> / <span id="hud-t">9</span></div>
+</div></div>
+
+<script>
+(function () {
+  'use strict';
+  var stage = document.getElementById('stage');
+  var slides = [].slice.call(document.querySelectorAll('.slide'));
+  var hudN = document.getElementById('hud-n');
+  var bar = document.getElementById('bar');
+  var i = 0, step = 0;
+  document.getElementById('hud-t').textContent = slides.length;
+
+  function fit() {
+    stage.style.transform = 'scale(' + Math.min(window.innerWidth / 1920, window.innerHeight / 1080) + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  function maxStep(s) {
+    var n = 0;
+    s.querySelectorAll('[data-step]').forEach(function (el) {
+      n = Math.max(n, parseInt(el.getAttribute('data-step'), 10) || 0);
+    });
+    return n;
+  }
+  function applySteps() {
+    slides[i].querySelectorAll('[data-step]').forEach(function (el) {
+      el.classList.toggle('shown', (parseInt(el.getAttribute('data-step'), 10) || 0) <= step);
+    });
+  }
+  function show(n, keepStep) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    step = keepStep === undefined ? 0 : keepStep;
+    applySteps();
+    hudN.textContent = i + 1;
+    bar.style.width = ((i + 1) / slides.length) * 100 + '%';
+  }
+  function next() {
+    if (step < maxStep(slides[i])) { step++; applySteps(); return; }
+    if (i < slides.length - 1) show(i + 1);
+  }
+  function prev() {
+    if (step > 0) { step--; applySteps(); return; }
+    if (i > 0) show(i - 1, maxStep(slides[i - 1]));
+  }
+
+  document.addEventListener('keydown', function (e) {
+    switch (e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
+      case 'Home': show(0); break;
+      case 'End': show(slides.length - 1); break;
+      case 'f': case 'F':
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen();
+        break;
+      case 'h': case 'H':
+        document.getElementById('hud').classList.toggle('hide');
+        bar.classList.toggle('hide');
+        break;
+      case 'r': case 'R': { var k = step; step = 0; applySteps(); step = k; setTimeout(applySteps, 350); break; }
+    }
+  });
+  document.addEventListener('click', next);
+  show(0);
+})();
+</script>
+</body>
+</html>

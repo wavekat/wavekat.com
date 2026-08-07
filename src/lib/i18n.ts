@@ -89,11 +89,11 @@ const fullSite = [
 ];
 
 // Pages that have shipped in some locales but not yet all of them. The
-// space-in-the-path story is English + Simplified Chinese first; the other
+// phone-links explainer is English + Simplified Chinese first; the other
 // locales follow in a later pass. It gets its own list rather than joining
 // `fullSite` so hreflang stays honest — buildAlternates() must never advertise
 // a translation that 404s. Fold it into `fullSite` once every locale has it.
-const zhHansSite = [...fullSite, '/blog/the-space-that-broke-our-app/'];
+const zhHansSite = [...fullSite, '/blog/why-phone-links-dont-work/'];
 
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
