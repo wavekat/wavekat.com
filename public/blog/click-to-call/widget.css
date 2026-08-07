@@ -1,0 +1,415 @@
+/* Interactive widgets for the click-to-call deep dive (/blog/how-click-to-call-works/).
+ *
+ * Two widgets share this sheet: the tel:/sip: parser playground and the
+ * delivery-path pipeline. Both are driven by widget.js, which never writes
+ * user-visible prose — every string lives in the post's HTML skeleton so a
+ * translated post translates the labels without forking the script.
+ *
+ * Served from public/ and pulled in with a plain <link> from the markdown, so
+ * these are hand-written custom properties rather than Tailwind utilities —
+ * Tailwind never sees this file. Dark mode keys off the .dark class the site
+ * sets on <html> (localStorage-driven), NOT prefers-color-scheme, or the
+ * widgets would ignore the site's own theme toggle.
+ */
+
+.wk-w {
+  --wk-accent: #ff6d00;
+  --wk-pass: #047857;
+  --wk-fail: #b91c1c;
+  --wk-skip: #9ca3af;
+  --wk-bd: rgb(0 0 0 / 0.1);
+  --wk-bd-soft: rgb(0 0 0 / 0.06);
+  --wk-surface: #ffffff;
+  --wk-sunken: #f9fafb;
+  --wk-ink: #111827;
+  --wk-ink-soft: #4b5563;
+  --wk-ink-faint: #6b7280;
+
+  margin: 2rem 0;
+  border: 1px solid var(--wk-bd);
+  border-radius: 0.75rem;
+  background: var(--wk-surface);
+  color: var(--wk-ink);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.dark .wk-w {
+  --wk-pass: #34d399;
+  --wk-fail: #f87171;
+  --wk-skip: #6b7280;
+  --wk-bd: rgb(255 255 255 / 0.12);
+  --wk-bd-soft: rgb(255 255 255 / 0.07);
+  --wk-surface: rgb(255 255 255 / 0.03);
+  --wk-sunken: rgb(0 0 0 / 0.25);
+  --wk-ink: #f3f4f6;
+  --wk-ink-soft: #d1d5db;
+  --wk-ink-faint: #9ca3af;
+}
+
+/* The prose plugin styles descendants of .prose aggressively; these widgets
+   sit inside the article body, so neutralise what would otherwise leak in. */
+.wk-w p,
+.wk-w ol,
+.wk-w ul,
+.wk-w li {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.wk-w ol,
+.wk-w ul {
+  list-style: none;
+}
+.wk-w li::before,
+.wk-w li::marker {
+  content: none;
+}
+.wk-w button {
+  font: inherit;
+  color: inherit;
+}
+
+/* ── Head ───────────────────────────────────────────────────────────── */
+
+.wk-w-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--wk-bd-soft);
+  background: var(--wk-sunken);
+}
+
+.wk-w-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.wk-w-hint {
+  color: var(--wk-ink-faint);
+  font-size: 0.8125rem;
+}
+
+.wk-w-body {
+  padding: 1rem;
+}
+
+/* ── Chips (parser presets + pipeline track tabs) ────────────────────── */
+
+.wk-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.875rem;
+}
+
+.wk-chips button {
+  padding: 0.3125rem 0.625rem;
+  border: 1px solid var(--wk-bd);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--wk-ink-soft);
+  font-size: 0.78125rem;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background-color 0.15s;
+}
+
+.wk-chips button:hover {
+  border-color: var(--wk-accent);
+  color: var(--wk-ink);
+}
+
+.wk-chips button[aria-pressed='true'] {
+  border-color: var(--wk-accent);
+  background: rgb(255 109 0 / 0.1);
+  color: var(--wk-ink);
+  font-weight: 500;
+}
+
+/* ── Parser: input ──────────────────────────────────────────────────── */
+
+.wk-input {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--wk-bd);
+  border-radius: 0.5rem;
+  background: var(--wk-sunken);
+  color: var(--wk-ink);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8125rem;
+}
+
+.wk-input:focus {
+  border-color: var(--wk-accent);
+  outline: none;
+}
+
+/* ── Parser: stage trace ────────────────────────────────────────────── */
+
+.wk-stages {
+  margin-top: 0.875rem !important;
+  border-top: 1px solid var(--wk-bd-soft);
+}
+
+.wk-stages li {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4375rem 0;
+  border-bottom: 1px solid var(--wk-bd-soft);
+}
+
+.wk-stages li[hidden] {
+  display: none;
+}
+
+.wk-st-mark {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.wk-st-name {
+  color: var(--wk-ink-soft);
+  font-size: 0.8125rem;
+}
+
+.wk-st-val {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--wk-ink-faint);
+  overflow-wrap: anywhere;
+}
+
+.wk-stages li.is-pass .wk-st-mark {
+  color: var(--wk-pass);
+}
+.wk-stages li.is-pass .wk-st-val {
+  color: var(--wk-ink);
+}
+.wk-stages li.is-fail .wk-st-mark,
+.wk-stages li.is-fail .wk-st-val {
+  color: var(--wk-fail);
+}
+.wk-stages li.is-fail .wk-st-name {
+  color: var(--wk-fail);
+  font-weight: 500;
+}
+.wk-stages li.is-skip {
+  opacity: 0.45;
+}
+.wk-stages li.is-skip .wk-st-mark {
+  color: var(--wk-skip);
+}
+
+/* ── Parser: verdict ────────────────────────────────────────────────── */
+
+.wk-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 0.875rem !important;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  font-size: 0.8125rem;
+}
+
+.wk-verdict.is-pass {
+  border-color: color-mix(in srgb, var(--wk-pass) 35%, transparent);
+  background: color-mix(in srgb, var(--wk-pass) 10%, transparent);
+  color: var(--wk-pass);
+}
+
+.wk-verdict.is-fail {
+  border-color: color-mix(in srgb, var(--wk-fail) 35%, transparent);
+  background: color-mix(in srgb, var(--wk-fail) 10%, transparent);
+  color: var(--wk-fail);
+}
+
+.wk-verdict-value {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ── Pipeline ───────────────────────────────────────────────────────── */
+
+.wk-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.4375rem 0.875rem;
+  border: 1px solid var(--wk-accent);
+  border-radius: 0.5rem;
+  background: rgb(255 109 0 / 0.1);
+  color: var(--wk-accent);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.wk-run:hover {
+  background: rgb(255 109 0 / 0.18);
+}
+
+.wk-run[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.wk-steps {
+  margin-top: 0.875rem !important;
+}
+
+.wk-steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.625rem;
+  padding: 0 0 0.875rem;
+}
+
+.wk-steps li[hidden] {
+  display: none;
+}
+
+/* Connector rail between the dots. */
+.wk-steps li::after {
+  content: '';
+  position: absolute;
+  top: 1.125rem;
+  left: 0.6875rem;
+  bottom: 0.125rem;
+  width: 1px;
+  background: var(--wk-bd);
+}
+
+.wk-steps li:last-of-type::after,
+.wk-steps li.is-last::after {
+  content: none;
+}
+
+.wk-dot {
+  position: relative;
+  z-index: 1;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1px solid var(--wk-bd);
+  border-radius: 999px;
+  background: var(--wk-surface);
+  color: var(--wk-ink-faint);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  line-height: 1.25rem;
+  text-align: center;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.wk-step-name {
+  font-weight: 500;
+  color: var(--wk-ink-soft);
+  transition: color 0.2s;
+}
+
+.wk-step-detail {
+  display: block;
+  margin-top: 0.0625rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--wk-ink-faint);
+  overflow-wrap: anywhere;
+}
+
+.wk-steps li.is-done .wk-dot {
+  border-color: color-mix(in srgb, var(--wk-accent) 50%, transparent);
+  color: var(--wk-accent);
+}
+
+.wk-steps li.is-done .wk-step-name {
+  color: var(--wk-ink);
+}
+
+.wk-steps li.is-active .wk-dot {
+  border-color: var(--wk-accent);
+  background: var(--wk-accent);
+  color: #fff;
+}
+
+.wk-steps li.is-active .wk-step-name {
+  color: var(--wk-accent);
+}
+
+/* The payload as it stands after each step — the point of the whole widget. */
+.wk-payload {
+  margin-top: 0.875rem !important;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--wk-bd-soft);
+  border-radius: 0.5rem;
+  background: var(--wk-sunken);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--wk-ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.wk-payload-label {
+  display: block;
+  margin-bottom: 0.1875rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--wk-ink-faint);
+}
+
+/* Visually-hidden label text that still reaches a screen reader. */
+.wk-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Without JS the widgets are static explanatory markup, so hide the controls
+   that would do nothing. The script removes this class on boot. */
+.wk-w.wk-nojs .wk-chips,
+.wk-w.wk-nojs .wk-run,
+.wk-w.wk-nojs .wk-io {
+  display: none;
+}
+
+@media (max-width: 40rem) {
+  .wk-stages li {
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+  }
+  .wk-stages .wk-st-val {
+    grid-column: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wk-dot,
+  .wk-step-name {
+    transition: none;
+  }
+}
