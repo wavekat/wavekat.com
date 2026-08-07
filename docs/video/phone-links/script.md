@@ -63,7 +63,7 @@ Target length: ~4:00. Narrated screen recording plus simple slides.
 
 ### 3:35 — Close
 
-[ON SCREEN: The blog post URL on screen: wavekat.com/blog/why-phone-links-dont-work — then the WaveKat Voice download page.]
+[ON SCREEN: End card — "Your clicks can ring." and the bare domain, wavekat.com. The full post and download URLs go in the description, not on the frame; keep whichever corner the YouTube end-screen cards will occupy clear.]
 
 **VO:** So next time you see a phone number underlined on a web page, you'll know: it was always a working doorbell. Your computer just needed someone to answer the door. There's a written version of this with a little interactive figure — you can click through what each operating system does with the same link — at wavekat.com. Link in the description. WaveKat Voice is free to download for Mac and Linux. Flip the one switch, and your clicks will ring.
 

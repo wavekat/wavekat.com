@@ -9,15 +9,25 @@
   shots come from the shot list in script.md; everything else is here.
 
   NOT part of the site build — docs/ never ships to wavekat.com. Open in a
-  browser, F for fullscreen, H to hide the counter, record at 1920x1080.
+  browser, F for fullscreen, record at 1920x1080.
 
-  Keys:  → / space  advance   ←  back   F  fullscreen
-         H  hide HUD          R  replay this slide's build
+  Fullscreen is treated as "recording": the slide counter and progress bar
+  hide themselves on the way in and return on the way out, so neither can end
+  up burned into a take. H overrides in either direction.
+
+  Amber dashed cards are placeholders for the live app footage — they mark
+  where the deck cuts away and what to roll. Press C to drop them and the
+  deck is the 9 render slides only, in order, ready to record straight through.
+
+  Keys:  → / space  advance   ←  back   F  fullscreen (auto-hides the HUD)
+         H  toggle HUD        C  hide live-shot cue cards
+         R  replay this slide's build
 -->
 <style>
   :root {
     --bg: #070b14; --surface: #0d131f; --ink: #f3f4f6; --soft: #a9b2c3;
     --faint: #6b7a90; --accent: #ff6d00; --pass: #34d399; --fail: #f87171;
+    --cue: #ffb020;
     --line: rgb(255 255 255 / 0.1);
     --mono: 'JetBrains Mono', Menlo, 'SF Mono', Consolas, monospace;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -78,11 +88,56 @@
   .verdict.meh { color: var(--soft); font-weight: 400; }
 
   .punch { font-size: 62px; line-height: 1.2; font-weight: 700; letter-spacing: -0.025em; max-width: 1500px; }
-  .outro-cta { margin-top: 52px; font-family: var(--mono); font-size: 34px; color: var(--accent); }
+  /* Short enough to read off the screen and remember. The deep link lives in
+     the description, not on a frame nobody can type from. */
+  .outro-cta { margin-top: 56px; font-family: var(--mono); font-size: 46px; letter-spacing: -0.01em; color: var(--accent); }
+  .outro-sub { margin-top: 22px; font-size: 26px; color: var(--faint); }
+
+  /* ── Live-shot cue cards — placeholders, never recorded (C hides) ── */
+  .slide.cue {
+    align-items: flex-start; text-align: left; padding: 86px 116px;
+    background: repeating-linear-gradient(135deg, transparent 0 24px, rgb(255 176 32 / 0.022) 24px 48px);
+  }
+  .slide.cue::after {
+    content: ''; position: absolute; inset: 30px; pointer-events: none;
+    border: 2px dashed rgb(255 176 32 / 0.26); border-radius: 26px;
+  }
+  .cuehead {
+    display: flex; align-items: center; gap: 16px; font-family: var(--mono); font-size: 21px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--cue);
+  }
+  .cuedot { width: 13px; height: 13px; border-radius: 50%; background: var(--cue); box-shadow: 0 0 0 7px rgb(255 176 32 / 0.14); }
+  .cuetime { font-family: var(--mono); font-size: 25px; color: var(--faint); margin-top: 30px; }
+  .cuetitle { font-size: 58px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 700; margin-top: 8px; }
+  .cuebody { display: flex; gap: 70px; align-items: flex-start; width: 100%; margin-top: 42px; }
+  .cuecol { flex: 1 1 auto; min-width: 0; }
+  .shots { list-style: none; display: flex; flex-direction: column; gap: 20px; font-size: 29px; line-height: 1.45; color: var(--soft); }
+  .shots li { position: relative; padding-left: 38px; }
+  .shots li::before { content: '▸'; position: absolute; left: 0; color: var(--cue); }
+  .shots b { color: var(--ink); font-weight: 600; }
+  .vo { margin-top: 36px; padding-left: 26px; border-left: 3px solid rgb(255 176 32 / 0.35); font-size: 25px; line-height: 1.5; color: var(--faint); }
+  .vo b { display: block; font-family: var(--mono); font-size: 19px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cue); margin-bottom: 10px; font-weight: 400; }
+  .still { flex: 0 0 600px; }
+  .still img { display: block; width: 100%; border-radius: 14px; border: 1px solid var(--line); }
+  .still figcaption { font-family: var(--mono); font-size: 19px; line-height: 1.5; color: var(--faint); margin-top: 14px; }
 </style>
 </head>
 <body>
 <div id="fit"><div id="stage">
+
+<!-- CUE · 0:00 Cold open (live, no deck) -->
+<section class="slide cue">
+  <div class="cuehead"><span class="cuedot"></span>Live shot · roll footage, not this deck</div>
+  <div class="cuetime">0:00 – 0:30</div>
+  <h2 class="cuetitle">Cold open — same link, two devices</h2>
+  <div class="cuebody"><div class="cuecol">
+    <ul class="shots">
+      <li><b>Phone in hand.</b> Contact page, finger taps <code>+1 (415) 555-0123</code> → dial screen → call connects, audible ring. Keep it under 5 s.</li>
+      <li><b>Hard cut to the laptop.</b> Same page, same number. Cursor clicks it. Nothing. Hold the silence. Click again. Still nothing.</li>
+    </ul>
+    <p class="vo"><b>VO from ~0:08</b>“Same web page. Same phone number. Same click. On the phone, it rings. On the computer… nothing. … The reason fits in one sentence, and it's kind of great.”</p>
+  </div></div>
+</section>
 
 <!-- 1 · 0:30 Where the click goes -->
 <section class="slide left">
@@ -145,6 +200,20 @@
   <p class="verdict no" data-step="1">The click just… evaporates.</p>
 </section>
 
+<!-- CUE · 1:55 Back to the laptop (live) -->
+<section class="slide cue">
+  <div class="cuehead"><span class="cuedot"></span>Live shot · reuse the cold-open take</div>
+  <div class="cuetime">≈ 1:55 — between “Linux” and “nobody home”</div>
+  <h2 class="cuetitle">The click that goes nowhere, once more</h2>
+  <div class="cuebody"><div class="cuecol">
+    <ul class="shots">
+      <li><b>Same laptop, same page</b> as the cold open — cut back to that recording, don't shoot it twice.</li>
+      <li>Cursor clicks the number <b>one more time</b>. Nothing. Let it sit a beat before the deck comes back.</li>
+    </ul>
+    <p class="vo"><b>VO over this shot</b>“So the link was never broken.” — then cut to the next slide as the VO reaches “The website did its job.”</p>
+  </div></div>
+</section>
+
 <!-- 6 · 1:55 The beat -->
 <section class="slide">
   <p class="punch">
@@ -163,6 +232,47 @@
   </div>
 </section>
 
+<!-- CUE · 2:10 LIVE SHOT A -->
+<section class="slide cue">
+  <div class="cuehead"><span class="cuedot"></span>Live shot A · WaveKat Voice on Ubuntu</div>
+  <div class="cuetime">2:10 – 2:40</div>
+  <h2 class="cuetitle">Settings → General → Phone links</h2>
+  <div class="cuebody">
+    <div class="cuecol">
+      <ul class="shots">
+        <li>Open <b>Settings → General</b>. The <b>Phone links</b> switch is visibly <b>off</b> before you touch it.</li>
+        <li>Cursor moves slowly, flips it <b>on</b>. <b>Nothing else happens</b> — that's the point. Hold on the switch.</li>
+      </ul>
+      <p class="vo"><b>VO over this shot</b>“…there's one switch: Phone links. It ships off. On purpose… Flip it, and WaveKat Voice steps into the slot.”</p>
+    </div>
+    <figure class="still">
+      <img src="../../../public/screenshots/settings-general-phone-links/en.webp" alt="" />
+      <figcaption>Reference frame — <code>settings-general-phone-links</code>. Drop this in if the take fails.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- CUE · 2:40 LIVE SHOT B -->
+<section class="slide cue">
+  <div class="cuehead"><span class="cuedot"></span>Live shot B · the payoff</div>
+  <div class="cuetime">2:40 – 3:05</div>
+  <h2 class="cuetitle">The same click, again</h2>
+  <div class="cuebody">
+    <div class="cuecol">
+      <ul class="shots">
+        <li><b>Same contact page as the cold open</b>, now on Ubuntu. Cursor clicks <code>+1 (415) 555-0123</code>.</li>
+        <li>WaveKat Voice comes to the front, <b>number already typed in</b>. Pause on that frame — it's the whole video.</li>
+        <li>Cursor moves to <b>Call</b> and presses it.</li>
+      </ul>
+      <p class="vo"><b>VO over this shot</b>“Nobody copied anything. Nobody retyped a country code. You look at the number… and you press Call. It shipped in version 0.0.43.”</p>
+    </div>
+    <figure class="still">
+      <img src="../../../public/screenshots/dial-prefilled/en.webp" alt="" />
+      <figcaption>Reference frame — <code>dial-prefilled</code>. The script's named fallback still.</figcaption>
+    </figure>
+  </div>
+</section>
+
 <!-- 8 · 3:05 The question -->
 <section class="slide">
   <p class="punch">Can a web page phone someone<br />from my computer?</p>
@@ -176,7 +286,8 @@
 <section class="slide">
   <div class="kicker">WaveKat Voice · free · Mac &amp; Linux</div>
   <h1>Your clicks<br />can ring.</h1>
-  <p class="outro-cta" data-step="1">wavekat.com/blog/why-phone-links-dont-work/</p>
+  <p class="outro-cta" data-step="1">wavekat.com</p>
+  <p class="outro-sub" data-step="2">Written version &amp; download — links in the description</p>
 </section>
 
 <div id="bar"></div>
@@ -187,11 +298,15 @@
 (function () {
   'use strict';
   var stage = document.getElementById('stage');
-  var slides = [].slice.call(document.querySelectorAll('.slide'));
+  var all = [].slice.call(document.querySelectorAll('.slide'));
+  var slides = all;              // the deck as currently navigated
+  var cues = true;               // live-shot cue cards in the running order
+  var hud = document.getElementById('hud');
   var hudN = document.getElementById('hud-n');
+  var hudT = document.getElementById('hud-t');
   var bar = document.getElementById('bar');
   var i = 0, step = 0;
-  document.getElementById('hud-t').textContent = slides.length;
+  hudT.textContent = slides.length;
 
   function fit() {
     stage.style.transform = 'scale(' + Math.min(window.innerWidth / 1920, window.innerHeight / 1080) + ')';
@@ -213,7 +328,8 @@
   }
   function show(n, keepStep) {
     i = Math.max(0, Math.min(slides.length - 1, n));
-    slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    all.forEach(function (s) { s.classList.remove('on'); });
+    slides[i].classList.add('on');
     step = keepStep === undefined ? 0 : keepStep;
     applySteps();
     hudN.textContent = i + 1;
@@ -223,9 +339,30 @@
     if (step < maxStep(slides[i])) { step++; applySteps(); return; }
     if (i < slides.length - 1) show(i + 1);
   }
+  // Fullscreen means "recording": the counter and the bar are rehearsal
+  // affordances and must never reach the tape. They come back on exit. H
+  // still overrides either way, for a windowed take or a fullscreen rehearsal.
+  document.addEventListener('fullscreenchange', function () {
+    var rec = !!document.fullscreenElement;
+    hud.classList.toggle('hide', rec);
+    bar.classList.toggle('hide', rec);
+  });
+
   function prev() {
     if (step > 0) { step--; applySteps(); return; }
     if (i > 0) show(i - 1, maxStep(slides[i - 1]));
+  }
+
+  // C drops the cue cards so a straight-through run records only the slides.
+  // Land on the current slide if it survived, otherwise the next one that did.
+  function toggleCues() {
+    var here = all.indexOf(slides[i]);
+    cues = !cues;
+    slides = cues ? all : all.filter(function (s) { return !s.classList.contains('cue'); });
+    hudT.textContent = slides.length;
+    var n = 0;
+    while (n < slides.length - 1 && all.indexOf(slides[n]) < here) n++;
+    show(n);
   }
 
   document.addEventListener('keydown', function (e) {
@@ -238,8 +375,9 @@
         if (document.fullscreenElement) document.exitFullscreen();
         else document.documentElement.requestFullscreen();
         break;
+      case 'c': case 'C': toggleCues(); break;
       case 'h': case 'H':
-        document.getElementById('hud').classList.toggle('hide');
+        hud.classList.toggle('hide');
         bar.classList.toggle('hide');
         break;
       case 'r': case 'R': { var k = step; step = 0; applySteps(); step = k; setTimeout(applySteps, 350); break; }
