@@ -90,7 +90,7 @@ const features = [
   {
     icon: Cloud,
     title: 'Sync if you want',
-    body: 'Sign in to your WaveKat account and your recordings and transcripts sync up so you can review them on the web. Don\'t sign in, and everything simply stays on your computer.',
+    body: 'Sign in to your WaveKat account and your recordings and transcripts sync up so you can review them on the web — and, if you connect it, every call is logged in your HubSpot CRM. Don\'t sign in, and everything simply stays on your computer.',
   },
   {
     icon: Languages,
@@ -159,6 +159,11 @@ const faqs = [
     a: 'On your computer. Nothing is uploaded unless you decide to. If you sign in to a WaveKat account, your recordings and transcripts can sync so you can review them on the web — otherwise they never leave your computer.',
   },
   {
+    q: 'Can WaveKat Voice log calls in HubSpot?',
+    a: 'Yes. Connect your HubSpot account once and every call you take or place is logged there automatically — filed on the matching contact with its outcome, duration, and transcript, and with the recording playable in HubSpot\'s own player. It\'s a Pro feature; webhooks cover Zapier, Make, and everything else.',
+    link: { href: '/blog/log-calls-in-hubspot/', label: 'How it works' },
+  },
+  {
     q: 'Can an AI assistant place calls for me?',
     a: 'Yes. Turn on automation in Settings → Automation and a command-line tool — or a connected AI assistant like Claude, Cursor, or Windsurf — can place, follow, and end calls through the app. The assistant works the dialpad; you still do the talking. It\'s off by default, and assistants connect in one click.',
     link: { href: '/blog/place-calls-from-the-command-line/', label: 'How it works' },
@@ -208,6 +213,7 @@ const appSchema = {
     'Click-to-call from tel: and sip: links on any website',
     'HD voice with the Opus codec when the provider supports it',
     'Command line and MCP automation for AI assistants',
+    'Automatic call logging to HubSpot, with transcript sync and in-CRM recording playback',
     'Nine app languages, on macOS and Linux',
   ],
   offers: {
