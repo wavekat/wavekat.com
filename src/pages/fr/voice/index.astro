@@ -97,7 +97,7 @@ const features = [
   {
     icon: Cloud,
     title: 'Synchronisez si vous le souhaitez',
-    body: 'Connectez-vous à votre compte WaveKat et vos enregistrements et transcriptions se synchronisent pour que vous puissiez les consulter sur le web. Ne vous connectez pas, et tout reste simplement sur votre ordinateur.',
+    body: 'Connectez-vous à votre compte WaveKat et vos enregistrements et transcriptions se synchronisent pour que vous puissiez les consulter sur le web — et si vous connectez HubSpot, chaque appel est aussi consigné dans votre CRM. Ne vous connectez pas, et tout reste simplement sur votre ordinateur.',
   },
   {
     icon: Languages,
@@ -166,6 +166,11 @@ const faqs = [
     a: 'Sur votre ordinateur. Rien n’est téléversé sans votre décision. Si vous vous connectez à un compte WaveKat, vos enregistrements et transcriptions peuvent se synchroniser pour que vous les consultiez sur le web — sinon, ils ne quittent jamais votre ordinateur.',
   },
   {
+    q: 'WaveKat Voice peut-il consigner les appels dans HubSpot automatiquement ?',
+    a: 'Oui. Connectez votre compte HubSpot une fois et chaque appel que vous recevez ou passez y est consigné automatiquement — sur le contact correspondant, avec l’issue, la durée et la transcription, et l’enregistrement se lit dans le lecteur de HubSpot lui-même. C’est une fonction Pro ; les webhooks couvrent tout le reste.',
+    link: { href: '/fr/blog/log-calls-in-hubspot/', label: 'Comment ça marche' },
+  },
+  {
     q: 'Un assistant IA peut-il passer des appels à ma place ?',
     a: 'Oui. Activez l’automatisation dans Réglages → Automatisation et un outil en ligne de commande — ou un assistant IA connecté comme Claude, Cursor ou Windsurf — peut passer, suivre et terminer les appels via l’application. L’assistant pilote le clavier ; c’est toujours vous qui parlez. C’est désactivé par défaut, et les assistants se connectent en un clic.',
     link: { href: '/fr/blog/place-calls-from-the-command-line/', label: 'Comment ça marche' },
@@ -216,6 +221,7 @@ const appSchema = {
     'Click-to-call depuis les liens tel: et sip: du web',
     'Voix HD avec le codec Opus quand l’opérateur le permet',
     'Ligne de commande et automatisation MCP pour les assistants IA',
+    'Journalisation automatique des appels dans HubSpot, avec synchronisation des transcriptions et lecture des enregistrements dans le CRM',
     'Neuf langues d’interface, sur macOS et Linux',
   ],
   offers: {
