@@ -84,6 +84,11 @@ const SCENES = [
   { name: "flow-takeover", source: "voice", frame: "ubuntu" }, // live map + Pick up
   { name: "call-details-flow", source: "voice", frame: "ubuntu" }, // answered-by-flow call
   { name: "flow-editor", source: "platform" }, // authoring a flow (web)
+  // HubSpot call logging (the CRM blog post): where you connect it, what you
+  // let it sync, and how a call says it got there.
+  { name: "integrations-hubspot", source: "platform" }, // connected, in its catalogue
+  { name: "integrations-hubspot-options", source: "platform" }, // the four sync switches
+  { name: "call-in-hubspot", source: "platform" }, // a call with its "In HubSpot" badge
 ];
 
 // The nine shipped interface languages, by wavekat.com locale `code` — exactly

@@ -40,6 +40,8 @@ For the transcript and the flow's step-by-step story, the record links back to t
 
 Connecting is one click on your WaveKat account page: you land on HubSpot's own consent screen, approve, and you're back — connected. There is no developer account to create, no private app to configure, no scopes to pick, and no token to paste. Before you click, the page states plainly what will be sent, and [the privacy policy](/privacy/#integrations) spells out the same list in plain words.
 
+![The WaveKat Integrations page on the web — HubSpot marked Connected in the catalogue, and the connected portal below it showing "Syncing" and its last sync a few minutes ago.](/screenshots/integrations-hubspot/en.webp#shadow)
+
 Disconnecting is just as clean: WaveKat asks HubSpot to revoke its access and wipes the stored credentials. Call records already written into your HubSpot stay where they are — that's your CRM's history, and disconnecting an integration is not the same as deleting your past.
 
 ## You decide what syncs
@@ -48,10 +50,12 @@ Four switches, each set per connection:
 
 | Switch | Default | What it does |
 |---|---|---|
-| Sync transcripts | On | Puts what was said into the call record |
-| Create contacts | On | Creates a HubSpot contact when no number matches |
-| Propagate deletes | On | Archives the HubSpot record when you delete the call in WaveKat |
-| Name unknown callers | Off | Uses the caller's number as the contact name when the carrier sends none |
+| Include the transcript | On | Puts what was said into the call record |
+| Create missing contacts | On | Adds a HubSpot contact when a caller's number matches none |
+| Carry deletions through | On | Removes the call from HubSpot when you delete it in WaveKat |
+| Name unknown callers by their number | Off | Uses the caller's number as the contact name when the carrier sends none |
+
+![The connection's settings panel on the web — which call events reach HubSpot, and switches for creating missing contacts, naming unknown callers by their number, including the transcript, and carrying deletions through.](/screenshots/integrations-hubspot-options/en.webp#shadow)
 
 That last one is off on purpose: a blank name is accurate, and the first colleague to recognise the number fills it in permanently. When you do switch it on, the number goes in the last-name field — never the first name, because HubSpot feeds first names into email personalisation, and "Hi 021 123 4567" is not a message anyone means to send.
 
@@ -60,6 +64,8 @@ One honest note, the same one [the privacy policy](/privacy/#integrations) makes
 ## Every call shows where it went
 
 Open any call in WaveKat and it tells you whether it reached your CRM: an **In HubSpot** badge when it's filed, a pending state while it's on its way, and — if something went wrong — the reason, in HubSpot's own words. A sync that fails keeps retrying for a day with backoff, and a connection that loses access says "reconnect" rather than failing silently. No guessing whether the pipeline is working.
+
+![A finished call in WaveKat on the web — an "In HubSpot" badge beside the caller's name, the two-lane recording below it, and a sync row naming the HubSpot portal it was logged to.](/screenshots/call-in-hubspot/en.webp#shadow)
 
 ## Ways to log calls in HubSpot
 
