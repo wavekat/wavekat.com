@@ -7,7 +7,7 @@ tags: [语音AI, 集成, HubSpot]
 lang: "zh-Hans"
 ---
 
-WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat 账户里连接一次 HubSpot，之后你接听或拨出的每一通电话都会自动写进你的 CRM——落在正确的联系人名下，带着时间、方向、结果、时长、转写全文，还有一段不用离开 HubSpot 就能播放的录音。不需要 Zapier，不需要 API 密钥，不需要浏览器插件，挂断之后也没有任何要记得去做的事。它今天已在[你的 WaveKat 账户](https://platform.wavekat.com/integrations)上线，是一项 Pro 功能——而在抢先体验期间，Pro 是免费的。
+WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat 账户里连接一次 HubSpot，之后你接听或拨出的每一通电话都会自动写进你的 CRM——落在正确的联系人名下，带着时间、方向、结果、时长、转写全文，还有一段不用离开 HubSpot 就能播放的录音。不需要 API 密钥，不需要中间件，不需要浏览器插件，挂断之后也没有任何要记得去做的事。它今天已在[你的 WaveKat 账户](https://platform.wavekat.com/integrations)上线，是一项 Pro 功能——而在抢先体验期间，Pro 是免费的。
 
 这仍然是我们在做的那件事的又一块拼图：[让每一家小企业都拥有大企业的声音](/zh/blog/hello-world/)。大公司的 CRM 之所以记得每一通电话，是因为有人专门负责让它记得。你的 CRM 也可以记得每一通电话——因为你本来就在用的那款[为每通电话录音并转写](/zh/voice/)的电话应用，会安静地把它写到你的客户资料所在的地方。
 
@@ -37,7 +37,7 @@ WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat �
 
 至于转写全文和流程的逐步经过，记录里的链接会带你回到 WaveKat 的通话页面，那里有[双轨播放器和按说话人标注的转写](/zh/blog/share-a-call-recording/)。
 
-## 连接一次——不需要 API 密钥，也不需要 Zapier
+## 连接一次——不需要 API 密钥，也不需要额外配置
 
 连接只是账户页面上的一次点击：你会来到 HubSpot 自己的授权页面，同意后就回来了——连接完成。不需要注册开发者账号，不需要配置私有应用，不需要挑选权限范围，也没有任何要粘贴的令牌。在你点击之前，页面会明白地写出将要发送的内容，[隐私政策](/zh/privacy/#integrations)里也用同样的话写着同样的事。
 
@@ -71,7 +71,7 @@ WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat �
 | 手动登记 | 每通电话后都有人去填写 | 是 |
 | HubSpot 自带的通话功能 | 用 HubSpot 提供的号码、在 HubSpot 里打电话 | 否 |
 | 云端外呼平台 | 把整套通话搬到该平台，按坐席付费 | 否 |
-| 通过 Webhook 接 Zapier / Make | 一份付费自动化套餐，外加一条要维护的 zap | 是 |
+| Webhook 加自动化工具 | 一份第三方自动化套餐，外加一条要维护的管道 | 是 |
 | WaveKat Voice 原生集成 | 点一下连接；通话仍走你自己的 SIP 线路 | 是 |
 
 外呼平台在它们擅长的事上确实出色——批量外呼、短信、面向销售团队的通话辅导。它们的前提是你把通话搬过去。WaveKat Voice 押的是相反的方向：你继续用[你已经在用的电话服务商](/zh/voice/)，通话发生在你自己的电脑上，HubSpot 是你的通话去汇报的目的地——而不是它们栖身的系统。
@@ -80,7 +80,7 @@ WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat �
 
 原生 HubSpot 集成是一项 **Pro** 功能——与[用菜单和转接来分流来电](/zh/blog/answer-calls-with-a-call-flow/)属于同一档。在抢先体验期间，升级到 Pro 是免费的：在[你的 WaveKat 账户页面](https://platform.wavekat.com/profile)点一下，没有付款步骤，有效期一年。
 
-免费账户依然有通向 CRM 的路：**Webhook**，它把每通电话的记录发送到你给定的任意 URL——这是通往 Zapier、Make、n8n、电子表格或 Slack 的通道，测试期间免费。而原生集成是当你想要那些有状态的能力时才需要升级的东西：联系人匹配、去重的记录、录音播放，以及会同步过去的删除。
+免费账户依然有通向 CRM 的路：**Webhook**，它把每通电话的记录发送到你给定的任意 URL——测试期间免费。而原生集成是当你想要那些有状态的能力时才需要升级的东西：联系人匹配、去重的记录、录音播放，以及会同步过去的删除。
 
 ## 常见问题
 
@@ -100,9 +100,9 @@ WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat �
 
 「同步删除」开启时（默认如此），你在 WaveKat 里删除通话，对应的 HubSpot 记录会被归档，录音也随之无法播放。关闭它，即使通话已从 WaveKat 消失，你的 HubSpot 历史也会保留那条记录。
 
-### 连接 HubSpot 需要 Zapier 或 API 密钥吗？
+### 连接 HubSpot 需要 API 密钥吗？
 
-不需要。连接就是经由 HubSpot 自己的授权页面的一次点击——没有 Zapier 套餐，没有私有应用，没有要创建或粘贴的 API 密钥。如果你更想自建管道，Webhook 依然可用，能对接 Zapier、Make 或任何接受 URL 的系统。
+不需要。连接就是经由 HubSpot 自己的授权页面的一次点击——没有要配置的私有应用，也没有要创建或粘贴的 API 密钥。如果你更想自建管道，Webhook 依然可用，会把每通电话发送到你指定的任意 URL。
 
 ### HubSpot 集成免费吗？
 

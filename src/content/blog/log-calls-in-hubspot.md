@@ -6,7 +6,7 @@ author: Eason Guo
 tags: [voice-ai, integrations, hubspot]
 ---
 
-You can now log calls in HubSpot automatically with WaveKat Voice. Connect your HubSpot account once, and every phone call you take or place after that files itself in your CRM — on the right contact, with the time, direction, outcome, duration, the transcript, and a recording you can play without leaving HubSpot. No Zapier, no API keys, no browser extension, and nothing to remember after you hang up. It's live today on [your WaveKat account](https://platform.wavekat.com/integrations) as a Pro feature — and during early access, Pro is free.
+You can now log calls in HubSpot automatically with WaveKat Voice. Connect your HubSpot account once, and every phone call you take or place after that files itself in your CRM — on the right contact, with the time, direction, outcome, duration, the transcript, and a recording you can play without leaving HubSpot. No API keys, no middleware, no browser extension, and nothing to remember after you hang up. It's live today on [your WaveKat account](https://platform.wavekat.com/integrations) as a Pro feature — and during early access, Pro is free.
 
 This is another piece of [giving every small business the voice of a big one](/blog/hello-world/). A big company's CRM knows about every call because someone is paid to make sure it does. Yours can know about every call because the phone app you already use — the one that [records and transcribes each conversation](/voice/) — quietly writes it down where your customer records live.
 
@@ -36,9 +36,9 @@ The recording doesn't get copied into HubSpot — something better happens. The 
 
 For the transcript and the flow's step-by-step story, the record links back to the call page in WaveKat, where the [two-lane player and speaker-labeled transcript](/blog/share-a-call-recording/) live.
 
-## Connect once — no API keys, no Zapier
+## Connect once — no API keys, no setup
 
-Connecting is one click on your WaveKat account page: you land on HubSpot's own consent screen, approve, and you're back — connected. There is no developer account to create, no private app to configure, no scopes to pick, and no token to paste. Before you click, the page states plainly what will be sent, and [the privacy policy](/privacy/#integrations) says the same thing in the same words.
+Connecting is one click on your WaveKat account page: you land on HubSpot's own consent screen, approve, and you're back — connected. There is no developer account to create, no private app to configure, no scopes to pick, and no token to paste. Before you click, the page states plainly what will be sent, and [the privacy policy](/privacy/#integrations) spells out the same list in plain words.
 
 Disconnecting is just as clean: WaveKat asks HubSpot to revoke its access and wipes the stored credentials. Call records already written into your HubSpot stay where they are — that's your CRM's history, and disconnecting an integration is not the same as deleting your past.
 
@@ -70,7 +70,7 @@ There are several routes to getting phone calls into HubSpot, and they suit diff
 | Log calls manually | A rep typing after every call | Yes |
 | HubSpot's built-in calling | Calling through HubSpot with a HubSpot-provided number | No |
 | Cloud dialer platforms | Moving your calling to that platform, per-seat pricing | No |
-| Zapier / Make via webhooks | A paid automation plan and a zap to maintain | Yes |
+| Webhooks + an automation tool | A third-party automation plan and a pipeline to maintain | Yes |
 | WaveKat Voice native integration | One click to connect; calls stay on your own SIP line | Yes |
 
 The dialer platforms are genuinely good at what they do — power dialing, SMS, call coaching for sales teams. What they ask is that your calling move to them. WaveKat Voice takes the opposite bet: you keep the [phone provider you already have](/voice/), your calls happen on your own computer, and HubSpot is a destination your calls report to — not the system they live in.
@@ -79,7 +79,7 @@ The dialer platforms are genuinely good at what they do — power dialing, SMS, 
 
 The native HubSpot integration is a **Pro** feature — the same tier that [routes calls with menus and transfers](/blog/answer-calls-with-a-call-flow/). During early access, upgrading to Pro is free: one click on [your WaveKat account page](https://platform.wavekat.com/profile), no payment step, and it gives you a year.
 
-Free accounts still have a CRM path: **webhooks**, which post a record of each call to any URL you give them — the route to Zapier, Make, n8n, a spreadsheet, or Slack, and free during the beta. The native integration is what you upgrade to when you want the stateful parts: contact matching, deduped records, recording playback, and deletes that propagate.
+Free accounts still have a CRM path: **webhooks**, which post a record of each call to any URL you give them — free during the beta. The native integration is what you upgrade to when you want the stateful parts: contact matching, deduped records, recording playback, and deletes that propagate.
 
 ## Frequently asked questions
 
@@ -99,9 +99,9 @@ Yes. A recorded call's HubSpot record plays in HubSpot's own player on the conta
 
 With "propagate deletes" on (the default), the HubSpot call record is archived when you delete the call in WaveKat, and its recording stops playing. Switch it off and your HubSpot history keeps the record even after the call is gone from WaveKat.
 
-### Do I need Zapier or an API key to connect HubSpot?
+### Do I need an API key to connect HubSpot?
 
-No. The connection is one click through HubSpot's own consent screen — no Zapier plan, no private app, no API key to create or paste. If you'd rather build your own pipeline, webhooks are still there and work with Zapier, Make, or anything that accepts a URL.
+No. The connection is one click through HubSpot's own consent screen — no private app to configure, no API key to create or paste. If you'd rather build your own pipeline, webhooks are still there and post each call to any URL you choose.
 
 ### Is the HubSpot integration free?
 
