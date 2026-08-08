@@ -85,6 +85,7 @@ const fullSite = [
   '/blog/phone-menu-ivr-voice-generator/',
   '/blog/answer-calls-with-a-call-flow/',
   '/blog/why-phone-links-dont-work/',
+  '/blog/log-calls-in-hubspot/',
   '/about/',
   '/privacy/',
 ];
@@ -92,9 +93,7 @@ const fullSite = [
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
 export const translatedRoutes: Record<string, string[]> = {
-  // zh-Hans carries the HubSpot post ahead of the other locales; fold the
-  // path into fullSite once every locale has its translation.
-  'zh-Hans': [...fullSite, '/blog/log-calls-in-hubspot/'],
+  'zh-Hans': fullSite,
   'zh-Hant': fullSite,
   ja: fullSite,
   ko: fullSite,

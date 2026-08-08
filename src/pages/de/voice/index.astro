@@ -97,7 +97,7 @@ const features = [
   {
     icon: Cloud,
     title: 'Synchronisieren, wenn Sie möchten',
-    body: 'Melden Sie sich bei Ihrem WaveKat-Konto an, und Ihre Aufzeichnungen und Transkripte werden synchronisiert, sodass Sie sie im Web durchsehen können. Melden Sie sich nicht an, bleibt einfach alles auf Ihrem Computer.',
+    body: 'Melden Sie sich bei Ihrem WaveKat-Konto an, und Ihre Aufzeichnungen und Transkripte werden synchronisiert, sodass Sie sie im Web durchsehen können — und wenn Sie HubSpot verbinden, landet jeder Anruf zusätzlich in Ihrem CRM. Melden Sie sich nicht an, bleibt einfach alles auf Ihrem Computer.',
   },
   {
     icon: Languages,
@@ -166,6 +166,11 @@ const faqs = [
     a: 'Auf Ihrem Computer. Nichts wird hochgeladen, es sei denn, Sie entscheiden sich dafür. Wenn Sie sich bei einem WaveKat-Konto anmelden, können Ihre Aufzeichnungen und Transkripte synchronisiert werden, sodass Sie sie im Web durchsehen können — andernfalls verlassen sie nie Ihren Computer.',
   },
   {
+    q: 'Kann WaveKat Voice Anrufe automatisch in HubSpot protokollieren?',
+    a: 'Ja. Verbinden Sie Ihr HubSpot-Konto einmal, und jeder Anruf, den Sie annehmen oder tätigen, wird dort automatisch protokolliert — am passenden Kontakt, mit Ausgang, Dauer und Transkript, und die Aufnahme lässt sich in HubSpots eigenem Player abspielen. Eine Pro-Funktion; alles Übrige decken Webhooks ab.',
+    link: { href: '/de/blog/log-calls-in-hubspot/', label: 'So funktioniert es' },
+  },
+  {
     q: 'Kann ein KI-Assistent für mich Anrufe tätigen?',
     a: 'Ja. Schalten Sie die Automatisierung unter Einstellungen → Automatisierung ein, und ein Kommandozeilenwerkzeug — oder ein verbundener KI-Assistent wie Claude, Cursor oder Windsurf — kann über die App Anrufe tätigen, verfolgen und beenden. Der Assistent bedient das Wählfeld; sprechen tun weiterhin Sie. Es ist standardmäßig ausgeschaltet, und Assistenten lassen sich mit einem Klick verbinden.',
     link: { href: '/de/blog/place-calls-from-the-command-line/', label: 'So funktioniert es' },
@@ -216,6 +221,7 @@ const appSchema = {
     'Click-to-Call über tel:- und sip:-Links im Web',
     'HD-Sprache mit dem Opus-Codec, wenn der Anbieter sie unterstützt',
     'Kommandozeile und MCP-Automatisierung für KI-Assistenten',
+    'Automatisches Protokollieren von Anrufen in HubSpot, mit Transkript-Synchronisierung und Aufnahme-Wiedergabe im CRM',
     'Neun App-Sprachen, auf macOS und Linux',
   ],
   offers: {

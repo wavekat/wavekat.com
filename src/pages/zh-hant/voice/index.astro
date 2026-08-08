@@ -97,7 +97,7 @@ const features = [
   {
     icon: Cloud,
     title: '需要時才同步',
-    body: '登入你的 WaveKat 帳號，錄音和文字稿會同步上來，方便你在網頁端查看。不登入，一切就只留在你自己的電腦上。',
+    body: '登入你的 WaveKat 帳號，錄音和文字稿會同步上來，方便你在網頁端查看——連接之後，每通電話還能自動記錄到你的 HubSpot CRM。不登入，一切就只留在你自己的電腦上。',
   },
   {
     icon: Languages,
@@ -166,6 +166,11 @@ const faqs = [
     a: '在你自己的電腦上。除非你決定上傳，否則什麼都不會上傳。如果你登入 WaveKat 帳號，錄音和文字稿可以同步，方便你在網頁端查看——否則它們永遠不會離開你的電腦。',
   },
   {
+    q: 'WaveKat Voice 能把通話自動記錄到 HubSpot 嗎？',
+    a: '可以。連接一次你的 HubSpot 帳號，之後你接聽或撥出的每一通電話都會自動記錄到那裡——按號碼落在相符的聯絡人名下，帶著結果、時長和轉寫，錄音還能在 HubSpot 自帶的播放器裡播放。這是一項 Pro 功能；其他系統可以透過 Webhook 對接。',
+    link: { href: '/zh-hant/blog/log-calls-in-hubspot/', label: '了解運作方式' },
+  },
+  {
     q: 'AI 助理能替我打電話嗎？',
     a: '可以。在 設定 → 自動化 中開啟自動化，命令列工具——或像 Claude、Cursor、Windsurf 這樣已連接的 AI 助理——就能透過應用程式撥打、跟進和結束通話。助理負責操作撥號盤；說話的依然是你。它預設關閉，而助理只需一鍵即可連接。',
     link: { href: '/zh-hant/blog/place-calls-from-the-command-line/', label: '了解運作方式' },
@@ -216,6 +221,7 @@ const appSchema = {
     '點按網頁上的 tel: 與 sip: 連結直接撥號',
     '電信業者支援時使用 Opus 編解碼的高清語音',
     '面向 AI 助理的命令列與 MCP 自動化',
+    '自動將通話記錄到 HubSpot，支援轉寫同步與 CRM 內錄音播放',
     '九種應用語言，支援 macOS 與 Linux',
   ],
   offers: {

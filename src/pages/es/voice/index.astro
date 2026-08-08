@@ -97,7 +97,7 @@ const features = [
   {
     icon: Cloud,
     title: 'Sincronice si quiere',
-    body: 'Inicie sesión en su cuenta de WaveKat y sus grabaciones y transcripciones se sincronizan para que pueda revisarlas en la web. Si no inicia sesión, todo se queda simplemente en su computadora.',
+    body: 'Inicie sesión en su cuenta de WaveKat y sus grabaciones y transcripciones se sincronizan para que pueda revisarlas en la web y, si conecta HubSpot, cada llamada queda además registrada en su CRM. Si no inicia sesión, todo se queda simplemente en su computadora.',
   },
   {
     icon: Languages,
@@ -166,6 +166,11 @@ const faqs = [
     a: 'En su computadora. No se sube nada salvo que usted lo decida. Si inicia sesión en una cuenta de WaveKat, sus grabaciones y transcripciones pueden sincronizarse para que las revise en la web; de lo contrario, nunca salen de su computadora.',
   },
   {
+    q: '¿WaveKat Voice registra las llamadas en HubSpot automáticamente?',
+    a: 'Sí. Conecta tu cuenta de HubSpot una vez y cada llamada que recibas o hagas queda registrada allí automáticamente: en el contacto que coincide, con el resultado, la duración y la transcripción, y con la grabación reproducible en el propio reproductor de HubSpot. Es una función Pro; los webhooks cubren todo lo demás.',
+    link: { href: '/es/blog/log-calls-in-hubspot/', label: 'Cómo funciona' },
+  },
+  {
     q: '¿Puede un asistente de IA realizar llamadas por mí?',
     a: 'Sí. Active la automatización en Ajustes → Automatización y una herramienta de línea de comandos —o un asistente de IA conectado como Claude, Cursor o Windsurf— podrá realizar, seguir y finalizar llamadas a través de la app. El asistente maneja el teclado de marcación; usted sigue siendo quien habla. Está desactivado de forma predeterminada y los asistentes se conectan en un solo clic.',
     link: { href: '/es/blog/place-calls-from-the-command-line/', label: 'Cómo funciona' },
@@ -216,6 +221,7 @@ const appSchema = {
     'Click-to-call desde enlaces tel: y sip: de cualquier web',
     'Voz HD con el códec Opus cuando el proveedor lo admite',
     'Línea de comandos y automatización MCP para asistentes de IA',
+    'Registro automático de llamadas en HubSpot, con sincronización de transcripciones y reproducción de grabaciones en el CRM',
     'Nueve idiomas de la app, en macOS y Linux',
   ],
   offers: {
