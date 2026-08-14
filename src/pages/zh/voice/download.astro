@@ -67,8 +67,8 @@ const highlights = [
     <VoiceDownload />
 
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{macDownload.version}</a> · {macDownload.size}</p>
-      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v{linuxDownload.version}</a> · {linuxDownload.size}</p>
+      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload.version}</span></a> · <span data-dl-size="mac">{macDownload.size}</span></p>
+      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload.version}</span></a> · <span data-dl-size="linux">{linuxDownload.size}</span></p>
     </div>
   </section>
 

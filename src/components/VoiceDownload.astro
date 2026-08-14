@@ -9,7 +9,7 @@
 // off, the native <details> still lets anyone reach the other build.
 import { Apple, Package, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
-import { getMacDownload, getLinuxDownload, DOWNLOAD_BASE } from '../lib/voice-download';
+import { getMacDownload, getLinuxDownload, DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
 import { resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -93,7 +93,7 @@ const primaryCls =
           <p.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
           <span class="flex flex-col">
             <span class="text-sm font-bold text-gray-900 dark:text-white">{p.label}</span>
-            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.arch} · {p.dl.size}</span>
+            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.arch} · <span data-dl-size={p.key}>{p.dl.size}</span></span>
           </span>
         </button>
       ))}
@@ -120,7 +120,7 @@ const primaryCls =
 
 <ConversionTracking />
 
-<script is:inline define:vars={{ base: DOWNLOAD_BASE }}>
+<script is:inline define:vars={{ base: DOWNLOAD_BASE, releasesUrl: RELEASES_URL }}>
   // The download itself. Delegated from the document so it covers the
   // primary control, the dropdown entries, and anything either script
   // below shows later. The URL names a platform and nothing else — the
@@ -135,6 +135,30 @@ const primaryCls =
       if (!el) return;
       window.location.href = base + '/' + el.dataset.dlPlatform + '?src=web';
     });
+  })();
+
+  // Keep the printed version and size true when a release lands between
+  // site deploys. The build-time values are already in the HTML, so this
+  // corrects them silently or does nothing at all — there is no skeleton,
+  // no pop-in, and a failed fetch leaves the page exactly as served.
+  (function () {
+    if (!document.querySelector('[data-dl-version],[data-dl-size]')) return;
+    fetch(releasesUrl)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data) return;
+        ['mac', 'linux'].forEach(function (key) {
+          var rel = data[key];
+          if (!rel) return;
+          document.querySelectorAll('[data-dl-version="' + key + '"]').forEach(function (el) {
+            el.textContent = rel.version;
+          });
+          document.querySelectorAll('[data-dl-size="' + key + '"]').forEach(function (el) {
+            el.textContent = Math.round(rel.sizeBytes / 1048576) + ' MB';
+          });
+        });
+      })
+      .catch(function () {});
   })();
 </script>
 
