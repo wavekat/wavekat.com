@@ -135,7 +135,7 @@ const highlights = [
 <script is:inline>
   // Fire the Google Ads download conversion (label shares the AW account in
   // Base.astro). No-op if gtag isn't loaded.
-  document.querySelectorAll('a[data-conversion^="download_"]').forEach((el) => {
+  document.querySelectorAll('[data-conversion^="download_"]').forEach((el) => {
     el.addEventListener('click', () => {
       if (typeof gtag === 'function') {
         gtag('event', 'conversion', { send_to: 'AW-18128547216' });

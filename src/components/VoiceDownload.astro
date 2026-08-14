@@ -9,7 +9,7 @@
 // off, the native <details> still lets anyone reach the other build.
 import { Apple, Package, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
-import { getMacDownload, getLinuxDownload } from '../lib/voice-download';
+import { getMacDownload, getLinuxDownload, DOWNLOAD_BASE } from '../lib/voice-download';
 import { resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -55,18 +55,21 @@ const primaryCls =
 ---
 
 <div class="inline-flex flex-wrap items-center gap-3" data-voice-download>
-  {/* Primary button — one per platform, only the active one is shown. */}
+  {/* Primary control — one per platform, only the active one is shown.
+      A <button>, not a link: the URL is built on click, so no artifact
+      filename and no version ever reaches the delivered HTML. */}
   {platforms.map((p) => (
-    <a
-      href={p.dl.url}
+    <button
+      type="button"
       data-conversion={p.conversion}
       data-dl-primary={p.key}
-      class:list={[primaryCls, p.key === DEFAULT ? 'inline-flex' : 'hidden']}
+      data-dl-platform={p.key}
+      class:list={[primaryCls, 'cursor-pointer border-0', p.key === DEFAULT ? 'inline-flex' : 'hidden']}
       style="background-color: #ff6d00"
     >
       <p.icon class="w-5 h-5" />
       {p.label}
-    </a>
+    </button>
   ))}
 
   {/* Other platforms — native <details> so it works without JS. */}
@@ -77,12 +80,13 @@ const primaryCls =
     </summary>
     <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95">
       {platforms.map((p) => (
-        <a
-          href={p.dl.url}
+        <button
+          type="button"
           data-conversion={p.conversion}
           data-dl-alt={p.key}
+          data-dl-platform={p.key}
           class:list={[
-            'items-center gap-2.5 rounded px-3 py-2 transition-colors hover:bg-gray-100 dark:hover:bg-white/5',
+            'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5',
             p.key === DEFAULT ? 'hidden' : 'inline-flex',
           ]}
         >
@@ -91,13 +95,48 @@ const primaryCls =
             <span class="text-sm font-bold text-gray-900 dark:text-white">{p.label}</span>
             <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.arch} · {p.dl.size}</span>
           </span>
-        </a>
+        </button>
       ))}
     </div>
   </details>
+
+  {/* Invisible to anyone with JS. It exposes no filename and is logged
+      like every other download, so it costs nothing and keeps the page
+      honest for crawlers and the handful of readers without scripting. */}
+  <noscript>
+    <div class="flex flex-wrap items-center gap-4">
+      {platforms.map((p) => (
+        <a
+          href={p.dl.url}
+          class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
+        >
+          <p.icon class="h-4 w-4" style="color: #ff6d00" />
+          {p.label}
+        </a>
+      ))}
+    </div>
+  </noscript>
 </div>
 
 <ConversionTracking />
+
+<script is:inline define:vars={{ base: DOWNLOAD_BASE }}>
+  // The download itself. Delegated from the document so it covers the
+  // primary control, the dropdown entries, and anything either script
+  // below shows later. The URL names a platform and nothing else — the
+  // platform resolves the current installer, records the download and
+  // redirects (wavekat-platform docs/37 §3.6).
+  (function () {
+    document.addEventListener('click', function (e) {
+      // e.target can be a text node or the document itself, neither of
+      // which has closest().
+      var t = e.target;
+      var el = t && t.closest ? t.closest('[data-dl-platform]') : null;
+      if (!el) return;
+      window.location.href = base + '/' + el.dataset.dlPlatform + '?src=web';
+    });
+  })();
+</script>
 
 <script is:inline>
   // Promote the visitor's platform to the primary button. Runs synchronously
