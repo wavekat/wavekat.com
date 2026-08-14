@@ -25,6 +25,21 @@
 
 const DL_BASE = 'https://dl.wavekat.com/voice';
 
+// Where the download BUTTONS point. Not the same as DL_BASE, and the
+// difference is the whole point: this endpoint records the download —
+// country, version, platform, which surface sent the visitor — and then
+// 302s to the file on DL_BASE. Until now nothing observed a download at
+// all, because dl.wavekat.com is an R2 custom domain with no Worker in
+// front of it, which made `download` the one stage of
+// download → install → sign-in with no record anywhere.
+//
+// The feed reads below deliberately stay on DL_BASE. Those are OUR build
+// fetching a version number, not a person taking a copy, and counting
+// them would put a fake download in the numbers on every site build.
+//
+// See wavekat-platform docs/37.
+const LOGGED_BASE = 'https://platform.wavekat.com/api/voice/download';
+
 // Nothing here is user-visible prose: button labels and the hardware/OS
 // requirement are localised chrome and live in the UI strings (i18n.ts
 // `dlMac` / `dlLinux` / `dlArchMac` / `dlArchLinux`), so every locale gets
@@ -95,7 +110,7 @@ async function load(p: Platform): Promise<Download> {
   return {
     version,
     size: mb(sizeBytes),
-    url: `${DL_BASE}/${encodeURIComponent(fileName)}`,
+    url: `${LOGGED_BASE}/${encodeURIComponent(fileName)}?src=web`,
   };
 }
 
