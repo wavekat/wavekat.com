@@ -1,130 +1,89 @@
-// WaveKat Voice — download metadata, read live from the release feeds.
+// WaveKat Voice — download links and release metadata.
 //
-// The installers live on Cloudflare R2, served at https://dl.wavekat.com/voice/
-// (the same origin the app polls for updates). Rather than hard-code versions
-// that go stale every release, we read the current ones from electron-builder's
-// release feeds at BUILD TIME and derive the download links from them. Bump a
-// release in wavekat-voice and the next site build picks it up automatically —
-// nothing to edit here.
+// Two facts about the current release reach this site, and both now come
+// from platform.wavekat.com rather than from a YAML parser in here.
 //
-// macOS feed `latest-mac.yml`:
-//   version: 0.0.40
-//   files:
-//     - url: WaveKat Voice-0.0.40-arm64-mac.zip   (the in-app update payload)
-//     - url: WaveKat Voice-0.0.40-arm64.dmg       (the human download)  ← we want this
+//   * The DOWNLOAD LINK names a platform, not a file:
+//     /api/voice/download/latest/mac?src=web. The platform reads the
+//     electron-builder channel feed, records the download, and 302s to
+//     the installer on dl.wavekat.com. So nothing in the delivered HTML
+//     resolves to a file, a link lifted out of the page is still a link
+//     that gets counted, and a release is offered the moment it ships
+//     instead of at the next site build.
 //
-// Linux feed `latest-linux.yml`:
-//   version: 0.0.40
-//   files:
-//     - url: WaveKat Voice-0.0.40.AppImage        (the in-app update payload)
-//     - url: WaveKat Voice-0.0.40.deb             (the human download)  ← we want this
+//   * The VERSION AND SIZE printed beside the button are read here at
+//     BUILD time and refreshed in the browser from the same endpoint
+//     (see VoiceDownload.astro). The build value keeps a real number in
+//     the HTML for crawlers and answer engines; the refresh keeps it
+//     true for a visitor when a release lands between deploys.
 //
-// In both feeds the installer we surface is the file entry that carries a
-// `url`, `sha512`, then `size` (the .dmg / .deb). The other entry is the
-// self-update payload, which we ignore.
-
-const DL_BASE = 'https://dl.wavekat.com/voice';
-
-// Where the download BUTTONS point. Not the same as DL_BASE, and the
-// difference is the whole point: this endpoint records the download —
-// country, version, platform, which surface sent the visitor — and then
-// 302s to the file on DL_BASE. Until now nothing observed a download at
-// all, because dl.wavekat.com is an R2 custom domain with no Worker in
-// front of it, which made `download` the one stage of
-// download → install → sign-in with no record anywhere.
+// dl.wavekat.com is no longer read from this repo. The feeds are still
+// ground truth — the platform parses them now, so one parser serves both
+// the site and the download counter and the two can never disagree about
+// which file is current. See docs/04, and wavekat-platform docs/37 §3.6.
 //
-// The feed reads below deliberately stay on DL_BASE. Those are OUR build
-// fetching a version number, not a person taking a copy, and counting
-// them would put a fake download in the numbers on every site build.
-//
-// See wavekat-platform docs/37.
-const LOGGED_BASE = 'https://platform.wavekat.com/api/voice/download';
-
 // Nothing here is user-visible prose: button labels and the hardware/OS
 // requirement are localised chrome and live in the UI strings (i18n.ts
 // `dlMac` / `dlLinux` / `dlArchMac` / `dlArchLinux`), so every locale gets
 // them in its own language.
+
+export const DOWNLOAD_BASE =
+  'https://platform.wavekat.com/api/voice/download/latest';
+export const RELEASES_URL =
+  'https://platform.wavekat.com/api/voice/releases/latest';
+
+export type PlatformKey = 'mac' | 'linux';
+
 export interface Download {
   /** Current version, e.g. "0.0.26". */
   version: string;
   /** Human-friendly size, e.g. "120 MB". */
   size: string;
-  /** Full download URL (spaces percent-encoded). */
+  /** The logged, version-less download link for this platform. */
   url: string;
 }
 
-interface Platform {
-  /** electron-builder release feed for this platform. */
-  feed: string;
-  /** File extension of the human installer, e.g. "dmg" or "deb". */
-  ext: string;
-  /** Last known-good release, used if the feed can't be reached at build. */
-  fallback: { version: string; fileName: string; sizeBytes: number };
+interface Release {
+  version: string;
+  sizeBytes: number;
 }
 
-const MAC: Platform = {
-  feed: `${DL_BASE}/latest-mac.yml`,
-  ext: 'dmg',
-  fallback: {
-    version: '0.0.40',
-    fileName: 'WaveKat Voice-0.0.40-arm64.dmg',
-    sizeBytes: 126241228,
-  },
-};
+type LatestReleases = Partial<Record<PlatformKey, Release | null>>;
 
-const LINUX: Platform = {
-  feed: `${DL_BASE}/latest-linux.yml`,
-  ext: 'deb',
-  fallback: {
-    version: '0.0.40',
-    fileName: 'WaveKat Voice-0.0.40.deb',
-    sizeBytes: 106304532,
-  },
+// Used only when the endpoint can't be reached at build time (an offline
+// `make build`). A stale number here is cosmetic — the button still
+// resolves to whatever is current, because it names no version.
+const FALLBACK: Record<PlatformKey, Release> = {
+  mac: { version: '0.0.40', sizeBytes: 126241228 },
+  linux: { version: '0.0.40', sizeBytes: 106304532 },
 };
 
 function mb(bytes: number): string {
   return `${Math.round(bytes / 1024 / 1024)} MB`;
 }
 
-async function load(p: Platform): Promise<Download> {
-  let { version, fileName, sizeBytes } = p.fallback;
+// Memoized so a single build does one fetch, not one per page per locale.
+let latest: Promise<LatestReleases> | undefined;
 
-  try {
-    const res = await fetch(p.feed, { signal: AbortSignal.timeout(8000) });
-    if (res.ok) {
-      const yml = await res.text();
-      const v = yml.match(/^version:\s*(.+)$/m);
-      if (v) version = v[1].trim();
-      // The installer file entry (url → sha512 → size), e.g. the .dmg / .deb.
-      const re = new RegExp(`url:\\s*(.+\\.${p.ext})\\s*\\n\\s*sha512:[^\\n]*\\n\\s*size:\\s*(\\d+)`);
-      const m = yml.match(re);
-      if (m) {
-        fileName = m[1].trim();
-        sizeBytes = parseInt(m[2], 10);
-      }
-    }
-  } catch {
-    // Network unavailable at build time — fall back to the constants above.
-  }
+function loadLatest(): Promise<LatestReleases> {
+  latest ??= fetch(RELEASES_URL, { signal: AbortSignal.timeout(8000) })
+    .then((res) => (res.ok ? (res.json() as Promise<LatestReleases>) : {}))
+    .catch(() => ({}));
+  return latest;
+}
+
+async function get(key: PlatformKey): Promise<Download> {
+  const releases = await loadLatest();
+  // `??` rather than `||`: the endpoint nulls a platform it could not
+  // resolve, and null must fall through to the constants.
+  const { version, sizeBytes } = releases[key] ?? FALLBACK[key];
 
   return {
     version,
     size: mb(sizeBytes),
-    url: `${LOGGED_BASE}/${encodeURIComponent(fileName)}?src=web`,
+    url: `${DOWNLOAD_BASE}/${key}?src=web`,
   };
 }
 
-// Memoize across pages so a single build does one fetch per platform.
-const cache = new Map<Platform, Promise<Download>>();
-
-function get(p: Platform): Promise<Download> {
-  let c = cache.get(p);
-  if (!c) {
-    c = load(p);
-    cache.set(p, c);
-  }
-  return c;
-}
-
-export const getMacDownload = (): Promise<Download> => get(MAC);
-export const getLinuxDownload = (): Promise<Download> => get(LINUX);
+export const getMacDownload = (): Promise<Download> => get('mac');
+export const getLinuxDownload = (): Promise<Download> => get('linux');
