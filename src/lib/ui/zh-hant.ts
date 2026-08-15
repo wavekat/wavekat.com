@@ -17,7 +17,6 @@ export const ui: UIStrings = {
   dlMac: '下載 Mac 版',
   dlLinux: '下載 Linux 版',
   dlWindows: '下載 Windows 版',
-  dlWindowsX64: 'Intel 或 AMD 版 Windows',
   dlWindowsArm64: 'ARM 版 Windows',
   dlOther: '其他平台',
   dlArchMac: '搭載 Apple 晶片的 Mac（M1 或更新機型）',

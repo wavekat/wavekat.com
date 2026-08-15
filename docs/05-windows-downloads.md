@@ -47,9 +47,18 @@ electron-builder happened to list first. An x64 visitor handed `arm64.exe` does
 not get a slow download — they get a file Windows refuses to run.
 
 So the resolver has to name an architecture, and something has to decide which
-one a given visitor wants. **We do not detect the chip.** The honest options
-were a `navigator.userAgentData` probe (Chromium-only, async, and wrong on
-every browser that doesn't implement it) or asking. We ask.
+one a given visitor gets. **We do not detect the chip** — the only probe is
+`navigator.userAgentData`, which is Chromium-only and asynchronous, so one
+browser would get an informed guess and every other one a blind default.
+
+We don't have to. The two files are not symmetric: an x64 installer runs on
+every Windows PC we support — natively on Intel and AMD, emulated on Windows 11
+for ARM — while an arm64 installer runs on almost none of them. Only one of the
+two mistakes is fatal, and it isn't the one x64 makes. So **x64 is the download
+for everyone**, and the ARM build is an optimisation listed under "other
+platforms" for the people who know they want it. The button doesn't ask, and
+the words "Intel or AMD" don't appear on the page: naming the chip in the
+common path makes a decision out of something that isn't one.
 
 ## 3. Platform — targets instead of platforms
 
@@ -122,7 +131,7 @@ in size and the menu prints the size next to each choice. A platform that
 cannot be resolved is still nulled rather than failing the response, so an
 arm64 entry that does not exist yet costs nothing.
 
-## 4. Site — a primary button that asks
+## 4. Site — one button per platform
 
 ### 4.1 `src/lib/voice-download.ts`
 
@@ -131,30 +140,38 @@ into `getDownload(key)`. The fallback constants keep one entry per target.
 
 ### 4.2 `src/components/VoiceDownload.astro`
 
-Mac and Linux keep their one-click behaviour. Windows cannot have it — there
-are two files and we refuse to guess — so the Windows primary is a `<button>`
-in the same pill style that opens a two-row menu:
+Windows joins Mac and Linux as one plain pill that downloads on click —
+"Download for Windows", the same shape as the other two, wired to
+`windows-x64`:
 
 ```
-[ ⊞ Download for Windows ▾ ]
-      ┌──────────────────────────────┐
-      │ Intel or AMD (64-bit)  99 MB │
-      │ Windows on ARM         97 MB │
-      └──────────────────────────────┘
+[ ⊞ Download for Windows ]   Other Platforms ▾
+  The Windows builds aren't    ┌─────────────────────────────────┐
+  code-signed yet…             │ Download for Mac        120 MB │
+                               │ Download for Linux      102 MB │
+                               │ Windows on ARM  EARLY    92 MB │
+                               └─────────────────────────────────┘
 ```
 
-It reuses the `<details data-dl-more>` machinery already in the component, so
-outside-click and Escape behave without new code, and it works with JS off.
+The ARM build lives in the "other platforms" menu, and it is the one row the
+menu keeps showing when its own platform is the active one — a Windows visitor
+has already been handed x64, so the ARM build is the only choice their primary
+can't make for them. That's `altEntries`: each row carries the platform whose
+primary already offers it, and a group's second row carries none.
 
 Detection stays plain UA sniffing (`/Windows|Win64/`) alongside the existing
 Linux branch. It promotes a **platform**, never a chip: no
 `userAgentData.getHighEntropyValues`, nothing async, no third state to reason
 about when a browser doesn't answer.
 
-Each Windows row carries an **Early** tag, and one line sits under the control:
-the Windows builds are not code-signed, so Windows warns on first launch,
-linking to the SmartScreen walkthrough. That walkthrough is **ours**, at
-`/voice/download/#windows` — see §4.4.
+Windows rows carry an **Early** tag, and one line says the builds are not
+code-signed so Windows warns on first launch, linking to the SmartScreen
+walkthrough (§4.4). It appears **twice on purpose**: inside the menu, for
+someone choosing Windows from a Mac, and under the button, for the visitor
+the promotion script just handed a Windows download — the person about to
+meet SmartScreen is exactly the one whose primary says Windows. The
+under-button copy toggles with `data-dl-note`, on the same rule as the
+version captions.
 
 `<noscript>` carries a plain `<a href>` per target — no filename, still logged.
 

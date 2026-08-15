@@ -17,7 +17,6 @@ export const ui: UIStrings = {
   dlMac: 'Mac 版をダウンロード',
   dlLinux: 'Linux 版をダウンロード',
   dlWindows: 'Windows 版をダウンロード',
-  dlWindowsX64: 'Intel・AMD 版 Windows',
   dlWindowsArm64: 'ARM 版 Windows',
   dlOther: 'その他のプラットフォーム',
   dlArchMac: 'Apple シリコン搭載 Mac（M1 以降）',

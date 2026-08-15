@@ -17,7 +17,6 @@ export const ui: UIStrings = {
   dlMac: 'Descargar para Mac',
   dlLinux: 'Descargar para Linux',
   dlWindows: 'Descargar para Windows',
-  dlWindowsX64: 'Windows en Intel o AMD',
   dlWindowsArm64: 'Windows en ARM',
   dlOther: 'Otras plataformas',
   dlArchMac: 'Macs con chip de Apple (M1 o posterior)',

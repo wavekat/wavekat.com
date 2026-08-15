@@ -212,7 +212,6 @@ export interface UIStrings {
   dlLinux: string;
   /** Opens the choice between the two Windows installers, not a download. */
   dlWindows: string;
-  dlWindowsX64: string;
   dlWindowsArm64: string;
   dlOther: string;
   dlArchMac: string;
@@ -279,7 +278,6 @@ const strings: Record<string, UIStrings> = {
     dlMac: 'Download for Mac',
     dlLinux: 'Download for Linux',
     dlWindows: 'Download for Windows',
-    dlWindowsX64: 'Windows on Intel or AMD',
     dlWindowsArm64: 'Windows on ARM',
     dlOther: 'Other Platforms',
     dlArchMac: 'Macs with Apple chip (M1 or newer)',
@@ -327,7 +325,6 @@ const strings: Record<string, UIStrings> = {
     dlMac: '下载 Mac 版',
     dlLinux: '下载 Linux 版',
     dlWindows: '下载 Windows 版',
-    dlWindowsX64: 'Intel 或 AMD 版 Windows',
     dlWindowsArm64: 'ARM 版 Windows',
     dlOther: '其他平台',
     dlArchMac: '搭载 Apple 芯片的 Mac（M1 或更新机型）',

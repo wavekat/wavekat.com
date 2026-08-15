@@ -8,12 +8,12 @@
 // promotes Linux or Windows when it detects one. With JS off, the native
 // <details> still lets anyone reach every build.
 //
-// Mac and Linux are one file each, so their primary is a button that
-// downloads. Windows is TWO files — x64 and arm64 — and we refuse to
-// guess which chip a visitor has from a user-agent string, so its primary
-// opens a two-row menu instead. That asymmetry is the design, not an
-// oversight: the alternative is silently handing an ARM laptop an x64
-// installer, or an x64 desktop a file Windows will not run. See docs/05.
+// Windows ships two installers, x64 and arm64, but the button does not ask
+// which one: an x64 build runs on every Windows PC we support — natively on
+// Intel and AMD, emulated on Windows 11 for ARM — while an arm64 build runs
+// on almost none of them. So x64 is the default for everyone and the ARM
+// build is an optimisation, listed under "other platforms" for the people
+// who know they want it. See docs/05.
 import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
 import { getDownload, DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
@@ -42,14 +42,13 @@ const [macDl, linuxDl, winX64Dl, winArmDl] = await Promise.all([
 ]);
 
 // Grouped by the control a visitor sees, not by file: one group is one
-// primary. Labels and hardware requirements are localised here — the
-// download lib stays language-agnostic, knowing only versions, sizes and
-// URLs.
+// primary, and rows[0] is what that primary downloads. Labels and hardware
+// requirements are localised here — the download lib stays
+// language-agnostic, knowing only versions, sizes and URLs.
 const groups = [
   {
     key: 'mac',
     icon: Apple,
-    label: ui.dlMac,
     windows: false,
     rows: [
       {
@@ -64,7 +63,6 @@ const groups = [
   {
     key: 'linux',
     icon: Package,
-    label: ui.dlLinux,
     windows: false,
     rows: [
       {
@@ -79,13 +77,12 @@ const groups = [
   {
     key: 'windows',
     icon: AppWindow,
-    label: ui.dlWindows,
     windows: true,
     rows: [
       {
         key: 'windows-x64',
         conversion: 'download_windows_x64',
-        label: ui.dlWindowsX64,
+        label: ui.dlWindows,
         arch: ui.dlArchWindowsX64,
         dl: winX64Dl,
       },
@@ -103,7 +100,21 @@ const groups = [
   },
 ];
 
-const windowsGroup = groups.find((g) => g.windows)!;
+// One entry per row in the "other platforms" menu. `altKey` is the platform
+// whose primary already offers this file, so promoting that platform hides
+// it. A group's SECOND row has no altKey: the Windows primary downloads
+// x64, so the ARM build stays listed for a Windows visitor — it is the one
+// choice the primary can't make for them.
+const altEntries = groups.flatMap((g) =>
+  g.rows.map((row, i) => ({
+    group: g,
+    row,
+    altKey: i === 0 ? g.key : null,
+    // The note belongs with the Windows entry a non-Windows visitor sees;
+    // Windows visitors get the same line under the button instead.
+    note: g.windows && i === 0,
+  })),
+);
 
 // Mac is the SSR default primary; the script swaps to Linux or Windows.
 const DEFAULT = 'mac';
@@ -121,7 +132,7 @@ const primaryCls =
 // `text-left` because the CTA card centres its text and the menu shouldn't
 // inherit that — the rows are left-aligned, so the note under them is too.
 const panelCls =
-  'absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
+  'absolute left-0 top-full z-20 mt-2 flex min-w-[19rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
 
 const rowCls =
   'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
@@ -134,131 +145,98 @@ const tagCls =
 const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
 ---
 
-<div class="inline-flex flex-wrap items-center gap-3" data-voice-download>
-  {/* Primary control for the one-file platforms. A <button>, not a link:
-      the URL is built on click, so no artifact filename and no version
-      ever reaches the delivered HTML. */}
-  {groups.filter((g) => !g.windows).map((g) => (
-    <button
-      type="button"
-      data-conversion={g.rows[0].conversion}
-      data-dl-primary={g.key}
-      data-dl-platform={g.rows[0].key}
-      data-dl-show="inline-flex"
-      class:list={[primaryCls, 'cursor-pointer border-0', g.key === DEFAULT ? 'inline-flex' : 'hidden']}
-      style="background-color: #ff6d00"
-    >
-      <g.icon class="w-5 h-5" />
-      {g.label}
-    </button>
-  ))}
+<div class="inline-block text-left" data-voice-download>
+  <div class="flex flex-wrap items-center gap-3">
+    {/* One primary per platform. A <button>, not a link: the URL is built
+        on click, so no artifact filename and no version ever reaches the
+        delivered HTML. */}
+    {groups.map((g) => (
+      <button
+        type="button"
+        data-conversion={g.rows[0].conversion}
+        data-dl-primary={g.key}
+        data-dl-platform={g.rows[0].key}
+        data-dl-show="inline-flex"
+        class:list={[primaryCls, 'cursor-pointer border-0', g.key === DEFAULT ? 'inline-flex' : 'hidden']}
+        style="background-color: #ff6d00"
+      >
+        <g.icon class="w-5 h-5" />
+        {g.rows[0].label}
+      </button>
+    ))}
 
-  {/* Primary control for Windows: the same pill, but it opens the choice
-      between the two installers rather than downloading one of them. */}
-  <details
-    class:list={['group relative', windowsGroup.key === DEFAULT ? 'inline-block' : 'hidden']}
-    data-dl-more
-    data-dl-primary={windowsGroup.key}
-    data-dl-show="inline-block"
-  >
-    <summary
-      class:list={[primaryCls, 'inline-flex cursor-pointer list-none [&::-webkit-details-marker]:hidden']}
-      style="background-color: #ff6d00"
-    >
-      <windowsGroup.icon class="w-5 h-5" />
-      {windowsGroup.label}
-      <ChevronDown class="h-4 w-4 transition-transform group-open:rotate-180" />
-    </summary>
-    <div class={panelCls}>
-      {windowsGroup.rows.map((r) => (
-        <button
-          type="button"
-          data-conversion={r.conversion}
-          data-dl-platform={r.key}
-          data-dl-row={r.key}
-          data-dl-show="inline-flex"
-          class:list={[rowCls, r.dl ? 'inline-flex' : 'hidden']}
-        >
-          <windowsGroup.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
-          <span class="flex flex-col">
-            <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
-              {r.label}
-              <span class={tagCls}>{ui.dlEarly}</span>
-            </span>
-            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{r.arch} · <span data-dl-size={r.key}>{r.dl?.size}</span></span>
-          </span>
-        </button>
-      ))}
-      <p class={noteCls}>
-        {ui.dlWindowsUnsigned}{' '}
-        <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-      </p>
-    </div>
-  </details>
-
-  {/* Other platforms — native <details> so it works without JS. Each
-      group is WRAPPED, so promoting a platform toggles the wrapper while
-      a row's own hidden state stays about whether that file exists. Two
-      independent reasons to hide, on one element, is the bug this
-      avoids. */}
-  <details class="group relative" data-dl-more>
-    <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
-      {ui.dlOther}
-      <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
-    </summary>
-    <div class={panelCls}>
-      {groups.map((g) => (
-        <div
-          data-dl-alt={g.key}
-          data-dl-show="flex"
-          class:list={['flex-col gap-1', g.key === DEFAULT ? 'hidden' : 'flex']}
-        >
-          {g.rows.map((r) => (
+    {/* Other platforms — native <details> so it works without JS. Each row
+        is WRAPPED, so promoting a platform toggles the wrapper while the
+        row's own hidden state stays about whether that file exists. Two
+        independent reasons to hide, on one element, is the bug this
+        avoids. */}
+    <details class="group relative" data-dl-more>
+      <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
+        {ui.dlOther}
+        <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class={panelCls}>
+        {altEntries.map((e) => (
+          <div
+            data-dl-alt={e.altKey}
+            data-dl-show="flex"
+            class:list={['flex-col gap-1', e.altKey === DEFAULT ? 'hidden' : 'flex']}
+          >
             <button
               type="button"
-              data-conversion={r.conversion}
-              data-dl-platform={r.key}
-              data-dl-row={r.key}
+              data-conversion={e.row.conversion}
+              data-dl-platform={e.row.key}
+              data-dl-row={e.row.key}
               data-dl-show="inline-flex"
-              class:list={[rowCls, r.dl ? 'inline-flex' : 'hidden']}
+              class:list={[rowCls, e.row.dl ? 'inline-flex' : 'hidden']}
             >
-              <g.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
+              <e.group.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
               <span class="flex flex-col">
                 <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
-                  {r.label}
-                  {g.windows && <span class={tagCls}>{ui.dlEarly}</span>}
+                  {e.row.label}
+                  {e.group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
                 </span>
-                <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{r.arch} · <span data-dl-size={r.key}>{r.dl?.size}</span></span>
+                <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{e.row.arch} · <span data-dl-size={e.row.key}>{e.row.dl?.size}</span></span>
               </span>
             </button>
-          ))}
-          {g.windows && (
-            <p class={noteCls}>
-              {ui.dlWindowsUnsigned}{' '}
-              <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-            </p>
-          )}
-        </div>
-      ))}
-    </div>
-  </details>
+            {e.note && (
+              <p class={noteCls}>
+                {ui.dlWindowsUnsigned}{' '}
+                <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </details>
 
-  {/* Invisible to anyone with JS. It exposes no filename and is logged
-      like every other download, so it costs nothing and keeps the page
-      honest for crawlers and the handful of readers without scripting. */}
-  <noscript>
-    <div class="flex flex-wrap items-center gap-4">
-      {groups.flatMap((g) => g.rows.filter((r) => r.dl).map((r) => (
-        <a
-          href={r.dl!.url}
-          class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
-        >
-          <g.icon class="h-4 w-4" style="color: #ff6d00" />
-          {r.label}
-        </a>
-      )))}
-    </div>
-  </noscript>
+    {/* Invisible to anyone with JS. It exposes no filename and is logged
+        like every other download, so it costs nothing and keeps the page
+        honest for crawlers and the handful of readers without scripting. */}
+    <noscript>
+      <div class="flex flex-wrap items-center gap-4">
+        {groups.flatMap((g) => g.rows.filter((r) => r.dl).map((r) => (
+          <a
+            href={r.dl!.url}
+            class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
+          >
+            <g.icon class="h-4 w-4" style="color: #ff6d00" />
+            {r.label}
+          </a>
+        )))}
+      </div>
+    </noscript>
+  </div>
+
+  {/* Windows warns on first launch, and the visitor about to hit that
+      warning is exactly the one whose primary says Windows — so the note
+      sits under the button for them, and inside the menu for everyone
+      else. Hidden by default and shown by the promotion script, like the
+      version captions on the page. */}
+  <p data-dl-note="windows" class="hidden mt-2.5 max-w-xs text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
+    {ui.dlWindowsUnsigned}{' '}
+    <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+  </p>
 </div>
 
 <ConversionTracking />
@@ -323,8 +301,9 @@ const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-g
   // It reads the PLATFORM and never the chip. Windows-on-ARM is only
   // distinguishable through `navigator.userAgentData`, which is
   // Chromium-only and asynchronous — so one machine would get an
-  // informed guess and every other one a blind default. The Windows
-  // primary asks instead.
+  // informed guess and every other one a blind default. Everyone gets
+  // the x64 build, which Windows 11 for ARM emulates, and the ARM build
+  // stays one click away under "other platforms".
   (function () {
     var ua = navigator.userAgent || '';
     var plat = navigator.platform || '';
@@ -352,13 +331,14 @@ const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-g
           setShown(el, el.dataset.dlAlt !== active);
         });
       });
-      // Show only the active platform's caption, matching the single
-      // control. These <p> have no display utility, so toggling `hidden`
-      // alone is safe. Caption lines can sit after this script in the
-      // page, so DOMContentLoaded catches them — controls swap
+      // Show only the active platform's caption and note, matching the
+      // single control. These <p> have no display utility, so toggling
+      // `hidden` alone is safe. Caption lines can sit after this script
+      // in the page, so DOMContentLoaded catches them — controls swap
       // synchronously (no flicker).
-      document.querySelectorAll('[data-dl-meta]').forEach(function (el) {
-        el.classList.toggle('hidden', el.dataset.dlMeta !== active);
+      document.querySelectorAll('[data-dl-meta],[data-dl-note]').forEach(function (el) {
+        var key = el.dataset.dlMeta || el.dataset.dlNote;
+        el.classList.toggle('hidden', key !== active);
       });
     }
     resolve();
