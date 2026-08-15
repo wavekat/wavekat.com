@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.55](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.54...wavekat-com-v0.0.55) (2026-08-15)
+
+
+### Features
+
+* **blog:** log calls in HubSpot, nine locales ([#152](https://github.com/wavekat/wavekat.com/issues/152)) ([ea68530](https://github.com/wavekat/wavekat.com/commit/ea6853005813d497cd365d5b35266cae67243c65))
+* **voice:** download links that carry no file ([#154](https://github.com/wavekat/wavekat.com/issues/154)) ([aae5cb5](https://github.com/wavekat/wavekat.com/commit/aae5cb5bc560cebba07d5d0a07416815b08a8429))
+
 ## [0.0.54](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.53...wavekat-com-v0.0.54) (2026-08-07)
 
 
