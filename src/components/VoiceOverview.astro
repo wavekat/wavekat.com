@@ -240,12 +240,15 @@ const {
 
 <!-- Download CTA -->
 <section class="mb-24">
-  <div class="relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 bg-gray-50/50 dark:bg-wk-surface px-6 py-12 sm:py-14 text-center">
-    <div
-      class="pointer-events-none absolute left-1/2 -top-28 h-72 w-[38rem] -translate-x-1/2 rounded-full opacity-15 blur-3xl"
-      style="background: radial-gradient(ellipse, #ff6d00 0%, transparent 70%);"
-      aria-hidden="true"
-    >
+  <!-- The card must not clip: the download menu opens below its bottom edge.
+       Only the glow needs rounding off, so it does its own clipping. -->
+  <div class="relative rounded-2xl border border-gray-200/80 dark:border-white/10 bg-gray-50/50 dark:bg-wk-surface px-6 py-12 sm:py-14 text-center">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl" aria-hidden="true">
+      <div
+        class="absolute left-1/2 -top-28 h-72 w-[38rem] -translate-x-1/2 rounded-full opacity-15 blur-3xl"
+        style="background: radial-gradient(ellipse, #ff6d00 0%, transparent 70%);"
+      >
+      </div>
     </div>
     <div class="relative">
       <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-2.5 text-gray-900 dark:text-white">{ctaTitle}</h2>
