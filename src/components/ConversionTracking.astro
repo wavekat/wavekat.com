@@ -1,5 +1,8 @@
 ---
-// Google Ads conversion wiring for any `a[data-conversion]` on the page.
+// Google Ads conversion wiring for any `[data-conversion]` on the page.
+// Not anchor-only: the download controls are <button>s (they build their
+// URL on click so no artifact filename reaches the HTML), and an
+// `a[...]` selector would drop them without reporting anything.
 // Include once per component that renders conversion links (Astro dedupes the
 // bundled script); the per-element guard keeps a link from ever being bound
 // twice even if two components include it on the same page.
@@ -20,7 +23,7 @@
     gtag('event', 'conversion', { send_to: sendTo });
   }
 
-  document.querySelectorAll<HTMLAnchorElement>('a[data-conversion]').forEach((el) => {
+  document.querySelectorAll<HTMLElement>('[data-conversion]').forEach((el) => {
     if (el.dataset.convBound) return;
     el.dataset.convBound = '1';
     el.addEventListener('click', () => fireConversion(el.dataset.conversion));
