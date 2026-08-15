@@ -97,7 +97,7 @@ wavekat-voice call list --json | jq -r '.[0].id' | xargs wavekat-voice call hang
 
 ### 어떤 플랫폼을 지원하나요?
 
-WaveKat Voice는 오늘날 Mac과 Linux에서 실행되며, Windows는 수요가 있을 때 추가됩니다. 명령줄 도구와 어시스턴트 통합은 지원되는 두 플랫폼 모두에서 사용할 수 있습니다.
+WaveKat Voice는 Mac, Windows, Linux에서 실행됩니다. 명령줄 도구와 어시스턴트 통합은 지원되는 세 플랫폼 모두에서 사용할 수 있습니다.
 
 ## 사용해 보기
 

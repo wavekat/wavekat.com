@@ -109,7 +109,7 @@ Dipende dal livello di accesso. "Chiunque abbia il link" si apre senza accesso. 
 
 ### Quali piattaforme supportano la condivisione delle registrazioni?
 
-WaveKat Voice oggi gira su Mac e Linux, con Windows in arrivo quando ci sarà richiesta. La condivisione funziona su entrambe le piattaforme supportate, e i destinatari aprono i link condivisi in qualsiasi browser web.
+WaveKat Voice gira su Mac, Windows e Linux. La condivisione funziona su tutte e tre le piattaforme supportate, e i destinatari aprono i link condivisi in qualsiasi browser web.
 
 ## Provalo
 

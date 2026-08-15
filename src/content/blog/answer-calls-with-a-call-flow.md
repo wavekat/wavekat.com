@@ -119,7 +119,7 @@ Yes, with the account you already have in WaveKat Voice. Flows answer calls the 
 
 ### Which platforms support call flows?
 
-Mac and Linux, the two platforms WaveKat Voice runs on today, with Windows coming when there's demand. Authoring works in any browser, since flows are built on the web and synced to the app.
+Mac, Windows and Linux, the three platforms WaveKat Voice runs on. Authoring works in any browser, since flows are built on the web and synced to the app.
 
 ## Try it
 

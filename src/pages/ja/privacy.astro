@@ -231,7 +231,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
 
       <section id="app" class={sec}>
         <h2 class={h2}>{S.app}</h2>
-        <p class={`${p} mb-4`}>WaveKat Voice は Mac と Linux 向けのデスクトップアプリで、初期状態ではローカルで完結します。WaveKat アカウントにサインインしない限り、以下はすべてあなたのマシンに残り、私たちに届くことはありません：</p>
+        <p class={`${p} mb-4`}>WaveKat Voice は Mac・Windows・Linux 向けのデスクトップアプリで、初期状態ではローカルで完結します。WaveKat アカウントにサインインしない限り、以下はすべてあなたのマシンに残り、私たちに届くことはありません：</p>
         <ul class="space-y-2.5 mb-4">
           <li class={li} set:html={`${dot}<span>${b('通話の録音。')}録音は初期設定でオンで、各通話は双方の声を含む音声ファイルとして保存されます。「設定 → 録音」でいつでもオフにできます。自動削除はなく、録音はあなたが消すまで残ります。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('通話履歴')}——日時、番号、通話時間、通話の終わり方。ローカルのデータベースに保存されます。</span>`} />

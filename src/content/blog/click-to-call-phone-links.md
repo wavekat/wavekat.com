@@ -51,7 +51,7 @@ No, not unless you ask it to. By default WaveKat Voice fills in the number and w
 
 ### Which platforms support click-to-call?
 
-Mac and Linux, the two platforms WaveKat Voice runs on today (Windows is coming when there's demand). Turn on Phone links in Settings → General and it works on both.
+Mac, Windows and Linux, the three platforms WaveKat Voice runs on. Turn on Phone links in Settings → General and it works on both.
 
 ### Does it work with sip: links too, or only tel: numbers?
 

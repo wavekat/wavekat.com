@@ -186,11 +186,11 @@ const faqs = [
   },
   {
     q: 'Worauf läuft es?',
-    a: `Mac und Linux. Unter macOS läuft es ab Version 12 — ${ui.dlArchMac}; unter Linux ist es ein .deb-Paket für ${ui.dlArchLinux}.`,
+    a: `Mac, Windows und Linux. Unter macOS läuft es ab Version 12 — ${ui.dlArchMac}; unter Windows sind es Windows 10 und 11; unter Linux ist es ein .deb-Paket für ${ui.dlArchLinux}.`,
   },
   {
-    q: 'Werden Sie Windows oder andere Geräte unterstützen?',
-    a: 'WaveKat Voice läuft heute auf Mac und Linux. Windows und andere Plattformen stehen durchaus zur Debatte — wir bauen sie einfach, wenn es echte Nachfrage gibt. Wenn Sie WaveKat Voice also unter Windows oder anderswo nutzen würden, sagen Sie es uns bitte. Je mehr Leute danach fragen, desto schneller passiert es.',
+    q: 'Läuft WaveKat Voice unter Windows?',
+    a: 'Ja — Windows 10 und 11, mit getrennten Installationsprogrammen für Intel oder AMD und für Windows auf ARM. Der Windows-Build ist jünger als die für Mac und Linux und noch nicht signiert, deshalb warnt Windows beim ersten Start vor einem unbekannten Herausgeber. WaveKat Voice ist eine Desktop-App, es gibt also keine Version für Handy oder Tablet — sagen Sie uns Bescheid, wenn Sie das brauchen.',
     link: { href: '/de/voice/talk/', label: 'Sagen Sie uns, was Sie brauchen' },
   },
   {
@@ -206,7 +206,7 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/de/voice/',
   inLanguage: 'de',
@@ -223,7 +223,7 @@ const appSchema = {
     'HD-Sprache mit dem Opus-Codec, wenn der Anbieter sie unterstützt',
     'Kommandozeile und MCP-Automatisierung für KI-Assistenten',
     'Automatisches Protokollieren von Anrufen in HubSpot, mit Transkript-Synchronisierung und Aufnahme-Wiedergabe im CRM',
-    'Neun App-Sprachen, auf macOS und Linux',
+    'Neun App-Sprachen, auf macOS, Windows und Linux',
   ],
   offers: {
     '@type': 'Offer',
@@ -248,7 +248,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — Ihr Geschäftstelefon am Desktop"
-  description="WaveKat Voice ist eine Desktop-App für Mac und Linux: Anrufe annehmen und tätigen, jedes Gespräch automatisch aufgezeichnet und mitgeschrieben."
+  description="WaveKat Voice ist eine Desktop-App für Mac, Windows und Linux: Anrufe annehmen und tätigen, jedes Gespräch automatisch aufgezeichnet und mitgeschrieben."
 >
   <VoiceOverview
     imgCode={imgCode}

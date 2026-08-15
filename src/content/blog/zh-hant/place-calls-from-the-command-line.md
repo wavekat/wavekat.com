@@ -97,7 +97,7 @@ wavekat-voice call list --json | jq -r '.[0].id' | xargs wavekat-voice call hang
 
 ### 哪些平台支援這一功能？
 
-WaveKat Voice 目前執行在 Mac 和 Linux 上，Windows 將在有需求時推出。命令列工具和助理整合在這兩個受支援的平台上均可用。
+WaveKat Voice 支援 Mac、Windows 和 Linux。命令列工具和助理整合在這三個受支援的平台上均可用。
 
 ## 試試看
 

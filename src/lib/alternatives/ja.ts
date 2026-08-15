@@ -50,7 +50,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: '対応プラットフォーム',
-        wavekat: '現在は Mac と Linux（需要があれば Windows にも対応）。',
+        wavekat: 'Mac、Windows、Linux。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -66,7 +66,7 @@ export const alternatives: Alternative[] = [
     ],
     chooseThem: [
       'ソースが公開された、無料でオープンソースのクライアントが欲しい',
-      'Mac、Windows、Linux、モバイルで同じアプリを使いたい',
+      'パソコンと同じアプリをスマートフォンやタブレットでも使いたい',
       '音声と同じ場所でビデオ通話やチャットも使いたい',
       'SIP 設定を自分で構成するのに抵抗がない',
     ],

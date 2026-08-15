@@ -186,11 +186,11 @@ const faqs = [
   },
   {
     q: '어떤 환경에서 실행되나요?',
-    a: `Mac과 Linux입니다. macOS에서는 12 버전 이상, ${ui.dlArchMac}에서 실행됩니다. Linux에서는 ${ui.dlArchLinux}용 .deb 패키지로 제공됩니다.`,
+    a: `Mac, Windows, Linux입니다. macOS에서는 12 버전 이상, ${ui.dlArchMac}에서 실행됩니다. Windows는 10과 11을 지원합니다. Linux에서는 ${ui.dlArchLinux}용 .deb 패키지로 제공됩니다.`,
   },
   {
-    q: 'Windows나 다른 기기도 지원하나요?',
-    a: 'WaveKat Voice는 현재 Mac과 Linux에서 실행됩니다. Windows를 비롯한 다른 플랫폼도 충분히 고려하고 있습니다 — 다만 실제 수요가 있을 때 만듭니다. 그러니 Windows나 다른 곳에서 WaveKat Voice를 쓰고 싶다면 알려 주세요. 요청하는 분이 많을수록 더 빨리 이뤄집니다.',
+    q: 'WaveKat Voice가 Windows에서 실행되나요?',
+    a: '네 — Windows 10과 11을 지원하며, Intel 또는 AMD용과 Windows on ARM용 설치 프로그램이 따로 있습니다. Windows 빌드는 Mac과 Linux보다 늦게 나왔고 아직 코드 서명이 없어서, 처음 실행할 때 Windows가 알 수 없는 게시자 경고를 표시합니다. WaveKat Voice는 데스크톱 앱이라 휴대폰이나 태블릿 버전은 없습니다 — 그것이 필요하다면 알려 주세요.',
     link: { href: '/ko/voice/talk/', label: '필요한 점을 알려 주세요' },
   },
   {
@@ -206,7 +206,7 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/ko/voice/',
   inLanguage: 'ko',
@@ -223,7 +223,7 @@ const appSchema = {
     '사업자가 지원하면 Opus 코덱 HD 음성',
     'AI 어시스턴트를 위한 명령줄과 MCP 자동화',
     'HubSpot에 통화 자동 기록 — 전사 동기화와 CRM 내 녹음 재생 포함',
-    '앱 언어 9종, macOS와 Linux 지원',
+    '앱 언어 9종, macOS·Windows·Linux 지원',
   ],
   offers: {
     '@type': 'Offer',
@@ -248,7 +248,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — 컴퓨터를 업무 전화로"
-  description="WaveKat Voice는 Mac과 Linux용 데스크톱 앱입니다. 전화를 받고 걸며, 모든 통화를 자동으로 녹음하고 기록합니다."
+  description="WaveKat Voice는 Mac, Windows, Linux용 데스크톱 앱입니다. 전화를 받고 걸며, 모든 통화를 자동으로 녹음하고 기록합니다."
 >
   <VoiceOverview
     imgCode={imgCode}

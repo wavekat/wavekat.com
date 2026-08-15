@@ -120,7 +120,7 @@ Sì, con l'account che hai già in WaveKat Voice. I flussi rispondono alle chiam
 
 ### Su quali piattaforme funzionano i flussi di chiamata?
 
-Su Mac e Linux, le due piattaforme su cui WaveKat Voice funziona oggi (Windows arriverà quando ci sarà richiesta). La creazione funziona in qualsiasi browser, perché i flussi si costruiscono sul web e si sincronizzano con l'app.
+Su Mac, Windows e Linux, le tre piattaforme su cui funziona WaveKat Voice. La creazione funziona in qualsiasi browser, perché i flussi si costruiscono sul web e si sincronizzano con l'app.
 
 ## Provalo
 

@@ -97,7 +97,7 @@ Hoy, Claude Desktop, Claude Code, Cursor, Codex, Gemini y Windsurf: mediante un 
 
 ### ¿Qué plataformas admiten esto?
 
-WaveKat Voice funciona hoy en Mac y Linux, y Windows llegará cuando haya demanda. La herramienta de línea de comandos y las integraciones de asistentes están disponibles en ambas plataformas admitidas.
+WaveKat Voice funciona en Mac, Windows y Linux. La herramienta de línea de comandos y las integraciones de asistentes están disponibles en las tres plataformas admitidas.
 
 ## Pruébelo
 

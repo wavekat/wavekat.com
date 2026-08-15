@@ -50,7 +50,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: '支援平台',
-        wavekat: 'Mac 和 Linux（有需求時支援 Windows）。',
+        wavekat: 'Mac、Windows 和 Linux。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -66,7 +66,7 @@ export const alternatives: Alternative[] = [
     ],
     chooseThem: [
       '你想要一個免費、開源、可查看原始碼的用戶端',
-      '你需要在 Mac、Windows、Linux 和行動裝置上使用同一個應用程式',
+      '你需要在手機、平板和電腦上使用同一個應用程式',
       '你希望語音、視訊通話和聊天集中在一處',
       '你願意自己設定 SIP 設定',
     ],

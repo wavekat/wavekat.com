@@ -52,7 +52,7 @@ Non, pas à moins que vous le demandiez. Par défaut, WaveKat Voice remplit le n
 
 ### Quelles plateformes prennent en charge le clic-pour-appeler ?
 
-Mac et Linux, les deux plateformes sur lesquelles WaveKat Voice fonctionne aujourd'hui (Windows viendra quand la demande sera là). Activez les Liens téléphoniques dans Réglages → Général et ça fonctionne sur les deux.
+Mac, Windows et Linux, les trois plateformes sur lesquelles WaveKat Voice fonctionne. Activez les Liens téléphoniques dans Réglages → Général et ça fonctionne sur les deux.
 
 ### Est-ce que ça marche aussi avec les liens sip:, ou seulement les numéros tel: ?
 

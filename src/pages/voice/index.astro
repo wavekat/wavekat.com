@@ -179,11 +179,11 @@ const faqs = [
   },
   {
     q: 'What does it run on?',
-    a: `Mac and Linux. On macOS it runs on version 12 and later — ${ui.dlArchMac}; on Linux it's a .deb package for ${ui.dlArchLinux}.`,
+    a: `Mac, Windows and Linux. On macOS it runs on version 12 and later — ${ui.dlArchMac}; on Windows it's Windows 10 and 11; on Linux it's a .deb package for ${ui.dlArchLinux}.`,
   },
   {
-    q: 'Will you support Windows or other devices?',
-    a: 'WaveKat Voice runs on Mac and Linux today. Windows and other platforms are absolutely on the table — we just build them when there\'s real demand. So if you\'d use WaveKat Voice on Windows or somewhere else, please tell us. The more people who ask, the sooner it happens.',
+    q: 'Does WaveKat Voice run on Windows?',
+    a: 'Yes — Windows 10 and 11, with separate installers for Intel or AMD and for Windows on ARM. The Windows build is younger than the Mac and Linux ones and isn\'t code-signed yet, so Windows shows an "unknown publisher" warning the first time you open it. WaveKat Voice is a desktop app, so there is no phone or tablet version — tell us if that is what you need.',
     link: { href: '/voice/talk/', label: 'Tell us what you need' },
   },
   {
@@ -199,7 +199,7 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/voice/',
   softwareVersion: macDownload?.version,
@@ -215,7 +215,7 @@ const appSchema = {
     'HD voice with the Opus codec when the provider supports it',
     'Command line and MCP automation for AI assistants',
     'Automatic call logging to HubSpot, with transcript sync and in-CRM recording playback',
-    'Nine app languages, on macOS and Linux',
+    'Nine app languages, on macOS, Windows and Linux',
   ],
   offers: {
     '@type': 'Offer',
@@ -239,7 +239,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — your desktop business phone"
-  description="WaveKat Voice is a desktop app for Mac and Linux that turns your computer into your business phone — every call answered, recorded, and written down."
+  description="WaveKat Voice is a desktop app for Mac, Windows and Linux that turns your computer into your business phone — every call answered, recorded, and written down."
 >
   <VoiceOverview
     imgCode={imgCode}

@@ -78,7 +78,7 @@ Nein. Aufnahme und Live-Transkript pausieren für die Dauer des Haltens auf beid
 
 ### Auf welchen Plattformen gibt es Halten, Anklopfen und Weiterleiten?
 
-WaveKat Voice läuft heute auf Mac und Linux; Windows folgt, wenn die Nachfrage da ist. Halten, Anklopfen und beide Arten der Weiterleitung funktionieren auf beiden unterstützten Plattformen, mit dem SIP-Konto, das Sie schon nutzen — ohne Aufpreis, ohne Einrichtung.
+WaveKat Voice läuft auf Mac, Windows und Linux. Halten, Anklopfen und beide Arten der Weiterleitung funktionieren auf allen drei unterstützten Plattformen, mit dem SIP-Konto, das Sie schon nutzen — ohne Aufpreis, ohne Einrichtung.
 
 ## Probieren Sie es aus
 

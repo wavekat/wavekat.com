@@ -78,7 +78,7 @@ Non. L'enregistrement et la transcription en direct se mettent en pause pendant 
 
 ### Quelles plateformes prennent en charge l'attente, le double appel et le transfert ?
 
-WaveKat Voice fonctionne aujourd'hui sur Mac et Linux ; Windows viendra quand la demande sera là. L'attente, le double appel et les deux types de transfert fonctionnent sur les deux plateformes prises en charge, avec le compte SIP que vous utilisez déjà — sans surcoût, sans configuration.
+WaveKat Voice fonctionne sur Mac, Windows et Linux. L'attente, le double appel et les deux types de transfert fonctionnent sur les trois plateformes prises en charge, avec le compte SIP que vous utilisez déjà — sans surcoût, sans configuration.
 
 ## Essayez
 

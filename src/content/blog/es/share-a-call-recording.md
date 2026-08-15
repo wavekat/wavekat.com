@@ -109,7 +109,7 @@ Depende del nivel de acceso. "Cualquiera con el enlace" se abre sin iniciar sesi
 
 ### ¿Qué plataformas admiten compartir grabaciones?
 
-WaveKat Voice se ejecuta hoy en Mac y Linux, con Windows en camino cuando haya demanda. Compartir funciona en ambas plataformas admitidas, y los destinatarios abren los enlaces compartidos en cualquier navegador web.
+WaveKat Voice funciona en Mac, Windows y Linux. Compartir funciona en las tres plataformas admitidas, y los destinatarios abren los enlaces compartidos en cualquier navegador web.
 
 ## Pruébalo
 

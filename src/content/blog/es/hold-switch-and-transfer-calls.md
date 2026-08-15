@@ -78,7 +78,7 @@ No. La grabación y la transcripción en vivo se pausan mientras dura la espera,
 
 ### ¿Qué plataformas admiten retener, la llamada en espera y la transferencia?
 
-WaveKat Voice funciona hoy en Mac y Linux, y llegará a Windows cuando haya demanda. Retener, la llamada en espera y los dos tipos de transferencia funcionan en ambas plataformas compatibles, con la cuenta SIP que usted ya usa — sin costo adicional y sin configuración.
+WaveKat Voice funciona en Mac, Windows y Linux. Retener, la llamada en espera y los dos tipos de transferencia funcionan en las tres plataformas compatibles, con la cuenta SIP que usted ya usa — sin costo adicional y sin configuración.
 
 ## Pruébelo
 

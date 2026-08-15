@@ -186,11 +186,11 @@ const faqs = [
   },
   {
     q: 'Su cosa gira?',
-    a: `Mac e Linux. Su macOS gira sulla versione 12 e successive — ${ui.dlArchMac}; su Linux è un pacchetto .deb per ${ui.dlArchLinux}.`,
+    a: `Mac, Windows e Linux. Su macOS gira sulla versione 12 e successive — ${ui.dlArchMac}; su Windows sono Windows 10 e 11; su Linux è un pacchetto .deb per ${ui.dlArchLinux}.`,
   },
   {
-    q: 'Supporterete Windows o altri dispositivi?',
-    a: 'WaveKat Voice oggi gira su Mac e Linux. Windows e altre piattaforme sono assolutamente sul tavolo — semplicemente le realizziamo quando c’è una richiesta reale. Quindi se useresti WaveKat Voice su Windows o altrove, faccelo sapere. Più persone lo chiedono, prima accade.',
+    q: 'WaveKat Voice gira su Windows?',
+    a: 'Sì — Windows 10 e 11, con installer separati per Intel o AMD e per Windows su ARM. La versione Windows è più giovane di quelle per Mac e Linux e non è ancora firmata, quindi al primo avvio Windows avvisa di un editore sconosciuto. WaveKat Voice è un’app desktop, quindi non esiste una versione per telefono o tablet — faccelo sapere se è ciò che ti serve.',
     link: { href: '/it/voice/talk/', label: 'Dicci di cosa hai bisogno' },
   },
   {
@@ -206,7 +206,7 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/it/voice/',
   inLanguage: 'it',
@@ -223,7 +223,7 @@ const appSchema = {
     'Voce HD con il codec Opus quando l’operatore la supporta',
     'Riga di comando e automazione MCP per gli assistenti AI',
     'Registrazione automatica delle chiamate in HubSpot, con sincronizzazione delle trascrizioni e riproduzione dell’audio nel CRM',
-    'Nove lingue dell’app, su macOS e Linux',
+    'Nove lingue dell’app, su macOS, Windows e Linux',
   ],
   offers: {
     '@type': 'Offer',
@@ -248,7 +248,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — il tuo telefono aziendale desktop"
-  description="WaveKat Voice è un’app desktop per Mac e Linux: rispondi ed effettua chiamate, con ogni chiamata registrata e trascritta. Beta pubblica gratuita."
+  description="WaveKat Voice è un’app desktop per Mac, Windows e Linux: rispondi ed effettua chiamate, con ogni chiamata registrata e trascritta. Beta pubblica gratuita."
 >
   <VoiceOverview
     imgCode={imgCode}

@@ -108,7 +108,7 @@ It depends on the access level. "Anyone with the link" opens with no sign-in. "S
 
 ### Which platforms support recording sharing?
 
-WaveKat Voice runs on Mac and Linux today, with Windows coming when there's demand. Sharing works on both supported platforms, and recipients open shared links in any web browser.
+WaveKat Voice runs on Mac, Windows and Linux. Sharing works on all three supported platforms, and recipients open shared links in any web browser.
 
 ## Try it
 

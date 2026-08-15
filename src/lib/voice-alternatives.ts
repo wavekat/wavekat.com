@@ -97,7 +97,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: 'Platforms',
-        wavekat: 'Mac and Linux today (Windows when there is demand).',
+        wavekat: 'Mac, Windows and Linux.',
         them: 'Mac, Windows, Linux, iOS, Android.',
       },
       {
@@ -113,7 +113,7 @@ export const alternatives: Alternative[] = [
     ],
     chooseThem: [
       'You want a free, open-source client with the source available',
-      'You need the same app across Mac, Windows, Linux, and mobile',
+      'You need the same app on your phone and tablet as on your desktop',
       'You want video calls and chat in the same place as voice',
       'You are comfortable configuring SIP settings yourself',
     ],
@@ -194,7 +194,7 @@ export const alternativesZhHans: Alternative[] = [
       },
       {
         label: '支持平台',
-        wavekat: 'Mac 和 Linux（有需求时支持 Windows）。',
+        wavekat: 'Mac、Windows 和 Linux。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -210,7 +210,7 @@ export const alternativesZhHans: Alternative[] = [
     ],
     chooseThem: [
       '你想要一个免费、开源、可查看源代码的客户端',
-      '你需要在 Mac、Windows、Linux 和移动端使用同一个应用',
+      '你需要在手机、平板和电脑上使用同一个应用',
       '你希望语音、视频通话和聊天集中在一处',
       '你愿意自己配置 SIP 设置',
     ],

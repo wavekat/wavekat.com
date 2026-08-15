@@ -77,7 +77,7 @@ No. The recording and the live transcript pause for the duration of the hold, on
 
 ### Which platforms support hold, call waiting, and transfer?
 
-WaveKat Voice runs on Mac and Linux today, with Windows coming when there's demand. Hold, call waiting, and both kinds of transfer work on both supported platforms, with the SIP account you already use — no extra cost, no setup.
+WaveKat Voice runs on Mac, Windows and Linux. Hold, call waiting, and both kinds of transfer work on all three supported platforms, with the SIP account you already use — no extra cost, no setup.
 
 ## Try it
 
