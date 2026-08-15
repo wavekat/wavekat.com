@@ -97,7 +97,16 @@ that 404s on a link nobody would think to test.
 `classify()`'s own `Platform` type is untouched. A download's *platform* is
 still `windows`; only the *target you can ask for* is finer-grained.
 
-### 3.3 `GET /api/voice/releases/latest`
+### 3.3 `no_arch` is a 404, not a 500
+
+A feed listing no installer at all is a half-published release — our
+problem, and a `500`. A feed listing installers but not this architecture
+is a release that did not build one, which is every Windows feed published
+before this change. That is a `404`: the visitor asked for something that
+does not exist, not something that broke. Both reasons are surfaced on the
+admin artifacts page, which now shows one row per target.
+
+### 3.4 `GET /api/voice/releases/latest`
 
 Emits the four target keys, each with its own size:
 
@@ -176,6 +185,9 @@ locales:
 | `voice-alternatives` platform row | `Mac and Linux today (Windows when there is demand)` → the truth. |
 | `voice-alternatives` "pick them if" bullet | Drops Windows from the reasons to pick a competitor; mobile stays. |
 | `about.astro`, `privacy.astro` | One sentence each. |
+| `/voice/download/` and `/voice/alternatives/` descriptions | They named the platforms and omitted Windows — a SERP snippet telling a Windows searcher to leave. |
+| `public/llms.txt` | The site's own AI-answer file (not the automation contract synced from wavekat-voice): the summary line and the download line. |
+| Five blog posts' "which platforms?" closer | "Windows is coming when there's demand" in nine locales. A platform answer is the passage an AI answer lifts verbatim, so a dated post still gets a true one. |
 
 Upstream in wavekat-voice, reversing [#251](https://github.com/wavekat/wavekat-voice/pull/251):
 `docs/site/index.md`, `installation.md`'s meta description, and `llms.txt`.
