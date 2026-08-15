@@ -16,9 +16,18 @@ export const ui: UIStrings = {
   subTalk: 'Contacto',
   dlMac: 'Descargar para Mac',
   dlLinux: 'Descargar para Linux',
+  dlWindows: 'Descargar para Windows',
+  dlWindowsX64: 'Windows en Intel o AMD',
+  dlWindowsArm64: 'Windows en ARM',
   dlOther: 'Otras plataformas',
   dlArchMac: 'Macs con chip de Apple (M1 o posterior)',
   dlArchLinux: 'Debian y Ubuntu (.deb, 64 bits)',
+  dlArchWindowsX64: 'Windows 10 y 11, 64 bits',
+  dlArchWindowsArm64: 'Windows 11 en Snapdragon o Surface',
+  dlEarly: 'Inicial',
+  dlWindowsUnsigned:
+    'Las versiones para Windows aún no están firmadas, así que Windows avisa al abrirlas por primera vez.',
+  dlWindowsUnsignedLink: 'Cómo continuar',
   talkHeading: 'Contacto',
   talkBody:
     '¿Preguntas, comentarios o un dispositivo que le gustaría que admitiéramos? El correo electrónico es la mejor forma de contactarnos: leemos cada mensaje y respondemos en cuanto podemos.',

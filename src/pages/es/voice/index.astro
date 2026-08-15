@@ -22,11 +22,12 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getMacDownload();
-const linuxDownload = await getLinuxDownload();
+const macDownload = await getDownload('mac');
+const linuxDownload = await getDownload('linux');
+const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -209,7 +210,7 @@ const appSchema = {
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/es/voice/',
   inLanguage: 'es',
-  softwareVersion: macDownload.version,
+  softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/es/voice/download/',
   description:
     'Una app de escritorio que convierte su computadora en su teléfono de empresa: conteste y haga llamadas, con cada llamada grabada y transcrita. Funciona con el proveedor de telefonía que ya tiene.',
@@ -275,6 +276,7 @@ const faqSchema = {
     faqs={faqs}
     macDownload={macDownload}
     linuxDownload={linuxDownload}
+    windowsDownload={windowsDownload}
   />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />

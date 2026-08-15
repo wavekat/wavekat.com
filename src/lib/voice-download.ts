@@ -1,9 +1,9 @@
 // WaveKat Voice — download links and release metadata.
 //
-// Two facts about the current release reach this site, and both now come
-// from platform.wavekat.com rather than from a YAML parser in here.
+// Two facts about the current release reach this site, and both come from
+// platform.wavekat.com rather than from a YAML parser in here.
 //
-//   * The DOWNLOAD LINK names a platform, not a file:
+//   * The DOWNLOAD LINK names a target, not a file:
 //     /api/voice/download/latest/mac?src=web. The platform reads the
 //     electron-builder channel feed, records the download, and 302s to
 //     the installer on dl.wavekat.com. So nothing in the delivered HTML
@@ -17,14 +17,20 @@
 //     the HTML for crawlers and answer engines; the refresh keeps it
 //     true for a visitor when a release lands between deploys.
 //
-// dl.wavekat.com is no longer read from this repo. The feeds are still
-// ground truth — the platform parses them now, so one parser serves both
-// the site and the download counter and the two can never disagree about
-// which file is current. See docs/04, and wavekat-platform docs/37 §3.6.
+// A TARGET is one downloadable file, which is finer-grained than a
+// platform: Windows ships an x64 and an arm64 installer, they are
+// different sizes, and handing one to the other's machine is a file
+// Windows refuses to run. See docs/05.
+//
+// dl.wavekat.com is not read from this repo. The feeds are still ground
+// truth — the platform parses them now, so one parser serves both the
+// site and the download counter and the two can never disagree about
+// which file is current. See docs/04, docs/05, and wavekat-platform
+// docs/37 §3.6.
 //
 // Nothing here is user-visible prose: button labels and the hardware/OS
 // requirement are localised chrome and live in the UI strings (i18n.ts
-// `dlMac` / `dlLinux` / `dlArchMac` / `dlArchLinux`), so every locale gets
+// `dlMac` / `dlLinux` / `dlWindows` / `dlArch*`), so every locale gets
 // them in its own language.
 
 export const DOWNLOAD_BASE =
@@ -32,14 +38,14 @@ export const DOWNLOAD_BASE =
 export const RELEASES_URL =
   'https://platform.wavekat.com/api/voice/releases/latest';
 
-export type PlatformKey = 'mac' | 'linux';
+export type PlatformKey = 'mac' | 'linux' | 'windows-x64' | 'windows-arm64';
 
 export interface Download {
-  /** Current version, e.g. "0.0.26". */
+  /** Current version, e.g. "0.0.45". */
   version: string;
   /** Human-friendly size, e.g. "120 MB". */
   size: string;
-  /** The logged, version-less download link for this platform. */
+  /** The logged, version-less download link for this target. */
   url: string;
 }
 
@@ -50,12 +56,18 @@ interface Release {
 
 type LatestReleases = Partial<Record<PlatformKey, Release | null>>;
 
-// Used only when the endpoint can't be reached at build time (an offline
+// Used only when the endpoint cannot be reached at build time (an offline
 // `make build`). A stale number here is cosmetic — the button still
 // resolves to whatever is current, because it names no version.
-const FALLBACK: Record<PlatformKey, Release> = {
-  mac: { version: '0.0.40', sizeBytes: 126241228 },
-  linux: { version: '0.0.40', sizeBytes: 106304532 },
+//
+// There is deliberately no `windows-arm64` entry. Every other target has
+// shipped at least once, so a constant for it is a stale truth; arm64 has
+// not, and inventing one would render a button that 404s on the only
+// build path that uses this table.
+const FALLBACK: Partial<Record<PlatformKey, Release>> = {
+  mac: { version: '0.0.45', sizeBytes: 125377010 },
+  linux: { version: '0.0.45', sizeBytes: 106630120 },
+  'windows-x64': { version: '0.0.45', sizeBytes: 98528955 },
 };
 
 function mb(bytes: number): string {
@@ -63,27 +75,34 @@ function mb(bytes: number): string {
 }
 
 // Memoized so a single build does one fetch, not one per page per locale.
-let latest: Promise<LatestReleases> | undefined;
+// `null` means the endpoint could not be read at all, which is a different
+// thing from a target it reported as unpublished.
+let latest: Promise<LatestReleases | null> | undefined;
 
-function loadLatest(): Promise<LatestReleases> {
+function loadLatest(): Promise<LatestReleases | null> {
   latest ??= fetch(RELEASES_URL, { signal: AbortSignal.timeout(8000) })
-    .then((res) => (res.ok ? (res.json() as Promise<LatestReleases>) : {}))
-    .catch(() => ({}));
+    .then((res) => (res.ok ? (res.json() as Promise<LatestReleases>) : null))
+    .catch(() => null);
   return latest;
 }
 
-async function get(key: PlatformKey): Promise<Download> {
+/**
+ * The current release for one target, or `null` when the platform says it
+ * is not published.
+ *
+ * A null is a real answer, not a gap to paper over: the endpoint nulls a
+ * target the current release did not build, and every Windows release
+ * before the ARM one built exactly one installer. Falling back to a
+ * constant there would put a choice on the page that resolves to a 404.
+ */
+export async function getDownload(key: PlatformKey): Promise<Download | null> {
   const releases = await loadLatest();
-  // `??` rather than `||`: the endpoint nulls a platform it could not
-  // resolve, and null must fall through to the constants.
-  const { version, sizeBytes } = releases[key] ?? FALLBACK[key];
+  const release = releases ? (releases[key] ?? null) : (FALLBACK[key] ?? null);
+  if (!release) return null;
 
   return {
-    version,
-    size: mb(sizeBytes),
+    version: release.version,
+    size: mb(release.sizeBytes),
     url: `${DOWNLOAD_BASE}/${key}?src=web`,
   };
 }
-
-export const getMacDownload = (): Promise<Download> => get('mac');
-export const getLinuxDownload = (): Promise<Download> => get('linux');

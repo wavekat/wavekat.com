@@ -1,15 +1,22 @@
 ---
 // Smart download control for WaveKat Voice.
 //
-// Shows ONE primary button for the visitor's platform, with the other
-// platform(s) tucked behind an "other platforms" disclosure. The site is
-// statically built (no server to sniff the OS), so this is progressive
-// enhancement: the server renders Mac as the default primary, and a tiny
-// inline script promotes Linux when it detects a Linux user-agent. With JS
-// off, the native <details> still lets anyone reach the other build.
-import { Apple, Package, ChevronDown } from '@lucide/astro';
+// Shows ONE primary control for the visitor's platform, with the others
+// tucked behind an "other platforms" disclosure. The site is statically
+// built (no server to sniff the OS), so this is progressive enhancement:
+// the server renders Mac as the default primary, and a tiny inline script
+// promotes Linux or Windows when it detects one. With JS off, the native
+// <details> still lets anyone reach every build.
+//
+// Mac and Linux are one file each, so their primary is a button that
+// downloads. Windows is TWO files — x64 and arm64 — and we refuse to
+// guess which chip a visitor has from a user-agent string, so its primary
+// opens a two-row menu instead. That asymmetry is the design, not an
+// oversight: the alternative is silently handing an ARM laptop an x64
+// installer, or an x64 desktop a file Windows will not run. See docs/05.
+import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
-import { getMacDownload, getLinuxDownload, DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
+import { getDownload, DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
 import { resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -21,81 +28,207 @@ const { variant = 'hero' } = Astro.props;
 const { code: lang } = resolveLocale(Astro.url.pathname);
 const ui = t(lang);
 
-// Button labels and hardware requirements are localised here (the download lib
-// stays language-agnostic — it only knows versions, sizes and URLs).
-const platforms = [
+const [macDl, linuxDl, winX64Dl, winArmDl] = await Promise.all([
+  getDownload('mac'),
+  getDownload('linux'),
+  getDownload('windows-x64'),
+  getDownload('windows-arm64'),
+]);
+
+// Grouped by the control a visitor sees, not by file: one group is one
+// primary. Labels and hardware requirements are localised here — the
+// download lib stays language-agnostic, knowing only versions, sizes and
+// URLs.
+const groups = [
   {
     key: 'mac',
     icon: Apple,
-    conversion: 'download_mac',
     label: ui.dlMac,
-    arch: ui.dlArchMac,
-    dl: await getMacDownload(),
+    windows: false,
+    rows: [
+      {
+        key: 'mac',
+        conversion: 'download_mac',
+        label: ui.dlMac,
+        arch: ui.dlArchMac,
+        dl: macDl,
+      },
+    ],
   },
   {
     key: 'linux',
     icon: Package,
-    conversion: 'download_linux',
     label: ui.dlLinux,
-    arch: ui.dlArchLinux,
-    dl: await getLinuxDownload(),
+    windows: false,
+    rows: [
+      {
+        key: 'linux',
+        conversion: 'download_linux',
+        label: ui.dlLinux,
+        arch: ui.dlArchLinux,
+        dl: linuxDl,
+      },
+    ],
+  },
+  {
+    key: 'windows',
+    icon: AppWindow,
+    label: ui.dlWindows,
+    windows: true,
+    rows: [
+      {
+        key: 'windows-x64',
+        conversion: 'download_windows_x64',
+        label: ui.dlWindowsX64,
+        arch: ui.dlArchWindowsX64,
+        dl: winX64Dl,
+      },
+      {
+        // No release before the native ARM build published one, so this
+        // row ships hidden and the browser-side refresh reveals it the
+        // day one does — no rebuild needed. See the script below.
+        key: 'windows-arm64',
+        conversion: 'download_windows_arm64',
+        label: ui.dlWindowsArm64,
+        arch: ui.dlArchWindowsArm64,
+        dl: winArmDl,
+      },
+    ],
   },
 ];
 
-// Mac is the SSR default primary; the script swaps to Linux when detected.
+const windowsGroup = groups.find((g) => g.windows)!;
+
+// Mac is the SSR default primary; the script swaps to Linux or Windows.
 const DEFAULT = 'mac';
 
-// Display utility is toggled separately from the rest: an element gets EITHER
-// `inline-flex` (shown) or `hidden`, never both — putting both on one element
-// lets `inline-flex` win the `display` race and `hidden` silently does nothing.
+// Display utility is toggled separately from the rest: an element gets
+// EITHER its own display class or `hidden`, never both — putting both on
+// one element lets the display utility win the race and `hidden` silently
+// does nothing. Each toggleable element names its display in
+// `data-dl-show` so the script never has to guess which one to restore.
 const primaryCls =
   variant === 'cta'
     ? 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ff6d00]/30'
-    : 'group items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff6d00]/25 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/35 hover:-translate-y-0.5';
+    : 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff6d00]/25 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/35 hover:-translate-y-0.5';
+
+const panelCls =
+  'absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
+
+const rowCls =
+  'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
+
+const tagCls =
+  'rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
+
+const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
 ---
 
 <div class="inline-flex flex-wrap items-center gap-3" data-voice-download>
-  {/* Primary control — one per platform, only the active one is shown.
-      A <button>, not a link: the URL is built on click, so no artifact
-      filename and no version ever reaches the delivered HTML. */}
-  {platforms.map((p) => (
+  {/* Primary control for the one-file platforms. A <button>, not a link:
+      the URL is built on click, so no artifact filename and no version
+      ever reaches the delivered HTML. */}
+  {groups.filter((g) => !g.windows).map((g) => (
     <button
       type="button"
-      data-conversion={p.conversion}
-      data-dl-primary={p.key}
-      data-dl-platform={p.key}
-      class:list={[primaryCls, 'cursor-pointer border-0', p.key === DEFAULT ? 'inline-flex' : 'hidden']}
+      data-conversion={g.rows[0].conversion}
+      data-dl-primary={g.key}
+      data-dl-platform={g.rows[0].key}
+      data-dl-show="inline-flex"
+      class:list={[primaryCls, 'cursor-pointer border-0', g.key === DEFAULT ? 'inline-flex' : 'hidden']}
       style="background-color: #ff6d00"
     >
-      <p.icon class="w-5 h-5" />
-      {p.label}
+      <g.icon class="w-5 h-5" />
+      {g.label}
     </button>
   ))}
 
-  {/* Other platforms — native <details> so it works without JS. */}
+  {/* Primary control for Windows: the same pill, but it opens the choice
+      between the two installers rather than downloading one of them. */}
+  <details
+    class:list={['group relative', windowsGroup.key === DEFAULT ? 'inline-block' : 'hidden']}
+    data-dl-more
+    data-dl-primary={windowsGroup.key}
+    data-dl-show="inline-block"
+  >
+    <summary
+      class:list={[primaryCls, 'inline-flex cursor-pointer list-none [&::-webkit-details-marker]:hidden']}
+      style="background-color: #ff6d00"
+    >
+      <windowsGroup.icon class="w-5 h-5" />
+      {windowsGroup.label}
+      <ChevronDown class="h-4 w-4 transition-transform group-open:rotate-180" />
+    </summary>
+    <div class={panelCls}>
+      {windowsGroup.rows.map((r) => (
+        <button
+          type="button"
+          data-conversion={r.conversion}
+          data-dl-platform={r.key}
+          data-dl-row={r.key}
+          data-dl-show="inline-flex"
+          class:list={[rowCls, r.dl ? 'inline-flex' : 'hidden']}
+        >
+          <windowsGroup.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
+          <span class="flex flex-col">
+            <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
+              {r.label}
+              <span class={tagCls}>{ui.dlEarly}</span>
+            </span>
+            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{r.arch} · <span data-dl-size={r.key}>{r.dl?.size}</span></span>
+          </span>
+        </button>
+      ))}
+      <p class={noteCls}>
+        {ui.dlWindowsUnsigned}{' '}
+        <a href="/docs/voice/installation/" class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+      </p>
+    </div>
+  </details>
+
+  {/* Other platforms — native <details> so it works without JS. Each
+      group is WRAPPED, so promoting a platform toggles the wrapper while
+      a row's own hidden state stays about whether that file exists. Two
+      independent reasons to hide, on one element, is the bug this
+      avoids. */}
   <details class="group relative" data-dl-more>
     <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
       {ui.dlOther}
       <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
     </summary>
-    <div class="absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95">
-      {platforms.map((p) => (
-        <button
-          type="button"
-          data-conversion={p.conversion}
-          data-dl-alt={p.key}
-          data-dl-platform={p.key}
-          class:list={[
-            'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5',
-            p.key === DEFAULT ? 'hidden' : 'inline-flex',
-          ]}
+    <div class={panelCls}>
+      {groups.map((g) => (
+        <div
+          data-dl-alt={g.key}
+          data-dl-show="flex"
+          class:list={['flex-col gap-1', g.key === DEFAULT ? 'hidden' : 'flex']}
         >
-          <p.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
-          <span class="flex flex-col">
-            <span class="text-sm font-bold text-gray-900 dark:text-white">{p.label}</span>
-            <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{p.arch} · <span data-dl-size={p.key}>{p.dl.size}</span></span>
-          </span>
-        </button>
+          {g.rows.map((r) => (
+            <button
+              type="button"
+              data-conversion={r.conversion}
+              data-dl-platform={r.key}
+              data-dl-row={r.key}
+              data-dl-show="inline-flex"
+              class:list={[rowCls, r.dl ? 'inline-flex' : 'hidden']}
+            >
+              <g.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
+              <span class="flex flex-col">
+                <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
+                  {r.label}
+                  {g.windows && <span class={tagCls}>{ui.dlEarly}</span>}
+                </span>
+                <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{r.arch} · <span data-dl-size={r.key}>{r.dl?.size}</span></span>
+              </span>
+            </button>
+          ))}
+          {g.windows && (
+            <p class={noteCls}>
+              {ui.dlWindowsUnsigned}{' '}
+              <a href="/docs/voice/installation/" class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+            </p>
+          )}
+        </div>
       ))}
     </div>
   </details>
@@ -105,15 +238,15 @@ const primaryCls =
       honest for crawlers and the handful of readers without scripting. */}
   <noscript>
     <div class="flex flex-wrap items-center gap-4">
-      {platforms.map((p) => (
+      {groups.flatMap((g) => g.rows.filter((r) => r.dl).map((r) => (
         <a
-          href={p.dl.url}
+          href={r.dl!.url}
           class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
         >
-          <p.icon class="h-4 w-4" style="color: #ff6d00" />
-          {p.label}
+          <g.icon class="h-4 w-4" style="color: #ff6d00" />
+          {r.label}
         </a>
-      ))}
+      )))}
     </div>
   </noscript>
 </div>
@@ -122,10 +255,10 @@ const primaryCls =
 
 <script is:inline define:vars={{ base: DOWNLOAD_BASE, releasesUrl: RELEASES_URL }}>
   // The download itself. Delegated from the document so it covers the
-  // primary control, the dropdown entries, and anything either script
-  // below shows later. The URL names a platform and nothing else — the
-  // platform resolves the current installer, records the download and
-  // redirects (wavekat-platform docs/37 §3.6).
+  // primary control, both menus, and anything either script below shows
+  // later. The URL names a target and nothing else — the platform
+  // resolves the current installer, records the download and redirects
+  // (wavekat-platform docs/37 §3.6).
   (function () {
     document.addEventListener('click', function (e) {
       // e.target can be a text node or the document itself, neither of
@@ -141,14 +274,24 @@ const primaryCls =
   // site deploys. The build-time values are already in the HTML, so this
   // corrects them silently or does nothing at all — there is no skeleton,
   // no pop-in, and a failed fetch leaves the page exactly as served.
+  //
+  // It also reveals or withdraws a whole choice. `windows-arm64` did not
+  // exist before the native ARM build, so its row ships hidden and
+  // appears the day a release publishes one, with no site rebuild. A row
+  // for a file the platform says is missing would 404, so the same rule
+  // runs in reverse.
   (function () {
-    if (!document.querySelector('[data-dl-version],[data-dl-size]')) return;
+    if (!document.querySelector('[data-dl-version],[data-dl-size],[data-dl-row]')) return;
     fetch(releasesUrl)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
         if (!data) return;
-        ['mac', 'linux'].forEach(function (key) {
+        ['mac', 'linux', 'windows-x64', 'windows-arm64'].forEach(function (key) {
           var rel = data[key];
+          document.querySelectorAll('[data-dl-row="' + key + '"]').forEach(function (el) {
+            el.classList.toggle(el.dataset.dlShow || 'inline-flex', !!rel);
+            el.classList.toggle('hidden', !rel);
+          });
           if (!rel) return;
           document.querySelectorAll('[data-dl-version="' + key + '"]').forEach(function (el) {
             el.textContent = rel.version;
@@ -163,18 +306,29 @@ const primaryCls =
 </script>
 
 <script is:inline>
-  // Promote the visitor's platform to the primary button. Runs synchronously
-  // as the markup is parsed, so there's no flash of the wrong default. Only
-  // Linux changes anything; Mac/Windows/iOS/Android keep the Mac default
-  // (Mac is the only desktop build besides Linux).
+  // Promote the visitor's platform to the primary control. Runs
+  // synchronously as the markup is parsed, so there's no flash of the
+  // wrong default.
+  //
+  // It reads the PLATFORM and never the chip. Windows-on-ARM is only
+  // distinguishable through `navigator.userAgentData`, which is
+  // Chromium-only and asynchronous — so one machine would get an
+  // informed guess and every other one a blind default. The Windows
+  // primary asks instead.
   (function () {
     var ua = navigator.userAgent || '';
     var plat = navigator.platform || '';
-    var isLinux = /Linux/i.test(plat + ' ' + ua) && !/Android/i.test(ua);
-    if (!isLinux) return;
+    var probe = plat + ' ' + ua;
+    // Windows first: a Windows UA never says Linux, but Android's does.
+    var active = /Win(dows|32|64)/i.test(probe)
+      ? 'windows'
+      : /Linux/i.test(probe) && !/Android/i.test(ua)
+        ? 'linux'
+        : 'mac';
+    if (active === 'mac') return;
     // Show/hide by swapping the single display class, never stacking both.
     function setShown(el, shown) {
-      el.classList.toggle('inline-flex', shown);
+      el.classList.toggle(el.dataset.dlShow || 'inline-flex', shown);
       el.classList.toggle('hidden', !shown);
     }
     function resolve() {
@@ -182,18 +336,19 @@ const primaryCls =
         if (root.dataset.dlResolved) return;
         root.dataset.dlResolved = '1';
         root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
-          setShown(el, el.dataset.dlPrimary === 'linux');
+          setShown(el, el.dataset.dlPrimary === active);
         });
         root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
-          setShown(el, el.dataset.dlAlt !== 'linux');
+          setShown(el, el.dataset.dlAlt !== active);
         });
       });
-      // Show only the active platform's caption, matching the single button.
-      // These <p> have no display utility, so toggling `hidden` alone is safe.
-      // Caption lines can sit after this script in the page, so DOMContentLoaded
-      // catches them — buttons swap synchronously (no flicker).
+      // Show only the active platform's caption, matching the single
+      // control. These <p> have no display utility, so toggling `hidden`
+      // alone is safe. Caption lines can sit after this script in the
+      // page, so DOMContentLoaded catches them — controls swap
+      // synchronously (no flicker).
       document.querySelectorAll('[data-dl-meta]').forEach(function (el) {
-        el.classList.toggle('hidden', el.dataset.dlMeta !== 'linux');
+        el.classList.toggle('hidden', el.dataset.dlMeta !== active);
       });
     }
     resolve();
@@ -202,9 +357,9 @@ const primaryCls =
 </script>
 
 <script is:inline>
-  // Native <details> only toggles via its <summary>, so the "other platforms"
-  // dropdown stays open when you click elsewhere. Close any open one on an
-  // outside click or the Escape key, the way a menu is expected to behave.
+  // Native <details> only toggles via its <summary>, so a menu stays open
+  // when you click elsewhere. Close any open one on an outside click or
+  // the Escape key, the way a menu is expected to behave.
   (function () {
     document.addEventListener('click', function (e) {
       document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {

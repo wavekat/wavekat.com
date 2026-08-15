@@ -16,9 +16,18 @@ export const ui: UIStrings = {
   subTalk: 'Kontakt',
   dlMac: 'Für Mac herunterladen',
   dlLinux: 'Für Linux herunterladen',
+  dlWindows: 'Für Windows herunterladen',
+  dlWindowsX64: 'Windows auf Intel oder AMD',
+  dlWindowsArm64: 'Windows auf ARM',
   dlOther: 'Andere Plattformen',
   dlArchMac: 'Macs mit Apple Chip (M1 oder neuer)',
   dlArchLinux: 'Debian & Ubuntu (.deb, 64-Bit)',
+  dlArchWindowsX64: 'Windows 10 & 11, 64-Bit',
+  dlArchWindowsArm64: 'Windows 11 auf Snapdragon oder Surface',
+  dlEarly: 'Früh',
+  dlWindowsUnsigned:
+    'Die Windows-Builds sind noch nicht signiert, deshalb warnt Windows beim ersten Start.',
+  dlWindowsUnsignedLink: 'So kommen Sie daran vorbei',
   talkHeading: 'Kontakt',
   talkBody:
     'Fragen, Feedback oder ein Gerät, das Sie sich von uns wünschen? Am besten erreichen Sie uns per E-Mail — wir lesen jede Nachricht und antworten, so schnell wir können.',

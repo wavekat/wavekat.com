@@ -2,11 +2,12 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
-import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getMacDownload();
-const linuxDownload = await getLinuxDownload();
+const macDownload = await getDownload('mac');
+const linuxDownload = await getDownload('linux');
+const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -67,8 +68,9 @@ const highlights = [
     <VoiceDownload />
 
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload.version}</span></a> · <span data-dl-size="mac">{macDownload.size}</span></p>
-      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload.version}</span></a> · <span data-dl-size="linux">{linuxDownload.size}</span></p>
+      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload?.version}</span></a> · <span data-dl-size="mac">{macDownload?.size}</span></p>
+      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload?.version}</span></a> · <span data-dl-size="linux">{linuxDownload?.size}</span></p>
+      <p data-dl-meta="windows" class="hidden">Windows 10 &amp; 11 · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="windows-x64">{windowsDownload?.version}</span></a></p>
     </div>
   </section>
 
