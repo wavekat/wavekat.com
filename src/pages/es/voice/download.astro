@@ -16,7 +16,7 @@ const steps = [
   {
     n: '1',
     title: 'Abra la descarga',
-    body: 'En un Mac, haga doble clic en el .dmg y arrastre WaveKat Voice a Aplicaciones. En Linux, abra el .deb con su instalador de software, o instálelo desde la terminal con apt o dpkg.',
+    body: 'En un Mac, haga doble clic en el .dmg y arrastre WaveKat Voice a Aplicaciones. En Windows, ejecute el .exe y siga el instalador. En Linux, abra el .deb con su instalador de software, o instálelo desde la terminal con apt o dpkg.',
   },
   {
     n: '2',
@@ -28,6 +28,16 @@ const steps = [
     title: 'Conecte su número',
     body: 'Una configuración breve le guía para iniciar sesión con su proveedor de telefonía — elíjalo de la lista y nosotros rellenamos el resto.',
   },
+];
+
+// Windows needs one extra beat the other two don't: the build isn't
+// code-signed, so SmartScreen stops the first launch. The download menu's
+// "how to get past it" link points at #windows below — deliberately here
+// and not at /docs/**, which is English-only.
+const windowsSteps = [
+  'Haga clic en «Más información» en el recuadro de SmartScreen.',
+  'Haga clic en «Ejecutar de todas formas» y siga el instalador.',
+  'Listo: Windows no volverá a preguntar y, a partir de ahí, las actualizaciones se instalan solas.',
 ];
 
 const highlights = [
@@ -105,6 +115,30 @@ const highlights = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <!-- Installing on Windows -->
+  <section id="windows" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Instalación en Windows</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      WaveKat Voice para Windows todavía no está firmado digitalmente, así que la primera vez que ejecute el instalador Windows SmartScreen mostrará el recuadro azul «Windows protegió su PC». El aviso es por un certificado que aún no hemos comprado, no por el archivo — así puede continuar.
+    </p>
+    <ol class="space-y-3 mb-5 max-w-xl">
+      {windowsSteps.map((s, i) => (
+        <li class="flex gap-3">
+          <span
+            class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {i + 1}
+          </span>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed pt-0.5">{s}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Dos instaladores, una decisión: elija Intel o AMD salvo que su PC lleve un chip Snapdragon u otro procesador ARM. Windows se lo indica en Configuración → Sistema → Acerca de → Tipo de sistema.
+    </p>
   </section>
 
   <!-- What you'll need -->

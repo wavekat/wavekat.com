@@ -17,7 +17,7 @@
 import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
 import { getDownload, DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
-import { resolveLocale, t } from '../lib/i18n';
+import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
 interface Props {
   /** 'hero' = elevated pill (default), 'cta' = flatter button for cards. */
@@ -27,6 +27,12 @@ const { variant = 'hero' } = Astro.props;
 
 const { code: lang } = resolveLocale(Astro.url.pathname);
 const ui = t(lang);
+
+// The SmartScreen walkthrough lives on our own download page, in the
+// reader's language — not in /docs/**, which is synced from the private
+// repo and English-only. On /voice/download/ itself this is a same-page
+// jump to the section below the fold.
+const unsignedHref = `${localizedPath('/voice/download/', lang)}#windows`;
 
 const [macDl, linuxDl, winX64Dl, winArmDl] = await Promise.all([
   getDownload('mac'),
@@ -112,14 +118,18 @@ const primaryCls =
     ? 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ff6d00]/30'
     : 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff6d00]/25 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/35 hover:-translate-y-0.5';
 
+// `text-left` because the CTA card centres its text and the menu shouldn't
+// inherit that — the rows are left-aligned, so the note under them is too.
 const panelCls =
-  'absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
+  'absolute left-0 top-full z-20 mt-2 flex min-w-[15rem] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
 
 const rowCls =
   'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
 
+// `shrink-0 whitespace-nowrap` — the label beside it wraps in several
+// languages, and a two-line pill looks broken.
 const tagCls =
-  'rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
+  'shrink-0 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold whitespace-nowrap uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
 
 const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
 ---
@@ -181,7 +191,7 @@ const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-g
       ))}
       <p class={noteCls}>
         {ui.dlWindowsUnsigned}{' '}
-        <a href="/docs/voice/installation/" class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+        <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
       </p>
     </div>
   </details>
@@ -225,7 +235,7 @@ const noteCls = 'px-3 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-g
           {g.windows && (
             <p class={noteCls}>
               {ui.dlWindowsUnsigned}{' '}
-              <a href="/docs/voice/installation/" class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+              <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
             </p>
           )}
         </div>

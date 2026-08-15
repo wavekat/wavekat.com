@@ -153,10 +153,30 @@ about when a browser doesn't answer.
 
 Each Windows row carries an **Early** tag, and one line sits under the control:
 the Windows builds are not code-signed, so Windows warns on first launch,
-linking to the SmartScreen walkthrough already in `installation.md`. `/docs/**`
-is English-only, so that link is unprefixed in every locale.
+linking to the SmartScreen walkthrough. That walkthrough is **ours**, at
+`/voice/download/#windows` — see §4.4.
 
 `<noscript>` carries a plain `<a href>` per target — no filename, still logged.
+
+### 4.2.1 The menu has to be able to leave the box it opens in
+
+The disclosure panel is absolutely positioned and taller than the gap under
+the control, so it overflows whatever contains it — and two containers were
+set up to stop exactly that:
+
+- The homepage hero and the `/voice/` download card each carried
+  `overflow-hidden` to keep a blurred glow inside their bounds. That clipped
+  the open menu in half. The clipping moves onto the decoration itself: a
+  `pointer-events-none absolute inset-0 overflow-hidden` layer wrapping the
+  glow, leaving the section free to overflow.
+- On the homepage the section below is a scroll-reveal band, and
+  `.reveal-in`'s `transform` makes it a stacking context that paints after
+  the hero — so it covered the menu even once the clipping was gone. The
+  hero section takes `z-10` (the header is `z-40`, so nothing changes there).
+
+Both were invisible until Windows made the menu two rows and a paragraph
+taller. Neither is a Windows bug — Linux was being clipped the same way,
+just not far enough down to notice.
 
 ### 4.3 Strings and captions
 
@@ -165,6 +185,25 @@ New `UIStrings` in all nine locales: `dlWindows`, `dlArchWindowsX64`,
 carries the version-and-size line for all nine `voice/index.astro`, and
 `voice/download.astro` inlines its own in each of the nine — both gain a
 `data-dl-meta` line per Windows target, matching the Mac and Linux ones.
+
+### 4.4 The install walkthrough is ours, and translated
+
+The unsigned-build note needs somewhere to send a reader, and
+`/docs/voice/installation/` is the wrong somewhere: `/docs/**` is synced from
+the private repo and exists only in English, so a Chinese reader clicking
+"如何继续安装" would land in English prose.
+
+So `/voice/download/` — which is already translated into all nine locales —
+gains an `#windows` section: the SmartScreen box explained in one
+self-contained paragraph, three steps to get past it, and which of the two
+installers to pick (with where Windows tells you). Step 1 of "Getting set
+up" names the `.exe` alongside the `.dmg` and the `.deb`.
+
+The href is built with `localizedPath('/voice/download/', lang)`, so every
+locale's menu points at its own page — and on `/voice/download/` itself the
+link is a same-page jump. A separate `/voice/install/` page tree was the
+alternative; it would have split download intent across two thin pages in
+nine languages to hold four paragraphs.
 
 ## 5. Promotion — a named list, not a replacement
 

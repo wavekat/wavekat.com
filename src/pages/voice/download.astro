@@ -16,7 +16,7 @@ const steps = [
   {
     n: '1',
     title: 'Open the download',
-    body: 'On a Mac, double-click the .dmg and drag WaveKat Voice into Applications. On Linux, open the .deb in your software installer, or install it from a terminal with apt or dpkg.',
+    body: 'On a Mac, double-click the .dmg and drag WaveKat Voice into Applications. On Windows, run the .exe and follow the installer. On Linux, open the .deb in your software installer, or install it from a terminal with apt or dpkg.',
   },
   {
     n: '2',
@@ -28,6 +28,16 @@ const steps = [
     title: 'Connect your number',
     body: 'A short setup walks you through signing in with your phone provider — pick it from the list and we fill in the rest.',
   },
+];
+
+// Windows needs one extra beat the other two don't: the build isn't
+// code-signed, so SmartScreen stops the first launch. The download menu's
+// "how to get past it" link points at #windows below — deliberately here
+// and not at /docs/**, which is English-only.
+const windowsSteps = [
+  'Click "More info" in the SmartScreen box.',
+  'Click "Run anyway", then follow the installer.',
+  "That's it — Windows won't ask again, and updates install quietly from then on.",
 ];
 
 const highlights = [
@@ -105,6 +115,33 @@ const highlights = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <!-- Installing on Windows -->
+  <section id="windows" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installing on Windows</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      WaveKat Voice for Windows isn't code-signed yet, so the first time you run the installer
+      Windows SmartScreen shows a blue "Windows protected your PC" box. The warning is about a
+      certificate we haven't bought yet, not about the file — here's how to get past it.
+    </p>
+    <ol class="space-y-3 mb-5 max-w-xl">
+      {windowsSteps.map((s, i) => (
+        <li class="flex gap-3">
+          <span
+            class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {i + 1}
+          </span>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed pt-0.5">{s}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Two installers, one choice: pick Intel or AMD unless your PC runs on a Snapdragon or another
+      ARM chip. Windows tells you which you have under Settings → System → About → System type.
+    </p>
   </section>
 
   <!-- What you'll need -->

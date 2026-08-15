@@ -16,7 +16,7 @@ const steps = [
   {
     n: '1',
     title: '打開下載檔案',
-    body: '在 Mac 上，雙擊 .dmg 檔案，把 WaveKat Voice 拖進「應用程式」資料夾。在 Linux 上，用你的軟體安裝程式打開 .deb 檔案，或在終端機裡用 apt 或 dpkg 安裝。',
+    body: '在 Mac 上，雙擊 .dmg 檔案，把 WaveKat Voice 拖進「應用程式」資料夾。在 Windows 上，執行 .exe 檔案，依安裝程式的指示操作。在 Linux 上，用你的軟體安裝程式打開 .deb 檔案，或在終端機裡用 apt 或 dpkg 安裝。',
   },
   {
     n: '2',
@@ -28,6 +28,16 @@ const steps = [
     title: '連接你的號碼',
     body: '一段簡短的設定會帶你登入電信業者——從清單中選擇，剩下的我們為你填好。',
   },
+];
+
+// Windows needs one extra beat the other two don't: the build isn't
+// code-signed, so SmartScreen stops the first launch. The download menu's
+// "how to get past it" link points at #windows below — deliberately here
+// and not at /docs/**, which is English-only.
+const windowsSteps = [
+  '在 SmartScreen 提示視窗中點選「其他資訊」。',
+  '點選「仍要執行」，再依安裝程式的指示操作。',
+  '這樣就完成了——Windows 不會再詢問，之後的更新也會在背景靜默安裝。',
 ];
 
 const highlights = [
@@ -105,6 +115,30 @@ const highlights = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <!-- Installing on Windows -->
+  <section id="windows" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">在 Windows 上安裝</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      Windows 版 WaveKat Voice 尚未進行程式碼簽章，因此第一次執行安裝程式時，Windows SmartScreen 會跳出藍色的「Windows 已保護您的電腦」提示。這則警告說的是我們還沒購買的憑證，而不是檔案本身——依下面幾個步驟即可繼續。
+    </p>
+    <ol class="space-y-3 mb-5 max-w-xl">
+      {windowsSteps.map((s, i) => (
+        <li class="flex gap-3">
+          <span
+            class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {i + 1}
+          </span>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed pt-0.5">{s}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      兩個安裝檔，只需選一次：除非你的電腦用的是 Snapdragon 等 ARM 晶片，否則請選 Intel 或 AMD 版。可在「設定 → 系統 → 系統資訊 → 系統類型」查看。
+    </p>
   </section>
 
   <!-- What you'll need -->

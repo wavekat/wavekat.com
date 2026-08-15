@@ -16,7 +16,7 @@ const steps = [
   {
     n: '1',
     title: 'Ouvrez le téléchargement',
-    body: 'Sur un Mac, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications. Sur Linux, ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
+    body: 'Sur un Mac, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications. Sous Windows, lancez le fichier .exe et suivez l’installateur. Sur Linux, ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
   },
   {
     n: '2',
@@ -28,6 +28,16 @@ const steps = [
     title: 'Connectez votre numéro',
     body: 'Une courte configuration vous guide pour vous connecter à votre opérateur téléphonique — choisissez-le dans la liste et nous remplissons le reste.',
   },
+];
+
+// Windows needs one extra beat the other two don't: the build isn't
+// code-signed, so SmartScreen stops the first launch. The download menu's
+// "how to get past it" link points at #windows below — deliberately here
+// and not at /docs/**, which is English-only.
+const windowsSteps = [
+  'Cliquez sur « Informations complémentaires » dans l’encadré SmartScreen.',
+  'Cliquez sur « Exécuter quand même », puis suivez l’installateur.',
+  'C’est tout — Windows ne redemandera pas, et les mises à jour s’installent discrètement ensuite.',
 ];
 
 const highlights = [
@@ -105,6 +115,30 @@ const highlights = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <!-- Installing on Windows -->
+  <section id="windows" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installation sous Windows</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      WaveKat Voice pour Windows n’est pas encore signé, donc au premier lancement de l’installateur, Windows SmartScreen affiche l’encadré bleu « Windows a protégé votre ordinateur ». Cet avertissement porte sur un certificat que nous n’avons pas encore acheté, pas sur le fichier lui-même — voici comment passer outre.
+    </p>
+    <ol class="space-y-3 mb-5 max-w-xl">
+      {windowsSteps.map((s, i) => (
+        <li class="flex gap-3">
+          <span
+            class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {i + 1}
+          </span>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed pt-0.5">{s}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Deux installateurs, un seul choix : prenez Intel ou AMD, sauf si votre PC tourne sur une puce Snapdragon ou une autre puce ARM. Windows vous l’indique dans Paramètres → Système → Informations système → Type du système.
+    </p>
   </section>
 
   <!-- What you'll need -->
