@@ -83,14 +83,18 @@ stops mattering, which is the point.
 
 ### 3.1 The legacy-feed rule
 
-Every Windows release before `a3bc34c` was named `WaveKat Voice Setup 0.0.46.exe`
-— no arch token, because electron-builder's arch suffix is empty for the
-default arch. `classify()` reads that as `arch: null`.
+Every Windows release up to and including 0.0.45 was named
+`WaveKat Voice Setup <version>.exe` — no arch token, because
+electron-builder's arch suffix is empty for the default arch. `classify()`
+reads that as `arch: null`.
 
 `windows-x64` therefore accepts `x64` **or** `null`: an unsuffixed Windows
-installer has always meant x64. `windows-arm64` requires an exact match and
-resolves to nothing until the first release built with the new `artifactName`
-publishes.
+installer has always meant x64. `windows-arm64` requires an exact match, so it
+resolved to nothing until 0.0.46 — the first release built with the new
+`artifactName` — published one.
+
+The rule stops being load-bearing for the current feed the moment 0.0.46 is
+live, and stays correct for anyone still sitting on 0.0.45.
 
 Without this rule the Windows button 404s on the currently-published feed, and
 it would 404 quietly — the failure arrives at the visitor, not at us.
@@ -117,13 +121,22 @@ admin artifacts page, which now shows one row per target.
 
 ### 3.4 `GET /api/voice/releases/latest`
 
-Emits the four target keys, each with its own size:
+Emits the four target keys, each with its own size — 0.0.46, the first
+two-architecture release, as actually served:
 
 ```json
-{ "mac":           { "version": "0.0.46", "sizeBytes": 126241228 },
-  "linux":         { "version": "0.0.46", "sizeBytes": 106304532 },
-  "windows-x64":   { "version": "0.0.46", "sizeBytes":  99000000 },
-  "windows-arm64": { "version": "0.0.46", "sizeBytes":  97000000 } }
+{ "mac":           { "version": "0.0.46", "sizeBytes": 125596265 },
+  "linux":         { "version": "0.0.46", "sizeBytes": 106842816 },
+  "windows-x64":   { "version": "0.0.46", "sizeBytes":  98710571 },
+  "windows-arm64": { "version": "0.0.46", "sizeBytes": 104657605 } }
+```
+
+which resolve to:
+
+```
+windows-x64    302 → dl.wavekat.com/voice/WaveKat Voice Setup 0.0.46-x64.exe
+windows-arm64  302 → dl.wavekat.com/voice/WaveKat Voice Setup 0.0.46-arm64.exe
+windows        302 → dl.wavekat.com/voice/WaveKat Voice Setup 0.0.46-x64.exe
 ```
 
 Per-target rather than per-platform because the two Windows installers differ

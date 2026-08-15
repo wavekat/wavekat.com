@@ -87,9 +87,10 @@ const groups = [
         dl: winX64Dl,
       },
       {
-        // No release before the native ARM build published one, so this
-        // row ships hidden and the browser-side refresh reveals it the
-        // day one does — no rebuild needed. See the script below.
+        // Published since 0.0.46. Nothing here is conditional on that:
+        // the row renders hidden whenever the platform reports the
+        // target unpublished, and the browser-side refresh flips it
+        // either way without a rebuild. See the script below.
         key: 'windows-arm64',
         conversion: 'download_windows_arm64',
         label: ui.dlWindowsArm64,

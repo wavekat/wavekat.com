@@ -41,7 +41,7 @@ export const RELEASES_URL =
 export type PlatformKey = 'mac' | 'linux' | 'windows-x64' | 'windows-arm64';
 
 export interface Download {
-  /** Current version, e.g. "0.0.45". */
+  /** Current version, e.g. "0.0.46". */
   version: string;
   /** Human-friendly size, e.g. "120 MB". */
   size: string;
@@ -60,14 +60,16 @@ type LatestReleases = Partial<Record<PlatformKey, Release | null>>;
 // `make build`). A stale number here is cosmetic — the button still
 // resolves to whatever is current, because it names no version.
 //
-// There is deliberately no `windows-arm64` entry. Every other target has
-// shipped at least once, so a constant for it is a stale truth; arm64 has
-// not, and inventing one would render a button that 404s on the only
-// build path that uses this table.
+// Every target listed here has shipped at least once, which is the whole
+// entry requirement: a constant for a target that has never published
+// renders a button that 404s on the only build path that reads this
+// table. `windows-arm64` was held out for exactly that reason until
+// 0.0.46 built one.
 const FALLBACK: Partial<Record<PlatformKey, Release>> = {
-  mac: { version: '0.0.45', sizeBytes: 125377010 },
-  linux: { version: '0.0.45', sizeBytes: 106630120 },
-  'windows-x64': { version: '0.0.45', sizeBytes: 98528955 },
+  mac: { version: '0.0.46', sizeBytes: 125596265 },
+  linux: { version: '0.0.46', sizeBytes: 106842816 },
+  'windows-x64': { version: '0.0.46', sizeBytes: 98710571 },
+  'windows-arm64': { version: '0.0.46', sizeBytes: 104657605 },
 };
 
 function mb(bytes: number): string {
