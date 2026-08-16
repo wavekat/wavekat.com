@@ -32,3 +32,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local state — session worktrees are git repos of their own
+.claude/
