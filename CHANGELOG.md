@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.56](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.55...wavekat-com-v0.0.56) (2026-08-16)
+
+
+### Features
+
+* **voice:** offer Windows downloads ([#155](https://github.com/wavekat/wavekat.com/issues/155)) ([c0ff5a7](https://github.com/wavekat/wavekat.com/commit/c0ff5a786a2cf17808e44d164a482a932ab37e6f))
+
+
+### Bug Fixes
+
+* **deps:** clear Dependabot alerts, Astro 7 ([#156](https://github.com/wavekat/wavekat.com/issues/156)) ([fb51a03](https://github.com/wavekat/wavekat.com/commit/fb51a030477f2d4c5d787e96540f46dd81632c3f))
+
 ## [0.0.55](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.54...wavekat-com-v0.0.55) (2026-08-15)
 
 
