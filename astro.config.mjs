@@ -179,6 +179,10 @@ export default defineConfig({
       },
     }),
   ],
+  // Astro 7 made Sätteri the default Markdown processor and stopped shipping
+  // `@astrojs/markdown-remark`. These four rehype plugins run on the unified
+  // processor, so the package is an explicit dependency — drop it and the
+  // config fails validation before the build starts.
   markdown: {
     rehypePlugins: [
       rehypeRewriteDocLinks(),
