@@ -2,11 +2,12 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
-import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getMacDownload();
-const linuxDownload = await getLinuxDownload();
+const macDownload = await getDownload('mac');
+const linuxDownload = await getDownload('linux');
+const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -15,7 +16,7 @@ const steps = [
   {
     n: '1',
     title: '打開下載檔案',
-    body: '在 Mac 上，雙擊 .dmg 檔案，把 WaveKat Voice 拖進「應用程式」資料夾。在 Linux 上，用你的軟體安裝程式打開 .deb 檔案，或在終端機裡用 apt 或 dpkg 安裝。',
+    body: '在 Mac 上，雙擊 .dmg 檔案，把 WaveKat Voice 拖進「應用程式」資料夾。在 Windows 上，執行 .exe 檔案，依安裝程式的指示操作。在 Linux 上，用你的軟體安裝程式打開 .deb 檔案，或在終端機裡用 apt 或 dpkg 安裝。',
   },
   {
     n: '2',
@@ -29,6 +30,16 @@ const steps = [
   },
 ];
 
+// Windows needs one extra beat the other two don't: the build isn't
+// code-signed, so SmartScreen stops the first launch. The download menu's
+// "how to get past it" link points at #windows below — deliberately here
+// and not at /docs/**, which is English-only.
+const windowsSteps = [
+  '在 SmartScreen 提示視窗中點選「其他資訊」。',
+  '點選「仍要執行」，再依安裝程式的指示操作。',
+  '這樣就完成了——Windows 不會再詢問，之後的更新也會在背景靜默安裝。',
+];
+
 const highlights = [
   { icon: PhoneCall, text: '在電腦上接聽與撥打電話' },
   { icon: Mic, text: '每通電話都錄音儲存到你的電腦' },
@@ -38,7 +49,7 @@ const highlights = [
 
 <Voice
   title="下載 WaveKat Voice"
-  description="為 Mac 或 Linux 下載 WaveKat Voice——一款會為你錄音並寫下每通電話的電話應用程式。免費試用。"
+  description="為 Mac、Windows 或 Linux 下載 WaveKat Voice：一款會為你錄音並寫下每通電話的電話應用程式。公測期間免費。"
 >
   <!-- Hero / download -->
   <section class="relative mb-16 pt-4">
@@ -67,8 +78,9 @@ const highlights = [
     <VoiceDownload />
 
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload.version}</span></a> · <span data-dl-size="mac">{macDownload.size}</span></p>
-      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload.version}</span></a> · <span data-dl-size="linux">{linuxDownload.size}</span></p>
+      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload?.version}</span></a> · <span data-dl-size="mac">{macDownload?.size}</span></p>
+      <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload?.version}</span></a> · <span data-dl-size="linux">{linuxDownload?.size}</span></p>
+      <p data-dl-meta="windows" class="hidden">Windows 10 &amp; 11 · <a href="/zh-hant/voice/changelog/" title="查看此版本的更新內容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="windows-x64">{windowsDownload?.version}</span></a></p>
     </div>
   </section>
 
@@ -103,6 +115,30 @@ const highlights = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <!-- Installing on Windows -->
+  <section id="windows" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">在 Windows 上安裝</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
+      Windows 版 WaveKat Voice 尚未進行程式碼簽章，因此第一次執行安裝程式時，Windows SmartScreen 會跳出藍色的「Windows 已保護您的電腦」提示。這則警告說的是我們還沒購買的憑證，而不是檔案本身——依下面幾個步驟即可繼續。
+    </p>
+    <ol class="space-y-3 mb-5 max-w-xl">
+      {windowsSteps.map((s, i) => (
+        <li class="flex gap-3">
+          <span
+            class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+            style="background-color: #ff6d00"
+          >
+            {i + 1}
+          </span>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed pt-0.5">{s}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      下載按鈕給你的是 64 位元版本，Windows 10 與 11 的電腦都能執行——在 Intel 與 AMD 上原生執行，在 ARM 版 Windows 11 上以模擬方式執行。如果你的電腦用的是 Snapdragon 等 ARM 晶片，「其他平台」裡的「下載 ARM 版 Windows」是原生版本，執行更快。
+    </p>
   </section>
 
   <!-- What you'll need -->

@@ -109,7 +109,7 @@ Das hängt von der Zugriffsstufe ab. „Jeder mit dem Link" öffnet sich ohne An
 
 ### Welche Plattformen unterstützen das Teilen von Aufnahmen?
 
-WaveKat Voice läuft heute auf Mac und Linux, Windows folgt, sobald die Nachfrage da ist. Das Teilen funktioniert auf beiden unterstützten Plattformen, und Empfänger öffnen geteilte Links in jedem Webbrowser.
+WaveKat Voice läuft auf Mac, Windows und Linux. Das Teilen funktioniert auf allen drei unterstützten Plattformen, und Empfänger öffnen geteilte Links in jedem Webbrowser.
 
 ## Probieren Sie es aus
 

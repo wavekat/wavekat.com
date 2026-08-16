@@ -78,7 +78,7 @@ No. La registrazione e la trascrizione dal vivo si fermano per tutta la durata d
 
 ### Su quali piattaforme funzionano attesa, avviso di chiamata e trasferimento?
 
-WaveKat Voice oggi funziona su Mac e Linux, e arriverà su Windows quando ci sarà richiesta. Attesa, avviso di chiamata ed entrambi i tipi di trasferimento funzionano su entrambe le piattaforme supportate, con l'account SIP che già usi — senza costi extra e senza configurazione.
+WaveKat Voice gira su Mac, Windows e Linux. Attesa, avviso di chiamata ed entrambi i tipi di trasferimento funzionano su tutte e tre le piattaforme supportate, con l'account SIP che già usi — senza costi extra e senza configurazione.
 
 ## Provalo
 

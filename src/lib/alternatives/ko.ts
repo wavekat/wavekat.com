@@ -50,7 +50,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: '지원 플랫폼',
-        wavekat: '현재 Mac과 Linux(수요가 있으면 Windows).',
+        wavekat: 'Mac, Windows, Linux.',
         them: 'Mac, Windows, Linux, iOS, Android.',
       },
       {
@@ -66,7 +66,7 @@ export const alternatives: Alternative[] = [
     ],
     chooseThem: [
       '소스가 공개된 무료 오픈소스 클라이언트를 원하는 경우',
-      'Mac, Windows, Linux, 모바일에서 동일한 앱이 필요한 경우',
+      '휴대폰이나 태블릿에서도 컴퓨터와 같은 앱이 필요한 경우',
       '음성과 같은 곳에서 영상 통화와 채팅을 원하는 경우',
       'SIP 설정을 직접 구성하는 것이 편한 경우',
     ],

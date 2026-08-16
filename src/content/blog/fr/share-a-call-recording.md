@@ -109,7 +109,7 @@ Cela dépend du niveau d'accès. « Toute personne disposant du lien » s'ouvre 
 
 ### Quelles plateformes prennent en charge le partage d'enregistrements ?
 
-WaveKat Voice fonctionne aujourd'hui sur Mac et Linux, avec Windows à venir quand la demande sera là. Le partage fonctionne sur les deux plateformes prises en charge, et les destinataires ouvrent les liens partagés dans n'importe quel navigateur web.
+WaveKat Voice fonctionne sur Mac, Windows et Linux. Le partage fonctionne sur les trois plateformes prises en charge, et les destinataires ouvrent les liens partagés dans n'importe quel navigateur web.
 
 ## Essayez-le
 

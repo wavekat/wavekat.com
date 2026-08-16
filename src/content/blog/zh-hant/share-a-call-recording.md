@@ -109,7 +109,7 @@ wavekat-voice recording unshare <call-id>
 
 ### 哪些平台支援錄音分享？
 
-WaveKat Voice 目前執行在 Mac 和 Linux 上，Windows 將在有需求時推出。分享在兩個受支援的平台上都可用，接收者可以在任何網頁瀏覽器中打開分享連結。
+WaveKat Voice 支援 Mac、Windows 和 Linux。分享在三個受支援的平台上都可用，接收者可以在任何網頁瀏覽器中打開分享連結。
 
 ## 試試看
 

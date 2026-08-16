@@ -210,9 +210,18 @@ export interface UIStrings {
   subTalk: string;
   dlMac: string;
   dlLinux: string;
+  /** Downloads the x64 installer — the build every Windows PC can run. */
+  dlWindows: string;
+  dlWindowsArm64: string;
   dlOther: string;
   dlArchMac: string;
   dlArchLinux: string;
+  dlArchWindowsX64: string;
+  dlArchWindowsArm64: string;
+  /** Tag on the Windows choices: shipped, but younger than the others. */
+  dlEarly: string;
+  dlWindowsUnsigned: string;
+  dlWindowsUnsignedLink: string;
   talkHeading: string;
   talkBody: string;
   talkButton: string;
@@ -268,9 +277,17 @@ const strings: Record<string, UIStrings> = {
     subTalk: 'Talk to Us',
     dlMac: 'Download for Mac',
     dlLinux: 'Download for Linux',
+    dlWindows: 'Download for Windows',
+    dlWindowsArm64: 'Download for Windows on ARM',
     dlOther: 'Other Platforms',
     dlArchMac: 'Macs with Apple chip (M1 or newer)',
     dlArchLinux: 'Debian & Ubuntu (.deb, 64-bit)',
+    dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
+    dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
+    dlEarly: 'Early',
+    dlWindowsUnsigned:
+      "The Windows builds aren't code-signed yet, so Windows warns on first launch.",
+    dlWindowsUnsignedLink: 'How to get past it',
     talkHeading: 'Talk to us',
     talkBody:
       'Questions, feedback, or a device you wish we supported? Email is the best way to reach us — we read every message and reply as soon as we can.',
@@ -307,9 +324,16 @@ const strings: Record<string, UIStrings> = {
     subTalk: '联系我们',
     dlMac: '下载 Mac 版',
     dlLinux: '下载 Linux 版',
+    dlWindows: '下载 Windows 版',
+    dlWindowsArm64: '下载 ARM 版 Windows',
     dlOther: '其他平台',
     dlArchMac: '搭载 Apple 芯片的 Mac（M1 或更新机型）',
     dlArchLinux: 'Debian 与 Ubuntu（.deb，64 位）',
+    dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
+    dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',
+    dlEarly: '早期版本',
+    dlWindowsUnsigned: 'Windows 版尚未进行代码签名，首次启动时系统会弹出提醒。',
+    dlWindowsUnsignedLink: '如何继续安装',
     talkHeading: '联系我们',
     talkBody:
       '有疑问、建议，或希望我们支持某种设备？邮件是联系我们的最佳方式——我们会阅读每一条消息，并尽快回复。',

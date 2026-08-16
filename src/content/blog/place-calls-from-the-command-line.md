@@ -6,7 +6,7 @@ author: Eason Guo
 tags: [voice-ai, automation, ai-agents]
 ---
 
-WaveKat Voice now ships with a command-line tool, so a program you trust — including an AI assistant like Claude — can place and manage real phone calls for you. Ask your assistant to "call the dentist and wait until someone picks up," and it dials through the app you already have open, follows the call, and tells you how it went. It's built into the app today on Mac and Linux, and it's off until you switch it on.
+WaveKat Voice now ships with a command-line tool, so a program you trust — including an AI assistant like Claude — can place and manage real phone calls for you. Ask your assistant to "call the dentist and wait until someone picks up," and it dials through the app you already have open, follows the call, and tells you how it went. It's built into the app today on Mac, Windows and Linux, and it's off until you switch it on.
 
 This is the next step toward the thing we keep coming back to: [giving every small business the voice of a big one](/blog/hello-world/). A big company has a switchboard and software that drives it. Now your computer — and the assistant running on it — can be that switchboard.
 
@@ -96,7 +96,7 @@ Claude Desktop, Claude Code, Cursor, Codex, Gemini, and Windsurf today — via a
 
 ### Which platforms support this?
 
-WaveKat Voice runs on Mac and Linux today, with Windows coming when there's demand. The command-line tool and assistant integrations are available on both supported platforms.
+WaveKat Voice runs on Mac, Windows and Linux. The command-line tool and assistant integrations are available on all three supported platforms.
 
 ## Try it
 

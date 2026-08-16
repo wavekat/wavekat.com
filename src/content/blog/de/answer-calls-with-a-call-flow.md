@@ -120,7 +120,7 @@ Ja, mit dem Konto, das Sie in WaveKat Voice bereits eingerichtet haben. Abläufe
 
 ### Auf welchen Plattformen gibt es Anrufabläufe?
 
-Mac und Linux, die beiden Plattformen, auf denen WaveKat Voice heute läuft (Windows kommt, sobald die Nachfrage da ist). Das Bearbeiten funktioniert in jedem Browser, denn Abläufe entstehen im Web und werden mit der App synchronisiert.
+Mac, Windows und Linux, die drei Plattformen, auf denen WaveKat Voice läuft. Das Bearbeiten funktioniert in jedem Browser, denn Abläufe entstehen im Web und werden mit der App synchronisiert.
 
 ## Ausprobieren
 

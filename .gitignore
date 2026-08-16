@@ -32,3 +32,9 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local state — session worktrees are git repos of their own, and
+# settings.local.json is per-machine. Scoped, not the whole `.claude/`: shared
+# project config (settings.json, agents/, skills/) is meant to be committed.
+.claude/worktrees/
+.claude/settings.local.json

@@ -120,7 +120,7 @@ Oui, avec le compte que vous avez déjà dans WaveKat Voice. Les flux répondent
 
 ### Sur quelles plateformes les flux d'appel fonctionnent-ils ?
 
-Mac et Linux, les deux plateformes sur lesquelles WaveKat Voice tourne aujourd'hui (Windows viendra quand la demande sera là). La création fonctionne dans n'importe quel navigateur, puisque les flux se construisent sur le web et se synchronisent avec l'application.
+Mac, Windows et Linux, les trois plateformes sur lesquelles WaveKat Voice tourne. La création fonctionne dans n'importe quel navigateur, puisque les flux se construisent sur le web et se synchronisent avec l'application.
 
 ## À essayer
 

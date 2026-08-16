@@ -7,7 +7,7 @@ tags: [Sprach-KI, Automatisierung, KI-Agenten]
 lang: "de"
 ---
 
-WaveKat Voice liefert jetzt ein Kommandozeilenwerkzeug, sodass ein Programm, dem Sie vertrauen — darunter ein KI-Assistent wie Claude — echte Telefonanrufe für Sie tätigen und verwalten kann. Bitten Sie Ihren Assistenten, „die Zahnarztpraxis anzurufen und zu warten, bis jemand abnimmt", und er wählt über die App, die Sie bereits geöffnet haben, verfolgt den Anruf und teilt Ihnen mit, wie er verlaufen ist. Es ist heute auf Mac und Linux in die App eingebaut und bleibt ausgeschaltet, bis Sie es aktivieren.
+WaveKat Voice liefert jetzt ein Kommandozeilenwerkzeug, sodass ein Programm, dem Sie vertrauen — darunter ein KI-Assistent wie Claude — echte Telefonanrufe für Sie tätigen und verwalten kann. Bitten Sie Ihren Assistenten, „die Zahnarztpraxis anzurufen und zu warten, bis jemand abnimmt", und er wählt über die App, die Sie bereits geöffnet haben, verfolgt den Anruf und teilt Ihnen mit, wie er verlaufen ist. Es ist heute auf Mac, Windows und Linux in die App eingebaut und bleibt ausgeschaltet, bis Sie es aktivieren.
 
 Das ist der nächste Schritt hin zu dem, worauf wir immer wieder zurückkommen: [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Ein großes Unternehmen hat eine Telefonzentrale und Software, die sie steuert. Jetzt können Ihr Computer — und der darauf laufende Assistent — diese Telefonzentrale sein.
 
@@ -97,7 +97,7 @@ Heute Claude Desktop, Claude Code, Cursor, Codex, Gemini und Windsurf — über 
 
 ### Welche Plattformen unterstützen das?
 
-WaveKat Voice läuft heute auf Mac und Linux, Windows folgt, sobald die Nachfrage besteht. Das Kommandozeilenwerkzeug und die Assistenten-Integrationen sind auf beiden unterstützten Plattformen verfügbar.
+WaveKat Voice läuft auf Mac, Windows und Linux. Das Kommandozeilenwerkzeug und die Assistenten-Integrationen sind auf allen drei unterstützten Plattformen verfügbar.
 
 ## Probieren Sie es aus
 

@@ -23,11 +23,12 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getMacDownload();
-const linuxDownload = await getLinuxDownload();
+const macDownload = await getDownload('mac');
+const linuxDownload = await getDownload('linux');
+const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -186,11 +187,11 @@ const faqs = [
   },
   {
     q: '它能在什么系统上运行？',
-    a: `Mac 和 Linux。在 macOS 上支持 12 及以上版本，需要${ui.dlArchMac}；在 Linux 上是面向 ${ui.dlArchLinux} 的 .deb 安装包。`,
+    a: `Mac、Windows 和 Linux。在 macOS 上支持 12 及以上版本，需要${ui.dlArchMac}；Windows 支持 10 和 11；在 Linux 上是面向 ${ui.dlArchLinux} 的 .deb 安装包。`,
   },
   {
-    q: '会支持 Windows 或其他设备吗？',
-    a: 'WaveKat Voice 目前在 Mac 和 Linux 上运行。Windows 和其他平台完全在考虑之内——我们只是会在有真实需求时才去做。所以如果你愿意在 Windows 或其他地方使用 WaveKat Voice，请告诉我们。呼声越高，它来得越快。',
+    q: 'WaveKat Voice 能在 Windows 上运行吗？',
+    a: '可以。支持 Windows 10 和 11，Intel/AMD 与 ARM 版各有独立安装包。Windows 版比 Mac 和 Linux 版更年轻，且尚未进行代码签名，因此首次启动时 Windows 会提示“未知发布者”。WaveKat Voice 是桌面应用，没有手机或平板版本——如果你需要，请告诉我们。',
     link: { href: '/zh/voice/talk/', label: '告诉我们你的需求' },
   },
   {
@@ -206,11 +207,11 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/zh/voice/',
   inLanguage: 'zh-Hans',
-  softwareVersion: macDownload.version,
+  softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/zh/voice/download/',
   description:
     '一款把你的电脑变成办公电话的桌面应用——接听和拨打电话，每通电话都自动录音并转写。兼容你已经在用的电话运营商。',
@@ -223,7 +224,7 @@ const appSchema = {
     '运营商支持时使用 Opus 编解码的高清语音',
     '面向 AI 助手的命令行与 MCP 自动化',
     '自动将通话记录到 HubSpot，支持转写同步与 CRM 内录音播放',
-    '九种应用语言，支持 macOS 与 Linux',
+    '九种应用语言，支持 macOS、Windows 与 Linux',
   ],
   offers: {
     '@type': 'Offer',
@@ -248,7 +249,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — 把电脑变成你的办公电话"
-  description="WaveKat Voice 是一款适用于 Mac 和 Linux 的桌面应用，把你的电脑变成办公电话——接听和拨打电话，每通对话都为你自动录音并写成文字。公测免费。"
+  description="WaveKat Voice 是适用于 Mac、Windows 和 Linux 的桌面办公电话：接听和拨打电话，每通对话自动录音并写成文字。公测免费。"
 >
   <VoiceOverview
     imgCode={imgCode}
@@ -276,6 +277,7 @@ const faqSchema = {
     faqs={faqs}
     macDownload={macDownload}
     linuxDownload={linuxDownload}
+    windowsDownload={windowsDownload}
   />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />

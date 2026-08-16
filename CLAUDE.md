@@ -95,8 +95,9 @@ This site is optimized for classic search (SEO) **and** generative answer engine
 - **Q&A blocks earn their keep twice** — they render as a human FAQ *and* feed `FAQPage` schema *and* are the single most-quoted structure in AI answers. Phrase questions the way a user would type them ("Can WaveKat Voice connect to the same SIP provider as Linphone?"), and answer in 1–3 plain sentences.
 - **Comparison tables are extractable gold.** Keep cells short, factual, and parallel across rows; models lift table rows almost verbatim into "X vs Y" answers.
 - **Be specific and honest.** Concrete specifics (platforms, versions, prices, "records every call automatically") get quoted; vague superlatives get skipped. On comparison pages, name what the competitor is genuinely good at — fair framing reads as a trustworthy source to both readers and models, and avoids the "marketing fluff" discount.
-- **Keep entity naming consistent.** Always "WaveKat Voice" (not "the app", "Voice", "WaveKat" interchangeably) so engines bind the facts to one entity. Same for platform claims — match the truth in `voice/index.astro` (Mac and Linux today; Windows when there's demand).
-- **Don't target a single platform in copy.** Voice is Mac + Linux today; write "your computer" / "desktop" in body copy and put the platforms in a table row or a "Mac & Linux" qualifier. Titles may still include "Mac" to catch the high-volume "… for Mac" queries, but never *exclude* Linux.
+- **Keep entity naming consistent.** Always "WaveKat Voice" (not "the app", "Voice", "WaveKat" interchangeably) so engines bind the facts to one entity. Same for platform claims — match the truth in `voice/index.astro` (**Mac, Windows and Linux**; Windows ships an x64 and an ARM64 installer, is younger than the other two, and isn't code-signed yet).
+- **Don't target a single platform in copy.** Voice runs on all three desktops; write "your computer" / "desktop" in body copy and put the platforms in a table row or a "Mac, Windows & Linux" qualifier. Titles may still include "Mac" to catch the high-volume "… for Mac" queries, but never *exclude* the other two.
+- **A platform claim is never one sentence.** Promoting a platform means the lead, the meta description, the FAQ answer, *and* the clause after it ("works on both" → "all three") — in all nine locales. Changing only the FAQ leaves the page contradicting itself, and the lead is the passage answer engines quote first. `grep` the whole post, not the section you came for.
 
 When you add a page that doesn't fit the patterns above, mirror the closest existing one (`voice/alternatives/[slug].astro` is the current best example: clear `<h1>`, self-contained intro, comparison table, fair "what it is", Q&A, and `FAQPage` + `BreadcrumbList` schema).
 
@@ -176,8 +177,9 @@ is the same page scrolled to the assistants section (a scene `scroll` hint, sinc
 it's below the 960×640 fold).
 
 - **Framed, not bare.** These use the pipeline's **Ubuntu/GNOME-framed** output
-  (`screenshots/framed/ubuntu/…`), so the window chrome is real, not CSS — we're
-  a Mac + Linux product and the author runs Ubuntu. No site-drawn frame.
+  (`screenshots/framed/ubuntu/…`), so the window chrome is real, not CSS — the
+  app is a desktop app on every platform and the author runs Ubuntu. No
+  site-drawn frame.
 - **Single theme (light), per language.** A baked-in frame can't follow the
   page's dark/light toggle, so we pick light and keep it consistent — but each
   localized surface shows the app in *its* language (`/screenshots/<scene>/<code>.webp`).

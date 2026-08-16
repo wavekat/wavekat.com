@@ -52,7 +52,7 @@ lang: "zh-Hant"
 
 ### 哪些平台支援點按撥號？
 
-Mac 和 Linux，也就是 WaveKat Voice 目前執行的兩個平台（Windows 會視需求推出）。在 設定 → 一般 中打開電話連結，兩個平台都能用。
+Mac、Windows 和 Linux，也就是 WaveKat Voice 執行的三個平台。在 設定 → 一般 中打開電話連結，三個平台都能用。
 
 ### 它也支援 sip: 連結嗎，還是只支援 tel: 號碼？
 

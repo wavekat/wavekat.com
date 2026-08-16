@@ -50,7 +50,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: 'Piattaforme',
-        wavekat: 'Mac e Linux oggi (Windows quando ci sarà richiesta).',
+        wavekat: 'Mac, Windows e Linux.',
         them: 'Mac, Windows, Linux, iOS, Android.',
       },
       {
@@ -66,7 +66,7 @@ export const alternatives: Alternative[] = [
     ],
     chooseThem: [
       'Vuoi un client gratuito e open source con il codice sorgente disponibile',
-      'Ti serve la stessa app su Mac, Windows, Linux e mobile',
+      'Ti serve su telefono o tablet la stessa app che hai sul computer',
       'Vuoi videochiamate e chat nello stesso posto della voce',
       'Ti senti a tuo agio nel configurare da solo le impostazioni SIP',
     ],

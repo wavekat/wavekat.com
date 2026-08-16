@@ -16,9 +16,18 @@ export const ui: UIStrings = {
   subTalk: 'お問い合わせ',
   dlMac: 'Mac 版をダウンロード',
   dlLinux: 'Linux 版をダウンロード',
+  dlWindows: 'Windows 版をダウンロード',
+  dlWindowsArm64: 'ARM 版 Windows をダウンロード',
   dlOther: 'その他のプラットフォーム',
   dlArchMac: 'Apple シリコン搭載 Mac（M1 以降）',
   dlArchLinux: 'Debian・Ubuntu（.deb、64ビット）',
+  dlArchWindowsX64: 'Windows 10・11（Intel・AMD、x64）',
+  dlArchWindowsArm64: 'Windows 11（Snapdragon、ARM64）',
+  dlEarly: '早期版',
+  dlWindowsUnsigned:
+    'Windows 版はまだコード署名されていないため、初回起動時に警告が表示されます。',
+  dlWindowsUnsignedLink: '進める方法',
+
   talkHeading: 'お問い合わせ',
   talkBody:
     'ご質問やご意見、対応してほしいデバイスはありますか？メールが一番確実な連絡方法です。いただいたメッセージはすべて読み、できる限り早くお返事します。',

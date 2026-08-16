@@ -22,11 +22,12 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getMacDownload();
-const linuxDownload = await getLinuxDownload();
+const macDownload = await getDownload('mac');
+const linuxDownload = await getDownload('linux');
+const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -185,11 +186,11 @@ const faqs = [
   },
   {
     q: 'どの環境で動きますか？',
-    a: `Mac と Linux です。macOS ではバージョン 12 以降、${ui.dlArchMac} に対応しています。Linux では ${ui.dlArchLinux} 向けの .deb パッケージです。`,
+    a: `Mac、Windows、Linux です。macOS ではバージョン 12 以降、${ui.dlArchMac} に対応しています。Windows は 10 と 11 に対応。Linux では ${ui.dlArchLinux} 向けの .deb パッケージです。`,
   },
   {
-    q: 'Windows や他のデバイスには対応しますか？',
-    a: 'WaveKat Voice は現在 Mac と Linux で動作します。Windows やその他のプラットフォームももちろん検討の対象です——ただ、実際の需要があるときに作るというだけです。ですから、Windows や他の環境で WaveKat Voice を使いたい方は、ぜひ教えてください。声が多いほど、実現は早くなります。',
+    q: 'WaveKat Voice は Windows で動きますか？',
+    a: 'はい。Windows 10 と 11 に対応し、Intel・AMD 向けと Windows on ARM 向けのインストーラーを別々に用意しています。Windows 版は Mac・Linux 版より新しく、まだコード署名がないため、初回起動時に「発行元不明」の警告が表示されます。WaveKat Voice はデスクトップアプリなので、スマートフォンやタブレット版はありません——必要な方はぜひ教えてください。',
     link: { href: '/ja/voice/talk/', label: 'ご要望をお聞かせください' },
   },
   {
@@ -205,11 +206,11 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/ja/voice/',
   inLanguage: 'ja',
-  softwareVersion: macDownload.version,
+  softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/ja/voice/download/',
   description:
     'あなたのパソコンをビジネス用の電話に変えるデスクトップアプリ——電話の応答も発信もでき、各通話は自動で録音・文字起こしされます。すでにお使いの電話事業者に対応します。',
@@ -222,7 +223,7 @@ const appSchema = {
     '事業者が対応していれば Opus による HD 音声',
     'AI アシスタント向けのコマンドラインと MCP 自動化',
     'HubSpot への通話の自動記録（文字起こし同期と CRM 内での録音再生つき）',
-    '9 言語対応、macOS と Linux で動作',
+    '9 言語対応、macOS・Windows・Linux で動作',
   ],
   offers: {
     '@type': 'Offer',
@@ -247,7 +248,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — パソコンをビジネス電話に"
-  description="WaveKat Voice は Mac と Linux 向けのデスクトップアプリ。電話の応答も発信もでき、すべての通話を自動で録音・文字起こしします。"
+  description="WaveKat Voice は Mac・Windows・Linux 向けのデスクトップアプリ。電話の応答も発信もでき、すべての通話を自動で録音・文字起こしします。"
 >
   <VoiceOverview
     imgCode={imgCode}
@@ -275,6 +276,7 @@ const faqSchema = {
     faqs={faqs}
     macDownload={macDownload}
     linuxDownload={linuxDownload}
+    windowsDownload={windowsDownload}
   />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />

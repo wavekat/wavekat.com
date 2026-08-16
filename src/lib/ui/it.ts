@@ -16,9 +16,17 @@ export const ui: UIStrings = {
   subTalk: 'Contattaci',
   dlMac: 'Scarica per Mac',
   dlLinux: 'Scarica per Linux',
+  dlWindows: 'Scarica per Windows',
+  dlWindowsArm64: 'Scarica per Windows su ARM',
   dlOther: 'Altre piattaforme',
   dlArchMac: 'Mac con chip Apple (M1 o successivo)',
   dlArchLinux: 'Debian e Ubuntu (.deb, 64 bit)',
+  dlArchWindowsX64: 'Windows 10 e 11, Intel e AMD (x64)',
+  dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
+  dlEarly: 'Iniziale',
+  dlWindowsUnsigned:
+    'Le versioni per Windows non sono ancora firmate, quindi Windows avvisa al primo avvio.',
+  dlWindowsUnsignedLink: 'Come procedere',
   talkHeading: 'Contattaci',
   talkBody:
     'Domande, suggerimenti o un dispositivo che vorresti vedere supportato? L’email è il modo migliore per raggiungerci: leggiamo ogni messaggio e rispondiamo il prima possibile.',

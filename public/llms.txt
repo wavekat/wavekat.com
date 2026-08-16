@@ -1,11 +1,11 @@
 # WaveKat
 
-> WaveKat builds open-source, AI-powered tools that give small businesses enterprise-grade voice capabilities. Its flagship product, WaveKat Voice, is a desktop softphone for Mac and Linux that records and transcribes every call.
+> WaveKat builds open-source, AI-powered tools that give small businesses enterprise-grade voice capabilities. Its flagship product, WaveKat Voice, is a desktop softphone for Mac, Windows and Linux that records and transcribes every call.
 
 ## Core pages
 
-- [WaveKat Voice](https://wavekat.com/voice/): Desktop softphone for Mac and Linux — answer and place calls, every call recorded automatically, live transcript alongside each call. Works with SIP providers like Twilio, Telnyx, and 2talk. Free public beta.
-- [Download WaveKat Voice](https://wavekat.com/voice/download/): macOS 12+ (Apple Silicon) .dmg and Linux .deb (Debian/Ubuntu).
+- [WaveKat Voice](https://wavekat.com/voice/): Desktop softphone for Mac, Windows and Linux — answer and place calls, every call recorded automatically, live transcript alongside each call. Works with SIP providers like Twilio, Telnyx, and 2talk. Free public beta.
+- [Download WaveKat Voice](https://wavekat.com/voice/download/): macOS 12+ (Apple Silicon) .dmg, Windows 10/11 .exe (separate x64 and ARM64 installers, not yet code-signed), and Linux .deb (Debian/Ubuntu).
 - [Use cases](https://wavekat.com/voice/use-cases/): Who WaveKat Voice is for — small businesses that live on the phone.
 - [Softphone alternatives](https://wavekat.com/voice/alternatives/): How WaveKat Voice compares to other SIP softphones, e.g. [vs Linphone](https://wavekat.com/voice/alternatives/linphone/).
 - [Changelog](https://wavekat.com/voice/changelog/): Release notes for every WaveKat Voice version.
@@ -13,7 +13,7 @@
 
 ## Blog
 
-- [Why Phone Links Don't Work on Your Computer](https://wavekat.com/blog/why-phone-links-dont-work/): Clickable phone numbers work on a phone because it has exactly one calling app; a computer has a "phone app" slot that is usually empty (macOS puts FaceTime in it, Windows asks, Linux has nothing). WaveKat Voice fills that slot on Mac and Linux.
+- [Why Phone Links Don't Work on Your Computer](https://wavekat.com/blog/why-phone-links-dont-work/): Clickable phone numbers work on a phone because it has exactly one calling app; a computer has a "phone app" slot that is usually empty (macOS puts FaceTime in it, Windows asks, Linux has nothing). WaveKat Voice fills that slot on Mac, Windows and Linux.
 - [Share a Call Recording With a Link](https://wavekat.com/blog/share-a-call-recording/): Turn any recorded call into a shareable link — private, invite-only, or public.
 - [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls.
 - [Common Voice Explorer](https://wavekat.com/blog/common-voice-explorer/): A free tool to browse and review Mozilla Common Voice dataset clips.

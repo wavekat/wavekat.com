@@ -52,7 +52,7 @@ lang: "zh-Hans"
 
 ### 哪些平台支持点击拨号？
 
-Mac 和 Linux，也就是 WaveKat Voice 目前运行的两个平台（Windows 会在有需求时推出）。在 设置 → 通用 中打开电话链接，两个平台都能用。
+Mac、Windows 和 Linux，也就是 WaveKat Voice 运行的三个平台。在 设置 → 通用 中打开电话链接，三个平台都能用。
 
 ### 它也支持 sip: 链接吗，还是只支持 tel: 号码？
 

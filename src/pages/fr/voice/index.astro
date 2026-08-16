@@ -22,11 +22,12 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getMacDownload, getLinuxDownload } from '../../../lib/voice-download';
+import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getMacDownload();
-const linuxDownload = await getLinuxDownload();
+const macDownload = await getDownload('mac');
+const linuxDownload = await getDownload('linux');
+const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -185,11 +186,11 @@ const faqs = [
   },
   {
     q: 'Sur quoi fonctionne-t-il ?',
-    a: `Mac et Linux. Sur macOS, il fonctionne à partir de la version 12 — ${ui.dlArchMac} ; sur Linux, c’est un paquet .deb pour ${ui.dlArchLinux}.`,
+    a: `Mac, Windows et Linux. Sur macOS, il fonctionne à partir de la version 12 — ${ui.dlArchMac} ; sur Windows, ce sont Windows 10 et 11 ; sur Linux, c’est un paquet .deb pour ${ui.dlArchLinux}.`,
   },
   {
-    q: 'Prendrez-vous en charge Windows ou d’autres appareils ?',
-    a: 'WaveKat Voice fonctionne aujourd’hui sur Mac et Linux. Windows et d’autres plateformes sont tout à fait envisageables — nous les développons simplement lorsqu’il y a une réelle demande. Donc si vous utiliseriez WaveKat Voice sur Windows ou ailleurs, dites-le-nous. Plus les demandes sont nombreuses, plus cela arrivera vite.',
+    q: 'WaveKat Voice fonctionne-t-il sous Windows ?',
+    a: 'Oui — Windows 10 et 11, avec des programmes d’installation distincts pour Intel ou AMD et pour Windows sur ARM. La version Windows est plus récente que celles pour Mac et Linux et n’est pas encore signée : Windows affiche donc un avertissement « éditeur inconnu » au premier lancement. WaveKat Voice est une application de bureau, il n’y a donc pas de version mobile ou tablette — dites-le-nous si c’est ce qu’il vous faut.',
     link: { href: '/fr/voice/talk/', label: 'Dites-nous ce qu’il vous faut' },
   },
   {
@@ -205,11 +206,11 @@ const appSchema = {
   '@type': 'SoftwareApplication',
   name: 'WaveKat Voice',
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Windows, Linux',
   image: 'https://wavekat.com/og.png',
   url: 'https://wavekat.com/fr/voice/',
   inLanguage: 'fr',
-  softwareVersion: macDownload.version,
+  softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/fr/voice/download/',
   description:
     'Une application de bureau qui transforme votre ordinateur en téléphone professionnel — recevez et passez des appels, chaque appel étant enregistré et retranscrit. Compatible avec l’opérateur téléphonique que vous utilisez déjà.',
@@ -222,7 +223,7 @@ const appSchema = {
     'Voix HD avec le codec Opus quand l’opérateur le permet',
     'Ligne de commande et automatisation MCP pour les assistants IA',
     'Journalisation automatique des appels dans HubSpot, avec synchronisation des transcriptions et lecture des enregistrements dans le CRM',
-    'Neuf langues d’interface, sur macOS et Linux',
+    'Neuf langues d’interface, sur macOS, Windows et Linux',
   ],
   offers: {
     '@type': 'Offer',
@@ -247,7 +248,7 @@ const faqSchema = {
 
 <Voice
   title="WaveKat Voice — votre téléphone pro sur ordinateur"
-  description="WaveKat Voice est une application de bureau pour Mac et Linux : recevez et passez des appels, chaque conversation enregistrée et retranscrite."
+  description="WaveKat Voice est une application de bureau pour Mac, Windows et Linux : recevez et passez des appels, chaque conversation enregistrée et retranscrite."
 >
   <VoiceOverview
     imgCode={imgCode}
@@ -275,6 +276,7 @@ const faqSchema = {
     faqs={faqs}
     macDownload={macDownload}
     linuxDownload={linuxDownload}
+    windowsDownload={windowsDownload}
   />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />

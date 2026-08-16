@@ -120,7 +120,7 @@ Sí, con la cuenta que ya tienes en WaveKat Voice. Los flujos contestan las llam
 
 ### ¿En qué plataformas hay flujos de llamada?
 
-En Mac y Linux, las dos plataformas en las que WaveKat Voice funciona hoy (Windows llegará cuando haya demanda). La edición funciona en cualquier navegador, porque los flujos se arman en la web y se sincronizan con la aplicación.
+En Mac, Windows y Linux, las tres plataformas en las que funciona WaveKat Voice. La edición funciona en cualquier navegador, porque los flujos se arman en la web y se sincronizan con la aplicación.
 
 ## Pruébalo
 

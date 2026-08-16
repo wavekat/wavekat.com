@@ -234,7 +234,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
 
       <section id="app" class={sec}>
         <h2 class={h2}>{S.app}</h2>
-        <p class={`${p} mb-4`}>WaveKat Voice 是一款适用于 Mac 和 Linux 的桌面应用，默认在本地运行。如果你从未登录 WaveKat 账户，以下内容全部留在你的机器上，绝不会传到我们这里：</p>
+        <p class={`${p} mb-4`}>WaveKat Voice 是一款适用于 Mac、Windows 和 Linux 的桌面应用，默认在本地运行。如果你从未登录 WaveKat 账户，以下内容全部留在你的机器上，绝不会传到我们这里：</p>
         <ul class="space-y-2.5 mb-4">
           <li class={li} set:html={`${dot}<span>${b('通话录音。')}录音默认开启，每通电话都会保存为包含通话双方声音的音频文件。可随时在“设置 → 录音”中关闭。系统不会自动清理——录音会一直保留，直到你删除它。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('通话记录')}——日期、号码、时长以及通话结束的方式，保存在本地数据库中。</span>`} />

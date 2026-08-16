@@ -103,17 +103,21 @@ const pipelineBase = voicePipeline.slice(4);
   <Header />
 
   <!-- Hero: product-first, screenshot front and center -->
-  <section class="relative overflow-hidden">
-    <div
-      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,rgb(0_0_0/0.07)_1px,transparent_0)] bg-[size:28px_28px] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_35%,black,transparent)] dark:bg-[radial-gradient(circle_at_1px_1px,rgb(255_255_255/0.06)_1px,transparent_0)]"
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full opacity-[0.13] blur-3xl"
-      style="background: radial-gradient(closest-side, #ff6d00, transparent);"
-      aria-hidden="true"
-    >
+  <!-- The clipping lives on the decoration, not the section: the download
+       menu opens past the hero's bottom edge, and `overflow-hidden` here cut
+       it in half. `z-10` is the other half of the same fix — the band below
+       animates in on a transform, so it would otherwise paint over the menu. -->
+  <section class="relative z-10">
+    <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgb(0_0_0/0.07)_1px,transparent_0)] bg-[size:28px_28px] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_35%,black,transparent)] dark:bg-[radial-gradient(circle_at_1px_1px,rgb(255_255_255/0.06)_1px,transparent_0)]"
+      >
+      </div>
+      <div
+        class="absolute -top-40 left-1/2 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full opacity-[0.13] blur-3xl"
+        style="background: radial-gradient(closest-side, #ff6d00, transparent);"
+      >
+      </div>
     </div>
 
     <div class="mx-auto grid max-w-6xl items-center gap-14 px-6 pt-16 pb-20 sm:pt-20 sm:pb-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
@@ -136,7 +140,10 @@ const pipelineBase = voicePipeline.slice(4);
         우리는 음성에서 시작합니다 — 당신의 컴퓨터를 업무 전화로 바꾸고, 모든 통화를 자동으로 녹음하고 기록하는
         데스크톱 앱입니다.
         </p>
-        <div class="animate-rise-late mt-9 flex flex-wrap items-center gap-4">
+        {/* `items-start`, not `items-center`: the unsigned-build note lives inside
+            the download control and only appears for a Windows visitor, so centring
+            would drop every other button in this row by half the note's height. */}
+        <div class="animate-rise-late mt-9 flex flex-wrap items-start gap-4">
           <VoiceDownload />
           <a
             href="https://github.com/wavekat"

@@ -7,7 +7,7 @@ tags: [voice-ai, automazione, ai-agents]
 lang: "it"
 ---
 
-WaveKat Voice ora include uno strumento da riga di comando, così un programma di cui ti fidi — incluso un assistente AI come Claude — può effettuare e gestire vere telefonate per te. Chiedi al tuo assistente di "chiamare il dentista e aspettare finché qualcuno non risponde", e comporrà il numero attraverso l’app che hai già aperta, seguirà la chiamata e ti dirà com’è andata. Oggi è integrato nell’app su Mac e Linux, ed è disattivato finché non lo attivi.
+WaveKat Voice ora include uno strumento da riga di comando, così un programma di cui ti fidi — incluso un assistente AI come Claude — può effettuare e gestire vere telefonate per te. Chiedi al tuo assistente di "chiamare il dentista e aspettare finché qualcuno non risponde", e comporrà il numero attraverso l’app che hai già aperta, seguirà la chiamata e ti dirà com’è andata. Oggi è integrato nell’app su Mac, Windows e Linux, ed è disattivato finché non lo attivi.
 
 Questo è il passo successivo verso ciò a cui torniamo sempre: [dare a ogni piccola impresa la voce di una grande](/it/blog/hello-world/). Una grande azienda ha un centralino e il software che lo guida. Ora il tuo computer — e l’assistente che ci gira sopra — può essere quel centralino.
 
@@ -97,7 +97,7 @@ Oggi Claude Desktop, Claude Code, Cursor, Codex, Gemini e Windsurf — tramite u
 
 ### Quali piattaforme supportano questa funzione?
 
-WaveKat Voice oggi gira su Mac e Linux, con Windows in arrivo quando ci sarà richiesta. Lo strumento da riga di comando e le integrazioni con gli assistenti sono disponibili su entrambe le piattaforme supportate.
+WaveKat Voice gira su Mac, Windows e Linux. Lo strumento da riga di comando e le integrazioni con gli assistenti sono disponibili su tutte e tre le piattaforme supportate.
 
 ## Provalo
 

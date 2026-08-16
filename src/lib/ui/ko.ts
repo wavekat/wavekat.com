@@ -16,9 +16,17 @@ export const ui: UIStrings = {
   subTalk: '문의하기',
   dlMac: 'Mac용 다운로드',
   dlLinux: 'Linux용 다운로드',
+  dlWindows: 'Windows용 다운로드',
+  dlWindowsArm64: 'ARM용 Windows 다운로드',
   dlOther: '다른 플랫폼',
   dlArchMac: 'Apple 실리콘 탑재 Mac (M1 이상)',
   dlArchLinux: 'Debian 및 Ubuntu (.deb, 64비트)',
+  dlArchWindowsX64: 'Windows 10 및 11, Intel 및 AMD(x64)',
+  dlArchWindowsArm64: 'Windows 11, Snapdragon(ARM64)',
+  dlEarly: '초기 버전',
+  dlWindowsUnsigned:
+    'Windows 빌드는 아직 코드 서명이 되어 있지 않아 첫 실행 시 경고가 표시됩니다.',
+  dlWindowsUnsignedLink: '넘어가는 방법',
   talkHeading: '문의하기',
   talkBody:
     '궁금한 점이나 의견이 있으신가요? 지원했으면 하는 기기가 있으신가요? 이메일이 저희에게 연락하는 가장 좋은 방법입니다. 모든 메시지를 읽고 가능한 한 빨리 답변드립니다.',
