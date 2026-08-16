@@ -7,7 +7,7 @@ tags: [voz-ia, automatización, agentes-ia]
 lang: "es"
 ---
 
-WaveKat Voice ahora incluye una herramienta de línea de comandos, para que un programa de su confianza —incluido un asistente de IA como Claude— pueda realizar y gestionar llamadas telefónicas reales por usted. Pídale a su asistente que "llame al dentista y espere hasta que alguien conteste", y marcará a través de la aplicación que ya tiene abierta, seguirá la llamada y le dirá cómo fue. Hoy está integrado en la aplicación en Mac y Linux, y permanece desactivado hasta que usted lo active.
+WaveKat Voice ahora incluye una herramienta de línea de comandos, para que un programa de su confianza —incluido un asistente de IA como Claude— pueda realizar y gestionar llamadas telefónicas reales por usted. Pídale a su asistente que "llame al dentista y espere hasta que alguien conteste", y marcará a través de la aplicación que ya tiene abierta, seguirá la llamada y le dirá cómo fue. Hoy está integrado en la aplicación en Mac, Windows y Linux, y permanece desactivado hasta que usted lo active.
 
 Este es el siguiente paso hacia aquello a lo que siempre volvemos: [darle a cada pequeña empresa la voz de una grande](/es/blog/hello-world/). Una gran empresa tiene una centralita y el software que la maneja. Ahora su computadora —y el asistente que se ejecuta en ella— puede ser esa centralita.
 

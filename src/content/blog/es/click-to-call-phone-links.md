@@ -52,7 +52,7 @@ No, salvo que se lo pidas. Por defecto WaveKat Voice escribe el número y espera
 
 ### ¿Qué plataformas admiten el clic para llamar?
 
-Mac, Windows y Linux, las tres plataformas en las que funciona WaveKat Voice. Activa Enlaces de teléfono en Ajustes → General y funciona en ambas.
+Mac, Windows y Linux, las tres plataformas en las que funciona WaveKat Voice. Activa Enlaces de teléfono en Ajustes → General y funciona en las tres.
 
 ### ¿Funciona también con enlaces sip:, o solo con números tel:?
 

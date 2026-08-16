@@ -52,7 +52,7 @@ No, non a meno che tu non glielo chieda. Di default WaveKat Voice inserisce il n
 
 ### Quali piattaforme supportano il click-to-call?
 
-Mac, Windows e Linux, le tre piattaforme su cui gira WaveKat Voice. Attiva i Link telefonici in Impostazioni → Generali e funziona su entrambe.
+Mac, Windows e Linux, le tre piattaforme su cui gira WaveKat Voice. Attiva i Link telefonici in Impostazioni → Generali e funziona su tutte e tre.
 
 ### Funziona anche con i link sip:, o solo con i numeri tel:?
 

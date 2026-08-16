@@ -210,7 +210,7 @@ export interface UIStrings {
   subTalk: string;
   dlMac: string;
   dlLinux: string;
-  /** Opens the choice between the two Windows installers, not a download. */
+  /** Downloads the x64 installer — the build every Windows PC can run. */
   dlWindows: string;
   dlWindowsArm64: string;
   dlOther: string;
