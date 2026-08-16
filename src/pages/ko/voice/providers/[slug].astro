@@ -66,7 +66,12 @@ const breadcrumbSchema = {
       {provider.intro}
     </p>
 
-    <div class="flex flex-wrap items-center gap-4">
+    {/* `items-baseline`, not `items-center`: the unsigned-build note lives
+        inside the download control and only appears for a Windows visitor.
+        Centring would drop this link by half the note's height; aligning on
+        the baseline keeps it on the button's text line whether or not the
+        note is showing. */}
+    <div class="flex flex-wrap items-baseline gap-4">
       <VoiceDownload />
       <a
         href="/ko/voice/"

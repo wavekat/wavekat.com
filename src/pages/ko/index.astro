@@ -140,7 +140,10 @@ const pipelineBase = voicePipeline.slice(4);
         우리는 음성에서 시작합니다 — 당신의 컴퓨터를 업무 전화로 바꾸고, 모든 통화를 자동으로 녹음하고 기록하는
         데스크톱 앱입니다.
         </p>
-        <div class="animate-rise-late mt-9 flex flex-wrap items-center gap-4">
+        {/* `items-start`, not `items-center`: the unsigned-build note lives inside
+            the download control and only appears for a Windows visitor, so centring
+            would drop every other button in this row by half the note's height. */}
+        <div class="animate-rise-late mt-9 flex flex-wrap items-start gap-4">
           <VoiceDownload />
           <a
             href="https://github.com/wavekat"

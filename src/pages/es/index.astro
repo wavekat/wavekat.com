@@ -140,7 +140,10 @@ const pipelineBase = voicePipeline.slice(4);
         capacidades que antes solo las grandes podían permitirse. Empezamos por la voz: una app de
         escritorio que convierte su computadora en su línea de empresa y graba y transcribe cada llamada.
         </p>
-        <div class="animate-rise-late mt-9 flex flex-wrap items-center gap-4">
+        {/* `items-start`, not `items-center`: the unsigned-build note lives inside
+            the download control and only appears for a Windows visitor, so centring
+            would drop every other button in this row by half the note's height. */}
+        <div class="animate-rise-late mt-9 flex flex-wrap items-start gap-4">
           <VoiceDownload />
           <a
             href="https://github.com/wavekat"

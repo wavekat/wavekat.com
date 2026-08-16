@@ -140,7 +140,10 @@ const pipelineBase = voicePipeline.slice(4);
           WaveKat 打造 AI 驅動的工具，讓小型企業也能擁有過去只有大公司才負擔得起的能力。我們從語音開始——
         一款把你的電腦變成辦公電話的桌面應用程式，自動錄音並寫下每一通通話。
         </p>
-        <div class="animate-rise-late mt-9 flex flex-wrap items-center gap-4">
+        {/* `items-start`, not `items-center`: the unsigned-build note lives inside
+            the download control and only appears for a Windows visitor, so centring
+            would drop every other button in this row by half the note's height. */}
+        <div class="animate-rise-late mt-9 flex flex-wrap items-start gap-4">
           <VoiceDownload />
           <a
             href="https://github.com/wavekat"
