@@ -138,7 +138,12 @@ const {
     {intro}
   </p>
 
-  <div class="flex flex-wrap items-center gap-4">
+  {/* `items-baseline`, not `items-center`: the unsigned-build note lives inside
+      the download control and only appears once the promotion script picks
+      Windows, so the control is ~46px taller for a Windows visitor and would
+      drop this link by half that. The sibling is a small text link, so
+      baseline — not `items-start`, which would slam it to the top of the pill. */}
+  <div class="flex flex-wrap items-baseline gap-4">
     <VoiceDownload />
     <a
       href={installHref}

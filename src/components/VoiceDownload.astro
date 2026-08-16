@@ -391,16 +391,25 @@ const noteCls =
     }
     function resolve() {
       document.querySelectorAll('[data-voice-download]').forEach(function (root) {
-        // Fall back to the arch every machine can run if the one we'd
-        // rather serve isn't published in the current release. Decided
-        // per root and per call, so the release refresh below can
-        // withdraw or restore the choice by re-running this.
-        var arch = activeArch;
-        if (arch !== 'default') {
+        // Pick the first arch this release actually published: the one
+        // we'd rather serve, then the one every machine of this platform
+        // can run. `null` if it published neither, which shows no primary
+        // at all — the menu is still there, and an unpublished target
+        // behind a visible button is a 404, which is the one outcome
+        // worse than an extra click. The same rule the menu rows follow,
+        // so the two can't disagree about what exists. Decided per root
+        // and per call, so the release refresh below can withdraw or
+        // restore the choice by re-running this.
+        var order = activeArch === 'default' ? ['default'] : [activeArch, 'default'];
+        var arch = null;
+        for (var i = 0; i < order.length; i++) {
           var want = root.querySelector(
-            '[data-dl-primary="' + active + '"][data-dl-arch="' + arch + '"]',
+            '[data-dl-primary="' + active + '"][data-dl-arch="' + order[i] + '"]',
           );
-          if (!want || want.dataset.dlAvail === '0') arch = 'default';
+          if (want && want.dataset.dlAvail !== '0') {
+            arch = order[i];
+            break;
+          }
         }
         root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
           setShown(el, el.dataset.dlPrimary === active && el.dataset.dlArch === arch);
