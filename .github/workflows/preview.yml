@@ -44,7 +44,12 @@ jobs:
         run: |
           OUTPUT=$(npx wrangler pages deploy ./dist --project-name=wavekat-com --branch="${{ github.head_ref || github.ref_name }}" 2>&1)
           echo "$OUTPUT"
-          ALIAS=$(echo "$OUTPUT" | grep -oP '(?<=Deployment alias URL: )https://\S+')
+          # POSIX sed rather than `grep -oP`: portable across the runner
+          # pool, and it does not fail the step under `set -e` when the
+          # deploy output carries no alias URL. See docs/06.
+          ALIAS=$(printf '%s\n' "$OUTPUT" \
+            | sed -nE 's|.*Deployment alias URL: (https://[^[:space:]]+).*|\1|p' \
+            | tail -n 1)
           echo "url=${ALIAS}" >> "$GITHUB_OUTPUT"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
