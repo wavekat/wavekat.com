@@ -8,12 +8,14 @@
 // promotes Linux or Windows when it detects one. With JS off, the native
 // <details> still lets anyone reach every build.
 //
-// Windows ships two installers, x64 and arm64, but the button does not ask
-// which one: an x64 build runs on every Windows PC we support — natively on
-// Intel and AMD, emulated on Windows 11 for ARM — while an arm64 build runs
-// on almost none of them. So x64 is the default for everyone and the ARM
-// build is an optimisation, listed under "other platforms" for the people
-// who know they want it. See docs/05.
+// Windows ships two installers, x64 and arm64, and the button still doesn't
+// ask which one — it works it out. x64 is what everyone starts on, because
+// it runs on every Windows PC we support (natively on Intel and AMD,
+// emulated on Windows 11 for ARM) while an arm64 build runs on almost none
+// of them. A machine that confirms it is ARM64 is then upgraded to the
+// native build, which is the only case where the emulated one is the wrong
+// answer. Confirming that takes `navigator.userAgentData`, so it happens a
+// beat after the platform swap rather than with it. See docs/05.
 import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
 import { getDownload, DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
@@ -41,10 +43,15 @@ const [macDl, linuxDl, winX64Dl, winArmDl] = await Promise.all([
   getDownload('windows-arm64'),
 ]);
 
-// Grouped by the control a visitor sees, not by file: one group is one
-// primary, and rows[0] is what that primary downloads. Labels and hardware
+// Grouped by the control a visitor sees, not by file. Labels and hardware
 // requirements are localised here — the download lib stays
 // language-agnostic, knowing only versions, sizes and URLs.
+//
+// `archKey` is which machine a row is promoted for, and it is what makes a
+// row a candidate primary: `default` is the row a visitor on that platform
+// gets when nothing more is known, `arm64` is the one they get instead once
+// the browser confirms an ARM64 chip. Only Windows has both, because only
+// Windows ships two installers that are not interchangeable.
 const groups = [
   {
     key: 'mac',
@@ -53,6 +60,7 @@ const groups = [
     rows: [
       {
         key: 'mac',
+        archKey: 'default',
         conversion: 'download_mac',
         label: ui.dlMac,
         arch: ui.dlArchMac,
@@ -67,6 +75,7 @@ const groups = [
     rows: [
       {
         key: 'linux',
+        archKey: 'default',
         conversion: 'download_linux',
         label: ui.dlLinux,
         arch: ui.dlArchLinux,
@@ -81,6 +90,7 @@ const groups = [
     rows: [
       {
         key: 'windows-x64',
+        archKey: 'default',
         conversion: 'download_windows_x64',
         label: ui.dlWindows,
         arch: ui.dlArchWindowsX64,
@@ -90,8 +100,12 @@ const groups = [
         // Published since 0.0.46. Nothing here is conditional on that:
         // the row renders hidden whenever the platform reports the
         // target unpublished, and the browser-side refresh flips it
-        // either way without a rebuild. See the script below.
+        // either way without a rebuild. The promotion script checks the
+        // same fact before it hands an ARM machine this primary, so a
+        // release that builds no arm64 installer leaves x64 on the
+        // button rather than a control that 404s. See the scripts below.
         key: 'windows-arm64',
+        archKey: 'arm64',
         conversion: 'download_windows_arm64',
         label: ui.dlWindowsArm64,
         arch: ui.dlArchWindowsArm64,
@@ -101,30 +115,34 @@ const groups = [
   },
 ];
 
-// One entry per row in the "other platforms" menu. `altKey` is the platform
-// whose primary already offers this file, so promoting that platform hides
-// it. A group's SECOND row has no altKey: the Windows primary downloads
-// x64, so the ARM build stays listed for a Windows visitor — it is the one
-// choice the primary can't make for them.
-const altEntries = groups.flatMap((g) =>
-  g.rows.map((row, i) => ({
-    group: g,
-    row,
-    altKey: i === 0 ? g.key : null,
-  })),
-);
+// Every row is both a candidate primary and a menu row, and the two are
+// exact opposites: the menu lists precisely what the button isn't
+// downloading. So one list drives both, and the pair can't drift into
+// showing a file twice or not at all. A Windows visitor on an Intel
+// machine still sees the ARM build in the menu — it is the one choice
+// their primary can't make for them — and an ARM visitor sees x64 there
+// for the same reason, in reverse.
+const entries = groups.flatMap((g) => g.rows.map((row) => ({ group: g, row })));
 
 // The unsigned note covers BOTH Windows builds, so it caps the group at the
 // foot of the panel rather than sitting on one row — attached to the x64
 // row it rendered between the two Windows entries, reading as a caveat
 // about x64 alone and cutting the ARM row loose from the group above it.
-// It carries the Windows `altKey` so it follows the same rule as that
-// group's first row: hidden exactly when a Windows visitor is already
-// reading the same line under their button.
+// It carries the Windows platform key and deliberately no arch, which the
+// script reads as "either Windows build": hidden exactly when a Windows
+// visitor is already reading the same line under their button, whichever
+// of the two installers that button hands them.
 const windowsKey = groups.find((g) => g.windows)!.key;
 
 // Mac is the SSR default primary; the script swaps to Linux or Windows.
+// `DEFAULT_ARCH` is the arch half of the same statement: nothing is known
+// about the chip until a script asks, so the server always renders the
+// row every machine of that platform can run.
 const DEFAULT = 'mac';
+const DEFAULT_ARCH = 'default';
+
+const isDefaultPrimary = (e: (typeof entries)[number]) =>
+  e.group.key === DEFAULT && e.row.archKey === DEFAULT_ARCH;
 
 // Display utility is toggled separately from the rest: an element gets
 // EITHER its own display class or `hidden`, never both — putting both on
@@ -172,21 +190,26 @@ const noteCls =
 
 <div class="inline-block text-left" data-voice-download>
   <div class="flex flex-wrap items-center gap-3">
-    {/* One primary per platform. A <button>, not a link: the URL is built
-        on click, so no artifact filename and no version ever reaches the
-        delivered HTML. */}
-    {groups.map((g) => (
+    {/* One primary per (platform, arch) — exactly one is ever shown. A
+        <button>, not a link: the URL is built on click, so no artifact
+        filename and no version ever reaches the delivered HTML.
+        `data-dl-avail` is the build's answer to "does this file exist",
+        refreshed in the browser, and the promotion script won't put an
+        unavailable target on the button. */}
+    {entries.map((e) => (
       <button
         type="button"
-        data-conversion={g.rows[0].conversion}
-        data-dl-primary={g.key}
-        data-dl-platform={g.rows[0].key}
+        data-conversion={e.row.conversion}
+        data-dl-primary={e.group.key}
+        data-dl-arch={e.row.archKey}
+        data-dl-platform={e.row.key}
+        data-dl-avail={e.row.dl ? '1' : '0'}
         data-dl-show="inline-flex"
-        class:list={[primaryCls, 'cursor-pointer border-0', g.key === DEFAULT ? 'inline-flex' : 'hidden']}
+        class:list={[primaryCls, 'cursor-pointer border-0', isDefaultPrimary(e) ? 'inline-flex' : 'hidden']}
         style="background-color: #ff6d00"
       >
-        <g.icon class="w-5 h-5" />
-        {g.rows[0].label}
+        <e.group.icon class="w-5 h-5" />
+        {e.row.label}
       </button>
     ))}
 
@@ -201,11 +224,12 @@ const noteCls =
         <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
       </summary>
       <div class={panelCls}>
-        {altEntries.map((e) => (
+        {entries.map((e) => (
           <div
-            data-dl-alt={e.altKey}
+            data-dl-alt={e.group.key}
+            data-dl-alt-arch={e.row.archKey}
             data-dl-show="flex"
-            class:list={['flex-col', e.altKey === DEFAULT ? 'hidden' : 'flex']}
+            class:list={['flex-col', isDefaultPrimary(e) ? 'hidden' : 'flex']}
           >
             <button
               type="button"
@@ -307,6 +331,11 @@ const noteCls =
             el.classList.toggle(el.dataset.dlShow || 'inline-flex', !!rel);
             el.classList.toggle('hidden', !rel);
           });
+          // The same fact on the primary controls, which the promotion
+          // script reads before it puts a target on the button.
+          document.querySelectorAll('[data-dl-primary][data-dl-platform="' + key + '"]').forEach(
+            function (el) { el.dataset.dlAvail = rel ? '1' : '0'; },
+          );
           if (!rel) return;
           document.querySelectorAll('[data-dl-version="' + key + '"]').forEach(function (el) {
             el.textContent = rel.version;
@@ -315,22 +344,35 @@ const noteCls =
             el.textContent = Math.round(rel.sizeBytes / 1048576) + ' MB';
           });
         });
+        // Availability may have changed under the primary control — an
+        // ARM visitor promoted to a build this release didn't publish
+        // has to be handed x64 back, and vice versa.
+        if (window.__wkResolveDownload) window.__wkResolveDownload();
       })
       .catch(function () {});
   })();
 </script>
 
 <script is:inline>
-  // Promote the visitor's platform to the primary control. Runs
-  // synchronously as the markup is parsed, so there's no flash of the
-  // wrong default.
+  // Promote the visitor's platform to the primary control, then — on
+  // Windows only — the visitor's chip.
   //
-  // It reads the PLATFORM and never the chip. Windows-on-ARM is only
-  // distinguishable through `navigator.userAgentData`, which is
-  // Chromium-only and asynchronous — so one machine would get an
-  // informed guess and every other one a blind default. Everyone gets
-  // the x64 build, which Windows 11 for ARM emulates, and the ARM build
-  // stays one click away under "other platforms".
+  // The PLATFORM pass runs synchronously as the markup is parsed, so
+  // there's no flash of the wrong default, and it is plain UA sniffing.
+  //
+  // The CHIP pass is separate because it has to be. A Windows 11 machine
+  // on ARM64 reports "Windows NT 10.0; Win64; x64" in its user-agent
+  // string on purpose — Windows hides the chip so x64 software keeps
+  // working — so no amount of UA reading can find it. The one place it is
+  // exposed is `navigator.userAgentData.getHighEntropyValues()`, which is
+  // Chromium-only and returns a promise. That shapes the whole design:
+  // x64 goes on the button first and holds it for everything that can't
+  // answer (every non-Chromium browser, and Windows on Intel and AMD,
+  // which is nearly all of it), and an ARM64 machine is upgraded to the
+  // native build a few milliseconds later. Guessing wrong in that
+  // direction costs nothing — Windows 11 for ARM emulates x64 — which is
+  // why the slow, partial signal is safe to act on and the button never
+  // waits for it.
   (function () {
     var ua = navigator.userAgent || '';
     var plat = navigator.platform || '';
@@ -341,7 +383,7 @@ const noteCls =
       : /Linux/i.test(probe) && !/Android/i.test(ua)
         ? 'linux'
         : 'mac';
-    if (active === 'mac') return;
+    var activeArch = 'default';
     // Show/hide by swapping the single display class, never stacking both.
     function setShown(el, shown) {
       el.classList.toggle(el.dataset.dlShow || 'inline-flex', shown);
@@ -349,27 +391,58 @@ const noteCls =
     }
     function resolve() {
       document.querySelectorAll('[data-voice-download]').forEach(function (root) {
-        if (root.dataset.dlResolved) return;
-        root.dataset.dlResolved = '1';
+        // Fall back to the arch every machine can run if the one we'd
+        // rather serve isn't published in the current release. Decided
+        // per root and per call, so the release refresh below can
+        // withdraw or restore the choice by re-running this.
+        var arch = activeArch;
+        if (arch !== 'default') {
+          var want = root.querySelector(
+            '[data-dl-primary="' + active + '"][data-dl-arch="' + arch + '"]',
+          );
+          if (!want || want.dataset.dlAvail === '0') arch = 'default';
+        }
         root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
-          setShown(el, el.dataset.dlPrimary === active);
+          setShown(el, el.dataset.dlPrimary === active && el.dataset.dlArch === arch);
         });
+        // A menu row hides when the primary is already downloading it. A
+        // row that names no arch (the unsigned-Windows note) means every
+        // build of that platform, so it hides on either of them.
         root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
-          setShown(el, el.dataset.dlAlt !== active);
+          var a = el.dataset.dlAltArch;
+          setShown(el, !(el.dataset.dlAlt === active && (!a || a === arch)));
         });
       });
       // Show only the active platform's caption and note, matching the
-      // single control. These <p> have no display utility, so toggling
-      // `hidden` alone is safe. Caption lines can sit after this script
-      // in the page, so DOMContentLoaded catches them — controls swap
-      // synchronously (no flicker).
+      // single control. Keyed on platform alone: the two Windows builds
+      // share a version and both meet SmartScreen. These <p> have no
+      // display utility, so toggling `hidden` alone is safe. Caption
+      // lines can sit after this script in the page, so DOMContentLoaded
+      // catches them — controls swap synchronously (no flicker).
       document.querySelectorAll('[data-dl-meta],[data-dl-note]').forEach(function (el) {
         var key = el.dataset.dlMeta || el.dataset.dlNote;
         el.classList.toggle('hidden', key !== active);
       });
     }
+    // Exposed so the release refresh above can re-run the promotion when
+    // it learns a target appeared or vanished since the build.
+    window.__wkResolveDownload = resolve;
     resolve();
     document.addEventListener('DOMContentLoaded', resolve);
+
+    var uad = navigator.userAgentData;
+    if (active !== 'windows' || !uad || !uad.getHighEntropyValues) return;
+    uad
+      .getHighEntropyValues(['architecture', 'bitness'])
+      .then(function (h) {
+        // Chromium reports the chip as 'arm' with a separate bitness, so
+        // both halves are checked: 32-bit ARM Windows exists and cannot
+        // run this installer. Anything else keeps x64.
+        if (!h || h.architecture !== 'arm' || h.bitness !== '64') return;
+        activeArch = 'arm64';
+        resolve();
+      })
+      .catch(function () {});
   })();
 </script>
 

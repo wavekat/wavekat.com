@@ -47,18 +47,33 @@ electron-builder happened to list first. An x64 visitor handed `arm64.exe` does
 not get a slow download — they get a file Windows refuses to run.
 
 So the resolver has to name an architecture, and something has to decide which
-one a given visitor gets. **We do not detect the chip** — the only probe is
-`navigator.userAgentData`, which is Chromium-only and asynchronous, so one
-browser would get an informed guess and every other one a blind default.
+one a given visitor gets. The visitor is never asked: the words "Intel or AMD"
+don't appear on the page, because naming the chip in the common path makes a
+decision out of something that isn't one.
 
-We don't have to. The two files are not symmetric: an x64 installer runs on
-every Windows PC we support — natively on Intel and AMD, emulated on Windows 11
-for ARM — while an arm64 installer runs on almost none of them. Only one of the
-two mistakes is fatal, and it isn't the one x64 makes. So **x64 is the download
-for everyone**, and the ARM build is an optimisation listed under "other
-platforms" for the people who know they want it. The button doesn't ask, and
-the words "Intel or AMD" don't appear on the page: naming the chip in the
-common path makes a decision out of something that isn't one.
+**The chip is not in the user-agent string, and never will be.** A Windows 11
+machine on ARM64 reports `Windows NT 10.0; Win64; x64` — Windows masks the
+architecture on purpose so x64 software keeps working. UA sniffing cannot find
+it at any length. The only place it is exposed is
+`navigator.userAgentData.getHighEntropyValues(['architecture', 'bitness'])`,
+which is Chromium-only and returns a promise.
+
+That signal is partial and slow, so it can only be acted on where being wrong
+is free — and here it is, in one direction. The two files are not symmetric: an
+x64 installer runs on every Windows PC we support (natively on Intel and AMD,
+emulated on Windows 11 for ARM) while an arm64 installer runs on almost none of
+them. Only one of the two mistakes is fatal, and it isn't the one x64 makes.
+
+So **x64 is the download until something proves otherwise**, and it stays the
+download for every browser that can't answer. A machine that answers
+`architecture: 'arm', bitness: '64'` is upgraded to the native build a few
+milliseconds later — the one case where the safe default is also the wrong one,
+and the only case worth a second pass. Windows on ARM is overwhelmingly a
+Chromium-browser population (Edge is the default and ships as ARM64), so the
+probe reaches close to all of the people it exists for.
+
+Both bitness and architecture are checked: 32-bit ARM Windows exists and cannot
+run this installer, so `arm` alone is not enough.
 
 ## 3. Platform — targets instead of platforms
 
@@ -172,16 +187,28 @@ buttons where the third drops the verb reads as an oversight rather than as a
 distinction — the requirement line under each label already says which machine
 it is for.
 
-The ARM build lives in the "other platforms" menu, and it is the one row the
-menu keeps showing when its own platform is the active one — a Windows visitor
-has already been handed x64, so the ARM build is the only choice their primary
-can't make for them. That's `altEntries`: each row carries the platform whose
-primary already offers it, and a group's second row carries none.
+Every row is both a candidate primary and a menu row, and the two are exact
+opposites — the menu lists precisely what the button isn't downloading. One
+`entries` list drives both, keyed on `(platform, archKey)`, so the pair cannot
+drift into offering a file twice or not at all. A Windows visitor on Intel sees
+the ARM build in the menu; an ARM visitor sees x64 there, for the same reason
+in reverse. It is the one choice their primary can't make for them.
 
-Detection stays plain UA sniffing (`/Windows|Win64/`) alongside the existing
-Linux branch. It promotes a **platform**, never a chip: no
-`userAgentData.getHighEntropyValues`, nothing async, no third state to reason
-about when a browser doesn't answer.
+Promotion runs in two passes, for the reason in §2:
+
+1. **Platform**, synchronously as the markup is parsed, by plain UA sniffing
+   (`/Win(dows|32|64)/` alongside the existing Linux branch). No flash of the
+   wrong default.
+2. **Chip**, on Windows only, when `navigator.userAgentData` answers `arm` +
+   `64`. Re-runs the same `resolve()` with `activeArch = 'arm64'`.
+
+`resolve()` is idempotent and re-entrant by design, which is what makes the
+second pass a three-line addition rather than a second code path. It also
+falls back per call: if the arch it wants isn't published in the current
+release it reverts to `default`, so an ARM visitor is never handed a button
+that 404s. Primaries carry `data-dl-avail`, which the release refresh updates
+before calling `window.__wkResolveDownload()` — so a target appearing or
+vanishing between deploys moves the button too, not just the menu row.
 
 Windows rows carry an **Early** tag, and one line says the builds are not
 code-signed so Windows warns on first launch, linking to the SmartScreen
@@ -301,6 +328,9 @@ wavekat-voice docs change, so `sync:docs` has it. Then the site.
 |---|---|
 | Feed lists only the unsuffixed `.exe` | `windows-x64` resolves it (§3.1); `windows-arm64` is null and its row is absent. |
 | arm64 published, x64 missing | Each target is independent; the x64 row is absent rather than the menu breaking. |
+| Browser has no `userAgentData` | x64 stays on the button, as for every non-Windows visitor. |
+| Chip probe rejects or reports 32-bit ARM | Same — the promise is caught and x64 holds. |
+| ARM machine, release published no arm64 | `resolve()` reverts to `default`; the button is x64, never a 404. |
 | Client metadata fetch fails | Build-time version and size stay on screen. |
 | Build-time fetch fails | Fallback constants, as today. |
 | JS disabled | `<noscript>` links, one per target, still logged. |
