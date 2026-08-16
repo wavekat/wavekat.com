@@ -55,6 +55,14 @@ This repo uses **release-please**. Since GitHub squash-merges use the PR title a
 - **Deployment**: Cloudflare Pages (consistent with rest of org)
 - **Domain**: `wavekat.com` — DNS to be pointed at Cloudflare Pages once site is ready
 
+## CI runs on a mixed self-hosted pool — keep every `run:` block portable
+
+All workflows use `runs-on: [self-hosted, wavekat-ci]`. That label is a **pool**, not a machine: a Linux x86-64 workstation *and* a macOS arm64 Mac mini both carry it, so any job lands on either host non-deterministically. Setup lives in `scripts/setup-gha-runners.sh` (Linux, systemd), `scripts/setup-gha-runners-docker.sh` (Linux, containerised) and `scripts/setup-gha-runners-macos.sh` (macOS, launchd); the full story is `docs/06-self-hosted-runners.md`.
+
+The practical consequence: **macOS ships BSD userland, so GNU-only shell in a `run:` block fails about half the time, on PRs that changed nothing.** No `grep -oP`, no bare `sed -i`, no `readlink -f`, no `date -d`, no `sha256sum`, no `xargs -r`, and no bash 4+ syntax (macOS `/bin/bash` is 3.2). Docker-based actions can't run on macOS at all — every action we use must be a JavaScript action. And `npm ci` needs the `darwin-arm64` optional deps to stay in `package-lock.json`, so never regenerate the lockfile with `--no-optional`.
+
+To pin a job to one host, add that host's automatic label: `runs-on: [self-hosted, wavekat-ci, macOS]` or `..., Linux]`.
+
 ## SEO & GEO — every new page must be both
 
 This site is optimized for classic search (SEO) **and** generative answer engines (GEO — being quoted by ChatGPT, Perplexity, Google AI Overviews, Claude). The two overlap but aren't identical: SEO wants crawlable, well-described, linkable pages; GEO wants self-contained, factual, extractable passages an LLM can lift verbatim. Build for both on every page.
