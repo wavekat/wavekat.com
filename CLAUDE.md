@@ -55,13 +55,17 @@ This repo uses **release-please**. Since GitHub squash-merges use the PR title a
 - **Deployment**: Cloudflare Pages (consistent with rest of org)
 - **Domain**: `wavekat.com` — DNS to be pointed at Cloudflare Pages once site is ready
 
-## CI runs on a mixed self-hosted pool — keep every `run:` block portable
+## CI runs on a shared, org-wide, mixed-arch runner pool
 
-All workflows use `runs-on: [self-hosted, wavekat-ci]`. That label is a **pool**, not a machine: a Linux x86-64 workstation *and* a macOS arm64 Mac mini both carry it, so any job lands on either host non-deterministically. Setup lives in `scripts/setup-gha-runners.sh` (Linux, systemd), `scripts/setup-gha-runners-docker.sh` (Linux, containerised) and `scripts/setup-gha-runners-macos.sh` (macOS, launchd); the full story is `docs/06-self-hosted-runners.md`.
+All workflows use `runs-on: [self-hosted, wavekat-ci]`. Two things about that label are easy to get wrong:
 
-The practical consequence: **macOS ships BSD userland, so GNU-only shell in a `run:` block fails about half the time, on PRs that changed nothing.** No `grep -oP`, no bare `sed -i`, no `readlink -f`, no `date -d`, no `sha256sum`, no `xargs -r`, and no bash 4+ syntax (macOS `/bin/bash` is 3.2). Docker-based actions can't run on macOS at all — every action we use must be a JavaScript action. And `npm ci` needs the `darwin-arm64` optional deps to stay in `package-lock.json`, so never regenerate the lockfile with `--no-optional`.
+**It is a pool, not a machine.** A Linux x86-64 workstation and a Mac mini (running the runners as Docker containers, so they report `Linux`/`ARM64`) both carry it, and a job lands on either non-deterministically. Setup lives in `scripts/setup-gha-runners.sh` (Linux, systemd), `scripts/setup-gha-runners-docker.sh` (Linux, containers) and `scripts/setup-gha-runners-macos.sh` (macOS, Docker Desktop); the full story — including why the Mac runs Linux containers rather than a native macOS runner — is `docs/06-self-hosted-runners.md`.
 
-To pin a job to one host, add that host's automatic label: `runs-on: [self-hosted, wavekat-ci, macOS]` or `..., Linux]`.
+**It is org-wide, and this repo is not its main consumer.** Seven repos ride on `wavekat-ci` (`wavekat.com`, `wavekat-voice`, `wavekat-platform`, `wavekat-asr`, `wavekat-cli`, `wavekat-lab`, `wavekat-platform-client`). Never change what the label points at — or assume a new host is safe — based on this repo's workflows alone; `wavekat-voice` and `wavekat-asr` build sherpa-onnx/ONNX native code and are the arch-sensitive ones. No shipped artifact is built on `wavekat-ci` (installers use GitHub-hosted runners), so the blast radius of a bad host is red CI, not a bad release.
+
+Since every runner is Ubuntu 24.04, GNU shell is fine — but **arch must never be assumed**. Anything that downloads a prebuilt binary or pins a target triple has to resolve arch at runtime (`uname -m`, `dpkg --print-architecture`), and `npm ci` needs both `linux-x64` and `linux-arm64` optional deps in `package-lock.json`, so never regenerate the lockfile with `--no-optional`.
+
+To pin a job to one host, add the runner's automatic arch label: `runs-on: [self-hosted, wavekat-ci, X64]` or `..., ARM64]`.
 
 ## SEO & GEO — every new page must be both
 

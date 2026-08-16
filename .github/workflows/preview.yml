@@ -44,9 +44,9 @@ jobs:
         run: |
           OUTPUT=$(npx wrangler pages deploy ./dist --project-name=wavekat-com --branch="${{ github.head_ref || github.ref_name }}" 2>&1)
           echo "$OUTPUT"
-          # POSIX sed, not `grep -oP`: this job also runs on the macOS
-          # runners, whose BSD grep has no -P. Keep every `run:` block in
-          # this repo portable across the pool — see docs/06.
+          # POSIX sed rather than `grep -oP`: portable across the runner
+          # pool, and it does not fail the step under `set -e` when the
+          # deploy output carries no alias URL. See docs/06.
           ALIAS=$(printf '%s\n' "$OUTPUT" \
             | sed -nE 's|.*Deployment alias URL: (https://[^[:space:]]+).*|\1|p' \
             | tail -n 1)

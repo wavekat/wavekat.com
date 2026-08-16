@@ -1,145 +1,188 @@
 # 06 — Self-hosted runners: adding the Mac mini
 
 Every workflow in this repo runs on `runs-on: [self-hosted, wavekat-ci]`. Until
-now that label existed on exactly one machine — a Linux x86-64 box set up by
-`scripts/setup-gha-runners.sh`. This doc adds a Mac mini (Apple Silicon,
-arm64) to the same pool, and records the one rule that keeps a mixed-OS pool
-from breaking CI at random.
+now that label existed on one machine — a Linux x86-64 workstation. This doc
+adds a Mac mini (Apple Silicon) to the same pool, running the runners as Docker
+Desktop containers rather than natively.
 
-## 1. How the pool actually works
+It also records the part that turned out to matter more than the setup itself:
+**`wavekat-ci` is an org-wide label, and seven repos ride on it.** Changing what
+that label points at is not a wavekat.com decision.
 
-`runs-on` is a **label set**, not a machine. A job runs on any idle runner that
-carries *all* the listed labels. So the whole of "how do we run on the Mac too"
-is: register the Mac with the `wavekat-ci` label. Nothing in
-`.github/workflows/` changes.
+## 1. Why containers and not a native macOS runner
 
-Each runner also gets automatic labels it never asked for, which is how you
-pin work to one host when you need to:
+The first instinct — install the runner natively with `svc.sh` and launchd — is
+wrong here, for a reason that only shows up when you read the other repos'
+workflows. `wavekat-voice/.github/workflows/ci.yml` does this, three times:
 
-| Host | Automatic labels | Labels we add |
-|------|------------------|---------------|
-| Linux workstation | `self-hosted`, `Linux`, `X64` | `wavekat-ci`, `<hostname>` |
-| Mac mini | `self-hosted`, `macOS`, `ARM64` | `wavekat-ci`, `<hostname>` |
+```yaml
+run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libasound2-dev cmake
+```
 
-Both scripts default `RUNNER_LABELS` to `wavekat-ci,<hostname>`, so after setup
-you can force a job onto one machine with `runs-on: [self-hosted, wavekat-ci, macOS]`
-without disturbing anything else.
+A native macOS runner has no `apt-get`. Every `wavekat-ci` job in the org's most
+important repo would have failed the moment it landed on the Mac — not subtly,
+immediately. The same jobs also assume GNU userland throughout, and macOS ships
+BSD (`grep -oP`, `sed -i`, `readlink -f`, `date -d`, `sha256sum`, `xargs -r`,
+and bash 3.2 all differ).
 
-Jobs are **not** load-balanced by cost or speed. GitHub hands a queued job to
-the first idle matching runner, so with both hosts registered a given PR's CI
-may land on Linux one run and macOS the next. That is the point — and it is
-also why section 3 matters.
+So the choice isn't "Docker vs raw shell on macOS". It's:
+
+> Should the Mac mini be an **ARM Linux** CI host, or a **macOS** CI host?
+
+macOS cannot run macOS containers — Docker Desktop runs Linux containers in a
+VM — so containers mean the Mac contributes *Linux/arm64* capacity. That is what
+we want: nothing in the pool's workload needs macOS, and a uniform Ubuntu 24.04
+userland everywhere means a `run:` block can never work on one host and fail on
+the other.
+
+The runner image (`scripts/docker/`) was already arch-portable —
+`dpkg --print-architecture` selects the runner tarball, and the `gh` apt line is
+arch-templated — so it builds natively on Apple Silicon with **no changes and no
+Rosetta**.
 
 ## 2. Setting up the Mac mini
 
-`scripts/setup-gha-runners-macos.sh` is the macOS twin of the Linux script and
-takes the same environment variables (`RUNNER_ORG`, `RUNNER_COUNT`,
-`RUNNER_PREFIX`, `RUNNER_BASE_DIR`, `RUNNER_LABELS`, `RUNNER_VERSION`,
-`RUNNER_TOKEN`). On the Mac:
+Requires Docker Desktop installed and running.
 
 ```sh
-xcode-select --install                 # git — actions/checkout shells out to it
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install gh && gh auth login       # an account with wavekat org admin
 
 git clone git@github.com-wavekat:wavekat/wavekat.com.git
 cd wavekat.com
-RUNNER_KEEP_AWAKE=1 ./scripts/setup-gha-runners-macos.sh
+./scripts/setup-gha-runners-macos.sh
 ```
 
-Tear down with `./scripts/uninstall-gha-runners-macos.sh` (same variables).
+Tear down with `./scripts/uninstall-gha-runners-macos.sh`. Both take the same
+env vars as the Linux scripts (`RUNNER_ORG`, `RUNNER_COUNT`, `RUNNER_PREFIX`,
+`RUNNER_LABELS`, `RUNNER_IMAGE`, `RUNNER_TOKEN`).
 
-What the script does differently from the Linux one, and why:
+Differences from `setup-gha-runners-docker.sh` (the Linux container script):
 
-- **`actions-runner-osx-arm64`**, resolved to the latest release. There is a
-  native Apple Silicon build; do not run the x64 one under Rosetta.
-- **launchd, not systemd.** `svc.sh install` on macOS writes a *LaunchAgent*
-  to `~/Library/LaunchAgents/` and runs as your user — no `sudo`, and runners
-  therefore live under `$HOME/actions-runners` instead of `/opt`.
-- **A `.path` file per runner.** launchd does not source `~/.zprofile`, so
-  `/opt/homebrew/bin` is invisible to the runner process unless we write it
-  into the runner's `.path`. (`actions/setup-node` prepends its own Node ahead
-  of this, so this is about `git`, `gh`, `jq` and anything a job shells out to.)
-- **Quarantine clearing.** A curl-fetched tarball carries no
-  `com.apple.quarantine`, but a browser-downloaded one does and Gatekeeper
-  then kills the runner binaries. The `xattr -dr` is a no-op in the normal path.
+- **Supervision is Docker's own `--restart unless-stopped`**, not systemd.
+  Docker Desktop restarts containers with a restart policy when it starts, so
+  there is no launchd plist to write.
+- **Two manual settings, or the runners die at the next reboot:**
+  Docker Desktop → Settings → General → *Start Docker Desktop when you sign in*,
+  and System Settings → Users & Groups → *Automatic login*. Docker Desktop is a
+  GUI app; without a login session there is no daemon and no runners.
+- **The script checks VM memory against `RUNNER_COUNT`** and warns under ~2 GB
+  per runner. Docker Desktop's default allocation is thin for four parallel
+  Rust/Astro builds, and the failure mode is an OOM-killed build rather than a
+  clear error. Raise it in Settings → Resources, or lower `RUNNER_COUNT`.
+- **Keep `_work` on the named volume** (the script does). A host bind mount
+  would put every `npm ci` and `cargo build` through virtiofs — this is the
+  usual reason people conclude Docker on Mac is slow.
 
-### The headless-Mac gotcha
+Docker Desktop's disk image is also a fixed size. Four runners with warm cargo
+targets, pnpm stores and Playwright browsers will grow into it; if builds start
+failing on "no space left on device", raise the disk limit in Settings →
+Resources before blaming anything else.
 
-A LaunchAgent needs a GUI login session. On a Mac mini with no one logged in,
-`launchctl` will refuse to load the agent and the runner shows offline after
-every reboot. Two settings fix it permanently:
+## 3. Who else uses `wavekat-ci` — check before you flip the label
 
-1. **System Settings → Users & Groups → Automatic login** → the runner user.
-   Without this, runners do not come back after a power cut or an OS update.
-2. **No sleep.** `RUNNER_KEEP_AWAKE=1` runs
-   `systemsetup -setcomputersleep Never` and `pmset -a disksleep 0 womp 1` for
-   you. A sleeping Mac does not pick up queued jobs; the job just sits there
-   until the Linux box frees up, which hides the problem instead of failing.
+The label is org-wide. As of this change, **7 of the org's 27 repos** run jobs
+on it:
 
-Run the setup script the first time from a Screen Sharing session, not a bare
-SSH session. If it prints the "could not start via launchctl" warning, that is
-what happened — log in and run `./svc.sh start` in the runner dir.
+| Repo | Workflows on `wavekat-ci` | What those jobs do | Arch-sensitive? |
+|------|---------------------------|--------------------|-----------------|
+| `wavekat.com` | 4 (6 jobs) | Astro build, link/meta checks, CF Pages deploy | No |
+| `wavekat-voice` | 6 of 7 | Rust check/clippy/test, `make sidecar` (sherpa-onnx via CMake), pnpm + Playwright | **Yes** |
+| `wavekat-platform` | 3 | ci, release, db-migrate | Unverified |
+| `wavekat-asr` | 2 of 2 | `cargo test --features sherpa-onnx` | **Yes** |
+| `wavekat-cli` | 3 | release-plz tail + publish (the cross-target build matrix uses GitHub-hosted runners) | No |
+| `wavekat-lab` | 6 of 7 | ci, Common Voice sync/deploy, ONNX publish | Some |
+| `wavekat-platform-client` | 2 | ci, release-plz | No |
 
-### How many runners
+Not on the label (they use GitHub-hosted runners): `wavekat-core`,
+`wavekat-vad`, `wavekat-turn`, `wavekat-tts`, `wavekat-flow`, `wavekat-brand`.
 
-`RUNNER_COUNT` defaults to 4, matching the Linux host. A full `npm run cf:build`
-of this site is a real Astro/Rolldown build; four in parallel on a 16 GB Mac
-mini is the practical ceiling. Drop to `RUNNER_COUNT=2` if builds start
-swapping.
+One reassurance from that audit: **no shipped artifact is built on `wavekat-ci`.**
+`wavekat-voice/release.yml` builds installers on `macos-latest`,
+`ubuntu-latest`, `windows-latest` and `windows-11-arm`; its only `wavekat-ci`
+job is `trigger-site-rebuild`, which is a `curl -X POST`. Likewise
+`wavekat-cli/release.yml` cross-builds its targets on GitHub-hosted runners. So
+an arm64 runner joining the pool cannot cause a wrong-architecture binary to
+reach users — the blast radius is CI going red, not a bad release.
 
-## 3. The rule: every `run:` block must be portable
+### The real risk: ONNX on aarch64
 
-This is the part that bites. A mixed pool means **any** job can land on either
-OS, so a shell script that only works on GNU userland fails roughly half the
-time, non-deterministically, on PRs that changed nothing.
+`wavekat-asr` runs `cargo test --workspace --features sherpa-onnx`, and
+`wavekat-voice`'s `sidecar` job builds the same stack via CMake.
+`wavekat-voice/release.yml` describes the daemon as linking "a prebuilt
+sherpa-onnx static lib" — and prebuilt native libs are exactly the thing that is
+often published for `x86_64-unknown-linux-gnu` and not for
+`aarch64-unknown-linux-gnu`.
 
-macOS ships BSD userland, not GNU. The traps that apply to this repo:
+**Verify this before putting `wavekat-ci` on the Mac containers**, because a
+failure here is silent-until-merge: PRs in two repos start failing about half
+the time, on whichever runs happen to land on arm64.
 
-| Don't | Do | Why |
-|-------|----|-----|
-| `grep -oP '(?<=x)y'` | `sed -nE 's/.*x(y).*/\1/p'` | BSD grep has no `-P` (PCRE) |
-| `sed -i 's/a/b/' f` | `sed -i.bak` then `rm f.bak` | BSD `sed -i` requires a suffix arg |
-| `readlink -f p` | `cd "$(dirname p)" && pwd -P` | BSD `readlink` has no `-f` |
-| `date -d '1 day ago'` | `date -u +%s` and do maths | BSD `date` uses `-v-1d` |
-| `sha256sum f` | `shasum -a 256 f` | `sha256sum` is GNU coreutils |
-| `xargs -r` | guard with `[ -s file ]` | BSD `xargs` has no `-r` |
-| bash 4+ syntax (`${v,,}`, `declare -A`, `mapfile`) | bash 3.2 equivalents | macOS `/bin/bash` is 3.2 |
+`wavekat-lab/cv-runner-provision.yml` also hardcodes
+`actions-runner-linux-x64-…` in a provisioning script. That one is provisioning
+a *different* machine, so it is probably fine — but it is the same class of
+assumption and worth a read.
 
-Fixing `grep -oP` in `preview.yml` was the only change this migration needed —
-it extracted the Cloudflare preview URL from `wrangler` output and would have
-failed every time the deploy job landed on the Mac.
+### Recommended rollout
 
-Two more constraints worth knowing before you add a step:
-
-- **Docker-based actions cannot run on macOS runners.** Every action we use
-  today (`actions/checkout`, `actions/setup-node`, `googleapis/release-please-action`,
-  `marocchino/sticky-pull-request-comment`) is a JavaScript action, so we are
-  fine — but a container action added later would fail only on the Mac.
-- **`npm ci` needs the darwin-arm64 optional deps in the lockfile.** They are
-  there (`@esbuild/darwin-arm64`, `@rolldown/binding-darwin-arm64`,
-  `@tailwindcss/oxide-darwin-arm64`, `@resvg/resvg-js-darwin-arm64`,
-  `@img/sharp-darwin-arm64`, `@cloudflare/workerd-darwin-arm64`,
-  `@astrojs/compiler-binding-darwin-arm64`). If a dependency bump is ever made
-  with `--no-optional` or on a platform-filtered install, the lockfile loses
-  those entries and the Mac builds break while Linux stays green.
-
-## 4. Operating it
+Register the Mac with a distinct label first and opt repos in one at a time:
 
 ```sh
-# status of one runner
-cd ~/actions-runners/<prefix>-1 && ./svc.sh status
+RUNNER_LABELS=wavekat-ci-arm64,mac-mini ./scripts/setup-gha-runners-macos.sh
+```
 
-# live logs
-tail -f ~/actions-runners/<prefix>-1/_diag/Runner_*.log
+Point one low-risk repo at it (`wavekat.com` is the obvious candidate — pure
+Node, no native deps), let it run for a few days, then either widen the label to
+`wavekat-ci` or keep the split permanently and pin the ONNX repos to x86-64 with
+the runner's automatic `X64` label:
 
-# what the org thinks is online
+```yaml
+runs-on: [self-hosted, wavekat-ci, X64]
+```
+
+Both hosts carry automatic labels you can pin against:
+
+| Host | Automatic labels | Labels we add |
+|------|------------------|---------------|
+| Linux workstation | `self-hosted`, `Linux`, `X64` | `wavekat-ci`, `<hostname>` |
+| Mac mini (containers) | `self-hosted`, `Linux`, `ARM64` | `wavekat-ci`, `<hostname>` |
+
+Note the Mac's containers report `Linux`, not `macOS` — the runner sees the
+container, not the host.
+
+## 4. What still has to stay portable
+
+Userland is now uniform (Ubuntu 24.04 everywhere), so the BSD-vs-GNU trap list
+no longer gates CI. Two things do:
+
+- **Architecture.** Anything that downloads a prebuilt binary, pins a target
+  triple, or compiles native code must resolve arch at runtime rather than
+  assuming x86-64. `uname -m` / `dpkg --print-architecture`, not a hardcoded
+  `x64` in a URL.
+- **Lockfile optional deps.** `npm ci` needs both `linux-x64` and `linux-arm64`
+  optional packages present. This repo's `package-lock.json` has both for every
+  native dep (esbuild, rolldown, oxide, resvg, sharp, workerd, and
+  `@astrojs/compiler-binding-linux-{x64,arm64}-gnu`). Regenerating the lockfile
+  with `--no-optional`, or on a platform-filtered install, silently drops them
+  and breaks one host while the other stays green.
+
+The `sed` in `preview.yml` (replacing a `grep -oP`) is kept: it is correct on
+GNU too, and it no longer fails the step under `set -e` when no alias URL is
+found. The BSD notes only become load-bearing again if someone adds a *native*
+macOS runner later.
+
+## 5. Operating it
+
+```sh
+docker ps --filter name=gha-runner        # what's up
+docker logs -f gha-runner-1               # live logs
+docker exec -it gha-runner-1 bash         # shell inside a runner
 open https://github.com/organizations/wavekat/settings/actions/runners
 ```
 
-Self-hosted runners do **not** get a clean machine per job. `_work` persists
-between runs; `actions/checkout` cleans the repo but the npm cache, the
-`actions/setup-node` tool cache, and anything a job wrote outside the workspace
-do not. That is a feature (fast builds) with one sharp edge: a job that fails
-only on one host is usually stale state, not the code. `rm -rf _work` in the
-runner dir, with the runner stopped, is the reset.
+Self-hosted runners do **not** get a clean machine per job. The named volume
+persists between runs: `actions/checkout` cleans the repo, but the cargo target
+dir, pnpm store, npm cache and Playwright browsers do not — deliberately, since
+that warmth is why these runners are fast. The sharp edge is that a job failing
+on one host and not the other is usually stale state, not code. The reset is
+`docker rm -f gha-runner-N && docker volume rm gha-runner-N`, then re-run the
+setup script.
