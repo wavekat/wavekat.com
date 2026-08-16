@@ -159,12 +159,18 @@ Windows joins Mac and Linux as one plain pill that downloads on click —
 
 ```
 [ ⊞ Download for Windows ]   Other Platforms ▾
-  The Windows builds aren't    ┌─────────────────────────────────┐
-  code-signed yet…             │ Download for Mac        120 MB │
-                               │ Download for Linux      102 MB │
-                               │ Windows on ARM  EARLY    92 MB │
-                               └─────────────────────────────────┘
+  The Windows builds aren't    ┌──────────────────────────────────────────┐
+  code-signed yet…             │ Download for Mac                 120 MB │
+                               │ Download for Linux               102 MB │
+                               │ Download for Windows on ARM EARLY 92 MB │
+                               └──────────────────────────────────────────┘
 ```
+
+Every row in the menu is a download, so every row is worded like one. The ARM
+build is the one entry that isn't a platform of its own, but a menu of three
+buttons where the third drops the verb reads as an oversight rather than as a
+distinction — the requirement line under each label already says which machine
+it is for.
 
 The ARM build lives in the "other platforms" menu, and it is the one row the
 menu keeps showing when its own platform is the active one — a Windows visitor
@@ -179,7 +185,11 @@ about when a browser doesn't answer.
 
 Windows rows carry an **Early** tag, and one line says the builds are not
 code-signed so Windows warns on first launch, linking to the SmartScreen
-walkthrough (§4.4). It appears **twice on purpose**: inside the menu, for
+walkthrough (§4.4). It covers **both** Windows builds, so inside the menu it
+caps the group at the foot of the panel rather than hanging off one row:
+attached to the x64 row it rendered *between* the two Windows entries, reading
+as a caveat about x64 alone and cutting the ARM row loose from the group above
+it. It appears **twice on purpose**: inside the menu, for
 someone choosing Windows from a Mac, and under the button, for the visitor
 the promotion script just handed a Windows download — the person about to
 meet SmartScreen is exactly the one whose primary says Windows. The
