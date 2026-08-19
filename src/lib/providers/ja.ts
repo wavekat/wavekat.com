@@ -5,19 +5,19 @@ export const providers: Provider[] = [
     slug: '2talk',
     name: '2talk',
     tagline:
-      'Mac や Linux で 2talk の番号を使えます——サブスク不要で、すべての通話を自動で録音・文字起こしするソフトフォン。',
-    seoTitle: '2talk ソフトフォン（Mac・Linux 対応）',
+      'Mac・Windows・Linux で 2talk の番号を使えます——サブスク不要で、すべての通話を自動で録音・文字起こしするソフトフォン。',
+    seoTitle: '2talk ソフトフォン：Mac/Win/Linux',
     seoDescription:
-      'Mac や Linux で 2talk の番号を WaveKat Voice で利用。通話を自動で録音・文字起こしする、サブスク不要の SIP ソフトフォンです。',
-    heading: 'Mac と Linux 向けの、サブスク不要な 2talk ソフトフォン',
+      '2talk の番号を Mac・Windows・Linux で。WaveKat Voice は月額不要の SIP ソフトフォン、全通話を録音・文字化。Bria の代替。',
+    heading: 'Mac・Windows・Linux 向けの、サブスク不要な 2talk ソフトフォン',
     intro:
-      'WaveKat Voice は、SIP であなたの 2talk アカウントに接続し、すべての通話を自動で録音・文字起こしするデスクトップ用ソフトフォンです。Mac と Linux で動作し、パブリックベータ期間中は無料で、月額のサブスクリプションもありません——だから Bria の料金を払わなくても、2talk の番号をお使いのコンピューターで使えます。',
+      'WaveKat Voice は、SIP であなたの 2talk アカウントに接続し、すべての通話を自動で録音・文字起こしするデスクトップ用ソフトフォンです。Mac・Windows・Linux で動作し、パブリックベータ期間中は無料で、月額のサブスクリプションもありません——だから Bria の料金を払わなくても、2talk の番号をお使いのコンピューターで使えます。出られない 2talk の着信は通話フローがあいさつと留守番電話で代わりに応答し、通話はそのまま HubSpot の CRM に記録できます。',
     setup: {
       heading: '2talk ソフトフォンの設定方法',
       summary:
         '2talk は WaveKat Voice のガイド付きプロバイダー一覧に含まれているので、SIP の項目を手で入力する必要はありません——2talk を選んで、番号とパスワードを入力するだけです。',
       steps: [
-        'お使いの Mac または Linux コンピューターで WaveKat Voice をダウンロードして開きます。',
+        'お使いの Mac・Windows・Linux のコンピューターで WaveKat Voice をダウンロードして開きます。',
         'アカウントを追加し、プロバイダー一覧から 2talk を選びます。',
         'あなたの 2talk 電話番号とその SIP パスワードを入力します。',
         'WaveKat Voice が 2talk に登録され、すぐに発信できます——そしてすべての通話が自動で録音・文字起こしされます。',
@@ -38,7 +38,7 @@ export const providers: Provider[] = [
       {
         label: '対応プラットフォーム',
         cells: [
-          '現在は Mac と Linux（需要があれば Windows にも対応）。',
+          'Mac、Windows、Linux（Windows 版は後発で、まだコード署名なし）。',
           'Windows、Mac、iOS、Android。',
           'Windows のみ。',
         ],
@@ -72,6 +72,22 @@ export const providers: Provider[] = [
         ],
       },
       {
+        label: '自動応答と留守番電話',
+        cells: [
+          '通話フローが代わりに応答——あいさつ、営業時間、メニュー、留守番電話、転送。伝言は文字化もされます。',
+          '自体は応答しません——2talk 自身の留守番電話が伝言を受けます。',
+          '自体は応答しません——2talk 自身の留守番電話が伝言を受けます。',
+        ],
+      },
+      {
+        label: 'CRM への通話記録',
+        cells: [
+          'HubSpot を一度つなげば、以降は通話が自動で該当の連絡先に文字稿付きで記録されます。Pro の機能で、早期アクセス中は無料。',
+          '2talk が再販するアプリには含まれません。',
+          'なし——純粋な SIP ダイヤラーです。',
+        ],
+      },
+      {
         label: 'モバイルとプッシュ通知',
         cells: [
           'デスクトップのみ——スマホアプリやモバイルプッシュはありません。',
@@ -94,39 +110,53 @@ export const providers: Provider[] = [
     chooseHeading: 'あなたに合うのはどちら',
     chooseWavekatLabel: 'WaveKat Voice が向いているのは',
     chooseWavekat: [
-      'Mac や Linux のコンピューターで、2talk 向けの本格的なデスクトップソフトフォンが欲しい方',
+      'Mac・Windows・Linux のコンピューターで、2talk 向けの本格的なデスクトップソフトフォンが欲しい方',
       'すべての 2talk 通話を、何も切り替えることなく自動で録音・記録したい方',
       '2talk の番号から発信するために月額サブスクを払いたくない方',
       '通話・録音・文字稿を 1 つの検索できる履歴にまとめたい方',
+      '出られない 2talk の着信にも応答してほしい方——あいさつ、営業時間、そして伝言を文字化する留守番電話',
+      'すべての 2talk 通話を、誰かが入力し直さなくても HubSpot の CRM に残したい方',
     ],
     chooseOtherLabel: 'Bria や MicroSIP が向いているのは',
     chooseOther: [
       'iPhone や Android で 2talk を、信頼性の高いプッシュ通知とともに使いたい方——それなら Bria か Groundwire',
       'モバイルもカバーする 1 つのアプリが欲しく、Bria の料金を 2talk に払っても構わない方',
-      'Windows を使っていて、今すぐ無料で軽量なクライアントが欲しい方——それなら MicroSIP',
+      'Windows で、とにかく最小限のクライアントだけが欲しい方——それなら MicroSIP',
       '2talk が公式にサポートし、設定まで行ってくれるアプリが欲しい方',
     ],
-    faqsHeading: '質問と回答',
+    faqsHeading: 'よくある質問',
     faqs: [
       {
         q: 'WaveKat Voice は 2talk で使えますか？',
-        a: 'はい。WaveKat Voice は SIP ソフトフォンで、2talk はそのガイド付きプロバイダー一覧に含まれています。だから 2talk を選び、2talk の番号と SIP パスワードを入力すれば登録されます——手動の SIP 設定は不要です。Mac と Linux で動作し、すべての通話が自動で録音・文字起こしされます。',
+        a: 'はい。WaveKat Voice は SIP ソフトフォンで、2talk はそのガイド付きプロバイダー一覧に含まれています。だから 2talk を選び、2talk の番号と SIP パスワードを入力すれば登録されます——手動の SIP 設定は不要です。Mac・Windows・Linux で動作し、すべての通話が自動で録音・文字起こしされます。',
       },
       {
-        q: 'Mac や Linux で最良の 2talk ソフトフォンは何ですか？',
-        a: 'すべての通話を録音・文字起こしもする、サブスク不要のデスクトップ用 2talk ソフトフォンが欲しいなら、WaveKat Voice はまさにそのために Mac と Linux 向けに作られています。2talk 自身の有料の推奨アプリである Bria は Windows とモバイルをカバーし、MicroSIP は無料ですが Windows 専用です。',
+        q: 'Mac・Windows・Linux で最良の 2talk ソフトフォンは何ですか？',
+        a: 'すべての通話を録音・文字起こしもする、サブスク不要のデスクトップ用 2talk ソフトフォンが欲しいなら、WaveKat Voice はまさにそのために作られており、Mac・Windows・Linux の 3 つのデスクトップすべてに対応します。2talk 自身の有料の推奨アプリである Bria は iPhone と Android もカバーし、MicroSIP は無料ですが Windows 専用で、録音も文字起こしもできません。',
       },
       {
         q: 'Bria の代わりに無料の 2talk ソフトフォンはありますか？',
-        a: '2talk 経由で購入する Bria は月額 NZ$5.95 + GST です（2026年7月時点）。無料の選択肢は、Windows の MicroSIP と、Mac・Linux で使えてパブリックベータ期間中は無料の WaveKat Voice です。どちらも SIP であなたの 2talk の番号を登録します。',
+        a: '2talk 経由で購入する Bria は月額 NZ$5.95 + GST です（2026年7月時点）。無料の選択肢は、Mac・Windows・Linux で使えてパブリックベータ期間中は無料の WaveKat Voice と、Windows の MicroSIP です。どちらも SIP であなたの 2talk の番号を登録します。',
       },
       {
         q: 'Mac で自分の 2talk の番号を使えますか？',
-        a: 'はい。どの SIP ソフトフォンでも Mac で 2talk の番号を登録できます——2talk が再販する Bria アプリや WaveKat Voice も含みます。WaveKat Voice はさらに自動の通話録音と文字起こしを備え、ベータ期間中は月額料金がかかりません。',
+        a: 'はい。どの SIP ソフトフォンでも Mac で 2talk の番号を登録できます——2talk が再販する Bria アプリや WaveKat Voice も含みます。WaveKat Voice はさらに自動の通話録音と文字起こしを備え、ベータ期間中は月額料金がかかりません。Windows 版と Linux 版の使い方もまったく同じです。',
       },
       {
         q: 'WaveKat Voice はスマホでの 2talk のプッシュ通知に対応しますか？',
-        a: 'いいえ——WaveKat Voice は Mac と Linux 向けのデスクトップアプリで、スマホでは動作しないため、モバイルプッシュ通知を届けられません。iPhone や Android で 2talk の着信を確実に受けるには、Bria か Acrobits Groundwire を使ってください。デスクトップでは、アプリを開いている間 WaveKat Voice は登録を維持して着信を鳴らします。',
+        a: 'いいえ——WaveKat Voice は Mac・Windows・Linux 向けのデスクトップアプリで、スマホでは動作しないため、モバイルプッシュ通知を届けられません。iPhone や Android で 2talk の着信を確実に受けるには、Bria か Acrobits Groundwire を使ってください。デスクトップでは、アプリを開いている間 WaveKat Voice は登録を維持して着信を鳴らします。',
+      },
+      {
+        q: 'Windows 向けの 2talk ソフトフォンはありますか？',
+        a: 'はい。WaveKat Voice は Windows 10 と 11 で動作し、Intel/AMD（x64）と ARM64 で別々のインストーラーがあり、2talk はガイド付きプロバイダー一覧に含まれています。Windows 版は Mac 版・Linux 版より後発で、まだコード署名をしていないため、初回起動時に「発行元不明」の警告が出ます。Windows での他の選択肢は MicroSIP と、2talk が再販する Bria です。',
+      },
+      {
+        q: '席にいないとき、WaveKat Voice が 2talk の着信に応答してくれますか？',
+        a: 'はい。通話フローがその回線に代わりに応答します——あいさつで出て、営業時間を確認し、電話メニューを流し、伝言を録音し、あるいは転送します。伝言は通常の通話と同じように録音・文字化されるので、聞き返さずに読めます。相手が伝言を残している最中に自分で電話を代わることもできます。あいさつ・伝言の録音・自分への呼び出しは無料で、電話メニュー・営業時間・転送は Pro の機能です（早期アクセス中は 1 年間無料）。フローは自分のコンピューター上で動くため、応答するにはアプリが起動している必要があります——起動していなければ 2talk 自身の留守番電話が受けます。',
+      },
+      {
+        q: 'WaveKat Voice は 2talk の通話を HubSpot に記録できますか？',
+        a: 'はい。HubSpot のアカウントを一度つなげば、以降の 2talk での発着信はすべて電話番号が一致する連絡先に自動で記録されます。日時、発着信の向き、結果、通話時間、文字稿、そして HubSpot 内で再生できる録音が残ります。Pro の機能で早期アクセス中は無料、他の CRM は webhook で対応できます。',
       },
       {
         q: '2talk 向けのソフトフォンはどう設定しますか？',

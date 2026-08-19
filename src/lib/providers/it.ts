@@ -5,19 +5,19 @@ export const providers: Provider[] = [
     slug: '2talk',
     name: '2talk',
     tagline:
-      'Usa il tuo numero 2talk su Mac o Linux con un softphone senza abbonamento che registra e trascrive ogni chiamata.',
-    seoTitle: 'Softphone 2talk per Mac e Linux',
+      'Usa il tuo numero 2talk su Mac, Windows o Linux con un softphone senza abbonamento che registra e trascrive ogni chiamata.',
+    seoTitle: 'Softphone 2talk per Mac, Windows e Linux',
     seoDescription:
-      'Usa il numero 2talk su Mac o Linux con WaveKat Voice, un softphone SIP senza abbonamento che registra e trascrive ogni chiamata. Alternativa a Bria.',
-    heading: 'Il softphone senza abbonamento per 2talk su Mac e Linux',
+      'Il tuo numero 2talk su Mac, Windows o Linux: WaveKat Voice è un softphone SIP senza abbonamento che registra e trascrive ogni chiamata. Alternativa a Bria.',
+    heading: 'Il softphone senza abbonamento per 2talk su Mac, Windows e Linux',
     intro:
-      'WaveKat Voice è un softphone da scrivania che si connette al tuo account 2talk tramite SIP e registra e trascrive automaticamente ogni chiamata. Gira su Mac e Linux, è gratuito durante la beta pubblica e non prevede alcun abbonamento mensile: è un modo per usare il tuo numero 2talk sul tuo computer senza pagare Bria.',
+      'WaveKat Voice è un softphone da scrivania che si connette al tuo account 2talk tramite SIP e registra e trascrive automaticamente ogni chiamata. Gira su Mac, Windows e Linux, è gratuito durante la beta pubblica e non prevede alcun abbonamento mensile: è un modo per usare il tuo numero 2talk sul tuo computer senza pagare Bria. Alle chiamate 2talk che non riesci a prendere risponde un flusso di chiamata, con messaggio di benvenuto e segreteria, e ogni chiamata può registrarsi da sola nel tuo CRM HubSpot.',
     setup: {
       heading: 'Come configurare un softphone per 2talk',
       summary:
         '2talk è presente nell’elenco guidato degli operatori di WaveKat Voice, quindi non devi modificare a mano i campi SIP: scegli 2talk e inserisci il tuo numero e la tua password.',
       steps: [
-        'Scarica e apri WaveKat Voice sul tuo computer Mac o Linux.',
+        'Scarica e apri WaveKat Voice sul tuo computer Mac, Windows o Linux.',
         'Aggiungi un account e scegli 2talk dall’elenco degli operatori.',
         'Inserisci il tuo numero di telefono 2talk e la relativa password SIP.',
         'WaveKat Voice si registra con 2talk e sei pronto a chiamare: ogni chiamata viene registrata e trascritta automaticamente.',
@@ -38,7 +38,7 @@ export const providers: Provider[] = [
       {
         label: 'Piattaforme',
         cells: [
-          'Mac e Linux oggi (Windows quando ci sarà richiesta).',
+          'Mac, Windows e Linux (la versione Windows è più recente e non è ancora firmata).',
           'Windows, Mac, iOS e Android.',
           'Solo Windows.',
         ],
@@ -76,6 +76,22 @@ export const providers: Provider[] = [
         ],
       },
       {
+        label: 'Rispondere alle chiamate e segreteria',
+        cells: [
+          'Un flusso di chiamata risponde per te — benvenuto, orari, menu, segreteria o trasferimento — e il messaggio viene trascritto.',
+          'Non risponde da sé: il messaggio lo prende la segreteria di 2talk.',
+          'Non risponde da sé: il messaggio lo prende la segreteria di 2talk.',
+        ],
+      },
+      {
+        label: 'Registrare le chiamate nel CRM',
+        cells: [
+          'Colleghi HubSpot una volta e ogni chiamata si archivia da sola sul contatto corrispondente, trascrizione inclusa. Fa parte di Pro, gratis nell’accesso anticipato.',
+          'Non fa parte dell’app rivenduta da 2talk.',
+          'No — è un semplice dialer SIP.',
+        ],
+      },
+      {
         label: 'Mobile e notifiche push',
         cells: [
           'Solo desktop: nessuna app per telefono né push mobile.',
@@ -98,39 +114,53 @@ export const providers: Provider[] = [
     chooseHeading: 'Quale fa per te',
     chooseWavekatLabel: 'Scegli WaveKat Voice se',
     chooseWavekat: [
-      'Usi un computer Mac o Linux e vuoi un vero softphone da scrivania per 2talk',
+      'Usi un computer Mac, Windows o Linux e vuoi un vero softphone da scrivania per 2talk',
       'Vuoi che ogni chiamata 2talk venga registrata e trascritta automaticamente, senza nulla da attivare',
       'Preferisci non pagare un abbonamento mensile per chiamare dal tuo numero 2talk',
       'Vuoi un’unica cronologia ricercabile di chiamate, registrazioni e trascrizioni',
+      'Vuoi che alle chiamate 2talk che non riesci a prendere risponda qualcuno — benvenuto, orari e una segreteria che trascrive il messaggio',
+      'Vuoi che ogni chiamata 2talk finisca nel tuo CRM HubSpot senza che nessuno la annoti',
     ],
     chooseOtherLabel: 'Scegli Bria o MicroSIP se',
     chooseOther: [
       'Ti serve 2talk su iPhone o Android con notifiche push affidabili: sono Bria o Groundwire',
       'Vuoi un’unica app che copra anche il mobile e non ti dispiace pagare 2talk per Bria',
-      'Usi Windows e vuoi un client gratuito e leggero già oggi: è MicroSIP',
+      'Vuoi il client Windows più piccolo possibile e nulla di più: è MicroSIP',
       'Vuoi un’app che 2talk supporta ufficialmente e configura per te',
     ],
-    faqsHeading: 'Domande e risposte',
+    faqsHeading: 'Domande frequenti',
     faqs: [
       {
         q: 'WaveKat Voice funziona con 2talk?',
-        a: 'Sì. WaveKat Voice è un softphone SIP e 2talk è presente nel suo elenco guidato degli operatori, quindi scegli 2talk, inserisci il tuo numero 2talk e la password SIP, e si registra: nessuna configurazione SIP manuale. Funziona su Mac e Linux, e ogni chiamata viene registrata e trascritta automaticamente.',
+        a: 'Sì. WaveKat Voice è un softphone SIP e 2talk è presente nel suo elenco guidato degli operatori, quindi scegli 2talk, inserisci il tuo numero 2talk e la password SIP, e si registra: nessuna configurazione SIP manuale. Funziona su Mac, Windows e Linux, e ogni chiamata viene registrata e trascritta automaticamente.',
       },
       {
-        q: 'Qual è il miglior softphone per 2talk su Mac o Linux?',
-        a: 'Se vuoi un softphone da scrivania senza abbonamento per 2talk che registra e trascrive anche ogni chiamata, WaveKat Voice è pensato proprio per questo su Mac e Linux. La scelta a pagamento di 2talk, Bria, copre Windows e il mobile; MicroSIP è gratuito ma solo per Windows.',
+        q: 'Qual è il miglior softphone per 2talk su Mac, Windows o Linux?',
+        a: 'Se vuoi un softphone da scrivania senza abbonamento per 2talk che registra e trascrive anche ogni chiamata, WaveKat Voice è pensato proprio per questo su tutti e tre i desktop: Mac, Windows e Linux. La scelta a pagamento di 2talk, Bria, copre anche iPhone e Android; MicroSIP è gratuito ma solo per Windows e non registra né trascrive.',
       },
       {
         q: 'Esiste un softphone gratuito per 2talk al posto di Bria?',
-        a: 'Bria acquistato tramite 2talk costa NZ$5.95 + GST al mese (a luglio 2026). Le opzioni gratuite sono MicroSIP su Windows e WaveKat Voice su Mac e Linux, gratuito durante la sua beta pubblica. Entrambi si registrano con il tuo numero 2talk tramite SIP.',
+        a: 'Bria acquistato tramite 2talk costa NZ$5.95 + GST al mese (a luglio 2026). Le opzioni gratuite sono WaveKat Voice su Mac, Windows e Linux, gratuito durante la sua beta pubblica, e MicroSIP su Windows. Entrambi si registrano con il tuo numero 2talk tramite SIP.',
       },
       {
         q: 'Posso usare il mio numero 2talk su un Mac?',
-        a: 'Sì. Qualsiasi softphone SIP può registrare un numero 2talk su un Mac, inclusa l’app Bria rivenduta da 2talk e WaveKat Voice. WaveKat Voice aggiunge registrazione e trascrizione automatiche delle chiamate e non applica un canone mensile durante la beta.',
+        a: 'Sì. Qualsiasi softphone SIP può registrare un numero 2talk su un Mac, inclusa l’app Bria rivenduta da 2talk e WaveKat Voice. WaveKat Voice aggiunge registrazione e trascrizione automatiche delle chiamate e non applica un canone mensile durante la beta. Su Windows e Linux funziona allo stesso modo.',
       },
       {
         q: 'WaveKat Voice gestisce le notifiche push di 2talk sul mio telefono?',
-        a: 'No: WaveKat Voice è un’app desktop per Mac e Linux e non gira sui telefoni, quindi non può inviare notifiche push mobili. Per ricevere chiamate in modo affidabile su iPhone o Android con 2talk, usa Bria o Acrobits Groundwire. Sul desktop, WaveKat Voice resta registrato e squilla finché l’app è aperta.',
+        a: 'No: WaveKat Voice è un’app desktop per Mac, Windows e Linux e non gira sui telefoni, quindi non può inviare notifiche push mobili. Per ricevere chiamate in modo affidabile su iPhone o Android con 2talk, usa Bria o Acrobits Groundwire. Sul desktop, WaveKat Voice resta registrato e squilla finché l’app è aperta.',
+      },
+      {
+        q: 'Esiste un softphone 2talk per Windows?',
+        a: 'Sì. WaveKat Voice gira su Windows 10 e 11, con installer separati per Intel/AMD (x64) e ARM64, e 2talk è presente nel suo elenco guidato degli operatori. La versione Windows è più recente di quelle per Mac e Linux e non è ancora firmata, quindi al primo avvio Windows segnala un editore sconosciuto. Le altre opzioni su Windows sono MicroSIP e il Bria rivenduto da 2talk.',
+      },
+      {
+        q: 'WaveKat Voice può rispondere alle mie chiamate 2talk quando non ci sono?',
+        a: 'Sì. Un flusso di chiamata risponde alla linea per te: saluta, controlla i tuoi orari, propone un menu telefonico, registra un messaggio o trasferisce la chiamata. Il messaggio viene registrato e trascritto come qualsiasi altra chiamata, così lo leggi invece di riascoltarlo, e puoi prendere la chiamata mentre qualcuno lo sta lasciando. Benvenuto, registrazione del messaggio e squillo verso di te sono gratis; menu, orari e trasferimenti fanno parte di Pro, gratis per un anno nell’accesso anticipato. Il flusso gira sul tuo computer, quindi l’app deve essere in esecuzione per rispondere: altrimenti risponde la segreteria di 2talk.',
+      },
+      {
+        q: 'WaveKat Voice può registrare le mie chiamate 2talk in HubSpot?',
+        a: 'Sì. Colleghi il tuo account HubSpot una volta e ogni chiamata 2talk che ricevi o effettui si archivia da sola sul contatto con il numero corrispondente, con ora, direzione, esito, durata, trascrizione e una registrazione che ascolti dentro HubSpot. È una funzione Pro, gratuita nell’accesso anticipato, e i webhook coprono qualsiasi altro CRM.',
       },
       {
         q: 'Come configuro un softphone per 2talk?',
