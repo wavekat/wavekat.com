@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.57](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.56...wavekat-com-v0.0.57) (2026-08-19)
+
+
+### Bug Fixes
+
+* **seo:** Windows, flows and HubSpot on 9 locales ([#159](https://github.com/wavekat/wavekat.com/issues/159)) ([c22a034](https://github.com/wavekat/wavekat.com/commit/c22a034eb6fc5b9ef131177147ed08d15fed749f))
+
 ## [0.0.56](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.55...wavekat-com-v0.0.56) (2026-08-16)
 
 
