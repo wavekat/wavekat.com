@@ -9,8 +9,9 @@
 // Keep the framing honest and verifiable. The comparison names what the
 // provider's own recommended apps are genuinely good at (mobile + push, official
 // support) before saying where WaveKat Voice is different (subscription-free,
-// Mac & Linux, records and transcribes every call). Pricing carries an "as of"
-// date because it drifts — re-check before quoting it again.
+// records and transcribes every call, answers with a call flow, logs to HubSpot).
+// Pricing carries an "as of" date because it drifts — re-check before quoting it
+// again.
 
 export interface ProviderCompareRow {
   /** What this row compares — in phone-user language. */
@@ -66,19 +67,19 @@ export const providers: Provider[] = [
     slug: '2talk',
     name: '2talk',
     tagline:
-      'Use your 2talk number on Mac or Linux with a subscription-free softphone that records and transcribes every call.',
-    seoTitle: '2talk softphone for Mac & Linux',
+      'Use your 2talk number on Mac, Windows or Linux with a subscription-free softphone that records and transcribes every call.',
+    seoTitle: '2talk softphone for Mac, Windows & Linux',
     seoDescription:
-      'Use your 2talk number on Mac or Linux with WaveKat Voice — a subscription-free SIP softphone that records and transcribes every call. A free Bria alternative.',
-    heading: 'The subscription-free softphone for 2talk on Mac & Linux',
+      'Your 2talk number on Mac, Windows or Linux: WaveKat Voice is a subscription-free SIP softphone that records and transcribes every call. A free Bria alternative.',
+    heading: 'The subscription-free softphone for 2talk on Mac, Windows & Linux',
     intro:
-      'WaveKat Voice is a desktop softphone that connects to your 2talk account over SIP and records and transcribes every call automatically. It runs on Mac and Linux, it is free during the public beta, and there is no monthly subscription — so it is a way to put your 2talk number on your computer without paying for Bria.',
+      'WaveKat Voice is a desktop softphone that connects to your 2talk account over SIP and records and transcribes every call automatically. It runs on Mac, Windows and Linux, it is free during the public beta, and there is no monthly subscription — so it is a way to put your 2talk number on your computer without paying for Bria. A call flow can answer the 2talk calls you cannot take, with a greeting and voicemail, and every call can log itself in your HubSpot CRM.',
     setup: {
       heading: 'How to set up a 2talk softphone',
       summary:
         '2talk is in WaveKat Voice’s guided provider list, so you don’t hand-edit SIP fields — you pick 2talk and enter your number and password.',
       steps: [
-        'Download and open WaveKat Voice on your Mac or Linux computer.',
+        'Download and open WaveKat Voice on your Mac, Windows or Linux computer.',
         'Add an account and choose 2talk from the provider list.',
         'Enter your 2talk phone number and its SIP password.',
         'WaveKat Voice registers with 2talk and you’re ready to call — and every call is recorded and transcribed automatically.',
@@ -99,7 +100,7 @@ export const providers: Provider[] = [
       {
         label: 'Platforms',
         cells: [
-          'Mac and Linux today (Windows when there is demand).',
+          'Mac, Windows and Linux (the Windows build is newer and not code-signed yet).',
           'Windows, Mac, iOS, and Android.',
           'Windows only.',
         ],
@@ -133,6 +134,22 @@ export const providers: Provider[] = [
         ],
       },
       {
+        label: 'Answering calls & voicemail',
+        cells: [
+          'A call flow answers for you — greeting, opening hours, menu, voicemail or transfer — and the message is transcribed.',
+          'No answering of its own — 2talk\'s voicemail takes the message.',
+          'No answering of its own — 2talk\'s voicemail takes the message.',
+        ],
+      },
+      {
+        label: 'Logging calls in your CRM',
+        cells: [
+          'Connect HubSpot once and every call files itself on the matching contact, transcript included. Part of Pro, free during early access.',
+          'Not part of the app 2talk resells.',
+          'No — it is a plain SIP dialler.',
+        ],
+      },
+      {
         label: 'Mobile & push notifications',
         cells: [
           'Desktop only — no phone app or mobile push.',
@@ -155,39 +172,53 @@ export const providers: Provider[] = [
     chooseHeading: 'Which one fits you',
     chooseWavekatLabel: 'Choose WaveKat Voice if',
     chooseWavekat: [
-      'You’re on a Mac or Linux computer and want a proper desktop softphone for 2talk',
+      'You’re on a Mac, Windows or Linux computer and want a proper desktop softphone for 2talk',
       'You want every 2talk call recorded and written down automatically, with nothing to switch on',
       'You’d rather not pay a monthly subscription to make calls from your 2talk number',
       'You want one searchable history of calls, recordings, and transcripts',
+      'You want the 2talk calls you cannot take answered — a greeting, your opening hours, and voicemail that writes the message down',
+      'You want every 2talk call logged in your HubSpot CRM without anyone typing it in',
     ],
     chooseOtherLabel: 'Choose Bria or MicroSIP if',
     chooseOther: [
       'You need 2talk on your iPhone or Android with reliable push notifications — that’s Bria or Groundwire',
       'You want a single app that also covers mobile, and don’t mind paying 2talk for Bria',
-      'You’re on Windows and want a free, lightweight client today — that’s MicroSIP',
+      'You want the smallest possible Windows client and nothing else — that’s MicroSIP',
       'You want an app 2talk officially supports and provisions for you',
     ],
-    faqsHeading: 'Questions & answers',
+    faqsHeading: 'Frequently asked questions',
     faqs: [
       {
         q: 'Does WaveKat Voice work with 2talk?',
-        a: 'Yes. WaveKat Voice is a SIP softphone and 2talk is in its guided provider list, so you pick 2talk, enter your 2talk number and SIP password, and it registers — no manual SIP configuration. It works on Mac and Linux, and every call is recorded and transcribed automatically.',
+        a: 'Yes. WaveKat Voice is a SIP softphone and 2talk is in its guided provider list, so you pick 2talk, enter your 2talk number and SIP password, and it registers — no manual SIP configuration. It works on Mac, Windows and Linux, and every call is recorded and transcribed automatically.',
       },
       {
-        q: 'What is the best softphone for 2talk on Mac or Linux?',
-        a: 'If you want a subscription-free desktop softphone for 2talk that also records and transcribes every call, WaveKat Voice is built for that on Mac and Linux. 2talk’s own paid pick, Bria, covers Windows and mobile; MicroSIP is free but Windows-only.',
+        q: 'What is the best softphone for 2talk on Mac, Windows or Linux?',
+        a: 'If you want a subscription-free desktop softphone for 2talk that also records and transcribes every call, WaveKat Voice is built for that on all three desktops — Mac, Windows and Linux. 2talk’s own paid pick, Bria, adds iPhone and Android; MicroSIP is free but Windows-only and does not record or transcribe.',
       },
       {
         q: 'Is there a free 2talk softphone instead of Bria?',
-        a: 'Bria bought through 2talk costs NZ$5.95 + GST per month (as of July 2026). The free options are MicroSIP on Windows and WaveKat Voice on Mac and Linux, which is free during its public beta. Both register with your 2talk number over SIP.',
+        a: 'Bria bought through 2talk costs NZ$5.95 + GST per month (as of July 2026). The free options are WaveKat Voice on Mac, Windows and Linux — free during its public beta — and MicroSIP on Windows. Both register with your 2talk number over SIP.',
       },
       {
         q: 'Can I use my 2talk number on a Mac?',
-        a: 'Yes. Any SIP softphone can register a 2talk number on a Mac — including 2talk’s resold Bria app and WaveKat Voice. WaveKat Voice adds automatic call recording and transcription and doesn’t charge a monthly fee during the beta.',
+        a: 'Yes. Any SIP softphone can register a 2talk number on a Mac — including 2talk’s resold Bria app and WaveKat Voice. WaveKat Voice adds automatic call recording and transcription and doesn’t charge a monthly fee during the beta. The Windows and Linux builds work the same way.',
       },
       {
         q: 'Does WaveKat Voice handle 2talk push notifications on my phone?',
-        a: 'No — WaveKat Voice is a desktop app for Mac and Linux and doesn’t run on phones, so it can’t deliver mobile push notifications. For reliable incoming calls on an iPhone or Android with 2talk, use Bria or Acrobits Groundwire. On the desktop, WaveKat Voice stays registered and rings while the app is open.',
+        a: 'No — WaveKat Voice is a desktop app for Mac, Windows and Linux and doesn’t run on phones, so it can’t deliver mobile push notifications. For reliable incoming calls on an iPhone or Android with 2talk, use Bria or Acrobits Groundwire. On the desktop, WaveKat Voice stays registered and rings while the app is open.',
+      },
+      {
+        q: 'Is there a 2talk softphone for Windows?',
+        a: 'Yes. WaveKat Voice runs on Windows 10 and 11, with separate installers for Intel/AMD (x64) and ARM64, and 2talk is in its guided provider list. The Windows build is younger than the Mac and Linux ones and is not code-signed yet, so Windows warns about an unknown publisher on first launch. MicroSIP and 2talk’s resold Bria are the other Windows options.',
+      },
+      {
+        q: 'Can WaveKat Voice answer my 2talk calls when I am not there?',
+        a: 'Yes. A call flow answers the line for you with a greeting, checks your opening hours, offers a phone menu, takes a message, or transfers the call — and the message is recorded and transcribed like any other call, so you can read it instead of listening back. You can also pick the call up while someone is still leaving one. The greeting, taking a message and ringing you are free; phone menus, opening hours and transfers are part of Pro, free for a year during early access. The flow runs on your own computer, so the app has to be running for it to answer — otherwise 2talk’s own voicemail takes the call.',
+      },
+      {
+        q: 'Can WaveKat Voice log my 2talk calls in HubSpot?',
+        a: 'Yes. Connect your HubSpot account once and every 2talk call you take or place files itself on the matching contact, with the time, direction, outcome, duration, transcript, and a recording you can play inside HubSpot. It is a Pro feature, free during early access, and webhooks cover any other CRM.',
       },
       {
         q: 'How do I set up a softphone for 2talk?',
@@ -207,19 +238,19 @@ export const providersZhHans: Provider[] = [
   {
     slug: '2talk',
     name: '2talk',
-    tagline: '在 Mac 或 Linux 上使用你的 2talk 号码——无需订阅，自动录音并转写每一通通话。',
-    seoTitle: '2talk 软电话（适用于 Mac 和 Linux）',
+    tagline: '在 Mac、Windows 或 Linux 上使用你的 2talk 号码——无需订阅，自动录音并转写每一通通话。',
+    seoTitle: '2talk 软电话（Mac/Win/Linux）',
     seoDescription:
-      '在 Mac 或 Linux 上用 WaveKat Voice 使用 2talk 号码——无需订阅的 SIP 软电话，自动录音并转写每一通通话。',
-    heading: '适用于 Mac 和 Linux 的 2talk 免订阅软电话',
+      '在 Mac、Windows 或 Linux 上使用 2talk 号码：WaveKat Voice 是免订阅的 SIP 软电话，自动录音并转写每通通话，可替代 Bria。',
+    heading: '适用于 Mac、Windows 和 Linux 的 2talk 免订阅软电话',
     intro:
-      'WaveKat Voice 是一款桌面软电话，通过 SIP 连接到你的 2talk 账户，并自动录音、转写每一通通话。它运行在 Mac 和 Linux 上，公测期间免费，且无需按月订阅——因此你无需为 Bria 付费，就能把 2talk 号码放到电脑上使用。',
+      'WaveKat Voice 是一款桌面软电话，通过 SIP 连接到你的 2talk 账户，并自动录音、转写每一通通话。它运行在 Mac、Windows 和 Linux 上，公测期间免费，且无需按月订阅——因此你无需为 Bria 付费，就能把 2talk 号码放到电脑上使用。接不了的 2talk 来电可以由通话流程用问候语和语音留言代为接听，每通电话还能自动记进你的 HubSpot CRM。',
     setup: {
       heading: '如何设置 2talk 软电话',
       summary:
         '2talk 已内置于 WaveKat Voice 的向导式运营商列表中，因此你无需手动填写 SIP 字段——只需选择 2talk，输入号码和密码即可。',
       steps: [
-        '在你的 Mac 或 Linux 电脑上下载并打开 WaveKat Voice。',
+        '在你的 Mac、Windows 或 Linux 电脑上下载并打开 WaveKat Voice。',
         '添加一个账户，并从运营商列表中选择 2talk。',
         '输入你的 2talk 电话号码及其 SIP 密码。',
         'WaveKat Voice 会向 2talk 注册，你就可以拨打电话了——而且每一通通话都会自动录音和转写。',
@@ -239,7 +270,11 @@ export const providersZhHans: Provider[] = [
       },
       {
         label: '支持平台',
-        cells: ['Mac 和 Linux（有需求时支持 Windows）。', 'Windows、Mac、iOS 和 Android。', '仅 Windows。'],
+        cells: [
+          'Mac、Windows 和 Linux（Windows 版较新，尚未代码签名）。',
+          'Windows、Mac、iOS 和 Android。',
+          '仅 Windows。',
+        ],
       },
       {
         label: '每通电话录音',
@@ -256,6 +291,22 @@ export const providersZhHans: Provider[] = [
       {
         label: '2talk 设置',
         cells: ['从列表中选择 2talk；输入号码和密码。', '从 2talk 购买时由其代为配置。', '自行填写通用 SIP 字段。'],
+      },
+      {
+        label: '接听来电与语音留言',
+        cells: [
+          '通话流程替你接听——问候语、营业时间、菜单、留言或转接——留言还会转写成文字。',
+          '本身不接听——由 2talk 自家的语音信箱录下留言。',
+          '本身不接听——由 2talk 自家的语音信箱录下留言。',
+        ],
+      },
+      {
+        label: '把通话记进 CRM',
+        cells: [
+          '连接一次 HubSpot，之后每通电话都会自动归档到对应联系人名下，并附上文字稿。属于 Pro 套餐，早期访问期间免费。',
+          '2talk 转售的这款应用不包含此功能。',
+          '不支持——它只是一个纯粹的 SIP 拨号器。',
+        ],
       },
       {
         label: '移动端与推送通知',
@@ -276,39 +327,53 @@ export const providersZhHans: Provider[] = [
     chooseHeading: '哪一个更适合你',
     chooseWavekatLabel: '适合选择 WaveKat Voice，如果',
     chooseWavekat: [
-      '你使用 Mac 或 Linux 电脑，想要一款真正的 2talk 桌面软电话',
+      '你使用 Mac、Windows 或 Linux 电脑，想要一款真正的 2talk 桌面软电话',
       '你希望每通 2talk 通话都自动录音并写成文字，无需手动开启任何开关',
       '你不想为了用 2talk 号码打电话而支付按月订阅费',
       '你想要一份可搜索的通话、录音和文字稿历史记录',
+      '你希望接不了的 2talk 来电也有人接——问候语、营业时间，以及会写成文字的语音留言',
+      '你希望每通 2talk 通话都自动记进 HubSpot CRM，不必有人事后补录',
     ],
     chooseOtherLabel: '适合选择 Bria 或 MicroSIP，如果',
     chooseOther: [
       '你需要在 iPhone 或 Android 上使用 2talk 并获得可靠的推送通知——那就选 Bria 或 Groundwire',
       '你想要一款同时覆盖移动端的应用，且不介意向 2talk 付费购买 Bria',
-      '你使用 Windows，想要一款当下免费、轻量的客户端——那就选 MicroSIP',
+      '你只想要一款尽可能小巧的 Windows 客户端，别无所求——那就选 MicroSIP',
       '你想要一款由 2talk 官方支持并代为配置的应用',
     ],
-    faqsHeading: '问答',
+    faqsHeading: '常见问题',
     faqs: [
       {
         q: 'WaveKat Voice 能配合 2talk 使用吗？',
-        a: '可以。WaveKat Voice 是一款 SIP 软电话，而 2talk 已内置于其向导式运营商列表，因此你只需选择 2talk、输入 2talk 号码和 SIP 密码，它就会注册——无需手动配置 SIP。它可在 Mac 和 Linux 上运行，并且每通电话都会自动录音和转写。',
+        a: '可以。WaveKat Voice 是一款 SIP 软电话，而 2talk 已内置于其向导式运营商列表，因此你只需选择 2talk、输入 2talk 号码和 SIP 密码，它就会注册——无需手动配置 SIP。它可在 Mac、Windows 和 Linux 上运行，并且每通电话都会自动录音和转写。',
       },
       {
-        q: 'Mac 或 Linux 上最好的 2talk 软电话是哪款？',
-        a: '如果你想要一款无需订阅、还能自动录音和转写每一通通话的 2talk 桌面软电话，WaveKat Voice 正是为此打造，支持 Mac 和 Linux。2talk 自家的付费之选 Bria 覆盖 Windows 和移动端；MicroSIP 免费但仅限 Windows。',
+        q: 'Mac、Windows 或 Linux 上最好的 2talk 软电话是哪款？',
+        a: '如果你想要一款无需订阅、还能自动录音和转写每一通通话的 2talk 桌面软电话，WaveKat Voice 正是为此打造，三大桌面平台——Mac、Windows 和 Linux——全部支持。2talk 自家的付费之选 Bria 还覆盖 iPhone 和 Android；MicroSIP 免费但仅限 Windows，且不提供录音或转写。',
       },
       {
         q: '除了 Bria，还有免费的 2talk 软电话吗？',
-        a: '通过 2talk 购买的 Bria 每月费用为 NZ$5.95 + GST（截至 2026 年 7 月）。免费选项是 Windows 上的 MicroSIP，以及 Mac 和 Linux 上公测期间免费的 WaveKat Voice。两者都通过 SIP 注册你的 2talk 号码。',
+        a: '通过 2talk 购买的 Bria 每月费用为 NZ$5.95 + GST（截至 2026 年 7 月）。免费选项是 Mac、Windows 和 Linux 上公测期间免费的 WaveKat Voice，以及 Windows 上的 MicroSIP。两者都通过 SIP 注册你的 2talk 号码。',
       },
       {
         q: '我能在 Mac 上使用我的 2talk 号码吗？',
-        a: '可以。任何 SIP 软电话都能在 Mac 上注册 2talk 号码——包括 2talk 转售的 Bria 应用以及 WaveKat Voice。WaveKat Voice 额外提供自动通话录音和转写，并且在公测期间不收取月费。',
+        a: '可以。任何 SIP 软电话都能在 Mac 上注册 2talk 号码——包括 2talk 转售的 Bria 应用以及 WaveKat Voice。WaveKat Voice 额外提供自动通话录音和转写，并且在公测期间不收取月费。Windows 版和 Linux 版的用法完全相同。',
       },
       {
         q: 'WaveKat Voice 能处理我手机上的 2talk 推送通知吗？',
-        a: '不能——WaveKat Voice 是一款面向 Mac 和 Linux 的桌面应用，不在手机上运行，因此无法提供移动推送通知。若要在 iPhone 或 Android 上可靠地接听 2talk 来电，请使用 Bria 或 Acrobits Groundwire。在桌面端，只要应用处于打开状态，WaveKat Voice 就会保持注册并响铃。',
+        a: '不能——WaveKat Voice 是一款面向 Mac、Windows 和 Linux 的桌面应用，不在手机上运行，因此无法提供移动推送通知。若要在 iPhone 或 Android 上可靠地接听 2talk 来电，请使用 Bria 或 Acrobits Groundwire。在桌面端，只要应用处于打开状态，WaveKat Voice 就会保持注册并响铃。',
+      },
+      {
+        q: 'Windows 上有 2talk 软电话吗？',
+        a: '有。WaveKat Voice 支持 Windows 10 和 11，Intel/AMD（x64）与 ARM64 各有独立安装包，并且 2talk 已内置于其向导式运营商列表。Windows 版比 Mac 版和 Linux 版更年轻，而且尚未进行代码签名，首次启动时 Windows 会提示“未知发布者”。Windows 上的其他选择是 MicroSIP 和 2talk 转售的 Bria。',
+      },
+      {
+        q: '我不在电脑前时，WaveKat Voice 能替我接 2talk 来电吗？',
+        a: '可以。通话流程会替你接听这条线路——用问候语接听、判断营业时间、播放电话菜单、录下留言或转接来电；留言和普通通话一样会录音并转写成文字，你可以直接读，不必回听，也可以在对方留言途中接手这通电话。问候语、录留言和呼叫你本人是免费的；电话菜单、营业时间和转接属于 Pro 套餐，早期访问期间免费赠送一年。流程运行在你自己的电脑上，因此应用需要保持运行才能接听——否则这通电话会转到 2talk 自家的语音信箱。',
+      },
+      {
+        q: 'WaveKat Voice 能把我的 2talk 通话记进 HubSpot 吗？',
+        a: '可以。连接一次 HubSpot 账户，之后你接听或拨出的每通 2talk 电话都会自动归档到号码匹配的联系人名下，带上时间、呼入呼出、结果、时长、文字稿，以及可以直接在 HubSpot 里播放的录音。这是 Pro 功能，早期访问期间免费；其他 CRM 可以用 webhook 对接。',
       },
       {
         q: '如何设置 2talk 软电话？',

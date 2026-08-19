@@ -5,13 +5,13 @@ export const alternatives: Alternative[] = [
     slug: 'linphone',
     name: 'Linphone',
     tagline:
-      '無料でオープンソースの SIP クライアント。多機能でクロスプラットフォーム——WaveKat Voice は広さよりも一点集中を選び、すべての通話を録音して書き起こすデスクトップ業務用電話を目指します。',
-    seoTitle: 'Linphone 代替ツール（Mac・Linux）',
+      '無料でオープンソースの SIP クライアント。多機能でクロスプラットフォーム——WaveKat Voice は広さよりも一点集中を選び、すべての通話を録音し、出られない電話に代わりに応答し、通話を CRM に記録するデスクトップ業務用電話を目指します。',
+    seoTitle: 'Linphone 代替（Mac/Win/Linux）',
     seoDescription:
-      'WaveKat Voice と Linphone を Mac・Linux で比較。すべての通話を自動で録音・文字起こしする業務用の電話アプリです。',
-    heading: 'Mac と Linux 向けの Linphone 代替ツール',
+      'WaveKat Voice と Linphone を比較。Mac・Windows・Linux 対応、全通話を録音・文字化し、留守番電話と HubSpot 記録も。',
+    heading: 'Mac・Windows・Linux 向けの Linphone 代替ツール',
     intro:
-      'Linphone は多機能で無料の SIP クライアントで、ほぼあらゆるプラットフォームで動作します。もしあなたが本当に求めているのが、すべての通話を録音・記録し、SIP の項目を手で入力しなくても設定が済むデスクトップ業務用電話なら、Mac と Linux における両者の比較は次のとおりです。',
+      'WaveKat Voice は Mac・Windows・Linux 向けのデスクトップ業務用電話で、Linphone の代わりに使えます。同じように SIP で自分の番号につながりますが、すべての通話を自動で録音してリアルタイムに文字化し、検索できる 1 つの履歴にまとめます。出られない電話は通話フローがあいさつと留守番電話で代わりに応答し、通話はそのまま HubSpot の CRM に記録できます。一方 Linphone は、無料でオープンソースの汎用 SIP クライアントで、ほぼあらゆるプラットフォームで動作します。汎用の VoIP ツールキットではなく、そのまま使える業務用電話が欲しい場合、両者の比較は次のとおりです。',
     whatItIs: {
       summary:
         'Linphone は Belledonne Communications による歴史あるオープンソースの SIP ソフトフォンです。Mac、Windows、Linux、iOS、Android で動作し、音声・ビデオ通話、インスタントメッセージ、エンドツーエンド暗号化まで幅広くカバーし、しかも無料です。',
@@ -39,8 +39,20 @@ export const alternatives: Alternative[] = [
         them: '通話ログのみ——録音や文字稿は添付されません。',
       },
       {
+        label: '自動応答と留守番電話',
+        wavekat:
+          '通話フローが代わりに応答——あいさつ、営業時間、電話メニュー、留守番電話、転送。録音中の伝言に自分で割り込んで出ることもできます。',
+        them: '自動応答の機能はありません。留守番電話はプロバイダーの留守電で、Linphone はそこに発信できます。',
+      },
+      {
+        label: 'CRM への通話記録',
+        wavekat:
+          'HubSpot を一度つなげば、以降は通話が自動で該当の連絡先に記録されます。文字稿と、HubSpot 内で再生できる録音付き。Pro の機能で、早期アクセス中は無料。',
+        them: 'CRM 連携はなく、通話はアプリ内の履歴に残るだけです。',
+      },
+      {
         label: '番号の設定',
-        wavekat: '一覧からプロバイダーを選ぶと、設定が自動で入力されます。',
+        wavekat: '一覧からプロバイダー（Twilio、Telnyx、2talk など）を選ぶと、設定が自動で入力されます。',
         them: '汎用の SIP 項目を自分で設定します。',
       },
       {
@@ -50,7 +62,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: '対応プラットフォーム',
-        wavekat: 'Mac、Windows、Linux。',
+        wavekat: 'Mac、Windows、Linux（Windows 版は後発で、まだコード署名なし）。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -74,6 +86,8 @@ export const alternatives: Alternative[] = [
       'すべての通話を、何も切り替えることなく自動で録音・文字化したい',
       '通話・録音・文字稿を 1 つの検索できる履歴にまとめたい',
       'SIP の項目を入力するより、一覧からプロバイダーを選びたい',
+      '出られない電話にも応答してほしい——あいさつ、営業時間、そして伝言を文字化する留守番電話',
+      'すべての通話を、誰かが入力し直さなくても HubSpot の CRM に残したい',
       '汎用の VoIP ツールキットではなく、業務に特化したデスクトップ電話が欲しい',
     ],
     faqs: [
@@ -82,8 +96,24 @@ export const alternatives: Alternative[] = [
         a: 'はい。どちらも SIP ソフトフォンなので、Linphone で使えるプロバイダーは WaveKat Voice でも使えます。違いは設定方法です。WaveKat Voice は Twilio、Telnyx、2talk などの一般的なプロバイダーの設定を自動で入力し、それ以外は自分で詳細を入力できます。',
       },
       {
+        q: 'WaveKat Voice は Windows で動きますか？',
+        a: 'はい。WaveKat Voice は Windows 10 と 11 に対応し、Intel/AMD（x64）と ARM64 で別々のインストーラーを用意しています。Mac 版・Linux 版も同時に配布しています。Windows 版は他の 2 つより後発で、まだコード署名をしていないため、初回起動時に「発行元不明」の警告が出ます。Linphone にも Windows 版があります。',
+      },
+      {
         q: 'Linphone も WaveKat Voice のように通話を録音・文字起こししますか？',
         a: 'Linphone は手動で開始すれば個別の通話を録音できますが、通話の文字起こしはせず、録音や文字稿の閲覧できる履歴も保持しません。WaveKat Voice はすべての通話を自動で録音し、隣にリアルタイムの文字稿を生成して、設定なしで両方を通話履歴に保存します。',
+      },
+      {
+        q: 'WaveKat Voice に留守番電話はありますか。出られないときに代わりに応答してくれますか？',
+        a: 'はい。それが通話フローの役割です。フローを回線に割り当てると、WaveKat Voice があいさつで応答し、営業時間を確認し、電話メニューを流し、伝言を録音し、あるいは転送します。伝言も通常の通話と同じように録音・文字化され、相手が伝言を残している最中に自分で電話を代わることもできます。あいさつ・伝言の録音・自分への呼び出しは無料で、電話メニュー・営業時間・転送は Pro の機能です（早期アクセス中は 1 年間無料）。フローは自分のコンピューター上で動くため、応答するにはアプリが起動している必要があります。Linphone 自体に自動応答の機能はなく、留守番電話はプロバイダーの留守電次第です。',
+      },
+      {
+        q: 'WaveKat Voice は通話を HubSpot に記録できますか？',
+        a: 'はい。HubSpot のアカウントを一度つなげば、以降の発着信はすべて電話番号が一致する連絡先に自動で記録されます。日時、発着信の向き、結果、通話時間、文字稿、そして HubSpot 内で再生できる録音が残ります。Pro の機能で早期アクセス中は無料、他の CRM は webhook で対応できます。Linphone に CRM 連携はありません。',
+      },
+      {
+        q: 'WaveKat Voice は日本語で使えますか？',
+        a: 'はい。アプリは 9 言語（日本語、英語、簡体字・繁体字中国語、韓国語、ドイツ語、スペイン語、フランス語、イタリア語）に対応しており、設定で切り替えられます。',
       },
       {
         q: 'WaveKat Voice は Linphone のようにオープンソースですか？',
