@@ -5,7 +5,6 @@ import VoiceDownload from '../../../components/VoiceDownload.astro';
 import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getDownload('mac');
 const linuxDownload = await getDownload('linux');
 const windowsDownload = await getDownload('windows-x64');
 
@@ -15,8 +14,8 @@ const ui = t(resolveLocale(Astro.url.pathname).code);
 const steps = [
   {
     n: '1',
-    title: 'Ouvrez le téléchargement',
-    body: 'Sur un Mac, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications. Sous Windows, lancez le fichier .exe et suivez l’installateur. Sur Linux, ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
+    title: 'Installez-le',
+    body: 'Sur un Mac, l’App Store installe WaveKat Voice pour vous et vous le retrouvez dans le dossier Applications. Si vous avez choisi le téléchargement direct, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications. Sous Windows, lancez le fichier .exe et suivez l’installateur. Sur Linux, ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
   },
   {
     n: '2',
@@ -78,7 +77,7 @@ const highlights = [
     <VoiceDownload />
 
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload?.version}</span></a> · <span data-dl-size="mac">{macDownload?.size}</span></p>
+      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · Gratuit sur le Mac App Store · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">{ui.subChangelog}</a></p>
       <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload?.version}</span></a> · <span data-dl-size="linux">{linuxDownload?.size}</span></p>
       <p data-dl-meta="windows" class="hidden">Windows 10 &amp; 11 · <a href="/fr/voice/changelog/" title="Découvrez les nouveautés de cette version" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="windows-x64">{windowsDownload?.version}</span></a></p>
     </div>
@@ -160,8 +159,9 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Rester à jour</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice se maintient à jour tout seul. Une fois installé, il vérifie discrètement les nouvelles versions
-      et se met à jour en arrière-plan — vous n’aurez jamais à revenir ici pour en télécharger une plus récente.
+      WaveKat Voice se maintient à jour tout seul. Une copie venue du Mac App Store se met à jour comme n’importe
+      quelle autre app de l’App Store ; un téléchargement direct vérifie discrètement les nouvelles versions et se met
+      à jour en arrière-plan. Dans les deux cas, vous n’aurez jamais à revenir ici pour en télécharger une plus récente.
     </p>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
       <a href="/fr/voice/changelog/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">Découvrez les nouveautés de chaque version →</a>

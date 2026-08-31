@@ -5,7 +5,6 @@ import VoiceDownload from '../../../components/VoiceDownload.astro';
 import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
-const macDownload = await getDownload('mac');
 const linuxDownload = await getDownload('linux');
 const windowsDownload = await getDownload('windows-x64');
 
@@ -15,8 +14,8 @@ const ui = t(resolveLocale(Astro.url.pathname).code);
 const steps = [
   {
     n: '1',
-    title: '打开下载文件',
-    body: '在 Mac 上，双击 .dmg 文件，把 WaveKat Voice 拖进“应用程序”文件夹。在 Windows 上，运行 .exe 文件，按安装程序的提示操作。在 Linux 上，用你的软件安装器打开 .deb 文件，或在终端里用 apt 或 dpkg 安装。',
+    title: '安装',
+    body: '在 Mac 上，App Store 会替你装好 WaveKat Voice，之后在“应用程序”里就能打开。如果你用的是直接下载，双击 .dmg 文件，把 WaveKat Voice 拖进“应用程序”文件夹。在 Windows 上，运行 .exe 文件，按安装程序的提示操作。在 Linux 上，用你的软件安装器打开 .deb 文件，或在终端里用 apt 或 dpkg 安装。',
   },
   {
     n: '2',
@@ -78,7 +77,7 @@ const highlights = [
     <VoiceDownload />
 
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="mac">{macDownload?.version}</span></a> · <span data-dl-size="mac">{macDownload?.size}</span></p>
+      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · Mac App Store 免费下载 · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">{ui.subChangelog}</a></p>
       <p data-dl-meta="linux" class="hidden">Linux · {ui.dlArchLinux} · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload?.version}</span></a> · <span data-dl-size="linux">{linuxDownload?.size}</span></p>
       <p data-dl-meta="windows" class="hidden">Windows 10 &amp; 11 · <a href="/zh/voice/changelog/" title="查看此版本的更新内容" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="windows-x64">{windowsDownload?.version}</span></a></p>
     </div>
@@ -159,8 +158,8 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">保持最新</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice 会自动保持最新。安装之后，它会在后台安静地检查并更新到新版本——
-      你再也不用回到这里下载更新的版本。
+      WaveKat Voice 会自动保持最新。从 Mac App Store 装的版本，和其他 App Store 应用一样自动更新；
+      直接下载的版本会在后台安静地检查并更新到新版本。无论哪一种，你都不用回到这里下载更新的版本。
     </p>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
       <a href="/zh/voice/changelog/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">查看每个版本的更新内容 →</a>
