@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.58](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.57...wavekat-com-v0.0.58) (2026-08-31)
+
+
+### Features
+
+* **voice:** add Mac App Store as the Mac download ([#161](https://github.com/wavekat/wavekat.com/issues/161)) ([c66f45b](https://github.com/wavekat/wavekat.com/commit/c66f45b2022972da8fa494be2a27273343cee2e2))
+
 ## [0.0.57](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.56...wavekat-com-v0.0.57) (2026-08-19)
 
 
