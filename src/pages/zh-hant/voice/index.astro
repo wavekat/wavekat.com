@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -189,6 +189,10 @@ const faqs = [
     a: `Mac、Windows 和 Linux。在 macOS 上支援 12 及以上版本，需要${ui.dlArchMac}；Windows 支援 10 和 11；在 Linux 上是面向 ${ui.dlArchLinux} 的 .deb 安裝包。`,
   },
   {
+    q: 'WaveKat Voice 在 Mac App Store 上嗎？',
+    a: '在。WaveKat Voice 已上架 Mac App Store，免費下載，這也是在 Mac 上安裝它最簡單的方式——安裝和之後的每次更新都由 Apple 處理。它和從 wavekat.com 直接下載的是同一個應用程式，直接下載依然保留。需要 macOS 12 或更新版本，以及搭載 Apple 晶片的 Mac。',
+  },
+  {
     q: 'WaveKat Voice 能在 Windows 上執行嗎？',
     a: '可以。支援 Windows 10 和 11，Intel/AMD 與 ARM 版各有獨立安裝包。Windows 版比 Mac 和 Linux 版更年輕，且尚未進行程式碼簽章，因此首次啟動時 Windows 會提示「不明發行者」。WaveKat Voice 是桌面應用程式，沒有手機或平板版本——如果你需要，請告訴我們。',
     link: { href: '/zh-hant/voice/talk/', label: '告訴我們你的需求' },
@@ -212,6 +216,8 @@ const appSchema = {
   inLanguage: 'zh-Hant',
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/zh-hant/voice/download/',
+  installUrl: MAC_APP_STORE_URL,
+  sameAs: [MAC_APP_STORE_URL],
   description:
     '一款把你的電腦變成辦公電話的桌面應用程式——接聽和撥打電話，每通電話都自動錄音並轉寫。相容你已經在用的電話電信業者。',
   featureList: [

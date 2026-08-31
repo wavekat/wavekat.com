@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -189,6 +189,10 @@ const faqs = [
     a: `Mac, Windows e Linux. Su macOS gira sulla versione 12 e successive — ${ui.dlArchMac}; su Windows sono Windows 10 e 11; su Linux è un pacchetto .deb per ${ui.dlArchLinux}.`,
   },
   {
+    q: 'WaveKat Voice è su Mac App Store?',
+    a: 'Sì. WaveKat Voice è su Mac App Store, gratis, ed è il modo più semplice per installarlo su un Mac: Apple si occupa dell’installazione e di ogni aggiornamento successivo. È la stessa app del download diretto da wavekat.com, che resta disponibile se lo preferisci. Servono macOS 12 o successivo e un Mac con chip Apple.',
+  },
+  {
     q: 'WaveKat Voice gira su Windows?',
     a: 'Sì — Windows 10 e 11, con installer separati per Intel o AMD e per Windows su ARM. La versione Windows è più giovane di quelle per Mac e Linux e non è ancora firmata, quindi al primo avvio Windows avvisa di un editore sconosciuto. WaveKat Voice è un’app desktop, quindi non esiste una versione per telefono o tablet — faccelo sapere se è ciò che ti serve.',
     link: { href: '/it/voice/talk/', label: 'Dicci di cosa hai bisogno' },
@@ -212,6 +216,8 @@ const appSchema = {
   inLanguage: 'it',
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/it/voice/download/',
+  installUrl: MAC_APP_STORE_URL,
+  sameAs: [MAC_APP_STORE_URL],
   description:
     'Un’app desktop che trasforma il tuo computer nel tuo telefono aziendale — rispondi ed effettua chiamate, con ogni chiamata registrata e trascritta. Funziona con l’operatore telefonico che hai già.',
   featureList: [

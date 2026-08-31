@@ -209,12 +209,23 @@ export interface UIStrings {
   subChangelog: string;
   subTalk: string;
   dlMac: string;
+  /**
+   * The Mac App Store control. It is the primary Mac button — Apple signs,
+   * installs and updates the copy it hands out — while the .dmg keeps its
+   * own label on the row behind it in the menu.
+   */
+  dlMacAppStore: string;
   dlLinux: string;
   /** Downloads the x64 installer — the build every Windows PC can run. */
   dlWindows: string;
   dlWindowsArm64: string;
   dlOther: string;
   dlArchMac: string;
+  /**
+   * Requirement line under the App Store control. It carries no size: the
+   * store publishes its own, and nothing here can read it.
+   */
+  dlArchMacAppStore: string;
   dlArchLinux: string;
   dlArchWindowsX64: string;
   dlArchWindowsArm64: string;
@@ -276,11 +287,13 @@ const strings: Record<string, UIStrings> = {
     subChangelog: "What's New",
     subTalk: 'Talk to Us',
     dlMac: 'Download for Mac',
+    dlMacAppStore: 'Download on the Mac App Store',
     dlLinux: 'Download for Linux',
     dlWindows: 'Download for Windows',
     dlWindowsArm64: 'Download for Windows on ARM',
     dlOther: 'Other Platforms',
     dlArchMac: 'Macs with Apple chip (M1 or newer)',
+    dlArchMacAppStore: 'macOS 12 or later, Apple chip',
     dlArchLinux: 'Debian & Ubuntu (.deb, 64-bit)',
     dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
     dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
@@ -323,11 +336,13 @@ const strings: Record<string, UIStrings> = {
     subChangelog: '更新日志',
     subTalk: '联系我们',
     dlMac: '下载 Mac 版',
+    dlMacAppStore: '从 Mac App Store 下载',
     dlLinux: '下载 Linux 版',
     dlWindows: '下载 Windows 版',
     dlWindowsArm64: '下载 ARM 版 Windows',
     dlOther: '其他平台',
     dlArchMac: '搭载 Apple 芯片的 Mac（M1 或更新机型）',
+    dlArchMacAppStore: 'macOS 12 或更高版本，Apple 芯片',
     dlArchLinux: 'Debian 与 Ubuntu（.deb，64 位）',
     dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
     dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',

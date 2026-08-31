@@ -38,6 +38,20 @@ export const DOWNLOAD_BASE =
 export const RELEASES_URL =
   'https://platform.wavekat.com/api/voice/releases/latest';
 
+// The Mac App Store listing, and deliberately NOT a PlatformKey. Everything
+// below this line is about a file we publish, version, size and count; the
+// App Store is a handoff. Apple resolves the storefront, installs the app
+// and updates it, and reports none of that back here — so this target has
+// no release to read, nothing for the browser-side refresh to correct, and
+// no download for the platform to log. It is one constant URL that is
+// either offered or it isn't, which is why it stays out of getDownload().
+//
+// No country segment: Apple's own /nz/ link pins every visitor to the New
+// Zealand storefront, while a bare apps.apple.com link redirects each one
+// to their own. `mt=12` asks for the Mac App Store rather than iOS.
+export const MAC_APP_STORE_URL =
+  'https://apps.apple.com/app/wavekat-voice/id6804325185?mt=12';
+
 export type PlatformKey = 'mac' | 'linux' | 'windows-x64' | 'windows-arm64';
 
 export interface Download {

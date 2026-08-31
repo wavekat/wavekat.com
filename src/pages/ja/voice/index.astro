@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -189,6 +189,10 @@ const faqs = [
     a: `Mac、Windows、Linux です。macOS ではバージョン 12 以降、${ui.dlArchMac} に対応しています。Windows は 10 と 11 に対応。Linux では ${ui.dlArchLinux} 向けの .deb パッケージです。`,
   },
   {
+    q: 'WaveKat Voice は Mac App Store にありますか？',
+    a: 'あります。WaveKat Voice は Mac App Store で無料で配信していて、Mac に入れるいちばん簡単な方法です——インストールもその後の更新も Apple が行います。wavekat.com からの直接ダウンロードと同じアプリで、直接ダウンロードも引き続き利用できます。macOS 12 以降と、Apple シリコン搭載の Mac が必要です。',
+  },
+  {
     q: 'WaveKat Voice は Windows で動きますか？',
     a: 'はい。Windows 10 と 11 に対応し、Intel・AMD 向けと Windows on ARM 向けのインストーラーを別々に用意しています。Windows 版は Mac・Linux 版より新しく、まだコード署名がないため、初回起動時に「発行元不明」の警告が表示されます。WaveKat Voice はデスクトップアプリなので、スマートフォンやタブレット版はありません——必要な方はぜひ教えてください。',
     link: { href: '/ja/voice/talk/', label: 'ご要望をお聞かせください' },
@@ -212,6 +216,8 @@ const appSchema = {
   inLanguage: 'ja',
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/ja/voice/download/',
+  installUrl: MAC_APP_STORE_URL,
+  sameAs: [MAC_APP_STORE_URL],
   description:
     'あなたのパソコンをビジネス用の電話に変えるデスクトップアプリ——電話の応答も発信もでき、各通話は自動で録音・文字起こしされます。すでにお使いの電話事業者に対応します。',
   featureList: [
