@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.59](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.58...wavekat-com-v0.0.59) (2026-09-01)
+
+
+### Features
+
+* track Mac App Store downloads ([#163](https://github.com/wavekat/wavekat.com/issues/163)) ([af3ddec](https://github.com/wavekat/wavekat.com/commit/af3ddec6abe4bacd145d4f6ed10fa4a845db8b56))
+
 ## [0.0.58](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.57...wavekat-com-v0.0.58) (2026-08-31)
 
 
