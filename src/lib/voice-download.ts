@@ -52,6 +52,31 @@ export const RELEASES_URL =
 export const MAC_APP_STORE_URL =
   'https://apps.apple.com/app/wavekat-voice/id6804325185?mt=12';
 
+// The same listing, tagged so App Store Connect attributes what follows
+// the click. This is the ONE number nobody else can give us: Apple counts
+// the product page view and the install, we cannot, and a click on our
+// side is intent rather than a download (see the comment above).
+//
+// Apple generates the pair and both halves matter — `pt` names the
+// provider the campaign belongs to, `ct` names the campaign — so this is
+// the generated Campaign Link verbatim rather than a URL assembled here.
+// A `ct` arriving without its `pt` is read and discarded.
+//
+// ONE campaign for the whole site, not one per surface. App Store Connect
+// suppresses a campaign until at least five distinct Apple Accounts have
+// installed from it, so splitting the home page from /voice/download/
+// today would put every split under that floor and report nothing at all.
+// Split when the total comfortably clears five per surface.
+//
+// Deliberately NOT the canonical URL. MAC_APP_STORE_URL stays untagged for
+// `installUrl` / `sameAs` in the /voice/ structured data: schema should
+// name the listing, not our attribution of it.
+//
+// TODO(#draft): replace with the link from App Store Connect → Analytics →
+// Acquisition → Campaigns → Generate a Campaign Link (campaign name
+// `wavekat-com`). Until then it is the plain listing — correct, uncounted.
+export const MAC_APP_STORE_CAMPAIGN_URL = MAC_APP_STORE_URL;
+
 export type PlatformKey = 'mac' | 'linux' | 'windows-x64' | 'windows-arm64';
 
 export interface Download {
