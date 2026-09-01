@@ -36,6 +36,15 @@
   // Google Ads conversion labels — the value after the slash from
   // Google Ads → Tools → Conversions → "<name>" → Tag setup. A name
   // missing from here still reaches GA4; it just isn't an Ads conversion.
+  //
+  // The `download_*` names are absent ON PURPOSE, not pending. They reach
+  // Google Ads by importing the GA4 key event instead (GA4 → Admin →
+  // Events → mark as key event, then Ads → Goals → Conversions → New →
+  // Import → GA4 → Web), which needs no label and no line here — the
+  // event above is already the one Ads imports. Add a label here only for
+  // something that must fire natively, where the sub-minute freshness and
+  // Ads-native attribution are worth a second tag, the way `mailto_click`
+  // does. Importing is the default; this map is the exception.
   const CONVERSIONS: Record<string, string> = {
     mailto_click: 'AW-18128547216/wIcbCOfc66QcEJDbrsRD',
   };
