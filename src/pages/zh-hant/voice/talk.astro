@@ -1,6 +1,7 @@
 ---
 import Voice from '../../../layouts/Voice.astro';
 import { Mail } from '@lucide/astro';
+import ConversionTracking from '../../../components/ConversionTracking.astro';
 
 const emailHref =
   "mailto:eason@wavekat.com?subject=wavekat-voice&body=Hi%20%E2%80%94%20a%20bit%20about%20my%20business%3A%0A%0A-%20What%20we%20do%3A%0A-%20How%20the%20phone%20works%20today%3A%0A-%20What's%20missing%20for%20you%3A%0A%0AThanks!";
@@ -81,21 +82,5 @@ const emailHref =
       </button>
     </form>
   </section>
+  <ConversionTracking />
 </Voice>
-
-<script is:inline>
-  // Google Ads conversion label for an email click (matches TalkCTA.astro).
-  const CONVERSIONS = {
-    mailto_click: 'AW-18128547216/wIcbCOfc66QcEJDbrsRD',
-  };
-
-  function fireConversion(name) {
-    const sendTo = CONVERSIONS[name];
-    if (!sendTo || sendTo.includes('REPLACE_WITH_') || typeof gtag !== 'function') return;
-    gtag('event', 'conversion', { send_to: sendTo });
-  }
-
-  document.querySelectorAll('a[data-conversion]').forEach((el) => {
-    el.addEventListener('click', () => fireConversion(el.dataset.conversion));
-  });
-</script>

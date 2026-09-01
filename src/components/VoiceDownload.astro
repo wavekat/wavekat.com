@@ -30,7 +30,7 @@ import {
   getDownload,
   DOWNLOAD_BASE,
   RELEASES_URL,
-  MAC_APP_STORE_URL,
+  MAC_APP_STORE_CAMPAIGN_URL,
 } from '../lib/voice-download';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
@@ -81,7 +81,11 @@ const groups = [
         conversion: 'download_mac_app_store',
         label: ui.dlMacAppStore,
         arch: ui.dlArchMacAppStore,
-        href: MAC_APP_STORE_URL,
+        // The campaign-tagged listing, not the canonical one: this is the
+        // link a visitor actually follows, and the tag is the only way
+        // App Store Connect can tell an install that started here from
+        // one that started in App Store search.
+        href: MAC_APP_STORE_CAMPAIGN_URL,
         dl: null,
       },
       {
