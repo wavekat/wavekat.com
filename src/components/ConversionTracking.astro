@@ -1,26 +1,57 @@
 ---
-// Google Ads conversion wiring for any `[data-conversion]` on the page.
-// Not anchor-only: the download controls are <button>s (they build their
-// URL on click so no artifact filename reaches the HTML), and an
-// `a[...]` selector would drop them without reporting anything.
-// Include once per component that renders conversion links (Astro dedupes the
-// bundled script); the per-element guard keeps a link from ever being bound
-// twice even if two components include it on the same page.
+// Click tracking for any `[data-conversion]` on the page — one place, two
+// destinations, answering two different questions.
+//
+//   * GA4 gets an event NAMED AFTER the conversion itself
+//     (`download_mac_app_store`, `mailto_click`). The name is the
+//     dimension, so it needs no custom-dimension registration in the GA4
+//     admin and shows up under Reports → Engagement → Events the day it
+//     ships. This is the number we read day to day.
+//   * Google Ads gets a conversion ONLY for a name with a label in
+//     CONVERSIONS below. `send_to` without the `/<label>` half is not a
+//     conversion Google Ads counts — it is a call that silently does
+//     nothing — so an unregistered name deliberately fires nothing there
+//     rather than looking wired while reporting zero.
+//
+// Not anchor-only: our own download controls are <button>s (they build
+// their URL on click, so no artifact filename reaches the HTML) and an
+// `a[...]` selector would drop them without reporting anything. The Mac
+// App Store row is the mirror image — a real <a> that leaves the site
+// entirely. gtag sends over `navigator.sendBeacon`, which is what gets
+// the event out while the browser is already unloading the page; that is
+// the whole reason no click handler here calls preventDefault.
+//
+// A store click is a HANDOFF, not a download. Nothing here should ever be
+// read as an install: Apple counts what happens after the click, and the
+// campaign tag on the URL (voice-download.ts) is how those two halves get
+// joined. The install itself arrives separately, as `distribution: 'mas'`
+// on the platform's first-run heartbeat.
+//
+// Include once per component that renders conversion links (Astro dedupes
+// the bundled script); the per-element guard keeps a link from ever being
+// bound twice even if two components include it on the same page.
 ---
 
 <script>
   // Google Ads conversion labels — the value after the slash from
-  // Google Ads → Tools → Conversions → "<name>" → Tag setup.
+  // Google Ads → Tools → Conversions → "<name>" → Tag setup. A name
+  // missing from here still reaches GA4; it just isn't an Ads conversion.
   const CONVERSIONS: Record<string, string> = {
     mailto_click: 'AW-18128547216/wIcbCOfc66QcEJDbrsRD',
   };
 
   function fireConversion(name: string | undefined) {
-    const sendTo = name && CONVERSIONS[name];
     // @ts-expect-error gtag is injected globally by Base.astro
-    if (!sendTo || typeof gtag !== 'function') return;
+    if (!name || typeof gtag !== 'function') return;
+
+    // GA4 first, and unconditionally: it is the surface that works
+    // without anyone creating anything in an ad account.
     // @ts-expect-error gtag is injected globally by Base.astro
-    gtag('event', 'conversion', { send_to: sendTo });
+    gtag('event', name);
+
+    const sendTo = CONVERSIONS[name];
+    // @ts-expect-error gtag is injected globally by Base.astro
+    if (sendTo) gtag('event', 'conversion', { send_to: sendTo });
   }
 
   document.querySelectorAll<HTMLElement>('[data-conversion]').forEach((el) => {
