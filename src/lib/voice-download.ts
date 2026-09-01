@@ -57,10 +57,18 @@ export const MAC_APP_STORE_URL =
 // the product page view and the install, we cannot, and a click on our
 // side is intent rather than a download (see the comment above).
 //
-// Apple generates the pair and both halves matter — `pt` names the
-// provider the campaign belongs to, `ct` names the campaign — so this is
-// the generated Campaign Link verbatim rather than a URL assembled here.
-// A `ct` arriving without its `pt` is read and discarded.
+// Both halves of the pair matter and neither is invented here: `pt` names
+// the provider the campaign belongs to and `ct` names the campaign, and a
+// `ct` arriving without its `pt` is read and discarded. They come from
+// App Store Connect → Analytics → Acquisition → Campaigns.
+//
+// The pair is appended to OUR url rather than pasted from Apple's
+// generator, which emits `/app/apple-store/id…?…&mt=8` — the iOS default
+// on a Mac-only app. `mt` is a media-type hint that plays no part in
+// attribution (that keys on `pt`/`ct` against the app id), so taking the
+// generated link whole would trade away the `mt=12` chosen above for
+// nothing. Same reasoning keeps the readable slug: the id governs, the
+// slug is cosmetic.
 //
 // ONE campaign for the whole site, not one per surface. App Store Connect
 // suppresses a campaign until at least five distinct Apple Accounts have
@@ -71,11 +79,8 @@ export const MAC_APP_STORE_URL =
 // Deliberately NOT the canonical URL. MAC_APP_STORE_URL stays untagged for
 // `installUrl` / `sameAs` in the /voice/ structured data: schema should
 // name the listing, not our attribution of it.
-//
-// TODO(#draft): replace with the link from App Store Connect → Analytics →
-// Acquisition → Campaigns → Generate a Campaign Link (campaign name
-// `wavekat-com`). Until then it is the plain listing — correct, uncounted.
-export const MAC_APP_STORE_CAMPAIGN_URL = MAC_APP_STORE_URL;
+export const MAC_APP_STORE_CAMPAIGN_URL =
+  `${MAC_APP_STORE_URL}&pt=128951683&ct=wavekat-com`;
 
 export type PlatformKey = 'mac' | 'linux' | 'windows-x64' | 'windows-arm64';
 
