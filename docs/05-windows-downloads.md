@@ -96,6 +96,20 @@ Selection filters on extension **and** architecture, read through `classify()`
 function that dimensions the row the download is logged on. Order in the feed
 stops mattering, which is the point.
 
+> **Since 2026-09-01: Linux split the same way.** The snippet above is left as
+> it was written, so the shape of the Windows decision stays readable. Linux
+> has since become `linux-x64` / `linux-arm64`, and the machinery in this
+> document carried it with no new ideas — the `Published` table, the alias
+> rule in §3.1, the promotion probe in §2, and the per-row availability flags
+> all generalised as they stand.
+>
+> **One difference is worth knowing**, because it makes Linux *simpler* rather
+> than harder: electron-builder appends the architecture to the *channel
+> filename* on Linux and nowhere else, so the two Linux targets read separate
+> feeds (`latest-linux.yml`, `latest-linux-arm64.yml`) instead of sharing one
+> the way both Windows installers share `latest.yml`. So the "order in the
+> feed stops mattering" problem this section solves never arises there.
+
 ### 3.1 The legacy-feed rule
 
 Every Windows release up to and including 0.0.45 was named
