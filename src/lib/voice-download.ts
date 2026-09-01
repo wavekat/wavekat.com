@@ -18,9 +18,9 @@
 //     true for a visitor when a release lands between deploys.
 //
 // A TARGET is one downloadable file, which is finer-grained than a
-// platform: Windows ships an x64 and an arm64 installer, they are
-// different sizes, and handing one to the other's machine is a file
-// Windows refuses to run. See docs/05.
+// platform: Windows and Linux each ship an x64 and an arm64 build, they are
+// different sizes, and handing one to the other's machine is a file that
+// will not run. See docs/05.
 //
 // dl.wavekat.com is not read from this repo. The feeds are still ground
 // truth — the platform parses them now, so one parser serves both the
@@ -82,7 +82,12 @@ export const MAC_APP_STORE_URL =
 export const MAC_APP_STORE_CAMPAIGN_URL =
   `${MAC_APP_STORE_URL}&pt=128951683&ct=wavekat-com`;
 
-export type PlatformKey = 'mac' | 'linux' | 'windows-x64' | 'windows-arm64';
+export type PlatformKey =
+  | 'mac'
+  | 'linux-x64'
+  | 'linux-arm64'
+  | 'windows-x64'
+  | 'windows-arm64';
 
 export interface Download {
   /** Current version, e.g. "0.0.46". */
@@ -111,7 +116,9 @@ type LatestReleases = Partial<Record<PlatformKey, Release | null>>;
 // 0.0.46 built one.
 const FALLBACK: Partial<Record<PlatformKey, Release>> = {
   mac: { version: '0.0.46', sizeBytes: 125596265 },
-  linux: { version: '0.0.46', sizeBytes: 106842816 },
+  'linux-x64': { version: '0.0.46', sizeBytes: 106842816 },
+  // `linux-arm64` is held out under the rule above — no release has built
+  // one yet. Add it with a real size once one has.
   'windows-x64': { version: '0.0.46', sizeBytes: 98710571 },
   'windows-arm64': { version: '0.0.46', sizeBytes: 104657605 },
 };

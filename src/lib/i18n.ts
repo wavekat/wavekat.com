@@ -216,6 +216,7 @@ export interface UIStrings {
    */
   dlMacAppStore: string;
   dlLinux: string;
+  dlLinuxArm64: string;
   /** Downloads the x64 installer — the build every Windows PC can run. */
   dlWindows: string;
   dlWindowsArm64: string;
@@ -227,6 +228,7 @@ export interface UIStrings {
    */
   dlArchMacAppStore: string;
   dlArchLinux: string;
+  dlArchLinuxArm64: string;
   dlArchWindowsX64: string;
   dlArchWindowsArm64: string;
   /** Tag on the Windows choices: shipped, but younger than the others. */
@@ -289,12 +291,14 @@ const strings: Record<string, UIStrings> = {
     dlMac: 'Download for Mac',
     dlMacAppStore: 'Download on the Mac App Store',
     dlLinux: 'Download for Linux',
+    dlLinuxArm64: 'Download for Linux on ARM',
     dlWindows: 'Download for Windows',
     dlWindowsArm64: 'Download for Windows on ARM',
     dlOther: 'Other Platforms',
     dlArchMac: 'Macs with Apple chip (M1 or newer)',
     dlArchMacAppStore: 'macOS 12 or later, Apple chip',
-    dlArchLinux: 'Debian & Ubuntu (.deb, 64-bit)',
+    dlArchLinux: 'Debian & Ubuntu (.deb, Intel & AMD 64-bit)',
+    dlArchLinuxArm64: 'Debian & Ubuntu (.deb, ARM64)',
     dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
     dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
     dlEarly: 'Early',
@@ -338,12 +342,14 @@ const strings: Record<string, UIStrings> = {
     dlMac: '下载 Mac 版',
     dlMacAppStore: '从 Mac App Store 下载',
     dlLinux: '下载 Linux 版',
+    dlLinuxArm64: '下载 ARM 版 Linux',
     dlWindows: '下载 Windows 版',
     dlWindowsArm64: '下载 ARM 版 Windows',
     dlOther: '其他平台',
     dlArchMac: '搭载 Apple 芯片的 Mac（M1 或更新机型）',
     dlArchMacAppStore: 'macOS 12 或更高版本，Apple 芯片',
-    dlArchLinux: 'Debian 与 Ubuntu（.deb，64 位）',
+    dlArchLinux: 'Debian 与 Ubuntu（.deb，Intel 与 AMD 64 位）',
+    dlArchLinuxArm64: 'Debian 与 Ubuntu（.deb，ARM64）',
     dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
     dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',
     dlEarly: '早期版本',

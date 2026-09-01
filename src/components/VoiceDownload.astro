@@ -49,9 +49,10 @@ const ui = t(lang);
 // jump to the section below the fold.
 const unsignedHref = `${localizedPath('/voice/download/', lang)}#windows`;
 
-const [macDl, linuxDl, winX64Dl, winArmDl] = await Promise.all([
+const [macDl, linuxX64Dl, linuxArmDl, winX64Dl, winArmDl] = await Promise.all([
   getDownload('mac'),
-  getDownload('linux'),
+  getDownload('linux-x64'),
+  getDownload('linux-arm64'),
   getDownload('windows-x64'),
   getDownload('windows-arm64'),
 ]);
@@ -109,13 +110,27 @@ const groups = [
     windows: false,
     rows: [
       {
-        key: 'linux',
+        key: 'linux-x64',
         archKey: 'default',
         conversion: 'download_linux',
         label: ui.dlLinux,
         arch: ui.dlArchLinux,
         href: null,
-        dl: linuxDl,
+        dl: linuxX64Dl,
+      },
+      {
+        // Same shape as the Windows pair above, and unconditional for the
+        // same reason: the row renders hidden whenever the platform reports
+        // the target unpublished, and the browser-side refresh flips it
+        // either way without a rebuild. So this is correct both before and
+        // after the first release that builds an arm64 Linux package.
+        key: 'linux-arm64',
+        archKey: 'arm64',
+        conversion: 'download_linux_arm64',
+        label: ui.dlLinuxArm64,
+        arch: ui.dlArchLinuxArm64,
+        href: null,
+        dl: linuxArmDl,
       },
     ],
   },
@@ -504,14 +519,17 @@ const noteCls =
     resolve();
     document.addEventListener('DOMContentLoaded', resolve);
 
+    // The arch probe now runs for Linux too, not just Windows. macOS is the
+    // one platform that skips it: we publish a single arm64 build there, so
+    // there is no second architecture to promote to.
     var uad = navigator.userAgentData;
-    if (active !== 'windows' || !uad || !uad.getHighEntropyValues) return;
+    if (active === 'mac' || !uad || !uad.getHighEntropyValues) return;
     uad
       .getHighEntropyValues(['architecture', 'bitness'])
       .then(function (h) {
         // Chromium reports the chip as 'arm' with a separate bitness, so
-        // both halves are checked: 32-bit ARM Windows exists and cannot
-        // run this installer. Anything else keeps x64.
+        // both halves are checked: 32-bit ARM exists on both Windows and
+        // Linux and cannot run these packages. Anything else keeps x64.
         if (!h || h.architecture !== 'arm' || h.bitness !== '64') return;
         activeArch = 'arm64';
         resolve();
