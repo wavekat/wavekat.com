@@ -8,6 +8,12 @@ dist/
 # Generated from vendor/wavekat-brand submodule (run `make sync`)
 /public/logos/
 /public/og.png
+/public/favicon.ico
+/public/favicon-16x16.png
+/public/favicon-32x32.png
+/public/apple-touch-icon.png
+/public/icon-192.png
+/public/icon-512.png
 
 # Typefaces the OG card renderer sets text in (run `make sync`) — ~16 MB of
 # Inter + Noto Sans SC/TC/JP/KR, fetched rather than committed.
