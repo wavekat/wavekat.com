@@ -43,8 +43,8 @@ cf-build:
 
 # Remove build artifacts and synced assets
 clean:
-	rm -rf dist/ .astro/ public/logos/ public/og.png public/favicon.ico \
-	  public/favicon-16x16.png public/favicon-32x32.png \
+	rm -rf dist/ .astro/ public/logos/ public/og.png vendor/fonts/ \
+	  public/favicon.ico public/favicon-16x16.png public/favicon-32x32.png \
 	  public/apple-touch-icon.png public/icon-192.png public/icon-512.png
 
 help:

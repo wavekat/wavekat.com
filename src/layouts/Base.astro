@@ -10,6 +10,8 @@ import {
   localeLabel,
   t,
 } from '../lib/i18n';
+import { ogCardFor } from '../lib/og';
+import { assetBase } from '../lib/site';
 
 interface Props {
   title?: string;
@@ -35,8 +37,8 @@ interface Props {
 const {
   title = 'WaveKat — Open-Source Voice AI for Small Business',
   description = 'WaveKat builds open-source AI voice tools for small business — a desktop app that makes your computer your business phone and records every call.',
-  ogImage = '/og.png',
-  ogImageAlt = 'WaveKat — open-source AI voice tools for small business',
+  ogImage,
+  ogImageAlt,
   ogType = 'website',
   noindex = false,
   siteBackground = true,
@@ -64,7 +66,21 @@ const bannerOffers = localesForPath(basePath)
   }));
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL(ogImage, Astro.site);
+
+// Per-page OG card. Asking for it also registers what the card should say, so
+// the build can render it once every page has declared its title — see
+// src/lib/og.ts. Pages outside the sections we generate for (and any page that
+// passes its own `ogImage`) keep the sitewide brand card.
+const card = ogImage ? null : ogCardFor(Astro.url.pathname, lang, basePath, title);
+// Resolved against the deploy's own origin, not the canonical site, so a
+// preview unfurls with the card that preview actually built — see lib/site.ts.
+// Every other absolute URL on the page stays on wavekat.com.
+const ogImageURL = new URL(ogImage ?? card?.src ?? '/og.png', assetBase(Astro.site));
+const resolvedOgImageAlt =
+  ogImageAlt ??
+  (card
+    ? title
+    : 'WaveKat — open-source AI voice tools for small business');
 
 // Sitewide Organization + WebSite structured data. Emitted on every page so
 // search engines can build a consistent entity for WaveKat (logo, social
@@ -138,7 +154,7 @@ const orgSchema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
-    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:alt" content={resolvedOgImageAlt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     {article?.publishedTime && (
@@ -157,7 +173,7 @@ const orgSchema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="twitter:image:alt" content={resolvedOgImageAlt} />
 
     <!-- Organization + WebSite structured data (sitewide) -->
     <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />

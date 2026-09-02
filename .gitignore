@@ -15,6 +15,10 @@ dist/
 /public/icon-192.png
 /public/icon-512.png
 
+# Typefaces the OG card renderer sets text in (run `make sync`) — ~16 MB of
+# Inter + Noto Sans SC/TC/JP/KR, fetched rather than committed.
+/vendor/fonts/
+
 # Synced from product repos by scripts/sync-docs.js
 /src/content/docs/*
 !/src/content/docs/.gitkeep
