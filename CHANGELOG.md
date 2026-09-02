@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.60](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.59...wavekat-com-v0.0.60) (2026-09-02)
+
+
+### Features
+
+* **seo:** add raster favicons and web manifest ([#168](https://github.com/wavekat/wavekat.com/issues/168)) ([1af65b3](https://github.com/wavekat/wavekat.com/commit/1af65b31db7358200a49fdc87a27929ffe0e50be))
+* **seo:** generate per-page Open Graph cards ([#167](https://github.com/wavekat/wavekat.com/issues/167)) ([25e5910](https://github.com/wavekat/wavekat.com/commit/25e59106974bc2f4896c1a102fed1c757e09d592))
+* **voice:** offer the arm64 Linux download ([#165](https://github.com/wavekat/wavekat.com/issues/165)) ([0f4bf62](https://github.com/wavekat/wavekat.com/commit/0f4bf621fbf0969e7afe9ce770627b33ae1069b0))
+
 ## [0.0.59](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.58...wavekat-com-v0.0.59) (2026-09-01)
 
 
