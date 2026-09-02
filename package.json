@@ -6,7 +6,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "sync": "node scripts/sync-brand.js",
+    "sync": "node scripts/sync-brand.js && npm run sync:fonts",
+    "sync:fonts": "node scripts/sync-fonts.js",
     "sync:docs": "node scripts/sync-docs.js",
     "sync:screenshots": "node scripts/sync-screenshots.js",
     "check:screenshots": "node scripts/sync-screenshots.js --check",

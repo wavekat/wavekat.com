@@ -43,7 +43,7 @@ cf-build:
 
 # Remove build artifacts and synced assets
 clean:
-	rm -rf dist/ .astro/ public/logos/ public/og.png
+	rm -rf dist/ .astro/ public/logos/ public/og.png vendor/fonts/
 
 help:
 	@echo "Usage: make <target>"

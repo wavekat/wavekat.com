@@ -6,6 +6,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { imageSize } from 'image-size';
 
 import tailwindcss from '@tailwindcss/vite';
+import ogCards from './scripts/og-integration.mjs';
 
 // Rewrites relative `*.md` links inside synced docs to absolute URLs under
 // /docs/<product>/<page>/. Product repos link with `getting-started.md` so
@@ -155,6 +156,10 @@ export default defineConfig({
     },
   },
   integrations: [
+    // Render the per-page Open Graph cards declared during page render.
+    // Must stay in the list for pages to get anything other than /og.png —
+    // see src/lib/og.ts for how a page declares its card.
+    ogCards(),
     // Emit <xhtml:link rel="alternate" hreflang> entries in the sitemap for
     // pages that exist in multiple locales. Keys are URL slugs, values are the
     // hreflang codes — so /zh/ is advertised as zh-Hans.
