@@ -11,6 +11,7 @@ import {
   t,
 } from '../lib/i18n';
 import { ogCardFor } from '../lib/og';
+import { assetBase } from '../lib/site';
 
 interface Props {
   title?: string;
@@ -71,7 +72,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // src/lib/og.ts. Pages outside the sections we generate for (and any page that
 // passes its own `ogImage`) keep the sitewide brand card.
 const card = ogImage ? null : ogCardFor(Astro.url.pathname, lang, basePath, title);
-const ogImageURL = new URL(ogImage ?? card?.src ?? '/og.png', Astro.site);
+// Resolved against the deploy's own origin, not the canonical site, so a
+// preview unfurls with the card that preview actually built — see lib/site.ts.
+// Every other absolute URL on the page stays on wavekat.com.
+const ogImageURL = new URL(ogImage ?? card?.src ?? '/og.png', assetBase(Astro.site));
 const resolvedOgImageAlt =
   ogImageAlt ??
   (card
