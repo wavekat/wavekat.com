@@ -65,8 +65,22 @@ jobs:
       - name: Deploy preview
         id: deploy
         run: |
+          # wrangler's output is captured so the alias URL can be parsed out of
+          # it below — but capturing must not swallow it. Under `bash -e`,
+          # `OUTPUT=$(...)` aborts the step the moment the deploy exits
+          # non-zero, *before* the echo, so a failed deploy used to leave
+          # nothing in the log but "exit code 1" and no way to tell why.
+          # Take the exit status by hand, print what wrangler said either way,
+          # and only then fail.
+          set +e
           OUTPUT=$(npx wrangler pages deploy ./dist --project-name=wavekat-com --branch="${{ github.head_ref || github.ref_name }}" 2>&1)
-          echo "$OUTPUT"
+          STATUS=$?
+          set -e
+          printf '%s\n' "$OUTPUT"
+          if [ "$STATUS" -ne 0 ]; then
+            echo "::error::wrangler pages deploy failed (exit $STATUS) — see the output above"
+            exit "$STATUS"
+          fi
           # POSIX sed rather than `grep -oP`: portable across the runner
           # pool, and it does not fail the step under `set -e` when the
           # deploy output carries no alias URL. See docs/06.
