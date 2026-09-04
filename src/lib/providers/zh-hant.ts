@@ -37,7 +37,7 @@ export const providers: Provider[] = [
       {
         label: '支援平台',
         cells: [
-          'Mac、Windows 和 Linux（Windows 版較新，尚未程式碼簽章）。',
+          'Mac、Windows 和 Linux（Windows 版在 Microsoft Store 上架）。',
           'Windows、Mac、iOS 和 Android。',
           '僅 Windows。',
         ],
@@ -131,7 +131,7 @@ export const providers: Provider[] = [
       },
       {
         q: 'Windows 上有 2talk 軟體電話嗎？',
-        a: '有。WaveKat Voice 支援 Windows 10 和 11，Intel/AMD（x64）與 ARM64 各有獨立安裝程式，而且 2talk 已內建於其精靈式電信業者清單。Windows 版比 Mac 版和 Linux 版更年輕，且尚未進行程式碼簽章，首次啟動時 Windows 會提示「未知發行者」。Windows 上的其他選擇是 MicroSIP 和 2talk 轉售的 Bria。',
+        a: '有。WaveKat Voice 已在 Microsoft Store 上架，支援 Windows 10 和 11——同一個商店頁面同時包含 Intel/AMD（x64）與 ARM64 兩個安裝套件，而且 2talk 已內建於其精靈式電信業者清單。也有直接下載的 .exe 安裝程式，但它們尚未進行程式碼簽章，首次啟動時 Windows 會提示「未知發行者」；商店版本由 Microsoft 簽章。Windows 上的其他選擇是 MicroSIP 和 2talk 轉售的 Bria。',
       },
       {
         q: '我不在電腦前時，WaveKat Voice 能替我接 2talk 來電嗎？',

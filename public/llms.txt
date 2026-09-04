@@ -5,7 +5,7 @@
 ## Core pages
 
 - [WaveKat Voice](https://wavekat.com/voice/): Desktop softphone for Mac, Windows and Linux — answer and place calls, every call recorded automatically, live transcript alongside each call. Works with SIP providers like Twilio, Telnyx, and 2talk. Free public beta.
-- [Download WaveKat Voice](https://wavekat.com/voice/download/): macOS 12+ (Apple Silicon) .dmg, Windows 10/11 .exe (separate x64 and ARM64 installers, not yet code-signed), and Linux .deb (Debian/Ubuntu).
+- [Download WaveKat Voice](https://wavekat.com/voice/download/): free on the Mac App Store (macOS 12+, Apple Silicon) and the Microsoft Store (Windows 10/11, one listing covering both x64 and ARM64). Direct downloads are also offered: a macOS .dmg, Windows x64 and ARM64 .exe installers (not code-signed yet, so SmartScreen warns on first launch — the Microsoft Store package is signed by Microsoft), and a Linux .deb (Debian/Ubuntu).
 - [Use cases](https://wavekat.com/voice/use-cases/): Who WaveKat Voice is for — small businesses that live on the phone.
 - [Softphone alternatives](https://wavekat.com/voice/alternatives/): How WaveKat Voice compares to other SIP softphones, e.g. [vs Linphone](https://wavekat.com/voice/alternatives/linphone/).
 - [Changelog](https://wavekat.com/voice/changelog/): Release notes for every WaveKat Voice version.

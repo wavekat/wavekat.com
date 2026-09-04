@@ -8,22 +8,29 @@
 // promotes Linux or Windows when it detects one. With JS off, the native
 // <details> still lets anyone reach every build.
 //
-// Windows ships two installers, x64 and arm64, and the button still doesn't
-// ask which one — it works it out. x64 is what everyone starts on, because
-// it runs on every Windows PC we support (natively on Intel and AMD,
-// emulated on Windows 11 for ARM) while an arm64 build runs on almost none
-// of them. A machine that confirms it is ARM64 is then upgraded to the
-// native build, which is the only case where the emulated one is the wrong
-// answer. Confirming that takes `navigator.userAgentData`, so it happens a
-// beat after the platform swap rather than with it. See docs/05.
+// Both stores are the button on their platform, and for the same reason:
+// the same app arrives either from a store or as a file from us, and the
+// store signs it, installs it and keeps it updated, which is a better
+// first run than a disk image or an unsigned .exe for anyone not
+// specifically after the direct build. Our own installers stay one click
+// away in the menu. That falls out of the arch mechanism instead of adding
+// a rule to it — a row whose `archKey` is one nothing ever promotes can
+// only be a menu row, so `direct` and `direct-arm64` are menu-only by
+// construction.
 //
-// Mac has two rows for an unrelated reason: the same app arrives either
-// from the Mac App Store or as a .dmg from us, and the store is the
-// button — Apple signs it, installs it and keeps it updated, which is a
-// better first run than a disk image for anyone not specifically after
-// the direct build. The .dmg stays one click away in the menu. That falls
-// out of the arch mechanism instead of adding a rule to it: the .dmg's
-// `archKey` is one nothing ever promotes, so it can only be a menu row.
+// Windows is the platform where this earns the most. It ships two
+// installers, x64 and arm64, and the Microsoft Store listing carries both
+// packages — so the Store row needs no architecture at all and the whole
+// question of which file a machine can run becomes Microsoft's to answer.
+// The two direct .exe rows keep their own identities in the menu for
+// anyone who wants the file, and they are the only rows the unsigned-build
+// note is about. See docs/05.
+//
+// Which leaves Linux as the one platform that still has to work the
+// architecture out for itself: x64 is what everyone starts on, and a
+// machine that confirms it is ARM64 is upgraded to the native build.
+// Confirming that takes `navigator.userAgentData`, so it happens a beat
+// after the platform swap rather than with it.
 import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
 import {
@@ -31,6 +38,7 @@ import {
   DOWNLOAD_BASE,
   RELEASES_URL,
   MAC_APP_STORE_CAMPAIGN_URL,
+  MS_STORE_CAMPAIGN_URL,
 } from '../lib/voice-download';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
@@ -64,8 +72,12 @@ const [macDl, linuxX64Dl, linuxArmDl, winX64Dl, winArmDl] = await Promise.all([
 // `archKey` is which machine a row is promoted for, and it is what makes a
 // row a candidate primary: `default` is the row a visitor on that platform
 // gets when nothing more is known, `arm64` is the one they get instead once
-// the browser confirms an ARM64 chip. Only Windows has both, because only
-// Windows ships two installers that are not interchangeable.
+// the browser confirms an ARM64 chip. Only Linux has both, because Linux is
+// now the only platform where we hand out two installers that are not
+// interchangeable and no store is there to choose between them.
+//
+// Anything else is a `direct*` key, which nothing promotes — that is how a
+// row is made menu-only without teaching the promotion script a rule.
 const groups = [
   {
     key: 'mac',
@@ -140,8 +152,34 @@ const groups = [
     windows: true,
     rows: [
       {
-        key: 'windows-x64',
+        // The Microsoft Store is the Windows primary, and the only row on
+        // this platform that can be. Like the Mac App Store row it carries
+        // an `href` and no `dl` — there is no release behind it to read a
+        // version or a size from, and nothing for the browser-side refresh
+        // to correct.
+        //
+        // It is `default` and there is no ARM counterpart, because it needs
+        // none: the listing carries both packages and the Store hands each
+        // machine its own. So every Windows visitor gets this one control
+        // whatever their chip, and the arch probe below has nothing left to
+        // do on Windows.
+        key: 'ms-store',
         archKey: 'default',
+        conversion: 'download_ms_store',
+        label: ui.dlMsStore,
+        arch: ui.dlArchMsStore,
+        // The campaign-tagged listing, not the canonical one — same split
+        // as the Mac row, and the only way Partner Center can tell an
+        // install that started here from one that started in Store search.
+        href: MS_STORE_CAMPAIGN_URL,
+        dl: null,
+      },
+      {
+        // `direct`, so nothing can promote it — the x64 .exe is a menu row
+        // for the reader who wants the file rather than the Store. It is
+        // also, with the row below, what the unsigned-build note is about.
+        key: 'windows-x64',
+        archKey: 'direct',
         conversion: 'download_windows_x64',
         label: ui.dlWindows,
         arch: ui.dlArchWindowsX64,
@@ -149,15 +187,18 @@ const groups = [
         dl: winX64Dl,
       },
       {
-        // Published since 0.0.46. Nothing here is conditional on that:
-        // the row renders hidden whenever the platform reports the
-        // target unpublished, and the browser-side refresh flips it
-        // either way without a rebuild. The promotion script checks the
-        // same fact before it hands an ARM machine this primary, so a
-        // release that builds no arm64 installer leaves x64 on the
-        // button rather than a control that 404s. See the scripts below.
+        // Published since 0.0.46. Nothing here is conditional on that: the
+        // row renders hidden whenever the platform reports the target
+        // unpublished, and the browser-side refresh flips it either way
+        // without a rebuild.
+        //
+        // `direct-arm64` rather than `arm64`, and the distinction is the
+        // whole point: an ARM machine is no longer promoted to this file,
+        // because the Store already gives it a native package it doesn't
+        // have to install by hand. The key stays distinct from `direct` so
+        // the row is still a separate menu entry.
         key: 'windows-arm64',
-        archKey: 'arm64',
+        archKey: 'direct-arm64',
         conversion: 'download_windows_arm64',
         label: ui.dlWindowsArm64,
         arch: ui.dlArchWindowsArm64,
@@ -190,15 +231,19 @@ const entries = groups.flatMap((g) =>
   })),
 );
 
-// The unsigned note covers BOTH Windows builds, so it caps the group at the
-// foot of the panel rather than sitting on one row — attached to the x64
-// row it rendered between the two Windows entries, reading as a caveat
-// about x64 alone and cutting the ARM row loose from the group above it.
-// It carries the Windows platform key and deliberately no arch, which the
-// script reads as "either Windows build": hidden exactly when a Windows
-// visitor is already reading the same line under their button, whichever
-// of the two installers that button hands them.
-const windowsKey = groups.find((g) => g.windows)!.key;
+// The unsigned note used to be conditional — it hid for a Windows visitor,
+// on the grounds that they were already reading the same warning under
+// their button. Neither half of that is true any more. The Windows button
+// is the Microsoft Store, whose package Microsoft signs, so there is no
+// warning to repeat and nothing to duplicate; and the note is no longer
+// about Windows at all but about the two direct .exe rows, which are
+// menu-only by construction and therefore always right here. So it is
+// unconditional, and the second copy that lived under the button is gone.
+//
+// It still caps the group at the foot of the panel rather than sitting on
+// one row: attached to the x64 row it rendered between the two Windows
+// entries, reading as a caveat about x64 alone and cutting the ARM row
+// loose from the group above it.
 
 // Mac is the SSR default primary; the script swaps to Linux or Windows.
 // `DEFAULT_ARCH` is the arch half of the same statement: nothing is known
@@ -324,11 +369,7 @@ const noteCls =
             </e.Tag>
           </div>
         ))}
-        <p
-          data-dl-alt={windowsKey}
-          data-dl-show="block"
-          class:list={[noteCls, windowsKey === DEFAULT ? 'hidden' : 'block']}
-        >
+        <p class:list={[noteCls, 'block']}>
           {ui.dlWindowsUnsigned}{' '}
           <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
         </p>
@@ -352,16 +393,6 @@ const noteCls =
       </div>
     </noscript>
   </div>
-
-  {/* Windows warns on first launch, and the visitor about to hit that
-      warning is exactly the one whose primary says Windows — so the note
-      sits under the button for them, and inside the menu for everyone
-      else. Hidden by default and shown by the promotion script, like the
-      version captions on the page. */}
-  <p data-dl-note="windows" class="hidden mt-2.5 max-w-xs text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
-    {ui.dlWindowsUnsigned}{' '}
-    <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-  </p>
 </div>
 
 <ConversionTracking />
@@ -435,24 +466,21 @@ const noteCls =
 
 <script is:inline>
   // Promote the visitor's platform to the primary control, then — on
-  // Windows only — the visitor's chip.
+  // Linux only — the visitor's chip.
   //
   // The PLATFORM pass runs synchronously as the markup is parsed, so
   // there's no flash of the wrong default, and it is plain UA sniffing.
   //
-  // The CHIP pass is separate because it has to be. A Windows 11 machine
-  // on ARM64 reports "Windows NT 10.0; Win64; x64" in its user-agent
-  // string on purpose — Windows hides the chip so x64 software keeps
-  // working — so no amount of UA reading can find it. The one place it is
-  // exposed is `navigator.userAgentData.getHighEntropyValues()`, which is
-  // Chromium-only and returns a promise. That shapes the whole design:
-  // x64 goes on the button first and holds it for everything that can't
-  // answer (every non-Chromium browser, and Windows on Intel and AMD,
-  // which is nearly all of it), and an ARM64 machine is upgraded to the
-  // native build a few milliseconds later. Guessing wrong in that
-  // direction costs nothing — Windows 11 for ARM emulates x64 — which is
-  // why the slow, partial signal is safe to act on and the button never
-  // waits for it.
+  // The CHIP pass is separate because it has to be: the only place a
+  // browser exposes the architecture is
+  // `navigator.userAgentData.getHighEntropyValues()`, which is
+  // Chromium-only and returns a promise. That shapes the design: x64 goes
+  // on the button first and holds it for everything that can't answer
+  // (every non-Chromium browser, and every Intel or AMD machine, which is
+  // nearly all of them), and an ARM64 machine is upgraded to the native
+  // build a few milliseconds later. Guessing wrong in that direction is
+  // recoverable rather than fatal, which is why the slow, partial signal
+  // is safe to act on and the button never waits for it.
   (function () {
     var ua = navigator.userAgent || '';
     var plat = navigator.platform || '';
@@ -494,23 +522,24 @@ const noteCls =
         root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
           setShown(el, el.dataset.dlPrimary === active && el.dataset.dlArch === arch);
         });
-        // A menu row hides when the primary is already downloading it. A
-        // row that names no arch (the unsigned-Windows note) means every
-        // build of that platform, so it hides on either of them.
+        // A menu row hides when the primary is already offering it. Every
+        // wrapper names an arch, so this is a plain (platform, arch) match
+        // — the note at the foot of the panel used to be the one exception
+        // and is now unconditional, because it is about the direct .exe
+        // rows rather than about Windows.
         root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
-          var a = el.dataset.dlAltArch;
-          setShown(el, !(el.dataset.dlAlt === active && (!a || a === arch)));
+          setShown(el, !(el.dataset.dlAlt === active && el.dataset.dlAltArch === arch));
         });
       });
-      // Show only the active platform's caption and note, matching the
-      // single control. Keyed on platform alone: the two Windows builds
-      // share a version and both meet SmartScreen. These <p> have no
-      // display utility, so toggling `hidden` alone is safe. Caption
-      // lines can sit after this script in the page, so DOMContentLoaded
-      // catches them — controls swap synchronously (no flicker).
-      document.querySelectorAll('[data-dl-meta],[data-dl-note]').forEach(function (el) {
-        var key = el.dataset.dlMeta || el.dataset.dlNote;
-        el.classList.toggle('hidden', key !== active);
+      // Show only the active platform's caption, matching the single
+      // control. Keyed on platform alone, which is all that is left to key
+      // on: every platform now shows one primary whatever the chip. These
+      // <p> have no display utility, so toggling `hidden` alone is safe.
+      // Caption lines can sit after this script in the page, so
+      // DOMContentLoaded catches them — controls swap synchronously (no
+      // flicker).
+      document.querySelectorAll('[data-dl-meta]').forEach(function (el) {
+        el.classList.toggle('hidden', el.dataset.dlMeta !== active);
       });
     }
     // Exposed so the release refresh above can re-run the promotion when
@@ -519,17 +548,19 @@ const noteCls =
     resolve();
     document.addEventListener('DOMContentLoaded', resolve);
 
-    // The arch probe now runs for Linux too, not just Windows. macOS is the
-    // one platform that skips it: we publish a single arm64 build there, so
-    // there is no second architecture to promote to.
+    // Linux is the only platform with an architecture left to work out.
+    // macOS publishes a single arm64 build; Windows hands the question to
+    // the Microsoft Store, whose one listing carries both packages. On
+    // either of them there is no second row to promote to, so the probe
+    // could only cost a call and change nothing.
     var uad = navigator.userAgentData;
-    if (active === 'mac' || !uad || !uad.getHighEntropyValues) return;
+    if (active !== 'linux' || !uad || !uad.getHighEntropyValues) return;
     uad
       .getHighEntropyValues(['architecture', 'bitness'])
       .then(function (h) {
         // Chromium reports the chip as 'arm' with a separate bitness, so
-        // both halves are checked: 32-bit ARM exists on both Windows and
-        // Linux and cannot run these packages. Anything else keeps x64.
+        // both halves are checked: 32-bit ARM exists and cannot run the
+        // arm64 package. Anything else keeps x64.
         if (!h || h.architecture !== 'arm' || h.bitness !== '64') return;
         activeArch = 'arm64';
         resolve();

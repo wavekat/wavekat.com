@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -193,8 +193,12 @@ const faqs = [
     a: '네. WaveKat Voice는 Mac App Store에 무료로 올라와 있으며, Mac에 설치하는 가장 쉬운 방법입니다 — 설치와 이후의 모든 업데이트를 Apple이 처리합니다. wavekat.com에서 직접 내려받는 것과 같은 앱이고, 직접 다운로드도 그대로 남아 있습니다. macOS 12 이상과 Apple 실리콘 탑재 Mac이 필요합니다.',
   },
   {
+    q: 'WaveKat Voice를 Microsoft Store에서 받을 수 있나요?',
+    a: '네. WaveKat Voice는 Microsoft Store에 무료로 올라와 있으며, Windows에 설치하는 가장 쉬운 방법입니다 — 패키지에 Microsoft가 서명하기 때문에 알 수 없는 게시자 경고가 나타나지 않고, 하나의 스토어 페이지가 Intel·AMD PC와 ARM PC를 모두 아우릅니다. wavekat.com에서 직접 내려받는 .exe와 같은 앱이고, 직접 다운로드도 그대로 남아 있습니다. Windows 10 또는 11이 필요합니다.',
+  },
+  {
     q: 'WaveKat Voice가 Windows에서 실행되나요?',
-    a: '네 — Windows 10과 11을 지원하며, Intel 또는 AMD용과 Windows on ARM용 설치 프로그램이 따로 있습니다. Windows 빌드는 Mac과 Linux보다 늦게 나왔고 아직 코드 서명이 없어서, 처음 실행할 때 Windows가 알 수 없는 게시자 경고를 표시합니다. WaveKat Voice는 데스크톱 앱이라 휴대폰이나 태블릿 버전은 없습니다 — 그것이 필요하다면 알려 주세요.',
+    a: '네 — WaveKat Voice는 Windows 10과 11을 지원하며, Microsoft Store의 단일 페이지에 Intel/AMD용과 ARM64용 패키지가 모두 들어 있습니다. 각각의 직접 설치 프로그램도 있지만 아직 코드 서명이 없어서, 처음 실행할 때 Windows가 알 수 없는 게시자 경고를 표시합니다. 스토어 패키지는 Microsoft가 서명합니다. WaveKat Voice는 데스크톱 앱이라 휴대폰이나 태블릿 버전은 없습니다 — 그것이 필요하다면 알려 주세요.',
     link: { href: '/ko/voice/talk/', label: '필요한 점을 알려 주세요' },
   },
   {
@@ -217,7 +221,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/ko/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
   description:
     '당신의 컴퓨터를 업무 전화로 바꿔 주는 데스크톱 앱 — 전화를 받고 걸며, 모든 통화를 자동으로 녹음하고 전사합니다. 이미 쓰고 있는 전화 사업자와 호환됩니다.',
   featureList: [
@@ -231,12 +235,30 @@ const appSchema = {
     'HubSpot에 통화 자동 기록 — 전사 동기화와 CRM 내 녹음 재생 포함',
     '앱 언어 9종, macOS·Windows·Linux 지원',
   ],
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-  },
+  // One Offer per storefront, because that is the property that carries
+  // "you can get it here" — `sameAs` only says the listing is us. Both are
+  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // above stays single-valued and stays on Apple: Google has only ever
+  // documented it against one URL, and an untested array there would trade
+  // a property that works for one that might not.
+  offers: [
+    {
+      '@type': 'Offer',
+      url: MAC_APP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Apple App Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: MS_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+  ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
 };
 

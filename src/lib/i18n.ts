@@ -217,6 +217,14 @@ export interface UIStrings {
   dlMacAppStore: string;
   dlLinux: string;
   dlLinuxArm64: string;
+  /**
+   * The Microsoft Store control, and the primary Windows button. Microsoft
+   * signs, installs and updates the copy it hands out, and its one listing
+   * carries both the x64 and the arm64 package — so this label serves every
+   * Windows PC and the two direct installers keep their own labels on the
+   * rows behind it in the menu.
+   */
+  dlMsStore: string;
   /** Downloads the x64 installer — the build every Windows PC can run. */
   dlWindows: string;
   dlWindowsArm64: string;
@@ -229,10 +237,22 @@ export interface UIStrings {
   dlArchMacAppStore: string;
   dlArchLinux: string;
   dlArchLinuxArm64: string;
+  /**
+   * Requirement line under the Microsoft Store control. It names every
+   * architecture rather than one, because the Store picks the package, and
+   * it carries no size for the same reason the App Store line does not:
+   * the store publishes its own and nothing here can read it.
+   */
+  dlArchMsStore: string;
   dlArchWindowsX64: string;
   dlArchWindowsArm64: string;
   /** Tag on the Windows choices: shipped, but younger than the others. */
   dlEarly: string;
+  /**
+   * Caveat on the two direct .exe rows — NOT on Windows as a whole. The
+   * Microsoft Store package is signed, so the sentence has to say which
+   * downloads it means or it contradicts the button above it.
+   */
   dlWindowsUnsigned: string;
   dlWindowsUnsignedLink: string;
   talkHeading: string;
@@ -292,6 +312,7 @@ const strings: Record<string, UIStrings> = {
     dlMacAppStore: 'Download on the Mac App Store',
     dlLinux: 'Download for Linux',
     dlLinuxArm64: 'Download for Linux on ARM',
+    dlMsStore: 'Get it from Microsoft Store',
     dlWindows: 'Download for Windows',
     dlWindowsArm64: 'Download for Windows on ARM',
     dlOther: 'Other Platforms',
@@ -299,11 +320,12 @@ const strings: Record<string, UIStrings> = {
     dlArchMacAppStore: 'macOS 12 or later, Apple chip',
     dlArchLinux: 'Debian & Ubuntu (.deb, Intel & AMD 64-bit)',
     dlArchLinuxArm64: 'Debian & Ubuntu (.deb, ARM64)',
+    dlArchMsStore: 'Windows 10 & 11, Intel, AMD & ARM',
     dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
     dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
     dlEarly: 'Early',
     dlWindowsUnsigned:
-      "The Windows builds aren't code-signed yet, so Windows warns on first launch.",
+      "The direct Windows downloads aren't code-signed, so Windows warns on first launch. The Microsoft Store version is signed.",
     dlWindowsUnsignedLink: 'How to get past it',
     talkHeading: 'Talk to us',
     talkBody:
@@ -343,6 +365,7 @@ const strings: Record<string, UIStrings> = {
     dlMacAppStore: '从 Mac App Store 下载',
     dlLinux: '下载 Linux 版',
     dlLinuxArm64: '下载 ARM 版 Linux',
+    dlMsStore: '从 Microsoft Store 获取',
     dlWindows: '下载 Windows 版',
     dlWindowsArm64: '下载 ARM 版 Windows',
     dlOther: '其他平台',
@@ -350,10 +373,12 @@ const strings: Record<string, UIStrings> = {
     dlArchMacAppStore: 'macOS 12 或更高版本，Apple 芯片',
     dlArchLinux: 'Debian 与 Ubuntu（.deb，Intel 与 AMD 64 位）',
     dlArchLinuxArm64: 'Debian 与 Ubuntu（.deb，ARM64）',
+    dlArchMsStore: 'Windows 10 与 11，Intel、AMD 与 ARM',
     dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
     dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',
     dlEarly: '早期版本',
-    dlWindowsUnsigned: 'Windows 版尚未进行代码签名，首次启动时系统会弹出提醒。',
+    dlWindowsUnsigned:
+      '直接下载的 Windows 版尚未进行代码签名，首次启动时系统会弹出提醒；Microsoft Store 版本已签名。',
     dlWindowsUnsignedLink: '如何继续安装',
     talkHeading: '联系我们',
     talkBody:

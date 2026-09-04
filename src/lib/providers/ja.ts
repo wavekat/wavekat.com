@@ -38,7 +38,7 @@ export const providers: Provider[] = [
       {
         label: '対応プラットフォーム',
         cells: [
-          'Mac、Windows、Linux（Windows 版は後発で、まだコード署名なし）。',
+          'Mac、Windows、Linux（Windows 版は Microsoft Store で配信）。',
           'Windows、Mac、iOS、Android。',
           'Windows のみ。',
         ],
@@ -148,7 +148,7 @@ export const providers: Provider[] = [
       },
       {
         q: 'Windows 向けの 2talk ソフトフォンはありますか？',
-        a: 'はい。WaveKat Voice は Windows 10 と 11 で動作し、Intel/AMD（x64）と ARM64 で別々のインストーラーがあり、2talk はガイド付きプロバイダー一覧に含まれています。Windows 版は Mac 版・Linux 版より後発で、まだコード署名をしていないため、初回起動時に「発行元不明」の警告が出ます。Windows での他の選択肢は MicroSIP と、2talk が再販する Bria です。',
+        a: 'はい。WaveKat Voice は Microsoft Store から Windows 10 と 11 で動作します。ひとつの掲載ページに Intel/AMD（x64）と ARM64 の両方のパッケージが含まれ、2talk はガイド付きプロバイダー一覧に含まれています。.exe の直接インストーラーもありますが、こちらはまだコード署名をしていないため初回起動時に「発行元不明」の警告が出ます。Store のパッケージは Microsoft が署名しています。Windows でのほかの選択肢は MicroSIP と 2talk が再販する Bria です。',
       },
       {
         q: '席にいないとき、WaveKat Voice が 2talk の着信に応答してくれますか？',

@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -193,8 +193,12 @@ const faqs = [
     a: 'Sí. WaveKat Voice está en el Mac App Store, gratis, y es la forma más sencilla de instalarlo en un Mac: Apple se encarga de la instalación y de cada actualización posterior. Es la misma app que la descarga directa desde wavekat.com, que sigue disponible si la prefiere. Requiere macOS 12 o posterior y un Mac con chip de Apple.',
   },
   {
+    q: '¿Está WaveKat Voice en Microsoft Store?',
+    a: 'Sí. WaveKat Voice está en Microsoft Store, gratis, y es la forma más sencilla de instalarlo en Windows: Microsoft firma el paquete, así que no aparece ningún aviso de editor desconocido, y una sola ficha cubre tanto los PC con Intel y AMD como los PC con ARM. Es la misma app que las descargas directas del .exe desde wavekat.com, que siguen disponibles si las prefiere. Requiere Windows 10 u 11.',
+  },
+  {
     q: '¿WaveKat Voice funciona en Windows?',
-    a: 'Sí: Windows 10 y 11, con instaladores separados para Intel o AMD y para Windows en ARM. La versión de Windows es más joven que las de Mac y Linux y aún no está firmada, así que Windows avisa de un editor desconocido la primera vez que la abre. WaveKat Voice es una app de escritorio, así que no hay versión para móvil o tableta: díganoslo si es lo que necesita.',
+    a: 'Sí: WaveKat Voice funciona en Windows 10 y 11 y está en Microsoft Store, cuya única ficha incluye tanto el paquete Intel/AMD como el ARM64. También hay instaladores directos para cada uno; esos aún no están firmados, así que Windows avisa de un editor desconocido la primera vez que abre uno, mientras que el paquete de la tienda lo firma Microsoft. WaveKat Voice es una app de escritorio, así que no hay versión para móvil o tableta: díganoslo si es lo que necesita.',
     link: { href: '/es/voice/talk/', label: 'Cuéntenos qué necesita' },
   },
   {
@@ -217,7 +221,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/es/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
   description:
     'Una app de escritorio que convierte su computadora en su teléfono de empresa: conteste y haga llamadas, con cada llamada grabada y transcrita. Funciona con el proveedor de telefonía que ya tiene.',
   featureList: [
@@ -231,12 +235,30 @@ const appSchema = {
     'Registro automático de llamadas en HubSpot, con sincronización de transcripciones y reproducción de grabaciones en el CRM',
     'Nueve idiomas de la app, en macOS, Windows y Linux',
   ],
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-  },
+  // One Offer per storefront, because that is the property that carries
+  // "you can get it here" — `sameAs` only says the listing is us. Both are
+  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // above stays single-valued and stays on Apple: Google has only ever
+  // documented it against one URL, and an untested array there would trade
+  // a property that works for one that might not.
+  offers: [
+    {
+      '@type': 'Offer',
+      url: MAC_APP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Apple App Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: MS_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+  ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
 };
 

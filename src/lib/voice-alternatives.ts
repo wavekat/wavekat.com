@@ -109,7 +109,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: 'Platforms',
-        wavekat: 'Mac, Windows and Linux (the Windows build is newer and not code-signed yet).',
+        wavekat: 'Mac, Windows and Linux (the Windows build ships via the Microsoft Store).',
         them: 'Mac, Windows, Linux, iOS, Android.',
       },
       {
@@ -144,7 +144,7 @@ export const alternatives: Alternative[] = [
       },
       {
         q: 'Can WaveKat Voice run on Windows?',
-        a: 'Yes. WaveKat Voice supports Windows 10 and 11, with separate installers for Intel/AMD (x64) and ARM64, alongside the Mac and Linux builds. The Windows build is younger than the other two and is not code-signed yet, so Windows warns about an unknown publisher on first launch. Linphone also has a Windows version.',
+        a: 'Yes. WaveKat Voice is on the Microsoft Store for Windows 10 and 11 — one listing that carries both the Intel/AMD (x64) and the ARM64 package — alongside the Mac and Linux builds. Direct .exe installers are available too; those are not code-signed yet, so Windows warns about an unknown publisher on first launch, while the Store package is signed by Microsoft. Linphone also has a Windows version.',
       },
       {
         q: 'Does Linphone record and transcribe calls like WaveKat Voice?',
@@ -236,7 +236,7 @@ export const alternativesZhHans: Alternative[] = [
       },
       {
         label: '支持平台',
-        wavekat: 'Mac、Windows 和 Linux（Windows 版较新，尚未代码签名）。',
+        wavekat: 'Mac、Windows 和 Linux（Windows 版在 Microsoft Store 上架）。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -271,7 +271,7 @@ export const alternativesZhHans: Alternative[] = [
       },
       {
         q: 'WaveKat Voice 能在 Windows 上运行吗？',
-        a: '可以。WaveKat Voice 支持 Windows 10 和 11，Intel/AMD（x64）与 ARM64 各有独立安装包，Mac 和 Linux 版同步发布。Windows 版比另外两个平台更年轻，而且尚未进行代码签名，首次启动时 Windows 会提示“未知发布者”。Linphone 同样提供 Windows 版本。',
+        a: '可以。WaveKat Voice 已在 Microsoft Store 上架，支持 Windows 10 和 11——同一个商店页面同时包含 Intel/AMD（x64）与 ARM64 两个安装包，Mac 和 Linux 版同步发布。也有直接下载的 .exe 安装包，但它们尚未进行代码签名，首次启动时 Windows 会提示“未知发布者”；商店版本由 Microsoft 签名。Linphone 同样提供 Windows 版本。',
       },
       {
         q: 'Linphone 会像 WaveKat Voice 一样录音和转写通话吗？',

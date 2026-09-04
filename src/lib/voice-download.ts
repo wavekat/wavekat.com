@@ -82,6 +82,39 @@ export const MAC_APP_STORE_URL =
 export const MAC_APP_STORE_CAMPAIGN_URL =
   `${MAC_APP_STORE_URL}&pt=128951683&ct=wavekat-com`;
 
+// The Microsoft Store listing, and a handoff for every reason the Mac App
+// Store one is: Microsoft resolves the storefront, signs the package,
+// installs it and updates it, and reports none of that back here. So this
+// target has no release to read a version or a size from, nothing for the
+// browser-side refresh to correct, and no download for the platform to
+// log — which is why it stays out of getDownload() and off PlatformKey.
+//
+// It is also the only Windows target that names no architecture. The
+// listing carries both the x64 and the arm64 package and the Store hands
+// each machine its own, so one URL serves every Windows PC we support.
+// The two direct installers below cannot do that, which is why they
+// remain two separate targets.
+//
+// No locale segment, for the reason the Apple link has none: an /en-us/
+// path pins every visitor to the US storefront, while a bare
+// apps.microsoft.com link redirects each one to their own.
+export const MS_STORE_URL = 'https://apps.microsoft.com/detail/9N7F4FSRVNZB';
+
+// The same listing, tagged so Partner Center can attribute the installs
+// that started here — the Windows half of the one number nobody else can
+// give us, since Microsoft counts the product page view and the install
+// and we cannot.
+//
+// Simpler than Apple's pair: the Microsoft Store reads one custom campaign
+// ID from `cid`, so there is no provider half that a missing value would
+// invalidate. `?` and not `&` — unlike the App Store link, this URL
+// carries no query of its own.
+//
+// Deliberately NOT the canonical URL, exactly as with the Mac pair:
+// MS_STORE_URL stays untagged for `sameAs` in the /voice/ structured data,
+// because schema should name the listing and not our attribution of it.
+export const MS_STORE_CAMPAIGN_URL = `${MS_STORE_URL}?cid=wavekat-com`;
+
 export type PlatformKey =
   | 'mac'
   | 'linux-x64'

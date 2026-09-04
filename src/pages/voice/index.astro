@@ -15,7 +15,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL } from '../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../lib/voice-download';
 import { resolveLocale, t } from '../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -186,8 +186,12 @@ const faqs = [
     a: 'Yes. WaveKat Voice is on the Mac App Store, free to download, and it is the easiest way to install it on a Mac — Apple handles the install and every update after it. It is the same app as the direct download from wavekat.com, which stays available if you prefer it. It needs macOS 12 or later and a Mac with an Apple chip.',
   },
   {
+    q: 'Is WaveKat Voice on the Microsoft Store?',
+    a: 'Yes. WaveKat Voice is on the Microsoft Store, free to download, and it is the easiest way to install it on Windows — Microsoft signs the package, so there is no "unknown publisher" warning, and one listing covers Intel and AMD PCs and ARM PCs alike. It is the same app as the direct .exe downloads from wavekat.com, which stay available if you prefer them. It needs Windows 10 or 11.',
+  },
+  {
     q: 'Does WaveKat Voice run on Windows?',
-    a: 'Yes — Windows 10 and 11, with separate installers for Intel or AMD and for Windows on ARM. The Windows build is younger than the Mac and Linux ones and isn\'t code-signed yet, so Windows shows an "unknown publisher" warning the first time you open it. WaveKat Voice is a desktop app, so there is no phone or tablet version — tell us if that is what you need.',
+    a: 'Yes — WaveKat Voice runs on Windows 10 and 11, and it is on the Microsoft Store, whose single listing carries both the Intel/AMD and the ARM64 package. Direct installers for each are available too; those aren\'t code-signed yet, so Windows shows an "unknown publisher" warning the first time you open one, while the Store package is signed by Microsoft. WaveKat Voice is a desktop app, so there is no phone or tablet version — tell us if that is what you need.',
     link: { href: '/voice/talk/', label: 'Tell us what you need' },
   },
   {
@@ -209,7 +213,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
   description:
     'A desktop app that turns your computer into your business phone — answer and place calls, with every call recorded and transcribed. Works with the phone provider you already have.',
   featureList: [
@@ -223,12 +227,30 @@ const appSchema = {
     'Automatic call logging to HubSpot, with transcript sync and in-CRM recording playback',
     'Nine app languages, on macOS, Windows and Linux',
   ],
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-  },
+  // One Offer per storefront, because that is the property that carries
+  // "you can get it here" — `sameAs` only says the listing is us. Both are
+  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // above stays single-valued and stays on Apple: Google has only ever
+  // documented it against one URL, and an untested array there would trade
+  // a property that works for one that might not.
+  offers: [
+    {
+      '@type': 'Offer',
+      url: MAC_APP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Apple App Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: MS_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+  ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
 };
 

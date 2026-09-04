@@ -38,7 +38,7 @@ export const providers: Provider[] = [
       {
         label: '지원 플랫폼',
         cells: [
-          'Mac, Windows, Linux (Windows 빌드는 더 나중에 나왔고 아직 코드 서명 없음).',
+          'Mac, Windows, Linux (Windows 빌드는 Microsoft Store에서 제공).',
           'Windows, Mac, iOS, Android.',
           'Windows 전용.',
         ],
@@ -148,7 +148,7 @@ export const providers: Provider[] = [
       },
       {
         q: 'Windows용 2talk 소프트폰이 있나요?',
-        a: '네. WaveKat Voice는 Windows 10과 11에서 실행되며 Intel/AMD(x64)와 ARM64용 설치 파일이 각각 있고, 2talk가 안내형 통신사 목록에 포함되어 있습니다. Windows 빌드는 Mac·Linux 빌드보다 나중에 나왔고 아직 코드 서명이 되어 있지 않아 첫 실행 시 Windows가 알 수 없는 게시자라고 경고합니다. Windows의 다른 선택지는 MicroSIP와 2talk가 재판매하는 Bria입니다.',
+        a: '네. WaveKat Voice는 Microsoft Store에서 Windows 10과 11로 실행되며, 하나의 스토어 페이지에 Intel/AMD(x64)와 ARM64 패키지가 모두 들어 있고 2talk가 안내형 통신사 목록에 포함되어 있습니다. .exe 직접 설치 파일도 있지만 아직 코드 서명이 되어 있지 않아 첫 실행 시 Windows가 알 수 없는 게시자라고 경고합니다. 스토어 패키지는 Microsoft가 서명합니다. Windows의 다른 선택지는 MicroSIP과 2talk가 재판매하는 Bria입니다.',
       },
       {
         q: '자리에 없을 때 WaveKat Voice가 2talk 전화를 대신 받아 주나요?',

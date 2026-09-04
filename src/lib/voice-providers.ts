@@ -100,7 +100,7 @@ export const providers: Provider[] = [
       {
         label: 'Platforms',
         cells: [
-          'Mac, Windows and Linux (the Windows build is newer and not code-signed yet).',
+          'Mac, Windows and Linux (the Windows build ships via the Microsoft Store).',
           'Windows, Mac, iOS, and Android.',
           'Windows only.',
         ],
@@ -210,7 +210,7 @@ export const providers: Provider[] = [
       },
       {
         q: 'Is there a 2talk softphone for Windows?',
-        a: 'Yes. WaveKat Voice runs on Windows 10 and 11, with separate installers for Intel/AMD (x64) and ARM64, and 2talk is in its guided provider list. The Windows build is younger than the Mac and Linux ones and is not code-signed yet, so Windows warns about an unknown publisher on first launch. MicroSIP and 2talk’s resold Bria are the other Windows options.',
+        a: 'Yes. WaveKat Voice runs on Windows 10 and 11 from the Microsoft Store — one listing carrying both the Intel/AMD (x64) and the ARM64 package — and 2talk is in its guided provider list. Direct .exe installers are available too; those are not code-signed yet, so Windows warns about an unknown publisher on first launch, while the Store package is signed by Microsoft. MicroSIP and 2talk’s resold Bria are the other Windows options.',
       },
       {
         q: 'Can WaveKat Voice answer my 2talk calls when I am not there?',
@@ -271,7 +271,7 @@ export const providersZhHans: Provider[] = [
       {
         label: '支持平台',
         cells: [
-          'Mac、Windows 和 Linux（Windows 版较新，尚未代码签名）。',
+          'Mac、Windows 和 Linux（Windows 版在 Microsoft Store 上架）。',
           'Windows、Mac、iOS 和 Android。',
           '仅 Windows。',
         ],
@@ -365,7 +365,7 @@ export const providersZhHans: Provider[] = [
       },
       {
         q: 'Windows 上有 2talk 软电话吗？',
-        a: '有。WaveKat Voice 支持 Windows 10 和 11，Intel/AMD（x64）与 ARM64 各有独立安装包，并且 2talk 已内置于其向导式运营商列表。Windows 版比 Mac 版和 Linux 版更年轻，而且尚未进行代码签名，首次启动时 Windows 会提示“未知发布者”。Windows 上的其他选择是 MicroSIP 和 2talk 转售的 Bria。',
+        a: '有。WaveKat Voice 已在 Microsoft Store 上架，支持 Windows 10 和 11——同一个商店页面同时包含 Intel/AMD（x64）与 ARM64 两个安装包，并且 2talk 已内置于其向导式运营商列表。也有直接下载的 .exe 安装包，但它们尚未进行代码签名，首次启动时 Windows 会提示“未知发布者”；商店版本由 Microsoft 签名。Windows 上的其他选择是 MicroSIP 和 2talk 转售的 Bria。',
       },
       {
         q: '我不在电脑前时，WaveKat Voice 能替我接 2talk 来电吗？',

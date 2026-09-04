@@ -38,7 +38,7 @@ export const providers: Provider[] = [
       {
         label: 'Plataformas',
         cells: [
-          'Mac, Windows y Linux (la versión de Windows es más reciente y aún no está firmada).',
+          'Mac, Windows y Linux (la versión de Windows se distribuye por Microsoft Store).',
           'Windows, Mac, iOS y Android.',
           'Solo Windows.',
         ],
@@ -148,7 +148,7 @@ export const providers: Provider[] = [
       },
       {
         q: '¿Hay un softphone de 2talk para Windows?',
-        a: 'Sí. WaveKat Voice funciona en Windows 10 y 11, con instaladores separados para Intel/AMD (x64) y ARM64, y 2talk está en su lista guiada de proveedores. La versión de Windows es más reciente que las de Mac y Linux y aún no está firmada, así que Windows avisa de un editor desconocido en el primer arranque. Las otras opciones en Windows son MicroSIP y el Bria que revende 2talk.',
+        a: 'Sí. WaveKat Voice funciona en Windows 10 y 11 desde Microsoft Store — una sola ficha que incluye tanto el paquete Intel/AMD (x64) como el ARM64 — y 2talk está en su lista guiada de proveedores. También hay instaladores .exe directos; esos aún no están firmados digitalmente, así que Windows avisa de un editor desconocido en el primer arranque, mientras que el paquete de la tienda lo firma Microsoft. Las otras opciones en Windows son MicroSIP y el Bria revendido por 2talk.',
       },
       {
         q: '¿WaveKat Voice puede atender mis llamadas de 2talk cuando no estoy?',
