@@ -33,6 +33,7 @@ export const ui: UIStrings = {
   dlWindowsUnsigned:
     '直接下載的 Windows 版尚未進行程式碼簽章，首次啟動時系統會跳出提醒；Microsoft Store 版本已簽章。',
   dlWindowsUnsignedLink: '如何繼續安裝',
+  dlWindowsDirect: 'Windows 直接下載（.exe）',
   talkHeading: '聯絡我們',
   talkBody:
     '有疑問、建議，或希望我們支援某款裝置？電子郵件是聯絡我們的最佳方式——我們會閱讀每一則訊息，並盡快回覆。',

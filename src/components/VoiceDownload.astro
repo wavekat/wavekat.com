@@ -33,6 +33,7 @@
 // after the platform swap rather than with it.
 import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
+import VoiceDownloadRow from './VoiceDownloadRow.astro';
 import {
   getDownload,
   DOWNLOAD_BASE,
@@ -178,8 +179,15 @@ const groups = [
         // `direct`, so nothing can promote it — the x64 .exe is a menu row
         // for the reader who wants the file rather than the Store. It is
         // also, with the row below, what the unsigned-build note is about.
+        //
+        // `tucked`: one level further down than the other menu rows, behind
+        // its own disclosure. The Store is the better first run on Windows
+        // (signed, auto-updating, picks the right package), so the menu
+        // should read "Store" for Windows by default and hand out the .exe
+        // only to a reader who goes looking for a file.
         key: 'windows-x64',
         archKey: 'direct',
+        tucked: true,
         conversion: 'download_windows_x64',
         label: ui.dlWindows,
         arch: ui.dlArchWindowsX64,
@@ -199,6 +207,7 @@ const groups = [
         // the row is still a separate menu entry.
         key: 'windows-arm64',
         archKey: 'direct-arm64',
+        tucked: true,
         conversion: 'download_windows_arm64',
         label: ui.dlWindowsArm64,
         arch: ui.dlArchWindowsArm64,
@@ -226,24 +235,20 @@ const entries = groups.flatMap((g) =>
   g.rows.map((row) => ({
     group: g,
     row,
-    Tag: row.href ? 'a' : 'button',
+    Tag: row.href ? ('a' as const) : ('button' as const),
     avail: !!(row.href || row.dl),
+    tucked: 'tucked' in row && !!row.tucked,
   })),
 );
+const shown = entries.filter((e) => !e.tucked);
+const tucked = entries.filter((e) => e.tucked);
 
-// The unsigned note used to be conditional — it hid for a Windows visitor,
-// on the grounds that they were already reading the same warning under
-// their button. Neither half of that is true any more. The Windows button
-// is the Microsoft Store, whose package Microsoft signs, so there is no
-// warning to repeat and nothing to duplicate; and the note is no longer
-// about Windows at all but about the two direct .exe rows, which are
-// menu-only by construction and therefore always right here. So it is
-// unconditional, and the second copy that lived under the button is gone.
-//
-// It still caps the group at the foot of the panel rather than sitting on
-// one row: attached to the x64 row it rendered between the two Windows
-// entries, reading as a caveat about x64 alone and cutting the ARM row
-// loose from the group above it.
+// The unsigned note is about exactly the two tucked rows, so it lives with
+// them: as the subtitle of the disclosure that hides them, where it doubles
+// as the reason they are hidden, and it is unconditional because those rows
+// are menu-only by construction and therefore always right there. The
+// "how to get past it" link can't sit inside a <summary> (a click on it
+// would toggle the disclosure), so it follows the rows once they're open.
 
 // Mac is the SSR default primary; the script swaps to Linux or Windows.
 // `DEFAULT_ARCH` is the arch half of the same statement: nothing is known
@@ -290,24 +295,17 @@ const primaryCls =
 const panelCls =
   'absolute left-0 top-full z-20 mt-2 flex w-full max-w-full flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl sm:w-max sm:min-w-[19rem] sm:max-w-[calc(100vw-2rem)] dark:border-white/10 dark:bg-wk-surface/95';
 
-const rowCls =
-  'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
-
-// `shrink-0 whitespace-nowrap` — the label beside it wraps in several
-// languages, and a two-line pill looks broken.
-const tagCls =
-  'shrink-0 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold whitespace-nowrap uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
-
-// Sits at the foot of the panel now, so it pays for its own top spacing —
-// the rows above are buttons with their own padding and would otherwise
-// leave the note crowded against the last one.
-//
 // The `max-w` is what keeps a `w-max` panel sane: a paragraph's max-content
 // width is the whole sentence on one line, so without a cap this one
 // sentence would set the width of the entire menu. Capped below the panel's
 // minimum, it wraps like a caption and the rows decide the width.
-const noteCls =
-  'max-w-[17rem] px-3 pt-1 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
+const noteCls = 'max-w-[17rem] text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
+
+// The tucked disclosure's summary is styled as a row of the panel — same
+// inset, same hover — so it reads as one more choice rather than a footer,
+// but in the caption colours, so it ranks below the real rows above it.
+const tuckedSummaryCls =
+  'flex cursor-pointer list-none items-start justify-between gap-3 rounded px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5 [&::-webkit-details-marker]:hidden';
 ---
 
 {/* `relative` so the menu has something page-wide to measure against on a
@@ -347,54 +345,39 @@ const noteCls =
     ))}
 
     {/* Other platforms — native <details> so it works without JS. Each row
-        is WRAPPED, so promoting a platform toggles the wrapper while the
-        row's own hidden state stays about whether that file exists. Two
-        independent reasons to hide, on one element, is the bug this
-        avoids. */}
+        (VoiceDownloadRow) is WRAPPED, so promoting a platform toggles the
+        wrapper while the row's own hidden state stays about whether that
+        file exists. Two independent reasons to hide, on one element, is
+        the bug this avoids. */}
     <details class="group sm:relative" data-dl-more>
       <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
         {ui.dlOther}
         <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
       </summary>
       <div class={panelCls}>
-        {entries.map((e) => (
-          <div
-            data-dl-alt={e.group.key}
-            data-dl-alt-arch={e.row.archKey}
-            data-dl-show="flex"
-            class:list={['flex-col', isDefaultPrimary(e) ? 'hidden' : 'flex']}
-          >
-            <e.Tag
-              type={e.row.href ? undefined : 'button'}
-              href={e.row.href ?? undefined}
-              data-conversion={e.row.conversion}
-              data-dl-platform={e.row.href ? undefined : e.row.key}
-              data-dl-row={e.row.href ? undefined : e.row.key}
-              data-dl-show="inline-flex"
-              class:list={[rowCls, e.avail ? 'inline-flex' : 'hidden']}
-            >
-              <e.group.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
-              <span class="flex min-w-0 flex-col">
-                <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
-                  {e.row.label}
-                  {e.group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
-                </span>
-                {/* The size is ours to state only for a file we publish.
-                    The App Store row shows its requirement line alone —
-                    Apple prints the download size on the listing. */}
-                {/* Free to wrap on a phone, where the panel is as wide as the
-                    screen and several of these lines aren't. The size keeps its
-                    separator and its unit together when it does — a line ending
-                    "· 102" with "MB" alone under it reads as a broken layout. */}
-                <span class="text-[11px] font-normal text-gray-500 sm:whitespace-nowrap dark:text-gray-400">{e.row.arch}{e.row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={e.row.key}>{e.row.dl.size}</span></span>}</span>
-              </span>
-            </e.Tag>
+        {shown.map((e) => <VoiceDownloadRow entry={e} hidden={isDefaultPrimary(e)} ui={ui} />)}
+
+        {/* The direct Windows installers, one level down. A nested native
+            <details>, so it needs no script and a click on its summary is
+            inside the outer menu — the outside-click handler leaves the
+            menu open. `group/direct` so its chevron doesn't turn with the
+            outer menu's. It closes when the menu closes, so a reopened
+            menu always starts on the recommended view. */}
+        <details class="group/direct" data-dl-direct>
+          <summary class={tuckedSummaryCls}>
+            <span class="flex min-w-0 flex-col gap-0.5">
+              <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">{ui.dlWindowsDirect}</span>
+              <span class={noteCls}>{ui.dlWindowsUnsigned}</span>
+            </span>
+            <ChevronDown class="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-500 transition-transform group-open/direct:rotate-180 dark:text-gray-400" />
+          </summary>
+          <div class="flex flex-col gap-1 pt-1">
+            {tucked.map((e) => <VoiceDownloadRow entry={e} hidden={isDefaultPrimary(e)} ui={ui} />)}
+            <p class:list={[noteCls, 'block px-3 pt-1 pb-1']}>
+              <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
+            </p>
           </div>
-        ))}
-        <p class:list={[noteCls, 'block']}>
-          {ui.dlWindowsUnsigned}{' '}
-          <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-        </p>
+        </details>
       </div>
     </details>
 
@@ -596,16 +579,21 @@ const noteCls =
   // when you click elsewhere. Close any open one on an outside click or
   // the Escape key, the way a menu is expected to behave.
   (function () {
+    // Closing the menu also folds the tucked Windows disclosure inside it,
+    // so the next open starts on the recommended view rather than wherever
+    // the last visit left it.
+    function close(d) {
+      d.removeAttribute('open');
+      d.querySelectorAll('[data-dl-direct][open]').forEach(function (n) { n.removeAttribute('open'); });
+    }
     document.addEventListener('click', function (e) {
       document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {
-        if (!d.contains(e.target)) d.removeAttribute('open');
+        if (!d.contains(e.target)) close(d);
       });
     });
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
-      document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {
-        d.removeAttribute('open');
-      });
+      document.querySelectorAll('[data-dl-more][open]').forEach(close);
     });
   })();
 </script>

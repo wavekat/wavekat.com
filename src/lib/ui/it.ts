@@ -33,6 +33,7 @@ export const ui: UIStrings = {
   dlWindowsUnsigned:
     'I download diretti per Windows non sono firmati, quindi Windows avvisa al primo avvio. La versione di Microsoft Store è firmata.',
   dlWindowsUnsignedLink: 'Come procedere',
+  dlWindowsDirect: 'Installer .exe diretti per Windows',
   talkHeading: 'Contattaci',
   talkBody:
     'Domande, suggerimenti o un dispositivo che vorresti vedere supportato? L’email è il modo migliore per raggiungerci: leggiamo ogni messaggio e rispondiamo il prima possibile.',
