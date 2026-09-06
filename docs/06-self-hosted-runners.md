@@ -36,8 +36,9 @@ userland everywhere means a `run:` block can never work on one host and fail on
 the other.
 
 The runner image (`scripts/docker/`) was already arch-portable —
-`dpkg --print-architecture` selects the runner tarball, and the `gh` apt line is
-arch-templated — so it builds natively on Apple Silicon with **no changes and no
+`dpkg --print-architecture` selects the runner tarball, the `gh` apt line is
+arch-templated, and the AWS CLI installer resolves `x86_64`/`aarch64` the same
+way — so it builds natively on Apple Silicon with **no changes and no
 Rosetta**.
 
 ## 2. Setting up the Mac mini
