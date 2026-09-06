@@ -29,7 +29,6 @@ export const ui: UIStrings = {
   dlArchMsStore: 'Windows 10・11（Intel・AMD・ARM）',
   dlArchWindowsX64: 'Windows 10・11（Intel・AMD、x64）',
   dlArchWindowsArm64: 'Windows 11（Snapdragon、ARM64）',
-  dlEarly: '早期版',
   dlWindowsUnsigned:
     '直接ダウンロードした Windows 版はコード署名されていないため、初回起動時に警告が表示されます。Microsoft Store 版は署名済みです。',
   dlWindowsUnsignedLink: '進める方法',

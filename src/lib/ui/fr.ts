@@ -29,7 +29,6 @@ export const ui: UIStrings = {
   dlArchMsStore: 'Windows 10 et 11, Intel, AMD et ARM',
   dlArchWindowsX64: 'Windows 10 et 11, Intel et AMD (x64)',
   dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
-  dlEarly: 'Débuts',
   dlWindowsUnsigned:
     "Les téléchargements directs pour Windows ne sont pas signés : Windows affiche un avertissement au premier lancement. La version du Microsoft Store, elle, est signée.",
   dlWindowsUnsignedLink: 'Comment passer outre',

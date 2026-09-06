@@ -29,7 +29,6 @@ export const ui: UIStrings = {
   dlArchMsStore: 'Windows 10 e 11, Intel, AMD e ARM',
   dlArchWindowsX64: 'Windows 10 e 11, Intel e AMD (x64)',
   dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
-  dlEarly: 'Iniziale',
   dlWindowsUnsigned:
     'I download diretti per Windows non sono firmati, quindi Windows avvisa al primo avvio. La versione di Microsoft Store è firmata.',
   dlWindowsUnsignedLink: 'Come procedere',

@@ -81,7 +81,7 @@ const groups = buildGroups(
       </h3>
       <div class="flex flex-col gap-1">
         {group.rows.map((row) => (
-          <VoiceDownloadRow group={group} row={row} ui={ui} context="grid" />
+          <VoiceDownloadRow group={group} row={row} context="grid" />
         ))}
       </div>
       {/* Only Windows has a note, and it is about the two direct .exe rows
