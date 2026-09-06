@@ -24,6 +24,11 @@ const ui = t(lang);
 // the SmartScreen walkthrough is a section further down it.
 const unsignedHref = `${localizedPath('/voice/download/', lang)}#windows`;
 
+// The changelog is where the version number leads: a reader who wants to
+// know what they are about to install wants the release notes, not the
+// number on its own.
+const changelogHref = localizedPath('/voice/changelog/', lang);
+
 const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
   getDownload('mac'),
   getDownload('linux-x64'),
@@ -38,6 +43,33 @@ const groups = buildGroups(
   { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL },
 );
 ---
+
+{/* The version, once, above the whole grid — the page states five
+    targets and this states the release they all come from.
+
+    Keyed to `mac` and to nothing else, deliberately. The printed value and
+    the browser-side correction have to name the SAME target or they can
+    disagree the first time a release skips one, and `mac` is the target
+    that has never been null: it is in the offline FALLBACK table, and the
+    App Store build is cut from every release. So the SSR value, the
+    `data-dl-version` the refresh writes into, and the `data-dl-row` that
+    withdraws the whole line if the platform ever reports mac unpublished
+    are one key. No new script and no second fetch — `VoiceDownloadScripts`
+    below already does both for the rows.
+
+    The store rows are the reason this is a page-level line rather than a
+    per-row one: Apple and Microsoft resolve their own builds and report no
+    version back here, so half the grid could never carry one. */}
+<p
+  data-dl-row="mac"
+  data-dl-show="block"
+  class:list={['mb-4 text-xs text-gray-500 dark:text-gray-400', mac ? 'block' : 'hidden']}
+>
+  {ui.dlLatestRelease} v<span data-dl-version="mac">{mac?.version}</span> · <a
+    href={changelogHref}
+    class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity"
+  >{ui.subChangelog} →</a>
+</p>
 
 {/* Three equal columns that stack on a phone. `items-start` so a column
     with fewer rows doesn't stretch its card to match the tallest. */}
