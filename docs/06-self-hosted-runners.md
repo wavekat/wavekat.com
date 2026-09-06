@@ -206,6 +206,12 @@ a runner that is mid-job finishes that job before its container goes away
 rather than failing it. Check `docker exec gha-runner-N bash -c 'ps -eo comm=
 | grep -i "[R]unner.Worker"'` first if you want to know what is in flight.
 
+It still rebuilds the image first, and that is not always quick: if the
+`ubuntu:24.04` base has moved since the last build, every layer misses cache
+and the apt/rustup/runner-tarball steps run again — 15–25 minutes on Apple
+Silicon. The old containers keep serving jobs throughout; they are only
+replaced once the build lands. Budget the time rather than interrupting it.
+
 ## 6. DNS: the containers get their own resolvers
 
 The Mac's runner containers are started with

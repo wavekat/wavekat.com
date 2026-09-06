@@ -122,7 +122,7 @@ ExecStart=/usr/bin/docker run --rm \\
   -e RUNNER_LABELS=\${RUNNER_LABELS} \\
   -e RUNNER_TOKEN=\${RUNNER_TOKEN} \\
   ${IMAGE}
-ExecStop=/usr/bin/docker stop --time=120 gha-runner-%i
+ExecStop=/usr/bin/docker stop -t 120 gha-runner-%i
 Restart=always
 RestartSec=10
 TimeoutStopSec=180

@@ -171,7 +171,13 @@ for i in $(seq 1 "${COUNT}"); do
     # run.sh — so a runner mid-job finishes that job before exiting
     # rather than failing it. Then drop the container but keep the
     # volume: registration and the warm caches survive.
-    "${DOCKER}" stop --time=180 "${CONTAINER}" >/dev/null 2>&1 || true
+    #
+    # `-t`, not `--time`: Docker 29 renamed the long flag to `--timeout`
+    # and only warns on the old one for now. Since the failure is
+    # swallowed by `|| true`, a flag Docker later removes would silently
+    # turn this back into a hard kill. `-t` has meant the same thing
+    # throughout.
+    "${DOCKER}" stop -t 180 "${CONTAINER}" >/dev/null 2>&1 || true
     "${DOCKER}" rm -f "${CONTAINER}" >/dev/null 2>&1 || true
   else
     # Tear down any previous instance and wipe its volume, so the fresh
