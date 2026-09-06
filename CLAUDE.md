@@ -176,6 +176,38 @@ git submodule update --remote vendor/wavekat-brand
 make sync
 ```
 
+### The favicon says which environment you're on
+
+Every environment is a **separate build** of a static site, so the favicon is
+tinted at sync time rather than swapped by runtime JS: `scripts/lib/deploy-env.js`
+resolves `dev` / `preview` / `prod` from vars the pipeline already sets
+(`SITE_ASSET_ORIGIN` → preview, set only by `preview.yml`; `CF_PAGES_BRANCH` →
+prod on `main` and preview otherwise; anything else → dev), and
+`scripts/sync-brand.js` fills the icon's rounded square accordingly — **amber
+`#f59e0b` for dev, purple `#a855f7` for preview, the mark's own black for
+production**. The W stays white throughout.
+
+Three things about this are deliberate:
+
+- **The asset changes, not the markup.** `Base.astro`, the manifest and the
+  `<link rel="icon">` set are untouched, so the tint reaches Safari and Windows
+  (which ignore SVG favicons entirely) via the PNG/ICO fallbacks too. Production
+  output is byte-identical to what it was before the tint existed — verify with
+  `WK_DEPLOY_ENV=prod npm run sync` and a hash of `public/favicon*`.
+- **The hues match wavekat-platform's env badges** (`apps/web/src/lib/env.ts`),
+  so amber means dev and purple means preview across the ecosystem. What tells
+  the two sites apart in a crowded tab bar is the *glyph* — a W here, an emoji
+  (🛠 / 🧪) there. Keep it that way: don't give wavekat.com its own hues.
+- **A local `npm run build` is a `dev` build**, not a counterfeit production one,
+  and its favicon says so. Reproduce any environment with
+  `WK_DEPLOY_ENV=preview npm run sync`.
+
+Only the *icon* pair is tinted (`wavekat-icon-{light,dark}.svg`), and it is used
+for nothing but the favicon — the visible header and footer wordmarks are the
+`tight` pair, so no rendered page changes colour. If `vendor/wavekat-brand` ever
+restructures the icon, the tint step **throws** rather than silently shipping
+production's black favicon to every preview.
+
 ## Product screenshots
 
 Real, localized app screenshots from wavekat-voice's screenshot pipeline (its
