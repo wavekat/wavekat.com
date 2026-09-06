@@ -198,8 +198,13 @@ For a flag change that is unnecessary and slow — the volume holds `.runner`,
 runners fast.
 
 ```sh
-RUNNER_KEEP_VOLUME=1 ./scripts/setup-gha-runners-macos.sh
+RUNNER_KEEP_VOLUME=1 ./scripts/setup-gha-runners-macos.sh   # Mac mini
+RUNNER_KEEP_VOLUME=1 ./scripts/setup-gha-runners-docker.sh  # Linux workstation
 ```
+
+Both scripts take these flags. The Linux one gained them late — it used to
+wipe every volume unconditionally, which is why an image change there once
+meant re-registering four runners and rebuilding every cache from cold.
 
 keeps both. It needs no token (the entrypoint only calls `config.sh` when
 `.runner` is absent) and stops each container with `docker stop --time=180`, so
