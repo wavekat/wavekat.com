@@ -278,10 +278,38 @@ started with `--dns 192.0.2.1` (TEST-NET) *fails* to resolve, which proves
 Docker Desktop is not quietly intercepting port 53 — the flag really decides
 where the query goes.
 
-The Linux twin (`setup-gha-runners-docker.sh`) has the same `RUNNER_DNS` knob
-but leaves it **empty by default**: containers there inherit the machine's own
-resolvers, have never lost DNS, and pinning public servers would break any
-LAN-internal name that host needs.
+### The Linux host had the same single point of failure
+
+`setup-gha-runners-docker.sh` used to leave `RUNNER_DNS` **empty**, on the
+reasoning that containers there inherit the machine's own resolvers and so
+need no help. Both halves of that were wrong, and a wavekat.com build died
+proving it on 2026-09-06 — `getaddrinfo EAI_AGAIN fonts.googleapis.com`, one
+second after the same job had resolved github.com, nodejs.org and
+registry.npmjs.org without trouble.
+
+A container does not inherit the host's resolvers; it gets the subset Docker
+considers usable. On a systemd-resolved box that is a strict *reduction*:
+
+| | resolvers |
+|---|---|
+| host `/run/systemd/resolve/resolv.conf` | `192.168.1.1`, `fe80::…%3` |
+| container `/etc/resolv.conf` | `192.168.1.1` |
+
+The IPv6 entry is link-local, and its scope id is meaningless in another
+network namespace, so Docker drops it. What is left is one server with
+nothing behind it — the same shape as the Mac's forwarder, reached by a
+different route.
+
+So the knob now **derives** its default: the host's own IPv4 servers first,
+then `1.1.1.1` and `8.8.8.8`. Putting the host's servers first is what the
+original empty default was really protecting — LAN-internal names still
+resolve through the router exactly as before, and the public servers are only
+consulted when the router fails to answer. `RUNNER_DNS="…"` overrides the
+list; `RUNNER_DNS=""` opts out entirely and restores Docker's own behaviour.
+
+Note this does not change Tailscale MagicDNS: `100.100.100.100` was never in
+the container's resolver list, so `*.ts.net` did not resolve from a runner
+before this change and still does not.
 
 ### `Name or service not known` on `Set up job` is a DNS blip, not a broken runner
 

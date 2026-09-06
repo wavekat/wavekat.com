@@ -32,12 +32,39 @@ COUNT="${RUNNER_COUNT:-4}"
 PREFIX="${RUNNER_PREFIX:-$(hostname -s)}"
 RUNNER_LABELS="${RUNNER_LABELS:-wavekat-ci,${PREFIX}}"
 IMAGE="${RUNNER_IMAGE:-wavekat/gha-runner:latest}"
-# Resolvers to write into each container's /etc/resolv.conf. Empty by
-# default: on this host containers inherit the machine's own resolvers
-# and have never lost DNS, and pinning public servers would break any
-# LAN-internal name. The macOS twin defaults these ON — see
-# docs/06-self-hosted-runners.md §6 for why the two differ.
-RUNNER_DNS="${RUNNER_DNS:-}"
+# Resolvers to write into each container's /etc/resolv.conf.
+#
+# Left unset, this derives them, because "inherit the host's resolvers" is
+# not what actually happens. Docker copies only the *usable* entries out of
+# the host's resolv.conf, and on a systemd-resolved box the IPv6 link-local
+# one is not usable from another network namespace — its scope id means
+# nothing there. So it is dropped, and the container is left with exactly
+# one server:
+#
+#   host      /run/systemd/resolve/resolv.conf : 192.168.1.1, fe80::...%3
+#   container /etc/resolv.conf                 : 192.168.1.1
+#
+# One server is one point of failure with nothing for glibc to fall over to
+# when it answers with an error — the same shape as the Mac's forwarder, and
+# it took a wavekat.com build down on 2026-09-06. Keeping the host's own
+# IPv4 servers *first* means LAN-internal names still resolve, which is what
+# leaving this empty was trying to protect; the public servers behind them
+# are only ever reached when the first one fails to answer.
+#
+# Set it to a space-separated list to override. Set it to the empty string
+# to opt out entirely and let Docker do whatever it would have done.
+RUNNER_DNS_FALLBACK="${RUNNER_DNS_FALLBACK:-1.1.1.1 8.8.8.8}"
+if [[ -z "${RUNNER_DNS+set}" ]]; then
+  # Loopback is the host's own stub (unreachable from a container) and
+  # fe80:: is link-local; both are exactly what Docker already discards.
+  host_ns="$(grep -hE '^[[:space:]]*nameserver' \
+      /run/systemd/resolve/resolv.conf /etc/resolv.conf 2>/dev/null \
+    | awk '{print $2}' \
+    | grep -vE '^(127\.|::1$|fe80:)' \
+    | awk '!seen[$0]++' \
+    | tr '\n' ' ')"
+  RUNNER_DNS="${host_ns}${RUNNER_DNS_FALLBACK}"
+fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCKER_CONTEXT="${SCRIPT_DIR}/docker"
 
