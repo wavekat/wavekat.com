@@ -186,3 +186,34 @@ that warmth is why these runners are fast. The sharp edge is that a job failing
 on one host and not the other is usually stale state, not code. The reset is
 `docker rm -f gha-runner-N && docker volume rm gha-runner-N`, then re-run the
 setup script.
+
+### `Name or service not known` on `Set up job` is a DNS blip, not a broken runner
+
+A job can die before its first step with
+
+```
+Failed to download action 'https://codeload.github.com/…'.
+Error: Name or service not known (codeload.github.com:443)
+```
+
+That is Docker's embedded resolver (`127.0.0.11`) briefly failing to reach its
+upstream inside the Docker Desktop VM — a container-level DNS hiccup, not a
+network outage and not a container that needs rebuilding. Two things make it
+easy to misread:
+
+- **It looks fatal.** The runner's own three attempts (~22 s apart) all fall
+  inside the same blip, so the job fails hard at `Set up job` with nothing of
+  the workflow having run.
+- **It looks host-specific.** It hits one container while its siblings on the
+  same Mac mini pass minutes either side, so the tempting conclusion is that
+  that runner is broken. It isn't: re-running the job on the *same* container
+  succeeds.
+
+**Re-run the failed job first** (`gh run rerun <id> --failed`) and only start
+tearing containers down if it fails again on a second host. Nothing in a
+workflow can retry this step — downloading the action happens before any step
+the workflow controls, and the retry policy is the runner's own.
+
+The one that actually matters is `Release`: release-please never runs, so the
+release PR silently stops tracking `main` at the last green push. Its "last
+updated" timestamp is the tell.
