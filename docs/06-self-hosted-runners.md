@@ -206,11 +206,26 @@ a runner that is mid-job finishes that job before its container goes away
 rather than failing it. Check `docker exec gha-runner-N bash -c 'ps -eo comm=
 | grep -i "[R]unner.Worker"'` first if you want to know what is in flight.
 
-It still rebuilds the image first, and that is not always quick: if the
-`ubuntu:24.04` base has moved since the last build, every layer misses cache
-and the apt/rustup/runner-tarball steps run again — 15–25 minutes on Apple
-Silicon. The old containers keep serving jobs throughout; they are only
-replaced once the build lands. Budget the time rather than interrupting it.
+Add `RUNNER_SKIP_BUILD=1` unless you actually changed the image. On its own,
+`RUNNER_KEEP_VOLUME=1` still rebuilds first, and that is not reliably cheap: if
+the `ubuntu:24.04` base has moved since the last build, every layer misses
+cache and the apt/rustup/runner-tarball steps run again — ~25 minutes on Apple
+Silicon, for a change that needs no new image. With both flags the whole
+operation takes seconds.
+
+**Expect `A session for this runner already exists.` right afterwards.** The
+new container connects before GitHub has released the old container's session,
+so each runner logs `Runner connect error: Error: Conflict. Retrying until
+reconnected.` and sits there for a few minutes. Nothing is wrong and nothing
+needs restarting — the registration is intact (`.runner` still carries the
+right `agentName`), and each runner reaches `Listening for Jobs` on its own
+once the stale session expires. Wait for that line before concluding the
+re-create worked:
+
+```sh
+for n in 1 2 3 4; do docker logs --tail 15 gha-runner-$n | grep -E \
+  'Connected to GitHub|Listening for Jobs'; done
+```
 
 ## 6. DNS: the containers get their own resolvers
 
