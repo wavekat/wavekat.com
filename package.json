@@ -15,6 +15,7 @@
     "check:badges": "node scripts/sync-badges.js --check",
     "check:links": "node scripts/check-links.js",
     "check:meta": "node scripts/check-meta.js",
+    "test": "node scripts/test/fetch-retry.test.js",
     "dev": "npm run sync && astro dev",
     "build": "npm run sync && SYNC_DOCS=1 npm run sync:docs && astro build && node scripts/flatten-404s.js",
     "preview": "astro preview",

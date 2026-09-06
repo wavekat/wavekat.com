@@ -33,6 +33,7 @@ import { mkdirSync, writeFileSync, readFileSync, existsSync, statSync } from 'no
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { badgeFiles } from './lib/store-badges.js';
+import { fetchRetry } from './lib/fetch-retry.js';
 
 const root = join(fileURLToPath(import.meta.url), '../..');
 const destRoot = join(root, 'public/badges');
@@ -76,7 +77,7 @@ for (const f of files) {
     continue;
   }
 
-  const res = await fetch(f.url, { signal: AbortSignal.timeout(15000) });
+  const res = await fetchRetry(f.url, { timeoutMs: 15_000, label: `badges: ${f.path}` });
   if (!res.ok) {
     throw new Error(`badges: ${f.path} — download failed (${res.status}) from ${f.url}`);
   }
