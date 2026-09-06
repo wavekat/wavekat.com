@@ -1,12 +1,8 @@
 ---
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
-import VoiceDownload from '../../../components/VoiceDownload.astro';
 import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
-import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
-
-const linuxDownload = await getDownload('linux-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -71,18 +67,10 @@ const highlights = [
     <h1 class="text-3xl sm:text-4xl font-bold leading-[1.15] tracking-tight mb-6 text-gray-900 dark:text-white">
       <span class="bg-gradient-to-r from-[#ff6d00] to-[#ffa14d] bg-clip-text text-transparent">WaveKat Voice</span> をダウンロード
     </h1>
-    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-8">
+    <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
       あなたのビジネス回線をデスクトップに——電話の応答も発信もでき、すべての会話を録音し、
       文字に書き起こします。電話事業者をつなげば、数分で利用を開始できます。
     </p>
-
-    <VoiceDownload />
-
-    <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
-      <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · Mac App Store で無料 · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">{ui.subChangelog}</a></p>
-      <p data-dl-meta="linux" class="hidden">Linux · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload?.version}</span></a> · <span data-dl-size="linux">{linuxDownload?.size}</span></p>
-      <p data-dl-meta="windows" class="hidden">{ui.dlArchMsStore} · Microsoft Store で無料 · <a href="/ja/voice/changelog/" title="このバージョンの更新内容を見る" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">{ui.subChangelog}</a></p>
-    </div>
   </section>
 
   <!-- All downloads — every installer, one column per system -->

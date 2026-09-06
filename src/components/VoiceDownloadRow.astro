@@ -9,7 +9,10 @@
 // row, not a field of the data. That keeps `voice-download-groups.ts` free
 // of component imports.
 import { Apple, Package, AppWindow } from '@lucide/astro';
+import StoreBadge from './StoreBadge.astro';
 import type { UIStrings } from '../lib/i18n';
+import { resolveLocale } from '../lib/i18n';
+import { badgeStoreFor } from '../lib/badges';
 import type { DownloadGroup, DownloadRow, PlatformGroupKey } from '../lib/voice-download-groups';
 import { rowAvailable } from '../lib/voice-download-groups';
 
@@ -35,6 +38,41 @@ const { group, row, ui, context, hidden = false } = Astro.props;
 // and it costs a column that is a third of the page the ~26px its longest
 // labels need to stay on one line. So: menu only.
 const ICONS: Record<PlatformGroupKey, any> = { mac: Apple, windows: AppWindow, linux: Package };
+
+// The badge replaces the LABEL, not the row: `row.label` is already
+// word-for-word what the artwork says (`dlMacAppStore` is literally
+// "Download on the Mac App Store"), so it becomes the alt text and the
+// requirement line beneath it survives untouched. That line is the thing
+// that stops a visitor taking the wrong build, and no badge states it.
+const { code: badgeLocale } = resolveLocale(Astro.url.pathname);
+
+// The GRID draws the badges. The menu never does.
+//
+// Not a rule about duplication — a rule about the list. The menu is one
+// short column where Mac, Windows and Linux sit as three parallel
+// choices, and a row there is read against the rows above it rather than
+// on its own. Two rows drawn as trademarked artwork and a third drawn as
+// an icon beside a label don't read as three equal choices; they read as
+// two offers and a leftover. Linux has no store and so can never have a
+// badge, which means the only style all three rows can share is ours.
+//
+// The grid is the opposite case and keeps them. There each store row sits
+// in its own platform's column, under that platform's heading, so it is
+// compared with the other builds for the same system rather than with
+// Linux — and the badge is the most recognisable thing on the one page a
+// visitor opened specifically to choose from.
+//
+// Between them those two rules leave exactly one copy of each store's
+// artwork on any page, with no test on which page it is: the download
+// page draws the grid and no compact control at all, and every other page
+// draws the control and no grid.
+const badgeStore = context === 'grid' ? badgeStoreFor(row.key) : null;
+
+// The icon is the menu's own mark for a platform — it is what tells three
+// systems apart at a glance in a single column — and since no menu row
+// draws a store's own logo, every one of them carries it. In the grid it
+// only repeats the column heading, and costs the label the ~26px its
+// longest translations need to stay on one line.
 const Icon = context === 'menu' ? ICONS[group.key] : null;
 
 // A row with an `href` is a handoff rather than a download, and the two
@@ -80,9 +118,13 @@ const tagCls =
   >
     {Icon && <Icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />}
     <span class="flex min-w-0 flex-col">
-      <span class="text-sm font-bold text-gray-900 dark:text-white">
-        {row.label}{group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
-      </span>
+      {badgeStore ? (
+        <StoreBadge store={badgeStore} locale={badgeLocale} alt={row.label} class="mb-1" />
+      ) : (
+        <span class="text-sm font-bold text-gray-900 dark:text-white">
+          {row.label}{group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
+        </span>
+      )}
       {/* The size is ours to state only for a file we publish. A store row
           shows its requirement line alone — the store prints the download
           size on its own listing. */}
@@ -102,7 +144,12 @@ const tagCls =
           context === 'menu' && 'sm:whitespace-nowrap',
         ]}
       >
-        {row.arch}{row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={row.key}>{row.dl.size}</span></span>}
+        {row.arch}{row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={row.key}>{row.dl.size}</span></span>}{/*
+          The Early tag rides the label on a normal row, but a badge row has
+          no label — the artwork is fixed and may not be annotated. So on
+          those rows it moves down here, which keeps the claim on the page
+          for the Microsoft Store row instead of quietly dropping it. */}
+        {badgeStore && group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
       </span>
     </span>
   </Tag>

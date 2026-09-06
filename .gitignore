@@ -19,6 +19,12 @@ dist/
 # Inter + Noto Sans SC/TC/JP/KR, fetched rather than committed.
 /vendor/fonts/
 
+# Official Mac App Store / Microsoft Store badges (run `make sync`) — 36 SVGs,
+# two variants × nine locales × two stores, fetched from Apple's and
+# Microsoft's own endpoints. Not committed because the artwork is theirs and
+# we may not alter it, so a checked-in copy is only a stale fork.
+/public/badges/
+
 # Synced from product repos by scripts/sync-docs.js
 /src/content/docs/*
 !/src/content/docs/.gitkeep

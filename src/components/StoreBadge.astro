@@ -1,0 +1,95 @@
+---
+// The official Mac App Store / Microsoft Store badge, in the page's language
+// and the visitor's theme.
+//
+// Two <img> and not one <picture>
+// -------------------------------
+// The obvious implementation is `<picture>` with a `prefers-color-scheme`
+// <source>, and it is wrong for this site. The theme here is a CLASS on
+// <html>, set from localStorage with the OS preference only as a fallback
+// (see Base.astro), so a visitor whose OS is light and who chose dark gets
+// a dark page — and a media query that never heard about the toggle would
+// hand them the dark-ink badge on it. Two <img> toggled by the same `dark:`
+// variant every other element on the page uses is the only version that
+// follows the actual theme.
+//
+// The cost is honest: both files are fetched. They are ~10-30 KB of SVG
+// that gzip well, and the alternative is a badge that is invisible against
+// its own background for anyone who touched the toggle.
+//
+// The artwork is never restyled — no `fill`, no `filter`, no rounding, no
+// recolouring. Both companies' guidelines require the badge be used as
+// published, and the whole point of the badge is that it looks exactly like
+// the one on every other site.
+import type { BadgeStore } from '../lib/badges';
+import { storeBadge } from '../lib/badges';
+
+interface Props {
+  store: BadgeStore;
+  /** Our locale code, e.g. 'ja' or 'zh-Hant' — the badge filenames use it verbatim. */
+  locale: string;
+  /**
+   * Accessible name. Pass the localized `dlMacAppStore` / `dlMsStore`
+   * string: it is already translated nine ways and is word-for-word what
+   * the artwork says, so the alt text and the image can't drift.
+   */
+  alt: string;
+  /**
+   * `eager` for the hero badge, which is the page's primary control and
+   * usually above the fold; `lazy` for the download grid further down.
+   */
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+const { store, locale, alt, loading = 'lazy', class: cls = '' } = Astro.props;
+const art = storeBadge(store, locale);
+
+// Width and height are set on the element (not only in CSS) so the box is
+// reserved before the SVG arrives. Without them the hero would reflow on
+// every cold load, which is a Core Web Vitals problem on the one control
+// the page exists to present.
+const dims = { width: art.width, height: art.height };
+
+// `width` is the badge's NATURAL size and `max-width:100%` is what stops it
+// being a fixed pixel box in a column that is narrower.
+//
+// This is not hypothetical. The download grid goes to three columns at
+// `sm`, and at exactly that breakpoint a column is ~195px wide — while the
+// German Microsoft badge is 183px plus the row's 24px of padding. Measured
+// before this line existed, it hung 9px past its card. Every other locale
+// happens to fit, which is precisely why a fixed width survives a casual
+// look and ships the bug: the widest badge in the set is the one nobody
+// tests.
+//
+// `aspect-ratio` is what makes the cap safe. With it the height follows the
+// width down instead of squashing the artwork, so a shrunk badge is still
+// the badge and the box is still reserved before the file lands. The band
+// where any shrinking happens is narrow — below `sm` the grid is one
+// full-width column again — but inside it the badge scales rather than
+// overflows.
+const box = `width:${art.width}px;aspect-ratio:${art.width}/${art.height}`;
+---
+
+<span class:list={['inline-block max-w-full shrink-0', cls]} style={box}>
+  <img
+    src={art.onLight}
+    alt={alt}
+    {...dims}
+    loading={loading}
+    decoding="async"
+    class="block h-auto w-full dark:hidden"
+  />
+  {/* aria-hidden + empty alt: the pair is ONE control, and a screen reader
+      that announced both would read the same store twice. The on-light copy
+      above carries the accessible name for both. */}
+  <img
+    src={art.onDark}
+    alt=""
+    aria-hidden="true"
+    {...dims}
+    loading={loading}
+    decoding="async"
+    class="hidden h-auto w-full dark:block"
+  />
+</span>
