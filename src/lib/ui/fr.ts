@@ -34,6 +34,7 @@ export const ui: UIStrings = {
     "Les téléchargements directs pour Windows ne sont pas signés : Windows affiche un avertissement au premier lancement. La version du Microsoft Store, elle, est signée.",
   dlWindowsUnsignedLink: 'Comment passer outre',
   dlAllDownloads: 'Tous les téléchargements et installateurs',
+  dlLatestRelease: 'Dernière version de WaveKat Voice',
   talkHeading: 'Nous contacter',
   talkBody:
     'Une question, un retour, ou un appareil que vous aimeriez nous voir prendre en charge ? L’e-mail est le meilleur moyen de nous joindre — nous lisons chaque message et répondons dès que possible.',

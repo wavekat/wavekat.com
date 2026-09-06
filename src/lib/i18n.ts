@@ -261,6 +261,19 @@ export interface UIStrings {
    * label has to promise the whole set rather than "more platforms".
    */
   dlAllDownloads: string;
+  /**
+   * Precedes the version number above the download grid, e.g. "Latest
+   * WaveKat Voice release v0.0.52". A label, not a sentence — the version
+   * and the changelog link follow it.
+   *
+   * It names the product on purpose, even though the <h1> two lines above
+   * already does. A passage extractor lifts this <p> on its own, and
+   * "Latest release v0.0.52" alone states a version of nothing; with the
+   * entity in it the line is a fact that survives being quoted. The
+   * product name is never translated (CLAUDE.md), so only the words
+   * around it change per locale.
+   */
+  dlLatestRelease: string;
   talkHeading: string;
   talkBody: string;
   talkButton: string;
@@ -334,6 +347,7 @@ const strings: Record<string, UIStrings> = {
       "The direct Windows downloads aren't code-signed, so Windows warns on first launch. The Microsoft Store version is signed.",
     dlWindowsUnsignedLink: 'How to get past it',
     dlAllDownloads: 'All downloads and installers',
+    dlLatestRelease: 'Latest WaveKat Voice release',
     talkHeading: 'Talk to us',
     talkBody:
       'Questions, feedback, or a device you wish we supported? Email is the best way to reach us — we read every message and reply as soon as we can.',
@@ -388,6 +402,7 @@ const strings: Record<string, UIStrings> = {
       '直接下载的 Windows 版尚未进行代码签名，首次启动时系统会弹出提醒；Microsoft Store 版本已签名。',
     dlWindowsUnsignedLink: '如何继续安装',
     dlAllDownloads: '所有下载与安装程序',
+    dlLatestRelease: 'WaveKat Voice 最新版本',
     talkHeading: '联系我们',
     talkBody:
       '有疑问、建议，或希望我们支持某种设备？邮件是联系我们的最佳方式——我们会阅读每一条消息，并尽快回复。',

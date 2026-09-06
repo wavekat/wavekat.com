@@ -34,6 +34,7 @@ export const ui: UIStrings = {
     '直接ダウンロードした Windows 版はコード署名されていないため、初回起動時に警告が表示されます。Microsoft Store 版は署名済みです。',
   dlWindowsUnsignedLink: '進める方法',
   dlAllDownloads: 'すべてのダウンロードとインストーラー',
+  dlLatestRelease: 'WaveKat Voice の最新バージョン',
 
   talkHeading: 'お問い合わせ',
   talkBody:

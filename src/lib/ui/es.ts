@@ -34,6 +34,7 @@ export const ui: UIStrings = {
     'Las descargas directas para Windows no están firmadas, así que Windows avisa al abrirlas por primera vez. La versión de Microsoft Store sí está firmada.',
   dlWindowsUnsignedLink: 'Cómo continuar',
   dlAllDownloads: 'Todas las descargas e instaladores',
+  dlLatestRelease: 'Última versión de WaveKat Voice',
   talkHeading: 'Contacto',
   talkBody:
     '¿Preguntas, comentarios o un dispositivo que le gustaría que admitiéramos? El correo electrónico es la mejor forma de contactarnos: leemos cada mensaje y respondemos en cuanto podemos.',
