@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.61](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.60...wavekat-com-v0.0.61) (2026-09-06)
+
+
+### Features
+
+* **brand:** tint the favicon per environment ([#170](https://github.com/wavekat/wavekat.com/issues/170)) ([b6494eb](https://github.com/wavekat/wavekat.com/commit/b6494eba4003fcf74a0c845a523864e87b30cf4f))
+* **voice:** add the Microsoft Store download ([#169](https://github.com/wavekat/wavekat.com/issues/169)) ([d23670b](https://github.com/wavekat/wavekat.com/commit/d23670b08e4ba05d55e1918d40b553ea3cbebeee))
+* **voice:** use official store download badges ([#172](https://github.com/wavekat/wavekat.com/issues/172)) ([06e3d51](https://github.com/wavekat/wavekat.com/commit/06e3d51ec260c3d0e4b1c705e8306411ddd01a33))
+
 ## [0.0.60](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.59...wavekat-com-v0.0.60) (2026-09-02)
 
 
