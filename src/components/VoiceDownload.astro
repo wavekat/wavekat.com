@@ -268,16 +268,27 @@ const primaryCls =
 // `text-left` because the CTA card centres its text and the menu shouldn't
 // inherit that — the rows are left-aligned, so the note under them is too.
 //
-// `w-max` is load-bearing. The panel is absolutely positioned inside the
-// `relative` <details>, so its containing block is only as wide as the
-// "other platforms" summary — shrink-to-fit caps it there and every row
-// wraps, which is what `min-w` was really propping open. A fixed minimum
+// The panel has two sizings, and they answer different questions.
+//
+// From `sm` up: `w-max` is load-bearing. The panel is absolutely positioned
+// inside the `relative` <details>, so its containing block is only as wide
+// as the "other platforms" summary — shrink-to-fit caps it there and every
+// row wraps, which is what `min-w` was really propping open. A fixed minimum
 // can't hold nine locales ("Für Windows auf ARM herunterladen" is half
 // again as long as the English), so the panel sizes to its own widest row
-// instead, and `max-w` keeps it inside a phone screen when that row is
-// wider than the viewport.
+// instead.
+//
+// On a phone that same anchor is the bug: the summary sits beside the
+// primary button, a third of the way across the screen, and a panel wide
+// enough to read from there runs off the right edge — which scrolls the
+// whole document sideways, since nothing above clips it. A viewport-width
+// `max-w` can't save it, because a cap on width says nothing about where
+// the box starts. So below `sm` the panel measures against the control
+// instead of the summary (the wrapper is the `relative` one there, see the
+// markup) and takes its full width: left edge on the page margin, right
+// edge on the other, correct at any width and in any language.
 const panelCls =
-  'absolute left-0 top-full z-20 mt-2 flex w-max min-w-[19rem] max-w-[calc(100vw-2rem)] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
+  'absolute left-0 top-full z-20 mt-2 flex w-full max-w-full flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl sm:w-max sm:min-w-[19rem] sm:max-w-[calc(100vw-2rem)] dark:border-white/10 dark:bg-wk-surface/95';
 
 const rowCls =
   'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
@@ -299,8 +310,15 @@ const noteCls =
   'max-w-[17rem] px-3 pt-1 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
 ---
 
-<div class="inline-block text-left" data-voice-download>
-  <div class="flex flex-wrap items-center gap-3">
+{/* `relative` so the menu has something page-wide to measure against on a
+    phone — see `panelCls`. Full width there for the same reason, which also
+    puts the row's other button (GitHub, or the install link) on its own line
+    rather than squeezed beside this one; `sm:inline-block` restores the
+    shrink-to-fit box every layout above that expects. */}
+<div class="relative block w-full text-left sm:inline-block sm:w-auto" data-voice-download>
+  {/* The CTA card centres its content by centring this box, which a
+      full-width box can't be — so on a phone the row does its own centring. */}
+  <div class:list={['flex flex-wrap items-center gap-3', variant === 'cta' && 'max-sm:justify-center']}>
     {/* One primary per (platform, arch) — exactly one is ever shown. Our
         own downloads are <button>s: the URL is built on click, so no
         artifact filename and no version ever reaches the delivered HTML.
@@ -333,7 +351,7 @@ const noteCls =
         row's own hidden state stays about whether that file exists. Two
         independent reasons to hide, on one element, is the bug this
         avoids. */}
-    <details class="group relative" data-dl-more>
+    <details class="group sm:relative" data-dl-more>
       <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
         {ui.dlOther}
         <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
@@ -356,7 +374,7 @@ const noteCls =
               class:list={[rowCls, e.avail ? 'inline-flex' : 'hidden']}
             >
               <e.group.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
-              <span class="flex flex-col">
+              <span class="flex min-w-0 flex-col">
                 <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
                   {e.row.label}
                   {e.group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
@@ -364,7 +382,11 @@ const noteCls =
                 {/* The size is ours to state only for a file we publish.
                     The App Store row shows its requirement line alone —
                     Apple prints the download size on the listing. */}
-                <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{e.row.arch}{e.row.dl && <Fragment> · <span data-dl-size={e.row.key}>{e.row.dl.size}</span></Fragment>}</span>
+                {/* Free to wrap on a phone, where the panel is as wide as the
+                    screen and several of these lines aren't. The size keeps its
+                    separator and its unit together when it does — a line ending
+                    "· 102" with "MB" alone under it reads as a broken layout. */}
+                <span class="text-[11px] font-normal text-gray-500 sm:whitespace-nowrap dark:text-gray-400">{e.row.arch}{e.row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={e.row.key}>{e.row.dl.size}</span></span>}</span>
               </span>
             </e.Tag>
           </div>

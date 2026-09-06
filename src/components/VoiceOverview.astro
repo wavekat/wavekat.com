@@ -110,11 +110,14 @@ const {
 } = Astro.props;
 ---
 
-<!-- Hero: copy on the left, the app window floating on the right -->
-<section class="relative mb-24 pt-4 animate-rise">
+<!-- Hero: copy on the left, the app window floating on the right.
+     `z-20` for the same reason as the homepage hero: `animate-rise` leaves a
+     transform behind, which traps the download menu's z-index in this section,
+     and the first screenshot of the section below drew over the open menu. -->
+<section class="relative z-20 mb-24 pt-4 animate-rise">
   <!-- brand-orange glow -->
   <div
-    class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+    class="pointer-events-none absolute -top-24 -left-24 w-72 h-72 sm:w-[28rem] sm:h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
     style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
     aria-hidden="true"
   >
