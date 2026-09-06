@@ -6,11 +6,13 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "sync": "node scripts/sync-brand.js && npm run sync:fonts",
+    "sync": "node scripts/sync-brand.js && npm run sync:fonts && npm run sync:badges",
     "sync:fonts": "node scripts/sync-fonts.js",
+    "sync:badges": "node scripts/sync-badges.js",
     "sync:docs": "node scripts/sync-docs.js",
     "sync:screenshots": "node scripts/sync-screenshots.js",
     "check:screenshots": "node scripts/sync-screenshots.js --check",
+    "check:badges": "node scripts/sync-badges.js --check",
     "check:links": "node scripts/check-links.js",
     "check:meta": "node scripts/check-meta.js",
     "dev": "npm run sync && astro dev",

@@ -84,12 +84,14 @@ const breadcrumbSchema = {
       {alt.intro}
     </p>
 
-    {/* `items-baseline`, not `items-center`: the unsigned-build note lives
-        inside the download control and only appears for a Windows visitor.
-        Centring would drop this link by half the note's height; aligning on
-        the baseline keeps it on the button's text line whether or not the
-        note is showing. */}
-    <div class="flex flex-wrap items-baseline gap-4">
+    {/* `items-center`: the primary control is a fixed-height box, and on most
+        pages it is the store's badge — an image. An image-only anchor's
+        baseline is its BOTTOM edge, so `items-baseline` (used here while the
+        primary was always a text pill) dropped this link to the bottom of the
+        badge instead of its text line. Centring is also simply correct again:
+        the unsigned-build note that once made the control taller for Windows
+        visitors now lives on the download grid, not in here. */}
+    <div class="flex flex-wrap items-center gap-4">
       <VoiceDownload />
       <a
         href="/ja/voice/"

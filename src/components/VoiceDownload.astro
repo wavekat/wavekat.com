@@ -40,8 +40,10 @@ import {
   MAC_APP_STORE_CAMPAIGN_URL,
   MS_STORE_CAMPAIGN_URL,
 } from '../lib/voice-download';
+import StoreBadge from './StoreBadge.astro';
 import { buildGroups, isPromotable, rowAvailable } from '../lib/voice-download-groups';
 import type { PlatformGroupKey } from '../lib/voice-download-groups';
+import { badgeStoreFor } from '../lib/badges';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -114,6 +116,22 @@ const primaryCls =
     ? 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ff6d00]/30'
     : 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff6d00]/25 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/35 hover:-translate-y-0.5';
 
+// The primary when it is a store handoff rather than one of our files.
+//
+// It shares the hover lift with the pill above — the two swap places when
+// the promotion script fires, and a control that stopped responding to the
+// pointer because the visitor is on a Mac rather than Linux would read as
+// broken. Everything else is deliberately absent: no padding, no
+// background, no radius of ours. The badge is already a complete control
+// with all three, and both stores require their artwork be used as
+// published — a background behind it or a corner radius over it is exactly
+// the alteration they forbid.
+//
+// The radius here is on the FOCUS RING alone, so keyboard focus traces the
+// badge's own corners rather than boxing it in a square.
+const badgePrimaryCls =
+  'items-center rounded-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff6d00]';
+
 // `text-left` because the CTA card centres its text and the menu shouldn't
 // inherit that — the rows are left-aligned, so the note under them is too.
 //
@@ -165,6 +183,20 @@ const allCls =
         promotion script won't put an unavailable target on the button. */}
     {entries.map((e) => {
       const Icon = ICONS[e.group.key];
+      // Mac and Windows promote to a store, so their primary IS the store's
+      // badge; Linux has no store and keeps the orange pill. That isn't an
+      // inconsistency to tidy away later — it's the same `href` vs `dl`
+      // split the rest of this file turns on, drawn at button size.
+      //
+      // Except on the download page, where the grid below already draws
+      // both badges: a second copy of the same artwork one screen higher
+      // reads as a bug rather than as emphasis. There the primary returns
+      // to the orange pill, which also keeps the brand control above the
+      // fold on the one page whose body is store artwork. Keyed on the
+      // page and not on which platform is promoted, because the promotion
+      // happens in the browser — see the same reasoning in
+      // VoiceDownloadRow.
+      const store = onDownloadPage ? null : badgeStoreFor(e.row.key);
       return (
         <e.Tag
           type={e.row.href ? undefined : 'button'}
@@ -175,11 +207,23 @@ const allCls =
           data-dl-platform={e.row.href ? undefined : e.row.key}
           data-dl-avail={e.avail ? '1' : '0'}
           data-dl-show="inline-flex"
-          class:list={[primaryCls, 'cursor-pointer border-0', isDefaultPrimary(e) ? 'inline-flex' : 'hidden']}
-          style="background-color: #ff6d00"
+          class:list={[
+            store ? badgePrimaryCls : primaryCls,
+            'cursor-pointer border-0',
+            isDefaultPrimary(e) ? 'inline-flex' : 'hidden',
+          ]}
+          style={store ? undefined : 'background-color: #ff6d00'}
         >
-          <Icon class="w-5 h-5" />
-          {e.row.label}
+          {store ? (
+            /* `eager`: on /voice/ this is the hero control, above the fold,
+               and the one image on the page worth blocking nothing on. */
+            <StoreBadge store={store} locale={lang} alt={e.row.label} loading="eager" />
+          ) : (
+            <Fragment>
+              <Icon class="w-5 h-5" />
+              {e.row.label}
+            </Fragment>
+          )}
         </e.Tag>
       );
     })}

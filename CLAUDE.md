@@ -242,6 +242,67 @@ it's below the 960×640 fold).
   set is complete. The scene list lives in `scripts/sync-screenshots.js` — keep it
   in sync with the `![](/screenshots/<scene>/…)` refs across the site.
 
+## Official store badges
+
+The Mac App Store and Microsoft Store download controls are each store's own
+**badge artwork**, not our own button — because that artwork is the thing a
+visitor already recognises, and it is what says "reviewed and signed by the
+platform" on a page that also hands out an unsigned Windows `.exe`.
+
+**The rule that decides badge vs button:** a download row with an `href` is a
+store handoff and draws the badge; a row with a `dl` is a file we publish and
+keeps our own control. That is the split `voice-download-groups.ts` already
+turns on, so it needs no new concept — and it is why **Linux keeps the orange
+pill**: Linux has no store, so the rule simply doesn't fire there.
+
+- **Fetched, never committed** — `scripts/sync-badges.js` pulls 36 SVGs (2
+  stores × 9 locales × 2 themes, ~650 KB) from Apple's and Microsoft's own
+  endpoints into gitignored `public/badges/`, and caches them, exactly the way
+  `sync-fonts.js` caches the OG typefaces. It runs inside `npm run sync`, so
+  `make dev` and `make build` both have them. The artwork belongs to Apple and
+  Microsoft and may not be altered, so a checked-in copy would only ever be a
+  stale fork of someone else's asset. `npm run check:badges` asserts the set;
+  a missing file **throws the build** rather than shipping a page whose only
+  download control is a broken image.
+- **The locale codes are a table, not a transformation** (`scripts/lib/store-badges.js`).
+  Neither store agrees with our codes or with the other's: Traditional Chinese
+  is Apple `zh-hk` but Microsoft `zh-tw`; Japanese is Apple `ja-jp` but
+  Microsoft `ja`. `zh-hk` is not a typo — Apple files its Traditional artwork
+  under Hong Kong (its `<title>` reads `…_CNTC_…`) and `zh-tw` 404s there.
+- **Variants are named for the page, not the ink.** Each store names its files
+  after the badge's own colour — Apple `black`/`white`, Microsoft `dark`/`light`
+  — so "light" there means a light *badge*, which belongs on a **dark** page.
+  Read as "for light backgrounds" it is exactly inverted. The site side
+  therefore never says `black` or `light`; it says `on-light` / `on-dark` and
+  the table resolves it. Getting this backwards is invisible in a light-theme
+  dev session and shows a white badge on a white page to every dark-theme
+  visitor.
+- **Two `<img>`, never `<picture>`.** The theme here is a class on `<html>` from
+  localStorage, so a `prefers-color-scheme` media query would ignore the
+  visitor's actual toggle. Both variants ship and `dark:` picks one.
+- **Size is read from each SVG's `viewBox` at build time** (`src/lib/badges.ts`),
+  never hardcoded: the badges are a fixed height with a width set by the phrase
+  length, and that ranges 140–183px across locales. The badge is capped at
+  `max-width:100%` with an `aspect-ratio` — without that, the German Microsoft
+  badge (183px, the widest in the set) hangs out of its card at the `sm`
+  breakpoint, where a grid column is ~195px.
+- **One badge per store per page.** `/voice/download/` renders both the compact
+  control and the full grid, so there the **grid owns the badges** and the hero
+  falls back to the orange pill while the menu falls back to icon-and-label
+  rows. Keyed on the *page*, not on which platform is promoted — promotion
+  happens in the browser, so a Windows visitor's primary swaps after the HTML
+  is served, and anything keyed on "which badge is showing" would be right for
+  the Mac default and wrong for everyone else.
+- **Never restyle the artwork** — no background, no corner radius, no filter, no
+  recolour. Both stores require the badge as published, and Apple's guidelines
+  additionally say its badge may not be drawn smaller than a competitor's shown
+  beside it, which is why both render at one shared height (`BADGE_HEIGHT`).
+- **SEO note:** the badge moves the phrase "Download on the Mac App Store" out
+  of anchor text and into `alt`. `/voice/` and `/voice/download/` both restate
+  it in visible prose, FAQ copy and JSON-LD, so nothing is lost there — but the
+  **homepage carries it in `alt` only**. If you touch homepage hero copy, that
+  is the sentence worth adding back.
+
 ## Current state
 
 - Working branch: `feat/astro-scaffold`
