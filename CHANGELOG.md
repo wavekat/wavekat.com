@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.63](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.62...wavekat-com-v0.0.63) (2026-09-06)
+
+
+### Features
+
+* show latest version on download page ([#179](https://github.com/wavekat/wavekat.com/issues/179)) ([9078266](https://github.com/wavekat/wavekat.com/commit/9078266188885b973ca15d224928f68f1e1f7cf0))
+
 ## [0.0.62](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.61...wavekat-com-v0.0.62) (2026-09-06)
 
 
