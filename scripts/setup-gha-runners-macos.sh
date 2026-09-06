@@ -35,8 +35,10 @@
 #
 #   # Re-create the containers with current flags, WITHOUT re-registering:
 #   # keeps each volume, so .runner/.credentials and the warm caches survive
-#   # and no registration token is needed.
-#   RUNNER_KEEP_VOLUME=1 ./setup-gha-runners-macos.sh
+#   # and no registration token is needed. Add RUNNER_SKIP_BUILD=1 to reuse
+#   # the image already on the host — a flag change needs no new image, and
+#   # rebuilding one can take 25 minutes if the base has moved.
+#   RUNNER_KEEP_VOLUME=1 RUNNER_SKIP_BUILD=1 ./setup-gha-runners-macos.sh
 #
 # Re-running is safe: existing containers are torn down, their volumes
 # wiped, and the runners re-registered with a fresh token — unless
@@ -56,6 +58,7 @@ RUNNER_VERSION="${RUNNER_VERSION:-}" # empty = the Dockerfile's default
 # (empty) to go back to it.
 RUNNER_DNS="${RUNNER_DNS:-1.1.1.1 8.8.8.8}"
 KEEP_VOLUME="${RUNNER_KEEP_VOLUME:-0}"
+SKIP_BUILD="${RUNNER_SKIP_BUILD:-0}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCKER_CONTEXT="${SCRIPT_DIR}/docker"
 
@@ -95,10 +98,21 @@ fi
 # 3. Build the runner image. The Dockerfile resolves the runner tarball
 #    per-arch (dpkg --print-architecture), so this builds natively on
 #    Apple Silicon with no changes and no Rosetta.
-log "building runner image ${IMAGE} (native $(uname -m))"
-if [[ -n "${RUNNER_VERSION}" ]]; then
+#
+#    Changing a `docker run` flag needs no new image, and a rebuild is
+#    not reliably cheap: if the ubuntu:24.04 base has moved since the
+#    last one, every layer misses cache and the apt/rustup/runner-tarball
+#    steps run again — ~25 minutes on Apple Silicon. RUNNER_SKIP_BUILD=1
+#    reuses what is already on the host.
+if [[ "${SKIP_BUILD}" == "1" ]]; then
+  "${DOCKER}" image inspect "${IMAGE}" >/dev/null 2>&1 \
+    || die "RUNNER_SKIP_BUILD=1 but ${IMAGE} is not on this host — drop the flag to build it"
+  log "RUNNER_SKIP_BUILD=1 — reusing image ${IMAGE}"
+elif [[ -n "${RUNNER_VERSION}" ]]; then
+  log "building runner image ${IMAGE} (native $(uname -m))"
   "${DOCKER}" build --build-arg "RUNNER_VERSION=${RUNNER_VERSION}" -t "${IMAGE}" "${DOCKER_CONTEXT}"
 else
+  log "building runner image ${IMAGE} (native $(uname -m))"
   "${DOCKER}" build -t "${IMAGE}" "${DOCKER_CONTEXT}"
 fi
 
