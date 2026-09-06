@@ -47,6 +47,34 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
+# AWS CLI v2 — used to publish build artifacts and auto-update feeds to
+# Cloudflare R2 over its S3-compatible endpoint (wavekat-voice's
+# release.yml). GitHub's own macOS and Windows images ship it, so a
+# workflow that ran green on hosted runners fails here with a bare
+# `aws: command not found` the moment a job moves to this image — which
+# is exactly what happened to wavekat-voice's Linux release legs, after a
+# complete and otherwise successful build, on the very last step.
+#
+# v2 from the official installer rather than Ubuntu's `awscli` (v1):
+# every other runner in the fleet is on v2, and holding one major version
+# across all of them keeps a signature or endpoint quirk from appearing
+# on exactly one platform.
+#
+# `dpkg --print-architecture` maps to the two names AWS publishes:
+# amd64 -> x86_64, arm64 -> aarch64. Both are built, so this image works
+# on either half of the fleet.
+RUN set -eux; \
+    case "$(dpkg --print-architecture)" in \
+      amd64) awsarch=x86_64 ;; \
+      arm64) awsarch=aarch64 ;; \
+      *) echo "no AWS CLI build for $(dpkg --print-architecture)" >&2; exit 1 ;; \
+    esac; \
+    curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-${awsarch}.zip" -o /tmp/awscliv2.zip; \
+    unzip -q /tmp/awscliv2.zip -d /tmp; \
+    /tmp/aws/install; \
+    rm -rf /tmp/aws /tmp/awscliv2.zip; \
+    aws --version
+
 # Rust toolchain (stable) via rustup. Required by Rust-based workflows
 # and by actions like release-plz that shell out to `cargo`. Installed
 # system-wide under /usr/local so both root and the `runner` user can
