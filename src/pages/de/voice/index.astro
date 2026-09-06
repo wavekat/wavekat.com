@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -193,8 +193,12 @@ const faqs = [
     a: 'Ja. WaveKat Voice steht kostenlos im Mac App Store, und das ist der einfachste Weg, es auf einem Mac zu installieren — Apple übernimmt die Installation und jedes weitere Update. Es ist dieselbe App wie der direkte Download von wavekat.com, den es weiterhin gibt. Vorausgesetzt werden macOS 12 oder neuer und ein Mac mit Apple Chip.',
   },
   {
+    q: 'Gibt es WaveKat Voice im Microsoft Store?',
+    a: 'Ja. WaveKat Voice steht kostenlos im Microsoft Store, und das ist der einfachste Weg, es unter Windows zu installieren — Microsoft signiert das Paket, deshalb erscheint keine Warnung vor einem unbekannten Herausgeber, und ein Eintrag deckt PCs mit Intel und AMD ebenso ab wie ARM-PCs. Es ist dieselbe App wie die direkten .exe-Downloads von wavekat.com, die es weiterhin gibt. Vorausgesetzt werden Windows 10 oder 11.',
+  },
+  {
     q: 'Läuft WaveKat Voice unter Windows?',
-    a: 'Ja — Windows 10 und 11, mit getrennten Installationsprogrammen für Intel oder AMD und für Windows auf ARM. Der Windows-Build ist jünger als die für Mac und Linux und noch nicht signiert, deshalb warnt Windows beim ersten Start vor einem unbekannten Herausgeber. WaveKat Voice ist eine Desktop-App, es gibt also keine Version für Handy oder Tablet — sagen Sie uns Bescheid, wenn Sie das brauchen.',
+    a: 'Ja — WaveKat Voice läuft unter Windows 10 und 11 und ist im Microsoft Store, dessen einzelner Eintrag sowohl das Intel/AMD- als auch das ARM64-Paket enthält. Direkte Installationsprogramme für beide gibt es ebenfalls; sie sind noch nicht signiert, deshalb warnt Windows beim ersten Start vor einem unbekannten Herausgeber, während das Store-Paket von Microsoft signiert ist. WaveKat Voice ist eine Desktop-App, es gibt also keine Version für Handy oder Tablet — sagen Sie uns Bescheid, wenn Sie das brauchen.',
     link: { href: '/de/voice/talk/', label: 'Sagen Sie uns, was Sie brauchen' },
   },
   {
@@ -217,7 +221,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/de/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
   description:
     'Eine Desktop-App, die Ihren Computer zu Ihrem Geschäftstelefon macht — Anrufe entgegennehmen und tätigen, wobei jeder Anruf automatisch aufgezeichnet und transkribiert wird. Funktioniert mit dem Telefonanbieter, den Sie bereits haben.',
   featureList: [
@@ -231,12 +235,30 @@ const appSchema = {
     'Automatisches Protokollieren von Anrufen in HubSpot, mit Transkript-Synchronisierung und Aufnahme-Wiedergabe im CRM',
     'Neun App-Sprachen, auf macOS, Windows und Linux',
   ],
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-  },
+  // One Offer per storefront, because that is the property that carries
+  // "you can get it here" — `sameAs` only says the listing is us. Both are
+  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // above stays single-valued and stays on Apple: Google has only ever
+  // documented it against one URL, and an untested array there would trade
+  // a property that works for one that might not.
+  offers: [
+    {
+      '@type': 'Offer',
+      url: MAC_APP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Apple App Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: MS_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+  ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
 };
 

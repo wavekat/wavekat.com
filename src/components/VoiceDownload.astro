@@ -1,37 +1,47 @@
 ---
 // Smart download control for WaveKat Voice.
 //
-// Shows ONE primary control for the visitor's platform, with the others
-// tucked behind an "other platforms" disclosure. The site is statically
-// built (no server to sniff the OS), so this is progressive enhancement:
-// the server renders Mac as the default primary, and a tiny inline script
-// promotes Linux or Windows when it detects one. With JS off, the native
-// <details> still lets anyone reach every build.
+// Shows ONE primary control for the visitor's platform, with the OTHER
+// platforms' recommended controls behind an "other platforms" disclosure.
+// The site is statically built (no server to sniff the OS), so this is
+// progressive enhancement: the server renders Mac as the default primary,
+// and a tiny inline script promotes Linux or Windows when it detects one.
 //
-// Windows ships two installers, x64 and arm64, and the button still doesn't
-// ask which one — it works it out. x64 is what everyone starts on, because
-// it runs on every Windows PC we support (natively on Intel and AMD,
-// emulated on Windows 11 for ARM) while an arm64 build runs on almost none
-// of them. A machine that confirms it is ARM64 is then upgraded to the
-// native build, which is the only case where the emulated one is the wrong
-// answer. Confirming that takes `navigator.userAgentData`, so it happens a
-// beat after the platform swap rather than with it. See docs/05.
+// The menu offers exactly one recommended control per system and nothing
+// else. Every installer we hand out ourselves alongside a store — the .dmg,
+// the two .exe files — lives on the download page instead, in the open,
+// three columns wide (`VoiceDownloadAll.astro`), and the menu's last line
+// is a link to it. A menu is for choosing quickly; a page is for choosing
+// carefully, and stacking a second disclosure inside this one to hold the
+// difference was neither.
 //
-// Mac has two rows for an unrelated reason: the same app arrives either
-// from the Mac App Store or as a .dmg from us, and the store is the
-// button — Apple signs it, installs it and keeps it updated, which is a
-// better first run than a disk image for anyone not specifically after
-// the direct build. The .dmg stays one click away in the menu. That falls
-// out of the arch mechanism instead of adding a rule to it: the .dmg's
-// `archKey` is one nothing ever promotes, so it can only be a menu row.
-import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
+// That split needs no rule of its own: it is the arch mechanism read one
+// way round. A row whose `archKey` is promotable (`default`, or `arm64`
+// once the browser confirms the chip) is a candidate for the button, and
+// therefore a menu row; a `direct*` row is promoted by nothing, so it is a
+// page row. `isPromotable` in voice-download-groups.ts is the whole test.
+//
+// Which leaves Linux as the one platform that still has to work the
+// architecture out for itself — x64 is what everyone starts on, and a
+// machine that confirms it is ARM64 is upgraded to the native build. Mac
+// publishes a single arm64 build, and Windows hands the question to the
+// Microsoft Store, whose one listing carries both packages. Confirming the
+// chip takes `navigator.userAgentData`, so it happens a beat after the
+// platform swap rather than with it. See docs/05.
+//
+// With JS off, the <noscript> block still lists every build we publish.
+import { Apple, Package, AppWindow, ChevronDown, ArrowRight } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
+import VoiceDownloadRow from './VoiceDownloadRow.astro';
 import {
   getDownload,
   DOWNLOAD_BASE,
   RELEASES_URL,
   MAC_APP_STORE_CAMPAIGN_URL,
+  MS_STORE_CAMPAIGN_URL,
 } from '../lib/voice-download';
+import { buildGroups, isPromotable, rowAvailable } from '../lib/voice-download-groups';
+import type { PlatformGroupKey } from '../lib/voice-download-groups';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -43,13 +53,14 @@ const { variant = 'hero' } = Astro.props;
 const { code: lang } = resolveLocale(Astro.url.pathname);
 const ui = t(lang);
 
-// The SmartScreen walkthrough lives on our own download page, in the
-// reader's language — not in /docs/**, which is synced from the private
-// repo and English-only. On /voice/download/ itself this is a same-page
-// jump to the section below the fold.
-const unsignedHref = `${localizedPath('/voice/download/', lang)}#windows`;
+// Where the full list lives. On the download page itself the grid is
+// already below the fold, so the link would point at the page you are
+// standing on — the menu drops it there instead.
+const downloadPath = localizedPath('/voice/download/', lang);
+const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const onDownloadPage = here === downloadPath;
 
-const [macDl, linuxX64Dl, linuxArmDl, winX64Dl, winArmDl] = await Promise.all([
+const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
   getDownload('mac'),
   getDownload('linux-x64'),
   getDownload('linux-arm64'),
@@ -57,148 +68,31 @@ const [macDl, linuxX64Dl, linuxArmDl, winX64Dl, winArmDl] = await Promise.all([
   getDownload('windows-arm64'),
 ]);
 
-// Grouped by the control a visitor sees, not by file. Labels and hardware
-// requirements are localised here — the download lib stays
-// language-agnostic, knowing only versions, sizes and URLs.
-//
-// `archKey` is which machine a row is promoted for, and it is what makes a
-// row a candidate primary: `default` is the row a visitor on that platform
-// gets when nothing more is known, `arm64` is the one they get instead once
-// the browser confirms an ARM64 chip. Only Windows has both, because only
-// Windows ships two installers that are not interchangeable.
-const groups = [
-  {
-    key: 'mac',
-    icon: Apple,
-    windows: false,
-    rows: [
-      {
-        // The Mac App Store is the default Mac primary. It carries an
-        // `href` and no `dl`: there is no release behind it to read a
-        // version or a size from, and nothing for the browser-side
-        // refresh to correct — Apple owns the whole handoff.
-        key: 'mac-app-store',
-        archKey: 'default',
-        conversion: 'download_mac_app_store',
-        label: ui.dlMacAppStore,
-        arch: ui.dlArchMacAppStore,
-        // The campaign-tagged listing, not the canonical one: this is the
-        // link a visitor actually follows, and the tag is the only way
-        // App Store Connect can tell an install that started here from
-        // one that started in App Store search.
-        href: MAC_APP_STORE_CAMPAIGN_URL,
-        dl: null,
-      },
-      {
-        // `direct` is an arch nothing promotes, and that is the whole
-        // trick: the promotion script only ever asks for 'default' or
-        // 'arm64', so this row can never win the button and is therefore
-        // always in the menu — without teaching that script a second rule.
-        key: 'mac',
-        archKey: 'direct',
-        conversion: 'download_mac',
-        label: ui.dlMac,
-        arch: ui.dlArchMac,
-        href: null,
-        dl: macDl,
-      },
-    ],
-  },
-  {
-    key: 'linux',
-    icon: Package,
-    windows: false,
-    rows: [
-      {
-        key: 'linux-x64',
-        archKey: 'default',
-        conversion: 'download_linux',
-        label: ui.dlLinux,
-        arch: ui.dlArchLinux,
-        href: null,
-        dl: linuxX64Dl,
-      },
-      {
-        // Same shape as the Windows pair above, and unconditional for the
-        // same reason: the row renders hidden whenever the platform reports
-        // the target unpublished, and the browser-side refresh flips it
-        // either way without a rebuild. So this is correct both before and
-        // after the first release that builds an arm64 Linux package.
-        key: 'linux-arm64',
-        archKey: 'arm64',
-        conversion: 'download_linux_arm64',
-        label: ui.dlLinuxArm64,
-        arch: ui.dlArchLinuxArm64,
-        href: null,
-        dl: linuxArmDl,
-      },
-    ],
-  },
-  {
-    key: 'windows',
-    icon: AppWindow,
-    windows: true,
-    rows: [
-      {
-        key: 'windows-x64',
-        archKey: 'default',
-        conversion: 'download_windows_x64',
-        label: ui.dlWindows,
-        arch: ui.dlArchWindowsX64,
-        href: null,
-        dl: winX64Dl,
-      },
-      {
-        // Published since 0.0.46. Nothing here is conditional on that:
-        // the row renders hidden whenever the platform reports the
-        // target unpublished, and the browser-side refresh flips it
-        // either way without a rebuild. The promotion script checks the
-        // same fact before it hands an ARM machine this primary, so a
-        // release that builds no arm64 installer leaves x64 on the
-        // button rather than a control that 404s. See the scripts below.
-        key: 'windows-arm64',
-        archKey: 'arm64',
-        conversion: 'download_windows_arm64',
-        label: ui.dlWindowsArm64,
-        arch: ui.dlArchWindowsArm64,
-        href: null,
-        dl: winArmDl,
-      },
-    ],
-  },
-];
+// The one list, shared with the grid on the download page.
+const groups = buildGroups(
+  ui,
+  { mac, linuxX64, linuxArm, winX64, winArm },
+  { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL },
+);
 
-// Every row is both a candidate primary and a menu row, and the two are
-// exact opposites: the menu lists precisely what the button isn't
-// downloading. So one list drives both, and the pair can't drift into
-// showing a file twice or not at all. A Windows visitor on an Intel
-// machine still sees the ARM build in the menu — it is the one choice
-// their primary can't make for them — and an ARM visitor sees x64 there
-// for the same reason, in reverse.
-//
-// A row with an `href` is a handoff rather than a download, and the two
-// differ in every way that matters here: it renders as a real <a>, it
-// keeps `data-dl-platform` off itself so the delegated download handler
-// ignores it, and it is available by definition — there is no release
-// object behind it to ask.
+// Every entry here is both a candidate primary and a menu row, and the two
+// are exact opposites: the menu lists precisely what the button isn't
+// offering. One list drives both, so the pair can't drift into showing a
+// choice twice or not at all. A Linux visitor on x64 still sees the ARM
+// build in the menu — it is the one choice their primary can't make for
+// them — and an ARM visitor sees x64 there for the same reason, in reverse.
 const entries = groups.flatMap((g) =>
-  g.rows.map((row) => ({
+  g.rows.filter((row) => isPromotable(row.archKey)).map((row) => ({
     group: g,
     row,
-    Tag: row.href ? 'a' : 'button',
-    avail: !!(row.href || row.dl),
+    Tag: row.href ? ('a' as const) : ('button' as const),
+    avail: rowAvailable(row),
   })),
 );
 
-// The unsigned note covers BOTH Windows builds, so it caps the group at the
-// foot of the panel rather than sitting on one row — attached to the x64
-// row it rendered between the two Windows entries, reading as a caveat
-// about x64 alone and cutting the ARM row loose from the group above it.
-// It carries the Windows platform key and deliberately no arch, which the
-// script reads as "either Windows build": hidden exactly when a Windows
-// visitor is already reading the same line under their button, whichever
-// of the two installers that button hands them.
-const windowsKey = groups.find((g) => g.windows)!.key;
+// The primary button's icon. The menu rows resolve their own (see
+// VoiceDownloadRow), so this is the one place left that needs the map.
+const ICONS: Record<PlatformGroupKey, any> = { mac: Apple, windows: AppWindow, linux: Package };
 
 // Mac is the SSR default primary; the script swaps to Linux or Windows.
 // `DEFAULT_ARCH` is the arch half of the same statement: nothing is known
@@ -223,39 +117,43 @@ const primaryCls =
 // `text-left` because the CTA card centres its text and the menu shouldn't
 // inherit that — the rows are left-aligned, so the note under them is too.
 //
-// `w-max` is load-bearing. The panel is absolutely positioned inside the
-// `relative` <details>, so its containing block is only as wide as the
-// "other platforms" summary — shrink-to-fit caps it there and every row
-// wraps, which is what `min-w` was really propping open. A fixed minimum
+// The panel has two sizings, and they answer different questions.
+//
+// From `sm` up: `w-max` is load-bearing. The panel is absolutely positioned
+// inside the `relative` <details>, so its containing block is only as wide
+// as the "other platforms" summary — shrink-to-fit caps it there and every
+// row wraps, which is what `min-w` was really propping open. A fixed minimum
 // can't hold nine locales ("Für Windows auf ARM herunterladen" is half
 // again as long as the English), so the panel sizes to its own widest row
-// instead, and `max-w` keeps it inside a phone screen when that row is
-// wider than the viewport.
-const panelCls =
-  'absolute left-0 top-full z-20 mt-2 flex w-max min-w-[19rem] max-w-[calc(100vw-2rem)] flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-wk-surface/95';
-
-const rowCls =
-  'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
-
-// `shrink-0 whitespace-nowrap` — the label beside it wraps in several
-// languages, and a two-line pill looks broken.
-const tagCls =
-  'shrink-0 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold whitespace-nowrap uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
-
-// Sits at the foot of the panel now, so it pays for its own top spacing —
-// the rows above are buttons with their own padding and would otherwise
-// leave the note crowded against the last one.
+// instead.
 //
-// The `max-w` is what keeps a `w-max` panel sane: a paragraph's max-content
-// width is the whole sentence on one line, so without a cap this one
-// sentence would set the width of the entire menu. Capped below the panel's
-// minimum, it wraps like a caption and the rows decide the width.
-const noteCls =
-  'max-w-[17rem] px-3 pt-1 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
+// On a phone that same anchor is the bug: the summary sits beside the
+// primary button, a third of the way across the screen, and a panel wide
+// enough to read from there runs off the right edge — which scrolls the
+// whole document sideways, since nothing above clips it. A viewport-width
+// `max-w` can't save it, because a cap on width says nothing about where
+// the box starts. So below `sm` the panel measures against the control
+// instead of the summary (the wrapper is the `relative` one there, see the
+// markup) and takes its full width: left edge on the page margin, right
+// edge on the other, correct at any width and in any language.
+const panelCls =
+  'absolute left-0 top-full z-20 mt-2 flex w-full max-w-full flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl sm:w-max sm:min-w-[19rem] sm:max-w-[calc(100vw-2rem)] dark:border-white/10 dark:bg-wk-surface/95';
+
+// The footer link to the full list, styled as a quiet last line of the
+// panel rather than as another row — it goes to a page, not to a file.
+const allCls =
+  'flex items-center gap-1.5 rounded px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white';
 ---
 
-<div class="inline-block text-left" data-voice-download>
-  <div class="flex flex-wrap items-center gap-3">
+{/* `relative` so the menu has something page-wide to measure against on a
+    phone — see `panelCls`. Full width there for the same reason, which also
+    puts the row's other button (GitHub, or the install link) on its own line
+    rather than squeezed beside this one; `sm:inline-block` restores the
+    shrink-to-fit box every layout above that expects. */}
+<div class="relative block w-full text-left sm:inline-block sm:w-auto" data-voice-download>
+  {/* The CTA card centres its content by centring this box, which a
+      full-width box can't be — so on a phone the row does its own centring. */}
+  <div class:list={['flex flex-wrap items-center gap-3', variant === 'cta' && 'max-sm:justify-center']}>
     {/* One primary per (platform, arch) — exactly one is ever shown. Our
         own downloads are <button>s: the URL is built on click, so no
         artifact filename and no version ever reaches the delivered HTML.
@@ -265,73 +163,52 @@ const noteCls =
         is a link worth having followed. `data-dl-avail` is the build's
         answer to "does this file exist", refreshed in the browser, and the
         promotion script won't put an unavailable target on the button. */}
-    {entries.map((e) => (
-      <e.Tag
-        type={e.row.href ? undefined : 'button'}
-        href={e.row.href ?? undefined}
-        data-conversion={e.row.conversion}
-        data-dl-primary={e.group.key}
-        data-dl-arch={e.row.archKey}
-        data-dl-platform={e.row.href ? undefined : e.row.key}
-        data-dl-avail={e.avail ? '1' : '0'}
-        data-dl-show="inline-flex"
-        class:list={[primaryCls, 'cursor-pointer border-0', isDefaultPrimary(e) ? 'inline-flex' : 'hidden']}
-        style="background-color: #ff6d00"
-      >
-        <e.group.icon class="w-5 h-5" />
-        {e.row.label}
-      </e.Tag>
-    ))}
+    {entries.map((e) => {
+      const Icon = ICONS[e.group.key];
+      return (
+        <e.Tag
+          type={e.row.href ? undefined : 'button'}
+          href={e.row.href ?? undefined}
+          data-conversion={e.row.conversion}
+          data-dl-primary={e.group.key}
+          data-dl-arch={e.row.archKey}
+          data-dl-platform={e.row.href ? undefined : e.row.key}
+          data-dl-avail={e.avail ? '1' : '0'}
+          data-dl-show="inline-flex"
+          class:list={[primaryCls, 'cursor-pointer border-0', isDefaultPrimary(e) ? 'inline-flex' : 'hidden']}
+          style="background-color: #ff6d00"
+        >
+          <Icon class="w-5 h-5" />
+          {e.row.label}
+        </e.Tag>
+      );
+    })}
 
     {/* Other platforms — native <details> so it works without JS. Each row
-        is WRAPPED, so promoting a platform toggles the wrapper while the
-        row's own hidden state stays about whether that file exists. Two
-        independent reasons to hide, on one element, is the bug this
-        avoids. */}
-    <details class="group relative" data-dl-more>
+        (VoiceDownloadRow) is WRAPPED, so promoting a platform toggles the
+        wrapper while the row's own hidden state stays about whether that
+        file exists. Two independent reasons to hide, on one element, is
+        the bug this avoids. */}
+    <details class="group sm:relative" data-dl-more>
       <summary class="flex cursor-pointer list-none items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
         {ui.dlOther}
         <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
       </summary>
       <div class={panelCls}>
         {entries.map((e) => (
-          <div
-            data-dl-alt={e.group.key}
-            data-dl-alt-arch={e.row.archKey}
-            data-dl-show="flex"
-            class:list={['flex-col', isDefaultPrimary(e) ? 'hidden' : 'flex']}
-          >
-            <e.Tag
-              type={e.row.href ? undefined : 'button'}
-              href={e.row.href ?? undefined}
-              data-conversion={e.row.conversion}
-              data-dl-platform={e.row.href ? undefined : e.row.key}
-              data-dl-row={e.row.href ? undefined : e.row.key}
-              data-dl-show="inline-flex"
-              class:list={[rowCls, e.avail ? 'inline-flex' : 'hidden']}
-            >
-              <e.group.icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />
-              <span class="flex flex-col">
-                <span class="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
-                  {e.row.label}
-                  {e.group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
-                </span>
-                {/* The size is ours to state only for a file we publish.
-                    The App Store row shows its requirement line alone —
-                    Apple prints the download size on the listing. */}
-                <span class="whitespace-nowrap text-[11px] font-normal text-gray-500 dark:text-gray-400">{e.row.arch}{e.row.dl && <Fragment> · <span data-dl-size={e.row.key}>{e.row.dl.size}</span></Fragment>}</span>
-              </span>
-            </e.Tag>
-          </div>
+          <VoiceDownloadRow group={e.group} row={e.row} ui={ui} context="menu" hidden={isDefaultPrimary(e)} />
         ))}
-        <p
-          data-dl-alt={windowsKey}
-          data-dl-show="block"
-          class:list={[noteCls, windowsKey === DEFAULT ? 'hidden' : 'block']}
-        >
-          {ui.dlWindowsUnsigned}{' '}
-          <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-        </p>
+
+        {/* The last line, and the only one that isn't a download: every
+            installer this menu deliberately doesn't list is on that page,
+            laid out one column per system. Dropped on the download page
+            itself, where it would point at the reader's own location. */}
+        {!onDownloadPage && (
+          <a href={downloadPath} class={allCls}>
+            {ui.dlAllDownloads}
+            <ArrowRight class="h-3.5 w-3.5 shrink-0" />
+          </a>
+        )}
       </div>
     </details>
 
@@ -340,28 +217,23 @@ const noteCls =
         honest for crawlers and the handful of readers without scripting. */}
     <noscript>
       <div class="flex flex-wrap items-center gap-4">
-        {groups.flatMap((g) => g.rows.filter((r) => r.href || r.dl).map((r) => (
-          <a
-            href={r.href ?? r.dl!.url}
-            class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
-          >
-            <g.icon class="h-4 w-4" style="color: #ff6d00" />
-            {r.label}
-          </a>
-        )))}
+        {groups.flatMap((g) =>
+          g.rows.filter((r) => r.href || r.dl).map((r) => {
+            const Icon = ICONS[g.key];
+            return (
+              <a
+                href={r.href ?? r.dl!.url}
+                class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
+              >
+                <Icon class="h-4 w-4" style="color: #ff6d00" />
+                {r.label}
+              </a>
+            );
+          }),
+        )}
       </div>
     </noscript>
   </div>
-
-  {/* Windows warns on first launch, and the visitor about to hit that
-      warning is exactly the one whose primary says Windows — so the note
-      sits under the button for them, and inside the menu for everyone
-      else. Hidden by default and shown by the promotion script, like the
-      version captions on the page. */}
-  <p data-dl-note="windows" class="hidden mt-2.5 max-w-xs text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
-    {ui.dlWindowsUnsigned}{' '}
-    <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-  </p>
 </div>
 
 <ConversionTracking />
@@ -435,24 +307,21 @@ const noteCls =
 
 <script is:inline>
   // Promote the visitor's platform to the primary control, then — on
-  // Windows only — the visitor's chip.
+  // Linux only — the visitor's chip.
   //
   // The PLATFORM pass runs synchronously as the markup is parsed, so
   // there's no flash of the wrong default, and it is plain UA sniffing.
   //
-  // The CHIP pass is separate because it has to be. A Windows 11 machine
-  // on ARM64 reports "Windows NT 10.0; Win64; x64" in its user-agent
-  // string on purpose — Windows hides the chip so x64 software keeps
-  // working — so no amount of UA reading can find it. The one place it is
-  // exposed is `navigator.userAgentData.getHighEntropyValues()`, which is
-  // Chromium-only and returns a promise. That shapes the whole design:
-  // x64 goes on the button first and holds it for everything that can't
-  // answer (every non-Chromium browser, and Windows on Intel and AMD,
-  // which is nearly all of it), and an ARM64 machine is upgraded to the
-  // native build a few milliseconds later. Guessing wrong in that
-  // direction costs nothing — Windows 11 for ARM emulates x64 — which is
-  // why the slow, partial signal is safe to act on and the button never
-  // waits for it.
+  // The CHIP pass is separate because it has to be: the only place a
+  // browser exposes the architecture is
+  // `navigator.userAgentData.getHighEntropyValues()`, which is
+  // Chromium-only and returns a promise. That shapes the design: x64 goes
+  // on the button first and holds it for everything that can't answer
+  // (every non-Chromium browser, and every Intel or AMD machine, which is
+  // nearly all of them), and an ARM64 machine is upgraded to the native
+  // build a few milliseconds later. Guessing wrong in that direction is
+  // recoverable rather than fatal, which is why the slow, partial signal
+  // is safe to act on and the button never waits for it.
   (function () {
     var ua = navigator.userAgent || '';
     var plat = navigator.platform || '';
@@ -494,23 +363,24 @@ const noteCls =
         root.querySelectorAll('[data-dl-primary]').forEach(function (el) {
           setShown(el, el.dataset.dlPrimary === active && el.dataset.dlArch === arch);
         });
-        // A menu row hides when the primary is already downloading it. A
-        // row that names no arch (the unsigned-Windows note) means every
-        // build of that platform, so it hides on either of them.
+        // A menu row hides when the primary is already offering it. Every
+        // wrapper names an arch, so this is a plain (platform, arch) match
+        // — the note at the foot of the panel used to be the one exception
+        // and is now unconditional, because it is about the direct .exe
+        // rows rather than about Windows.
         root.querySelectorAll('[data-dl-alt]').forEach(function (el) {
-          var a = el.dataset.dlAltArch;
-          setShown(el, !(el.dataset.dlAlt === active && (!a || a === arch)));
+          setShown(el, !(el.dataset.dlAlt === active && el.dataset.dlAltArch === arch));
         });
       });
-      // Show only the active platform's caption and note, matching the
-      // single control. Keyed on platform alone: the two Windows builds
-      // share a version and both meet SmartScreen. These <p> have no
-      // display utility, so toggling `hidden` alone is safe. Caption
-      // lines can sit after this script in the page, so DOMContentLoaded
-      // catches them — controls swap synchronously (no flicker).
-      document.querySelectorAll('[data-dl-meta],[data-dl-note]').forEach(function (el) {
-        var key = el.dataset.dlMeta || el.dataset.dlNote;
-        el.classList.toggle('hidden', key !== active);
+      // Show only the active platform's caption, matching the single
+      // control. Keyed on platform alone, which is all that is left to key
+      // on: every platform now shows one primary whatever the chip. These
+      // <p> have no display utility, so toggling `hidden` alone is safe.
+      // Caption lines can sit after this script in the page, so
+      // DOMContentLoaded catches them — controls swap synchronously (no
+      // flicker).
+      document.querySelectorAll('[data-dl-meta]').forEach(function (el) {
+        el.classList.toggle('hidden', el.dataset.dlMeta !== active);
       });
     }
     // Exposed so the release refresh above can re-run the promotion when
@@ -519,17 +389,19 @@ const noteCls =
     resolve();
     document.addEventListener('DOMContentLoaded', resolve);
 
-    // The arch probe now runs for Linux too, not just Windows. macOS is the
-    // one platform that skips it: we publish a single arm64 build there, so
-    // there is no second architecture to promote to.
+    // Linux is the only platform with an architecture left to work out.
+    // macOS publishes a single arm64 build; Windows hands the question to
+    // the Microsoft Store, whose one listing carries both packages. On
+    // either of them there is no second row to promote to, so the probe
+    // could only cost a call and change nothing.
     var uad = navigator.userAgentData;
-    if (active === 'mac' || !uad || !uad.getHighEntropyValues) return;
+    if (active !== 'linux' || !uad || !uad.getHighEntropyValues) return;
     uad
       .getHighEntropyValues(['architecture', 'bitness'])
       .then(function (h) {
         // Chromium reports the chip as 'arm' with a separate bitness, so
-        // both halves are checked: 32-bit ARM exists on both Windows and
-        // Linux and cannot run these packages. Anything else keeps x64.
+        // both halves are checked: 32-bit ARM exists and cannot run the
+        // arm64 package. Anything else keeps x64.
         if (!h || h.architecture !== 'arm' || h.bitness !== '64') return;
         activeArch = 'arm64';
         resolve();

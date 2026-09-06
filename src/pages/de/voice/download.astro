@@ -2,11 +2,11 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
+import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
 import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const linuxDownload = await getDownload('linux-x64');
-const windowsDownload = await getDownload('windows-x64');
 
 // Hardware requirements are localised chrome, not release data.
 const ui = t(resolveLocale(Astro.url.pathname).code);
@@ -15,7 +15,7 @@ const steps = [
   {
     n: '1',
     title: 'Installieren',
-    body: 'Auf einem Mac installiert der App Store WaveKat Voice für Sie — danach finden Sie es im Programme-Ordner. Wenn Sie stattdessen den direkten Download gewählt haben, doppelklicken Sie die .dmg-Datei und ziehen WaveKat Voice in den Programme-Ordner. Unter Windows führen Sie die .exe-Datei aus und folgen dem Installationsprogramm. Unter Linux öffnen Sie die .deb-Datei in Ihrem Software-Installer oder installieren sie im Terminal mit apt oder dpkg.',
+    body: 'Auf einem Mac installiert der App Store WaveKat Voice für Sie — danach finden Sie es im Programme-Ordner; unter Windows übernimmt das der Microsoft Store. Wenn Sie stattdessen einen direkten Download gewählt haben, doppelklicken Sie auf einem Mac die .dmg-Datei und ziehen WaveKat Voice in den Programme-Ordner, oder führen Sie unter Windows die .exe-Datei aus. Unter Linux öffnen Sie die .deb-Datei in Ihrem Software-Installer oder installieren sie im Terminal mit apt oder dpkg.',
   },
   {
     n: '2',
@@ -29,9 +29,11 @@ const steps = [
   },
 ];
 
-// Windows needs one extra beat the other two don't: the build isn't
-// code-signed, so SmartScreen stops the first launch. The download menu's
-// "how to get past it" link points at #windows below — deliberately here
+// These steps are about the DIRECT .exe only. The Microsoft Store package
+// is signed by Microsoft and installs without a warning, so a visitor who
+// takes the button never sees any of this — it is here for the one who
+// opens Other Platforms and takes the file instead. The download menu's
+// "how to get past it" link points at #windows below, deliberately here
 // and not at /docs/**, which is English-only.
 const windowsSteps = [
   'Klicken Sie im SmartScreen-Fenster auf „Weitere Informationen“.',
@@ -54,7 +56,7 @@ const highlights = [
   <section class="relative mb-16 pt-4">
     <!-- brand-orange glow -->
     <div
-      class="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
+      class="pointer-events-none absolute -top-24 -left-24 w-72 h-72 sm:w-[28rem] sm:h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
       style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
       aria-hidden="true"
     >
@@ -79,8 +81,14 @@ const highlights = [
     <div class="mt-4 text-xs text-gray-400 dark:text-gray-600">
       <p data-dl-meta="mac">macOS 12+ · {ui.dlArchMac} · Kostenlos im Mac App Store · <a href="/de/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">{ui.subChangelog}</a></p>
       <p data-dl-meta="linux" class="hidden">Linux · <a href="/de/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="linux">{linuxDownload?.version}</span></a> · <span data-dl-size="linux">{linuxDownload?.size}</span></p>
-      <p data-dl-meta="windows" class="hidden">Windows 10 &amp; 11 · <a href="/de/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">v<span data-dl-version="windows-x64">{windowsDownload?.version}</span></a></p>
+      <p data-dl-meta="windows" class="hidden">{ui.dlArchMsStore} · Kostenlos im Microsoft Store · <a href="/de/voice/changelog/" title="Sehen Sie, was in dieser Version neu ist" class="underline underline-offset-2 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">{ui.subChangelog}</a></p>
     </div>
+  </section>
+
+  <!-- All downloads — every installer, one column per system -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Alle Downloads</h2>
+    <VoiceDownloadAll />
   </section>
 
   <!-- What you get -->
@@ -119,8 +127,11 @@ const highlights = [
   <!-- Installing on Windows -->
   <section id="windows" class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installation unter Windows</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
+      WaveKat Voice ist für Windows 10 und 11 im Microsoft Store, und das ist der einfachste Weg, es zu installieren: ein Eintrag, der PCs mit Intel und AMD ebenso abdeckt wie ARM-PCs, sodass der Store Ihrem Rechner die passende Version gibt und sie aktuell hält. Microsoft signiert das Paket, deshalb erscheint beim ersten Start keine Sicherheitswarnung.
+    </p>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
-      WaveKat Voice für Windows ist noch nicht signiert, deshalb zeigt Windows SmartScreen beim ersten Start des Installationsprogramms das blaue Fenster „Der Computer wurde durch Windows geschützt“. Die Warnung betrifft ein Zertifikat, das wir noch nicht gekauft haben, nicht die Datei selbst — so kommen Sie daran vorbei.
+      Die direkten .exe-Downloads in der Liste oben sind noch nicht signiert, deshalb zeigt Windows SmartScreen beim ersten Ausführen das blaue Fenster „Der Computer wurde durch Windows geschützt“. Die Warnung betrifft ein Zertifikat, das wir noch nicht gekauft haben, nicht die Datei selbst — so kommen Sie daran vorbei.
     </p>
     <ol class="space-y-3 mb-5 max-w-xl">
       {windowsSteps.map((s, i) => (
@@ -136,7 +147,7 @@ const highlights = [
       ))}
     </ol>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
-      Die Schaltfläche lädt die 64-Bit-Version, die auf jedem Windows-10- und Windows-11-PC läuft — nativ auf Intel und AMD, emuliert unter Windows 11 für ARM. Hat Ihr PC einen Snapdragon oder einen anderen ARM-Chip, ist „Für Windows auf ARM herunterladen“ unter „Andere Plattformen“ die native Version und läuft schneller.
+      Beide direkten Versionen liegen oben in der Windows-Spalte, und Sie wählen selbst: „Für Windows herunterladen“ ist die 64-Bit-Version für PCs mit Intel und AMD, „Für Windows auf ARM herunterladen“ die native Version für Snapdragon und andere ARM-PCs.
     </p>
   </section>
 
@@ -159,9 +170,9 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Immer aktuell bleiben</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice hält sich selbst aktuell. Eine Version aus dem Mac App Store aktualisiert sich wie jede
-      andere App-Store-App; ein direkter Download sucht leise im Hintergrund nach neuen Versionen und aktualisiert
-      sich selbst. So oder so müssen Sie nie wieder hierher zurückkommen, um eine neuere Version herunterzuladen.
+      WaveKat Voice hält sich selbst aktuell. Eine Version aus dem Mac App Store oder dem Microsoft Store
+      aktualisiert sich wie jede andere Store-App; ein direkter Download sucht leise im Hintergrund nach neuen
+      Versionen und aktualisiert sich selbst. So oder so müssen Sie nie wieder hierher zurückkommen, um eine neuere Version herunterzuladen.
     </p>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
       <a href="/de/voice/changelog/" class="text-gray-900 dark:text-white underline underline-offset-2 hover:opacity-70 transition-opacity">Sehen Sie, was in jeder Version neu ist →</a>

@@ -1,0 +1,70 @@
+---
+// Every download we publish, in the open, one column per operating system.
+//
+// This is the other half of a single rule: the menu on every page offers
+// only the one recommended control per system, and everything else — the
+// installers we hand out ourselves where a store already covers the
+// platform better — lives here, where a reader can see all of them at once
+// and compare them. A menu is for choosing quickly; a page is for choosing
+// carefully, and a disclosure inside a disclosure was neither.
+//
+// It shares its rows with the menu (`VoiceDownloadRow`) and its data with
+// the menu (`voice-download-groups.ts`), so the two surfaces can't drift.
+import VoiceDownloadRow from './VoiceDownloadRow.astro';
+import ConversionTracking from './ConversionTracking.astro';
+import { getDownload, MAC_APP_STORE_CAMPAIGN_URL, MS_STORE_CAMPAIGN_URL } from '../lib/voice-download';
+import { buildGroups } from '../lib/voice-download-groups';
+import { localizedPath, resolveLocale, t } from '../lib/i18n';
+
+const { code: lang } = resolveLocale(Astro.url.pathname);
+const ui = t(lang);
+
+// A same-page jump: this component is rendered on the download page, and
+// the SmartScreen walkthrough is a section further down it.
+const unsignedHref = `${localizedPath('/voice/download/', lang)}#windows`;
+
+const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
+  getDownload('mac'),
+  getDownload('linux-x64'),
+  getDownload('linux-arm64'),
+  getDownload('windows-x64'),
+  getDownload('windows-arm64'),
+]);
+
+const groups = buildGroups(
+  ui,
+  { mac, linuxX64, linuxArm, winX64, winArm },
+  { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL },
+);
+---
+
+{/* Three equal columns that stack on a phone. `items-start` so a column
+    with fewer rows doesn't stretch its card to match the tallest. */}
+<div class="grid grid-cols-1 items-start gap-3 sm:grid-cols-3">
+  {groups.map((group) => (
+    <div class="rounded-xl border border-gray-200 bg-gray-50 p-2 dark:border-white/10 dark:bg-wk-surface">
+      <h3 class="px-3 pt-2 pb-1 text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+        {group.title}
+      </h3>
+      <div class="flex flex-col gap-1">
+        {group.rows.map((row) => (
+          <VoiceDownloadRow group={group} row={row} ui={ui} context="grid" />
+        ))}
+      </div>
+      {/* Only Windows has a note, and it is about the two direct .exe rows
+          directly above it — which is the whole reason it sits at the foot
+          of this column rather than anywhere near the button on a page
+          whose visitor may well be on a Mac. */}
+      {group.windows && (
+        <p class="px-3 pt-2 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
+          {ui.dlWindowsUnsigned}{' '}
+          <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">
+            {ui.dlWindowsUnsignedLink}
+          </a>
+        </p>
+      )}
+    </div>
+  ))}
+</div>
+
+<ConversionTracking />

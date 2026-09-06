@@ -62,7 +62,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: 'Plateformes',
-        wavekat: 'Mac, Windows et Linux (la version Windows est plus récente et pas encore signée).',
+        wavekat: 'Mac, Windows et Linux (la version Windows est distribuée via le Microsoft Store).',
         them: 'Mac, Windows, Linux, iOS, Android.',
       },
       {
@@ -97,7 +97,7 @@ export const alternatives: Alternative[] = [
       },
       {
         q: 'WaveKat Voice fonctionne-t-il sous Windows ?',
-        a: 'Oui. WaveKat Voice prend en charge Windows 10 et 11, avec des programmes d’installation distincts pour Intel/AMD (x64) et ARM64, aux côtés des versions Mac et Linux. La version Windows est plus récente que les deux autres et n’est pas encore signée : Windows signale donc un éditeur inconnu au premier lancement. Linphone propose également une version Windows.',
+        a: 'Oui. WaveKat Voice est sur le Microsoft Store pour Windows 10 et 11 — une seule fiche qui contient à la fois le paquet Intel/AMD (x64) et le paquet ARM64 — aux côtés des versions Mac et Linux. Des programmes d’installation .exe directs existent aussi ; ils ne sont pas encore signés, donc Windows signale un éditeur inconnu au premier lancement, alors que le paquet du Store est signé par Microsoft. Linphone propose également une version Windows.',
       },
       {
         q: 'Linphone enregistre-t-il et transcrit-il les appels comme WaveKat Voice ?',

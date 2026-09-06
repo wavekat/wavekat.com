@@ -1,0 +1,109 @@
+---
+// One download choice, drawn the same way wherever it appears: the compact
+// menu on every page (`VoiceDownload.astro`) and the full grid on the
+// download page (`VoiceDownloadAll.astro`). One component, so a row can't
+// look like two different things depending on which surface you found it on.
+//
+// The icon is resolved here from the platform rather than passed in: it is
+// decided by the platform and nothing else, so it is a fact about drawing a
+// row, not a field of the data. That keeps `voice-download-groups.ts` free
+// of component imports.
+import { Apple, Package, AppWindow } from '@lucide/astro';
+import type { UIStrings } from '../lib/i18n';
+import type { DownloadGroup, DownloadRow, PlatformGroupKey } from '../lib/voice-download-groups';
+import { rowAvailable } from '../lib/voice-download-groups';
+
+interface Props {
+  group: DownloadGroup;
+  row: DownloadRow;
+  ui: UIStrings;
+  /**
+   * `menu` rows carry `data-dl-alt*`, which the promotion script uses to
+   * hide whichever row the button is already offering. Grid rows carry
+   * none of that: the grid shows every choice, always, and is the page a
+   * visitor is sent to precisely to see them all.
+   */
+  context: 'menu' | 'grid';
+  /** Menu only: whether this row starts hidden because it is the SSR primary. */
+  hidden?: boolean;
+}
+const { group, row, ui, context, hidden = false } = Astro.props;
+
+// The icon earns its place in the menu, where rows from all three systems
+// sit in one list and it is what tells them apart at a glance. In the grid
+// it tells the reader nothing the column heading above hasn't already said,
+// and it costs a column that is a third of the page the ~26px its longest
+// labels need to stay on one line. So: menu only.
+const ICONS: Record<PlatformGroupKey, any> = { mac: Apple, windows: AppWindow, linux: Package };
+const Icon = context === 'menu' ? ICONS[group.key] : null;
+
+// A row with an `href` is a handoff rather than a download, and the two
+// differ in every way that matters: it renders as a real <a>, it keeps
+// `data-dl-platform` off itself so the delegated download handler ignores
+// it, and it is available by definition — there is no release object behind
+// it to ask.
+const Tag = row.href ? 'a' : 'button';
+const avail = rowAvailable(row);
+
+const rowCls =
+  'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
+
+// `shrink-0 whitespace-nowrap` — the label beside it wraps in several
+// languages, and a two-line pill looks broken.
+// Inline rather than a flex sibling of the label. As a sibling it was laid
+// out beside the whole label, so a label that wrapped to two lines pushed
+// the pill out to the row's right edge with a gap in between; inline, it
+// simply follows the last word wherever that lands. `align-middle` because
+// its font is smaller than the label's, and `whitespace-nowrap` so the pill
+// itself is never the thing that breaks.
+const tagCls =
+  'ml-1.5 inline-block rounded-full bg-gray-100 px-1.5 py-0.5 align-middle text-[10px] font-semibold whitespace-nowrap uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
+---
+
+{/* Each row is WRAPPED so promoting a platform toggles the wrapper while
+    the row's own hidden state stays about whether that file exists. Two
+    independent reasons to hide, on one element, is the bug this avoids. */}
+<div
+  data-dl-alt={context === 'menu' ? group.key : undefined}
+  data-dl-alt-arch={context === 'menu' ? row.archKey : undefined}
+  data-dl-show={context === 'menu' ? 'flex' : undefined}
+  class:list={['flex-col', hidden ? 'hidden' : 'flex']}
+>
+  <Tag
+    type={row.href ? undefined : 'button'}
+    href={row.href ?? undefined}
+    data-conversion={row.conversion}
+    data-dl-platform={row.href ? undefined : row.key}
+    data-dl-row={row.href ? undefined : row.key}
+    data-dl-show="inline-flex"
+    class:list={[rowCls, avail ? 'inline-flex' : 'hidden']}
+  >
+    {Icon && <Icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />}
+    <span class="flex min-w-0 flex-col">
+      <span class="text-sm font-bold text-gray-900 dark:text-white">
+        {row.label}{group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
+      </span>
+      {/* The size is ours to state only for a file we publish. A store row
+          shows its requirement line alone — the store prints the download
+          size on its own listing. */}
+      {/* Whether this line may wrap is a question about the box around it,
+          which is why it follows the context rather than the breakpoint.
+          The menu panel sizes itself to its widest row (`w-max`), so from
+          `sm` up it can promise one line and simply be that wide; below
+          `sm` it is the width of the screen and has to wrap. A grid column
+          is a third of a fixed page and never negotiates, so a promise of
+          one line there is just overflow — these lines wrap at every
+          width. Either way the size keeps its separator and its unit
+          together: a line ending "· 102" with "MB" alone under it reads as
+          a broken layout. */}
+      <span
+        class:list={[
+          'text-[11px] font-normal text-gray-500 dark:text-gray-400',
+          context === 'menu' && 'sm:whitespace-nowrap',
+        ]}
+      >
+        {row.arch}{row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={row.key}>{row.dl.size}</span></span>}
+      </span>
+    </span>
+  </Tag>
+</div>

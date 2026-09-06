@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -193,8 +193,12 @@ const faqs = [
     a: 'Oui. WaveKat Voice est sur le Mac App Store, gratuitement, et c’est la façon la plus simple de l’installer sur un Mac : Apple s’occupe de l’installation et de chaque mise à jour ensuite. C’est la même app que le téléchargement direct depuis wavekat.com, qui reste disponible si vous le préférez. Il faut macOS 12 ou une version ultérieure et un Mac équipé d’une puce Apple.',
   },
   {
+    q: 'WaveKat Voice est-il sur le Microsoft Store ?',
+    a: 'Oui. WaveKat Voice est sur le Microsoft Store, gratuitement, et c’est la façon la plus simple de l’installer sous Windows : Microsoft signe le paquet, donc aucun avertissement « éditeur inconnu » n’apparaît, et une seule fiche couvre aussi bien les PC Intel et AMD que les PC ARM. C’est la même app que les téléchargements directs du .exe depuis wavekat.com, qui restent disponibles si vous les préférez. Il faut Windows 10 ou 11.',
+  },
+  {
     q: 'WaveKat Voice fonctionne-t-il sous Windows ?',
-    a: 'Oui — Windows 10 et 11, avec des programmes d’installation distincts pour Intel ou AMD et pour Windows sur ARM. La version Windows est plus récente que celles pour Mac et Linux et n’est pas encore signée : Windows affiche donc un avertissement « éditeur inconnu » au premier lancement. WaveKat Voice est une application de bureau, il n’y a donc pas de version mobile ou tablette — dites-le-nous si c’est ce qu’il vous faut.',
+    a: 'Oui — WaveKat Voice fonctionne sous Windows 10 et 11 et se trouve sur le Microsoft Store, dont la fiche unique contient à la fois le paquet Intel/AMD et le paquet ARM64. Des programmes d’installation directs existent aussi pour chacun ; ils ne sont pas encore signés, donc Windows affiche un avertissement « éditeur inconnu » au premier lancement, alors que le paquet du Store est signé par Microsoft. WaveKat Voice est une application de bureau, il n’y a donc pas de version mobile ou tablette — dites-le-nous si c’est ce qu’il vous faut.',
     link: { href: '/fr/voice/talk/', label: 'Dites-nous ce qu’il vous faut' },
   },
   {
@@ -217,7 +221,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/fr/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
   description:
     'Une application de bureau qui transforme votre ordinateur en téléphone professionnel — recevez et passez des appels, chaque appel étant enregistré et retranscrit. Compatible avec l’opérateur téléphonique que vous utilisez déjà.',
   featureList: [
@@ -231,12 +235,30 @@ const appSchema = {
     'Journalisation automatique des appels dans HubSpot, avec synchronisation des transcriptions et lecture des enregistrements dans le CRM',
     'Neuf langues d’interface, sur macOS, Windows et Linux',
   ],
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-  },
+  // One Offer per storefront, because that is the property that carries
+  // "you can get it here" — `sameAs` only says the listing is us. Both are
+  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // above stays single-valued and stays on Apple: Google has only ever
+  // documented it against one URL, and an untested array there would trade
+  // a property that works for one that might not.
+  offers: [
+    {
+      '@type': 'Offer',
+      url: MAC_APP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Apple App Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: MS_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+  ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
 };
 

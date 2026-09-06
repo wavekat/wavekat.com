@@ -137,7 +137,15 @@ const pipelineBase = voicePipeline.slice(4);
         {/* `items-start`, not `items-center`: the unsigned-build note lives inside
             the download control and only appears for a Windows visitor, so centring
             would drop every other button in this row by half the note's height. */}
-        <div class="animate-rise-late mt-9 flex flex-wrap items-start gap-4">
+        {/* `relative z-20`: `animate-rise-late` ends on a transform, and a
+            transform is a stacking context for good — so the open download
+            menu's own `z-20` only ever ranked it inside this column, and the
+            screenshot column, which paints later, landed on top of it. On a
+            phone that column sits directly under the control, so the menu was
+            covered from the second row down and its rows took no taps at all.
+            Raising the column is what the menu's z-index needs to mean
+            anything outside it. */}
+        <div class="animate-rise-late relative z-20 mt-9 flex flex-wrap items-start gap-4">
           <VoiceDownload />
           <a
             href="https://github.com/wavekat"

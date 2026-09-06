@@ -62,7 +62,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: '対応プラットフォーム',
-        wavekat: 'Mac、Windows、Linux（Windows 版は後発で、まだコード署名なし）。',
+        wavekat: 'Mac、Windows、Linux（Windows 版は Microsoft Store で配信）。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -97,7 +97,7 @@ export const alternatives: Alternative[] = [
       },
       {
         q: 'WaveKat Voice は Windows で動きますか？',
-        a: 'はい。WaveKat Voice は Windows 10 と 11 に対応し、Intel/AMD（x64）と ARM64 で別々のインストーラーを用意しています。Mac 版・Linux 版も同時に配布しています。Windows 版は他の 2 つより後発で、まだコード署名をしていないため、初回起動時に「発行元不明」の警告が出ます。Linphone にも Windows 版があります。',
+        a: 'はい。WaveKat Voice は Windows 10 と 11 向けに Microsoft Store で配信しています。ひとつの掲載ページに Intel/AMD（x64）と ARM64 の両方のパッケージが含まれ、Mac 版・Linux 版も同時に配布しています。.exe の直接インストーラーもありますが、こちらはまだコード署名をしていないため初回起動時に「発行元不明」の警告が出ます。Store のパッケージは Microsoft が署名しています。Linphone にも Windows 版があります。',
       },
       {
         q: 'Linphone も WaveKat Voice のように通話を録音・文字起こししますか？',

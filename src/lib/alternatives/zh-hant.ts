@@ -62,7 +62,7 @@ export const alternatives: Alternative[] = [
       },
       {
         label: '支援平台',
-        wavekat: 'Mac、Windows 和 Linux（Windows 版較新，尚未程式碼簽章）。',
+        wavekat: 'Mac、Windows 和 Linux（Windows 版在 Microsoft Store 上架）。',
         them: 'Mac、Windows、Linux、iOS、Android。',
       },
       {
@@ -97,7 +97,7 @@ export const alternatives: Alternative[] = [
       },
       {
         q: 'WaveKat Voice 能在 Windows 上執行嗎？',
-        a: '可以。WaveKat Voice 支援 Windows 10 和 11，Intel/AMD（x64）與 ARM64 各有獨立安裝程式，Mac 和 Linux 版同步發布。Windows 版比另外兩個平台更年輕，而且尚未進行程式碼簽章，首次啟動時 Windows 會提示「未知發行者」。Linphone 同樣提供 Windows 版本。',
+        a: '可以。WaveKat Voice 已在 Microsoft Store 上架，支援 Windows 10 和 11——同一個商店頁面同時包含 Intel/AMD（x64）與 ARM64 兩個安裝套件，Mac 和 Linux 版同步發布。也有直接下載的 .exe 安裝程式，但它們尚未進行程式碼簽章，首次啟動時 Windows 會提示「未知發行者」；商店版本由 Microsoft 簽章。Linphone 同樣提供 Windows 版本。',
       },
       {
         q: 'Linphone 會像 WaveKat Voice 一樣錄音和轉寫通話嗎？',

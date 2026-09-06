@@ -35,8 +35,12 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
 ---
 
 <div class="hero-carousel relative" style={`--hc-interval: ${interval}ms`}>
+  <!-- The halo bleeds past the shot on purpose, but it is the page's own
+       margin it bleeds into: -inset-10 is 40px and a phone only has 24px of
+       padding to spare, so the last 16px pushed the document sideways. Held
+       inside the margin below sm, full spread above it. -->
   <div
-    class="pointer-events-none absolute -inset-10 rounded-full opacity-25 blur-3xl"
+    class="pointer-events-none absolute -inset-4 rounded-full opacity-25 blur-3xl sm:-inset-10"
     style="background: radial-gradient(closest-side, #ff6d00, transparent);"
     aria-hidden="true"
   >

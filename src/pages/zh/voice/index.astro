@@ -23,7 +23,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -194,8 +194,12 @@ const faqs = [
     a: '在。WaveKat Voice 已上架 Mac App Store，免费下载，这也是在 Mac 上安装它最简单的方式——安装和之后的每次更新都由 Apple 处理。它和从 wavekat.com 直接下载的是同一个应用，直接下载依然保留。需要 macOS 12 或更高版本，以及搭载 Apple 芯片的 Mac。',
   },
   {
+    q: 'WaveKat Voice 在 Microsoft Store 上吗？',
+    a: '在。WaveKat Voice 已上架 Microsoft Store，免费下载，这也是在 Windows 上安装它最简单的方式——安装包由 Microsoft 签名，不会弹出“未知发布者”提示，同一个商店页面同时覆盖 Intel、AMD 电脑和 ARM 电脑。它和从 wavekat.com 直接下载的 .exe 是同一个应用，直接下载依然保留。需要 Windows 10 或 11。',
+  },
+  {
     q: 'WaveKat Voice 能在 Windows 上运行吗？',
-    a: '可以。支持 Windows 10 和 11，Intel/AMD 与 ARM 版各有独立安装包。Windows 版比 Mac 和 Linux 版更年轻，且尚未进行代码签名，因此首次启动时 Windows 会提示“未知发布者”。WaveKat Voice 是桌面应用，没有手机或平板版本——如果你需要，请告诉我们。',
+    a: '可以。WaveKat Voice 支持 Windows 10 和 11，已在 Microsoft Store 上架，同一个商店页面同时包含 Intel/AMD 与 ARM64 两个安装包。两种架构也各有直接下载的安装包，但它们尚未进行代码签名，首次启动时 Windows 会提示“未知发布者”；商店版本由 Microsoft 签名。WaveKat Voice 是桌面应用，没有手机或平板版本——如果你需要，请告诉我们。',
     link: { href: '/zh/voice/talk/', label: '告诉我们你的需求' },
   },
   {
@@ -218,7 +222,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/zh/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
   description:
     '一款把你的电脑变成办公电话的桌面应用——接听和拨打电话，每通电话都自动录音并转写。兼容你已经在用的电话运营商。',
   featureList: [
@@ -232,12 +236,30 @@ const appSchema = {
     '自动将通话记录到 HubSpot，支持转写同步与 CRM 内录音播放',
     '九种应用语言，支持 macOS、Windows 与 Linux',
   ],
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-  },
+  // One Offer per storefront, because that is the property that carries
+  // "you can get it here" — `sameAs` only says the listing is us. Both are
+  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // above stays single-valued and stays on Apple: Google has only ever
+  // documented it against one URL, and an untested array there would trade
+  // a property that works for one that might not.
+  offers: [
+    {
+      '@type': 'Offer',
+      url: MAC_APP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Apple App Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: MS_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+  ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
 };
 
