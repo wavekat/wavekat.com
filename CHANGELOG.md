@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.62](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.61...wavekat-com-v0.0.62) (2026-09-06)
+
+
+### Bug Fixes
+
+* **ci:** give the Linux runners a fallback resolver ([#178](https://github.com/wavekat/wavekat.com/issues/178)) ([9d0178d](https://github.com/wavekat/wavekat.com/commit/9d0178d778d043609c9bf8f1f03f2fbc5437d55a))
+* **ci:** pin DNS for the Mac mini runners ([64b9ec9](https://github.com/wavekat/wavekat.com/commit/64b9ec9c1e30045479a48ea3d81c7242f426d88b))
+* **ci:** retry the build-time asset downloads ([#177](https://github.com/wavekat/wavekat.com/issues/177)) ([c7149a6](https://github.com/wavekat/wavekat.com/commit/c7149a6ed1e85bd089107c19433f336cb4968601))
+
 ## [0.0.61](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.60...wavekat-com-v0.0.61) (2026-09-06)
 
 
