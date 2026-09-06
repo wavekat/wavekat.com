@@ -1,0 +1,96 @@
+---
+// The two scripts that make a download control work, extracted because
+// BOTH surfaces need them and only one of them used to ship them.
+//
+// The compact control (`VoiceDownload.astro`) and the full grid
+// (`VoiceDownloadAll.astro`) draw different things, but they emit the same
+// four attributes — `data-dl-platform`, `data-dl-row`, `data-dl-version`,
+// `data-dl-size` — and those attributes are inert without the code below.
+// While the grid only ever appeared on a page that also carried the
+// control, it inherited both scripts by accident and looked
+// self-contained; the day the control came off that page, every button in
+// the grid would have stopped downloading and the ARM Linux row (which
+// ships hidden and is REVEALED by the release fetch) would have become
+// permanently invisible. Failing that quietly, in a component that renders
+// perfectly, is the bug this file exists to prevent.
+//
+// What stays behind in VoiceDownload.astro is what is genuinely its own:
+// promoting the visitor's platform to the primary control, and closing the
+// menu on an outside click. The grid promotes nothing and has no menu.
+import { DOWNLOAD_BASE, RELEASES_URL } from '../lib/voice-download';
+---
+
+<script is:inline define:vars={{ base: DOWNLOAD_BASE, releasesUrl: RELEASES_URL }}>
+  // Once per document. A page may hold more than one download control —
+  // /voice/ draws one in the hero and another in the closing CTA — and a
+  // second copy of this would bind the delegated click handler twice and
+  // fetch the release JSON a second time for an answer it already has.
+  if (!window.__wkDownloadWired) {
+    window.__wkDownloadWired = true;
+
+    // The download itself. Delegated from the document so it covers the
+    // primary control, both menus, and anything either script below shows
+    // later. The URL names a target and nothing else — the platform
+    // resolves the current installer, records the download and redirects
+    // (wavekat-platform docs/37 §3.6).
+    //
+    // The App Store rows carry no `data-dl-platform`, so this handler never
+    // sees them and their <a> navigates on its own. That is the whole
+    // integration: Apple's link needs no resolving, and putting it through
+    // an endpoint that answers with one of our own installers is exactly
+    // the bug the missing attribute prevents.
+    (function () {
+      document.addEventListener('click', function (e) {
+        // e.target can be a text node or the document itself, neither of
+        // which has closest().
+        var t = e.target;
+        var el = t && t.closest ? t.closest('[data-dl-platform]') : null;
+        if (!el) return;
+        window.location.href = base + '/' + el.dataset.dlPlatform + '?src=web';
+      });
+    })();
+
+    // Keep the printed version and size true when a release lands between
+    // site deploys. The build-time values are already in the HTML, so this
+    // corrects them silently or does nothing at all — there is no skeleton,
+    // no pop-in, and a failed fetch leaves the page exactly as served.
+    //
+    // It also reveals or withdraws a whole choice. `windows-arm64` did not
+    // exist before the native ARM build, so its row ships hidden and
+    // appears the day a release publishes one, with no site rebuild. A row
+    // for a file the platform says is missing would 404, so the same rule
+    // runs in reverse.
+    (function () {
+      if (!document.querySelector('[data-dl-version],[data-dl-size],[data-dl-row]')) return;
+      fetch(releasesUrl)
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data) return;
+          ['mac', 'linux', 'windows-x64', 'windows-arm64'].forEach(function (key) {
+            var rel = data[key];
+            document.querySelectorAll('[data-dl-row="' + key + '"]').forEach(function (el) {
+              el.classList.toggle(el.dataset.dlShow || 'inline-flex', !!rel);
+              el.classList.toggle('hidden', !rel);
+            });
+            // The same fact on the primary controls, which the promotion
+            // script reads before it puts a target on the button.
+            document.querySelectorAll('[data-dl-primary][data-dl-platform="' + key + '"]').forEach(
+              function (el) { el.dataset.dlAvail = rel ? '1' : '0'; },
+            );
+            if (!rel) return;
+            document.querySelectorAll('[data-dl-version="' + key + '"]').forEach(function (el) {
+              el.textContent = rel.version;
+            });
+            document.querySelectorAll('[data-dl-size="' + key + '"]').forEach(function (el) {
+              el.textContent = Math.round(rel.sizeBytes / 1048576) + ' MB';
+            });
+          });
+          // Availability may have changed under the primary control — an
+          // ARM visitor promoted to a build this release didn't publish
+          // has to be handed x64 back, and vice versa.
+          if (window.__wkResolveDownload) window.__wkResolveDownload();
+        })
+        .catch(function () {});
+    })();
+  }
+</script>

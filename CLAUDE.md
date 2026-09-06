@@ -295,12 +295,19 @@ pill**: Linux has no store, so the rule simply doesn't fire there.
   So **no menu row draws a badge**. The download grid is the opposite case and
   keeps them: each store row sits in its own platform's column, compared with
   that system's other builds rather than with Linux.
-- **One badge per store per page.** `/voice/download/` renders both the compact
-  control and the full grid, so there the **grid owns the badges** and the hero
-  falls back to the orange pill. Keyed on the *page*, not on which platform is
-  promoted — promotion happens in the browser, so a Windows visitor's primary
-  swaps after the HTML is served, and anything keyed on "which badge is
-  showing" would be right for the Mac default and wrong for everyone else.
+- **One badge per store per page, enforced by nothing.** The two surfaces never
+  meet: `/voice/download/` draws the grid and no compact control (the grid *is*
+  the page), and every other page draws the control and no grid. There is
+  deliberately no page-keyed exception in either component — an earlier version
+  had one, and it was the wrong shape, because which platform is promoted is
+  decided in the browser.
+- **The download scripts are their own component** (`VoiceDownloadScripts.astro`),
+  rendered by *both* surfaces. Anything that emits `data-dl-platform`,
+  `data-dl-row`, `data-dl-version` or `data-dl-size` must render it, because
+  those attributes are inert without it: the delegated click handler is what
+  turns a download button into a download, and the release fetch is what
+  reveals the `windows-arm64` and `linux-arm64` rows, which ship hidden. A
+  surface that forgets it renders perfectly and silently does nothing.
 - **Never restyle the artwork** — no background, no corner radius, no filter, no
   recolour. Both stores require the badge as published, and Apple's guidelines
   additionally say its badge may not be drawn smaller than a competitor's shown

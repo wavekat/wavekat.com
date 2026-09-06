@@ -62,11 +62,10 @@ const { code: badgeLocale } = resolveLocale(Astro.url.pathname);
 // Linux — and the badge is the most recognisable thing on the one page a
 // visitor opened specifically to choose from.
 //
-// The download page renders both surfaces at once, so this also settles
-// which of them owns the artwork there: the grid, while the menu above it
-// falls back to rows and the primary control falls back to the orange
-// pill (see VoiceDownload.astro). One badge per store per page, and it is
-// the copy on the surface built for comparing.
+// Between them those two rules leave exactly one copy of each store's
+// artwork on any page, with no test on which page it is: the download
+// page draws the grid and no compact control at all, and every other page
+// draws the control and no grid.
 const badgeStore = context === 'grid' ? badgeStoreFor(row.key) : null;
 
 // The icon is the menu's own mark for a platform — it is what tells three

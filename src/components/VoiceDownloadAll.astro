@@ -12,6 +12,7 @@
 // the menu (`voice-download-groups.ts`), so the two surfaces can't drift.
 import VoiceDownloadRow from './VoiceDownloadRow.astro';
 import ConversionTracking from './ConversionTracking.astro';
+import VoiceDownloadScripts from './VoiceDownloadScripts.astro';
 import { getDownload, MAC_APP_STORE_CAMPAIGN_URL, MS_STORE_CAMPAIGN_URL } from '../lib/voice-download';
 import { buildGroups } from '../lib/voice-download-groups';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
@@ -68,3 +69,4 @@ const groups = buildGroups(
 </div>
 
 <ConversionTracking />
+<VoiceDownloadScripts />

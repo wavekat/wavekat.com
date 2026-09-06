@@ -33,6 +33,7 @@
 import { Apple, Package, AppWindow, ChevronDown, ArrowRight } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
 import VoiceDownloadRow from './VoiceDownloadRow.astro';
+import VoiceDownloadScripts from './VoiceDownloadScripts.astro';
 import {
   getDownload,
   DOWNLOAD_BASE,
@@ -55,12 +56,10 @@ const { variant = 'hero' } = Astro.props;
 const { code: lang } = resolveLocale(Astro.url.pathname);
 const ui = t(lang);
 
-// Where the full list lives. On the download page itself the grid is
-// already below the fold, so the link would point at the page you are
-// standing on — the menu drops it there instead.
+// Where the full list lives — the last line of the menu. This control is
+// not rendered on that page (the grid is the whole point of it), so the
+// link can never point at the page you are standing on.
 const downloadPath = localizedPath('/voice/download/', lang);
-const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
-const onDownloadPage = here === downloadPath;
 
 const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
   getDownload('mac'),
@@ -196,16 +195,10 @@ const allCls =
       // two offers and a leftover — so no menu row draws one. See
       // VoiceDownloadRow.
       //
-      // Except on the download page, where the grid below already draws
-      // both badges: a second copy of the same artwork one screen higher
-      // reads as a bug rather than as emphasis. There the primary returns
-      // to the orange pill, which also keeps the brand control above the
-      // fold on the one page whose body is store artwork. Keyed on the
-      // page and not on which platform is promoted, because the promotion
-      // happens in the browser — a Windows visitor's primary swaps after
-      // the HTML is served, so anything keyed on "which badge is showing"
-      // would be right for the Mac default and wrong for everyone else.
-      const store = onDownloadPage ? null : badgeStoreFor(e.row.key);
+      // No page-level exception is needed either. This control is not
+      // rendered on the download page, whose grid draws the same badges
+      // one screen lower, so the two can't both appear.
+      const store = badgeStoreFor(e.row.key);
       return (
         <e.Tag
           type={e.row.href ? undefined : 'button'}
@@ -254,14 +247,11 @@ const allCls =
 
         {/* The last line, and the only one that isn't a download: every
             installer this menu deliberately doesn't list is on that page,
-            laid out one column per system. Dropped on the download page
-            itself, where it would point at the reader's own location. */}
-        {!onDownloadPage && (
-          <a href={downloadPath} class={allCls}>
-            {ui.dlAllDownloads}
-            <ArrowRight class="h-3.5 w-3.5 shrink-0" />
-          </a>
-        )}
+            laid out one column per system. */}
+        <a href={downloadPath} class={allCls}>
+          {ui.dlAllDownloads}
+          <ArrowRight class="h-3.5 w-3.5 shrink-0" />
+        </a>
       </div>
     </details>
 
@@ -290,73 +280,8 @@ const allCls =
 </div>
 
 <ConversionTracking />
+<VoiceDownloadScripts />
 
-<script is:inline define:vars={{ base: DOWNLOAD_BASE, releasesUrl: RELEASES_URL }}>
-  // The download itself. Delegated from the document so it covers the
-  // primary control, both menus, and anything either script below shows
-  // later. The URL names a target and nothing else — the platform
-  // resolves the current installer, records the download and redirects
-  // (wavekat-platform docs/37 §3.6).
-  //
-  // The App Store rows carry no `data-dl-platform`, so this handler never
-  // sees them and their <a> navigates on its own. That is the whole
-  // integration: Apple's link needs no resolving, and putting it through
-  // an endpoint that answers with one of our own installers is exactly
-  // the bug the missing attribute prevents.
-  (function () {
-    document.addEventListener('click', function (e) {
-      // e.target can be a text node or the document itself, neither of
-      // which has closest().
-      var t = e.target;
-      var el = t && t.closest ? t.closest('[data-dl-platform]') : null;
-      if (!el) return;
-      window.location.href = base + '/' + el.dataset.dlPlatform + '?src=web';
-    });
-  })();
-
-  // Keep the printed version and size true when a release lands between
-  // site deploys. The build-time values are already in the HTML, so this
-  // corrects them silently or does nothing at all — there is no skeleton,
-  // no pop-in, and a failed fetch leaves the page exactly as served.
-  //
-  // It also reveals or withdraws a whole choice. `windows-arm64` did not
-  // exist before the native ARM build, so its row ships hidden and
-  // appears the day a release publishes one, with no site rebuild. A row
-  // for a file the platform says is missing would 404, so the same rule
-  // runs in reverse.
-  (function () {
-    if (!document.querySelector('[data-dl-version],[data-dl-size],[data-dl-row]')) return;
-    fetch(releasesUrl)
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        if (!data) return;
-        ['mac', 'linux', 'windows-x64', 'windows-arm64'].forEach(function (key) {
-          var rel = data[key];
-          document.querySelectorAll('[data-dl-row="' + key + '"]').forEach(function (el) {
-            el.classList.toggle(el.dataset.dlShow || 'inline-flex', !!rel);
-            el.classList.toggle('hidden', !rel);
-          });
-          // The same fact on the primary controls, which the promotion
-          // script reads before it puts a target on the button.
-          document.querySelectorAll('[data-dl-primary][data-dl-platform="' + key + '"]').forEach(
-            function (el) { el.dataset.dlAvail = rel ? '1' : '0'; },
-          );
-          if (!rel) return;
-          document.querySelectorAll('[data-dl-version="' + key + '"]').forEach(function (el) {
-            el.textContent = rel.version;
-          });
-          document.querySelectorAll('[data-dl-size="' + key + '"]').forEach(function (el) {
-            el.textContent = Math.round(rel.sizeBytes / 1048576) + ' MB';
-          });
-        });
-        // Availability may have changed under the primary control — an
-        // ARM visitor promoted to a build this release didn't publish
-        // has to be handed x64 back, and vice versa.
-        if (window.__wkResolveDownload) window.__wkResolveDownload();
-      })
-      .catch(function () {});
-  })();
-</script>
 
 <script is:inline>
   // Promote the visitor's platform to the primary control, then — on
