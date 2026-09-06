@@ -21,6 +21,10 @@ jobs:
 
       - run: npm ci
 
+      # Unit tests for the build scripts' own helpers. Cheap, needs no build,
+      # and runs before it so a broken helper fails in seconds not minutes.
+      - run: npm test
+
       - run: npm run cf:build
         env:
           SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}

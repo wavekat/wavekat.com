@@ -23,6 +23,7 @@ import { mkdirSync, writeFileSync, readFileSync, existsSync, statSync } from 'no
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FONTS, fontDir } from './lib/og-fonts.js';
+import { fetchRetry } from './lib/fetch-retry.js';
 
 // Google Fonts serves whatever format the caller's UA can handle. A modern UA
 // gets woff2, which resvg can't read; this Android 4 string is the documented
@@ -53,13 +54,16 @@ async function fetchFace({ family, weight, file }) {
     encodeURIComponent(family) +
     ':wght@' +
     weight;
-  const css = await fetch(cssURL, { headers: { 'User-Agent': TTF_UA } });
+  const css = await fetchRetry(cssURL, {
+    headers: { 'User-Agent': TTF_UA },
+    label: `fonts: ${family} ${weight} CSS`,
+  });
   if (!css.ok) throw new Error(`fonts: ${family} ${weight} — CSS request failed (${css.status})`);
 
   const match = (await css.text()).match(/url\((https:\/\/[^)]+)\)/);
   if (!match) throw new Error(`fonts: ${family} ${weight} — no font URL in the CSS response`);
 
-  const res = await fetch(match[1]);
+  const res = await fetchRetry(match[1], { label: `fonts: ${file}`, timeoutMs: 120_000 });
   if (!res.ok) throw new Error(`fonts: ${family} ${weight} — download failed (${res.status})`);
 
   const buf = Buffer.from(await res.arrayBuffer());
