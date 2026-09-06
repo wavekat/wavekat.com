@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
+import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
 import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
@@ -84,6 +85,12 @@ const highlights = [
     </div>
   </section>
 
+  <!-- All downloads — every installer, one column per system -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">전체 다운로드</h2>
+    <VoiceDownloadAll />
+  </section>
+
   <!-- What you get -->
   <section class="mb-16">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -124,7 +131,7 @@ const highlights = [
       WaveKat Voice는 Windows 10과 11용으로 Microsoft Store에 올라와 있고, 이것이 Windows에 설치하는 가장 간단한 방법입니다. 하나의 스토어 페이지가 Intel·AMD PC와 ARM PC를 모두 아우르므로, 스토어가 여러분의 PC에 맞는 빌드를 건네주고 계속 업데이트합니다. 패키지에 Microsoft가 서명하기 때문에 첫 실행 시 보안 경고도 나타나지 않습니다.
     </p>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
-      "다른 플랫폼"의 "Windows 직접 다운로드(.exe)" 아래에 있는 .exe 직접 다운로드는 아직 코드 서명이 되어 있지 않아, 처음 실행하면 Windows SmartScreen의 파란색 "Windows의 PC 보호" 창이 나타납니다. 아직 구입하지 않은 인증서에 대한 경고일 뿐 파일 자체의 문제가 아니며, 아래 순서대로 진행하면 됩니다.
+      위 목록에 있는 .exe 직접 다운로드는 아직 코드 서명이 되어 있지 않아, 처음 실행하면 Windows SmartScreen의 파란색 "Windows의 PC 보호" 창이 나타납니다. 아직 구입하지 않은 인증서에 대한 경고일 뿐 파일 자체의 문제가 아니며, 아래 순서대로 진행하면 됩니다.
     </p>
     <ol class="space-y-3 mb-5 max-w-xl">
       {windowsSteps.map((s, i) => (
@@ -140,7 +147,7 @@ const highlights = [
       ))}
     </ol>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
-      직접 내려받는 두 빌드는 모두 "다른 플랫폼"의 "Windows 직접 다운로드(.exe)" 아래에 있고, 어느 쪽을 받을지는 여러분이 고릅니다. "Windows용 다운로드"는 Intel과 AMD PC를 위한 64비트 버전이고, "ARM용 Windows 다운로드"는 Snapdragon 등 ARM PC를 위한 네이티브 버전입니다.
+      직접 내려받는 두 빌드는 모두 위 Windows 칸에 있고, 어느 쪽을 받을지는 여러분이 고릅니다. "Windows용 다운로드"는 Intel과 AMD PC를 위한 64비트 버전이고, "ARM용 Windows 다운로드"는 Snapdragon 등 ARM PC를 위한 네이티브 버전입니다.
     </p>
   </section>
 

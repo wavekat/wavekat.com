@@ -33,7 +33,7 @@ export const ui: UIStrings = {
   dlWindowsUnsigned:
     'Las descargas directas para Windows no están firmadas, así que Windows avisa al abrirlas por primera vez. La versión de Microsoft Store sí está firmada.',
   dlWindowsUnsignedLink: 'Cómo continuar',
-  dlWindowsDirect: 'Instaladores .exe directos para Windows',
+  dlAllDownloads: 'Todas las descargas e instaladores',
   talkHeading: 'Contacto',
   talkBody:
     '¿Preguntas, comentarios o un dispositivo que le gustaría que admitiéramos? El correo electrónico es la mejor forma de contactarnos: leemos cada mensaje y respondemos en cuanto podemos.',

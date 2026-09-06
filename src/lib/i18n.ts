@@ -256,11 +256,11 @@ export interface UIStrings {
   dlWindowsUnsigned: string;
   dlWindowsUnsignedLink: string;
   /**
-   * Summary of the nested disclosure that holds the two direct .exe rows.
-   * The rows are tucked one level down so the menu reads "Store" for
-   * Windows by default; this is the line a reader opens to find the files.
+   * The menu's last line, linking to the download page. The menu offers one
+   * recommended control per system; that page lists every installer, so the
+   * label has to promise the whole set rather than "more platforms".
    */
-  dlWindowsDirect: string;
+  dlAllDownloads: string;
   talkHeading: string;
   talkBody: string;
   talkButton: string;
@@ -333,7 +333,7 @@ const strings: Record<string, UIStrings> = {
     dlWindowsUnsigned:
       "The direct Windows downloads aren't code-signed, so Windows warns on first launch. The Microsoft Store version is signed.",
     dlWindowsUnsignedLink: 'How to get past it',
-    dlWindowsDirect: 'Direct .exe installers for Windows',
+    dlAllDownloads: 'All downloads and installers',
     talkHeading: 'Talk to us',
     talkBody:
       'Questions, feedback, or a device you wish we supported? Email is the best way to reach us — we read every message and reply as soon as we can.',
@@ -387,7 +387,7 @@ const strings: Record<string, UIStrings> = {
     dlWindowsUnsigned:
       '直接下载的 Windows 版尚未进行代码签名，首次启动时系统会弹出提醒；Microsoft Store 版本已签名。',
     dlWindowsUnsignedLink: '如何继续安装',
-    dlWindowsDirect: 'Windows 直接下载（.exe）',
+    dlAllDownloads: '所有下载与安装程序',
     talkHeading: '联系我们',
     talkBody:
       '有疑问、建议，或希望我们支持某种设备？邮件是联系我们的最佳方式——我们会阅读每一条消息，并尽快回复。',

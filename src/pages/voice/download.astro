@@ -2,6 +2,7 @@
 import Voice from '../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../components/VoiceDownload.astro';
+import VoiceDownloadAll from '../../components/VoiceDownloadAll.astro';
 import { getDownload } from '../../lib/voice-download';
 import { resolveLocale, t } from '../../lib/i18n';
 
@@ -84,6 +85,12 @@ const highlights = [
     </div>
   </section>
 
+  <!-- All downloads — every installer, one column per system -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">All downloads</h2>
+    <VoiceDownloadAll />
+  </section>
+
   <!-- What you get -->
   <section class="mb-16">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -127,7 +134,7 @@ const highlights = [
       security warning on first launch.
     </p>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
-      The direct .exe downloads, under Other Platforms behind "Direct .exe installers for Windows", aren't code-signed yet, so the first time you
+      The direct .exe downloads, in the list above, aren't code-signed yet, so the first time you
       run one Windows SmartScreen shows a blue "Windows protected your PC" box. The warning is about
       a certificate we haven't bought yet, not about the file — here's how to get past it.
     </p>
@@ -145,7 +152,7 @@ const highlights = [
       ))}
     </ol>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
-      Both direct builds sit under Other Platforms, behind "Direct .exe installers for Windows", and you pick your own: "Download for Windows" is
+      Both direct builds sit in the Windows column above, and you pick your own: "Download for Windows" is
       the 64-bit build for Intel and AMD PCs, and "Download for Windows on ARM" is the native build
       for Snapdragon and other ARM PCs.
     </p>

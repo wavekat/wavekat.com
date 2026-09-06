@@ -1,37 +1,36 @@
 ---
 // Smart download control for WaveKat Voice.
 //
-// Shows ONE primary control for the visitor's platform, with the others
-// tucked behind an "other platforms" disclosure. The site is statically
-// built (no server to sniff the OS), so this is progressive enhancement:
-// the server renders Mac as the default primary, and a tiny inline script
-// promotes Linux or Windows when it detects one. With JS off, the native
-// <details> still lets anyone reach every build.
+// Shows ONE primary control for the visitor's platform, with the OTHER
+// platforms' recommended controls behind an "other platforms" disclosure.
+// The site is statically built (no server to sniff the OS), so this is
+// progressive enhancement: the server renders Mac as the default primary,
+// and a tiny inline script promotes Linux or Windows when it detects one.
 //
-// Both stores are the button on their platform, and for the same reason:
-// the same app arrives either from a store or as a file from us, and the
-// store signs it, installs it and keeps it updated, which is a better
-// first run than a disk image or an unsigned .exe for anyone not
-// specifically after the direct build. Our own installers stay one click
-// away in the menu. That falls out of the arch mechanism instead of adding
-// a rule to it — a row whose `archKey` is one nothing ever promotes can
-// only be a menu row, so `direct` and `direct-arm64` are menu-only by
-// construction.
+// The menu offers exactly one recommended control per system and nothing
+// else. Every installer we hand out ourselves alongside a store — the .dmg,
+// the two .exe files — lives on the download page instead, in the open,
+// three columns wide (`VoiceDownloadAll.astro`), and the menu's last line
+// is a link to it. A menu is for choosing quickly; a page is for choosing
+// carefully, and stacking a second disclosure inside this one to hold the
+// difference was neither.
 //
-// Windows is the platform where this earns the most. It ships two
-// installers, x64 and arm64, and the Microsoft Store listing carries both
-// packages — so the Store row needs no architecture at all and the whole
-// question of which file a machine can run becomes Microsoft's to answer.
-// The two direct .exe rows keep their own identities in the menu for
-// anyone who wants the file, and they are the only rows the unsigned-build
-// note is about. See docs/05.
+// That split needs no rule of its own: it is the arch mechanism read one
+// way round. A row whose `archKey` is promotable (`default`, or `arm64`
+// once the browser confirms the chip) is a candidate for the button, and
+// therefore a menu row; a `direct*` row is promoted by nothing, so it is a
+// page row. `isPromotable` in voice-download-groups.ts is the whole test.
 //
 // Which leaves Linux as the one platform that still has to work the
-// architecture out for itself: x64 is what everyone starts on, and a
-// machine that confirms it is ARM64 is upgraded to the native build.
-// Confirming that takes `navigator.userAgentData`, so it happens a beat
-// after the platform swap rather than with it.
-import { Apple, Package, AppWindow, ChevronDown } from '@lucide/astro';
+// architecture out for itself — x64 is what everyone starts on, and a
+// machine that confirms it is ARM64 is upgraded to the native build. Mac
+// publishes a single arm64 build, and Windows hands the question to the
+// Microsoft Store, whose one listing carries both packages. Confirming the
+// chip takes `navigator.userAgentData`, so it happens a beat after the
+// platform swap rather than with it. See docs/05.
+//
+// With JS off, the <noscript> block still lists every build we publish.
+import { Apple, Package, AppWindow, ChevronDown, ArrowRight } from '@lucide/astro';
 import ConversionTracking from './ConversionTracking.astro';
 import VoiceDownloadRow from './VoiceDownloadRow.astro';
 import {
@@ -41,6 +40,8 @@ import {
   MAC_APP_STORE_CAMPAIGN_URL,
   MS_STORE_CAMPAIGN_URL,
 } from '../lib/voice-download';
+import { buildGroups, isPromotable, rowAvailable } from '../lib/voice-download-groups';
+import type { PlatformGroupKey } from '../lib/voice-download-groups';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -52,13 +53,14 @@ const { variant = 'hero' } = Astro.props;
 const { code: lang } = resolveLocale(Astro.url.pathname);
 const ui = t(lang);
 
-// The SmartScreen walkthrough lives on our own download page, in the
-// reader's language — not in /docs/**, which is synced from the private
-// repo and English-only. On /voice/download/ itself this is a same-page
-// jump to the section below the fold.
-const unsignedHref = `${localizedPath('/voice/download/', lang)}#windows`;
+// Where the full list lives. On the download page itself the grid is
+// already below the fold, so the link would point at the page you are
+// standing on — the menu drops it there instead.
+const downloadPath = localizedPath('/voice/download/', lang);
+const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const onDownloadPage = here === downloadPath;
 
-const [macDl, linuxX64Dl, linuxArmDl, winX64Dl, winArmDl] = await Promise.all([
+const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
   getDownload('mac'),
   getDownload('linux-x64'),
   getDownload('linux-arm64'),
@@ -66,189 +68,31 @@ const [macDl, linuxX64Dl, linuxArmDl, winX64Dl, winArmDl] = await Promise.all([
   getDownload('windows-arm64'),
 ]);
 
-// Grouped by the control a visitor sees, not by file. Labels and hardware
-// requirements are localised here — the download lib stays
-// language-agnostic, knowing only versions, sizes and URLs.
-//
-// `archKey` is which machine a row is promoted for, and it is what makes a
-// row a candidate primary: `default` is the row a visitor on that platform
-// gets when nothing more is known, `arm64` is the one they get instead once
-// the browser confirms an ARM64 chip. Only Linux has both, because Linux is
-// now the only platform where we hand out two installers that are not
-// interchangeable and no store is there to choose between them.
-//
-// Anything else is a `direct*` key, which nothing promotes — that is how a
-// row is made menu-only without teaching the promotion script a rule.
-const groups = [
-  {
-    key: 'mac',
-    icon: Apple,
-    windows: false,
-    rows: [
-      {
-        // The Mac App Store is the default Mac primary. It carries an
-        // `href` and no `dl`: there is no release behind it to read a
-        // version or a size from, and nothing for the browser-side
-        // refresh to correct — Apple owns the whole handoff.
-        key: 'mac-app-store',
-        archKey: 'default',
-        conversion: 'download_mac_app_store',
-        label: ui.dlMacAppStore,
-        arch: ui.dlArchMacAppStore,
-        // The campaign-tagged listing, not the canonical one: this is the
-        // link a visitor actually follows, and the tag is the only way
-        // App Store Connect can tell an install that started here from
-        // one that started in App Store search.
-        href: MAC_APP_STORE_CAMPAIGN_URL,
-        dl: null,
-      },
-      {
-        // `direct` is an arch nothing promotes, and that is the whole
-        // trick: the promotion script only ever asks for 'default' or
-        // 'arm64', so this row can never win the button and is therefore
-        // always in the menu — without teaching that script a second rule.
-        key: 'mac',
-        archKey: 'direct',
-        conversion: 'download_mac',
-        label: ui.dlMac,
-        arch: ui.dlArchMac,
-        href: null,
-        dl: macDl,
-      },
-    ],
-  },
-  {
-    key: 'linux',
-    icon: Package,
-    windows: false,
-    rows: [
-      {
-        key: 'linux-x64',
-        archKey: 'default',
-        conversion: 'download_linux',
-        label: ui.dlLinux,
-        arch: ui.dlArchLinux,
-        href: null,
-        dl: linuxX64Dl,
-      },
-      {
-        // Same shape as the Windows pair above, and unconditional for the
-        // same reason: the row renders hidden whenever the platform reports
-        // the target unpublished, and the browser-side refresh flips it
-        // either way without a rebuild. So this is correct both before and
-        // after the first release that builds an arm64 Linux package.
-        key: 'linux-arm64',
-        archKey: 'arm64',
-        conversion: 'download_linux_arm64',
-        label: ui.dlLinuxArm64,
-        arch: ui.dlArchLinuxArm64,
-        href: null,
-        dl: linuxArmDl,
-      },
-    ],
-  },
-  {
-    key: 'windows',
-    icon: AppWindow,
-    windows: true,
-    rows: [
-      {
-        // The Microsoft Store is the Windows primary, and the only row on
-        // this platform that can be. Like the Mac App Store row it carries
-        // an `href` and no `dl` — there is no release behind it to read a
-        // version or a size from, and nothing for the browser-side refresh
-        // to correct.
-        //
-        // It is `default` and there is no ARM counterpart, because it needs
-        // none: the listing carries both packages and the Store hands each
-        // machine its own. So every Windows visitor gets this one control
-        // whatever their chip, and the arch probe below has nothing left to
-        // do on Windows.
-        key: 'ms-store',
-        archKey: 'default',
-        conversion: 'download_ms_store',
-        label: ui.dlMsStore,
-        arch: ui.dlArchMsStore,
-        // The campaign-tagged listing, not the canonical one — same split
-        // as the Mac row, and the only way Partner Center can tell an
-        // install that started here from one that started in Store search.
-        href: MS_STORE_CAMPAIGN_URL,
-        dl: null,
-      },
-      {
-        // `direct`, so nothing can promote it — the x64 .exe is a menu row
-        // for the reader who wants the file rather than the Store. It is
-        // also, with the row below, what the unsigned-build note is about.
-        //
-        // `tucked`: one level further down than the other menu rows, behind
-        // its own disclosure. The Store is the better first run on Windows
-        // (signed, auto-updating, picks the right package), so the menu
-        // should read "Store" for Windows by default and hand out the .exe
-        // only to a reader who goes looking for a file.
-        key: 'windows-x64',
-        archKey: 'direct',
-        tucked: true,
-        conversion: 'download_windows_x64',
-        label: ui.dlWindows,
-        arch: ui.dlArchWindowsX64,
-        href: null,
-        dl: winX64Dl,
-      },
-      {
-        // Published since 0.0.46. Nothing here is conditional on that: the
-        // row renders hidden whenever the platform reports the target
-        // unpublished, and the browser-side refresh flips it either way
-        // without a rebuild.
-        //
-        // `direct-arm64` rather than `arm64`, and the distinction is the
-        // whole point: an ARM machine is no longer promoted to this file,
-        // because the Store already gives it a native package it doesn't
-        // have to install by hand. The key stays distinct from `direct` so
-        // the row is still a separate menu entry.
-        key: 'windows-arm64',
-        archKey: 'direct-arm64',
-        tucked: true,
-        conversion: 'download_windows_arm64',
-        label: ui.dlWindowsArm64,
-        arch: ui.dlArchWindowsArm64,
-        href: null,
-        dl: winArmDl,
-      },
-    ],
-  },
-];
+// The one list, shared with the grid on the download page.
+const groups = buildGroups(
+  ui,
+  { mac, linuxX64, linuxArm, winX64, winArm },
+  { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL },
+);
 
-// Every row is both a candidate primary and a menu row, and the two are
-// exact opposites: the menu lists precisely what the button isn't
-// downloading. So one list drives both, and the pair can't drift into
-// showing a file twice or not at all. A Windows visitor on an Intel
-// machine still sees the ARM build in the menu — it is the one choice
-// their primary can't make for them — and an ARM visitor sees x64 there
-// for the same reason, in reverse.
-//
-// A row with an `href` is a handoff rather than a download, and the two
-// differ in every way that matters here: it renders as a real <a>, it
-// keeps `data-dl-platform` off itself so the delegated download handler
-// ignores it, and it is available by definition — there is no release
-// object behind it to ask.
+// Every entry here is both a candidate primary and a menu row, and the two
+// are exact opposites: the menu lists precisely what the button isn't
+// offering. One list drives both, so the pair can't drift into showing a
+// choice twice or not at all. A Linux visitor on x64 still sees the ARM
+// build in the menu — it is the one choice their primary can't make for
+// them — and an ARM visitor sees x64 there for the same reason, in reverse.
 const entries = groups.flatMap((g) =>
-  g.rows.map((row) => ({
+  g.rows.filter((row) => isPromotable(row.archKey)).map((row) => ({
     group: g,
     row,
     Tag: row.href ? ('a' as const) : ('button' as const),
-    avail: !!(row.href || row.dl),
-    tucked: 'tucked' in row && !!row.tucked,
+    avail: rowAvailable(row),
   })),
 );
-const shown = entries.filter((e) => !e.tucked);
-const tucked = entries.filter((e) => e.tucked);
 
-// The unsigned note is about exactly the two tucked rows, so it lives with
-// them: as the subtitle of the disclosure that hides them, where it doubles
-// as the reason they are hidden, and it is unconditional because those rows
-// are menu-only by construction and therefore always right there. The
-// "how to get past it" link can't sit inside a <summary> (a click on it
-// would toggle the disclosure), so it follows the rows once they're open.
+// The primary button's icon. The menu rows resolve their own (see
+// VoiceDownloadRow), so this is the one place left that needs the map.
+const ICONS: Record<PlatformGroupKey, any> = { mac: Apple, windows: AppWindow, linux: Package };
 
 // Mac is the SSR default primary; the script swaps to Linux or Windows.
 // `DEFAULT_ARCH` is the arch half of the same statement: nothing is known
@@ -295,17 +139,10 @@ const primaryCls =
 const panelCls =
   'absolute left-0 top-full z-20 mt-2 flex w-full max-w-full flex-col gap-1 rounded-xl border border-gray-200 bg-white/95 p-1.5 text-left shadow-xl backdrop-blur-xl sm:w-max sm:min-w-[19rem] sm:max-w-[calc(100vw-2rem)] dark:border-white/10 dark:bg-wk-surface/95';
 
-// The `max-w` is what keeps a `w-max` panel sane: a paragraph's max-content
-// width is the whole sentence on one line, so without a cap this one
-// sentence would set the width of the entire menu. Capped below the panel's
-// minimum, it wraps like a caption and the rows decide the width.
-const noteCls = 'max-w-[17rem] text-[11px] leading-relaxed text-gray-500 dark:text-gray-400';
-
-// The tucked disclosure's summary is styled as a row of the panel — same
-// inset, same hover — so it reads as one more choice rather than a footer,
-// but in the caption colours, so it ranks below the real rows above it.
-const tuckedSummaryCls =
-  'flex cursor-pointer list-none items-start justify-between gap-3 rounded px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5 [&::-webkit-details-marker]:hidden';
+// The footer link to the full list, styled as a quiet last line of the
+// panel rather than as another row — it goes to a page, not to a file.
+const allCls =
+  'flex items-center gap-1.5 rounded px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white';
 ---
 
 {/* `relative` so the menu has something page-wide to measure against on a
@@ -326,23 +163,26 @@ const tuckedSummaryCls =
         is a link worth having followed. `data-dl-avail` is the build's
         answer to "does this file exist", refreshed in the browser, and the
         promotion script won't put an unavailable target on the button. */}
-    {entries.map((e) => (
-      <e.Tag
-        type={e.row.href ? undefined : 'button'}
-        href={e.row.href ?? undefined}
-        data-conversion={e.row.conversion}
-        data-dl-primary={e.group.key}
-        data-dl-arch={e.row.archKey}
-        data-dl-platform={e.row.href ? undefined : e.row.key}
-        data-dl-avail={e.avail ? '1' : '0'}
-        data-dl-show="inline-flex"
-        class:list={[primaryCls, 'cursor-pointer border-0', isDefaultPrimary(e) ? 'inline-flex' : 'hidden']}
-        style="background-color: #ff6d00"
-      >
-        <e.group.icon class="w-5 h-5" />
-        {e.row.label}
-      </e.Tag>
-    ))}
+    {entries.map((e) => {
+      const Icon = ICONS[e.group.key];
+      return (
+        <e.Tag
+          type={e.row.href ? undefined : 'button'}
+          href={e.row.href ?? undefined}
+          data-conversion={e.row.conversion}
+          data-dl-primary={e.group.key}
+          data-dl-arch={e.row.archKey}
+          data-dl-platform={e.row.href ? undefined : e.row.key}
+          data-dl-avail={e.avail ? '1' : '0'}
+          data-dl-show="inline-flex"
+          class:list={[primaryCls, 'cursor-pointer border-0', isDefaultPrimary(e) ? 'inline-flex' : 'hidden']}
+          style="background-color: #ff6d00"
+        >
+          <Icon class="w-5 h-5" />
+          {e.row.label}
+        </e.Tag>
+      );
+    })}
 
     {/* Other platforms — native <details> so it works without JS. Each row
         (VoiceDownloadRow) is WRAPPED, so promoting a platform toggles the
@@ -355,29 +195,20 @@ const tuckedSummaryCls =
         <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
       </summary>
       <div class={panelCls}>
-        {shown.map((e) => <VoiceDownloadRow entry={e} hidden={isDefaultPrimary(e)} ui={ui} />)}
+        {entries.map((e) => (
+          <VoiceDownloadRow group={e.group} row={e.row} ui={ui} context="menu" hidden={isDefaultPrimary(e)} />
+        ))}
 
-        {/* The direct Windows installers, one level down. A nested native
-            <details>, so it needs no script and a click on its summary is
-            inside the outer menu — the outside-click handler leaves the
-            menu open. `group/direct` so its chevron doesn't turn with the
-            outer menu's. It closes when the menu closes, so a reopened
-            menu always starts on the recommended view. */}
-        <details class="group/direct" data-dl-direct>
-          <summary class={tuckedSummaryCls}>
-            <span class="flex min-w-0 flex-col gap-0.5">
-              <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">{ui.dlWindowsDirect}</span>
-              <span class={noteCls}>{ui.dlWindowsUnsigned}</span>
-            </span>
-            <ChevronDown class="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-500 transition-transform group-open/direct:rotate-180 dark:text-gray-400" />
-          </summary>
-          <div class="flex flex-col gap-1 pt-1">
-            {tucked.map((e) => <VoiceDownloadRow entry={e} hidden={isDefaultPrimary(e)} ui={ui} />)}
-            <p class:list={[noteCls, 'block px-3 pt-1 pb-1']}>
-              <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">{ui.dlWindowsUnsignedLink}</a>
-            </p>
-          </div>
-        </details>
+        {/* The last line, and the only one that isn't a download: every
+            installer this menu deliberately doesn't list is on that page,
+            laid out one column per system. Dropped on the download page
+            itself, where it would point at the reader's own location. */}
+        {!onDownloadPage && (
+          <a href={downloadPath} class={allCls}>
+            {ui.dlAllDownloads}
+            <ArrowRight class="h-3.5 w-3.5 shrink-0" />
+          </a>
+        )}
       </div>
     </details>
 
@@ -386,15 +217,20 @@ const tuckedSummaryCls =
         honest for crawlers and the handful of readers without scripting. */}
     <noscript>
       <div class="flex flex-wrap items-center gap-4">
-        {groups.flatMap((g) => g.rows.filter((r) => r.href || r.dl).map((r) => (
-          <a
-            href={r.href ?? r.dl!.url}
-            class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
-          >
-            <g.icon class="h-4 w-4" style="color: #ff6d00" />
-            {r.label}
-          </a>
-        )))}
+        {groups.flatMap((g) =>
+          g.rows.filter((r) => r.href || r.dl).map((r) => {
+            const Icon = ICONS[g.key];
+            return (
+              <a
+                href={r.href ?? r.dl!.url}
+                class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
+              >
+                <Icon class="h-4 w-4" style="color: #ff6d00" />
+                {r.label}
+              </a>
+            );
+          }),
+        )}
       </div>
     </noscript>
   </div>
@@ -579,21 +415,16 @@ const tuckedSummaryCls =
   // when you click elsewhere. Close any open one on an outside click or
   // the Escape key, the way a menu is expected to behave.
   (function () {
-    // Closing the menu also folds the tucked Windows disclosure inside it,
-    // so the next open starts on the recommended view rather than wherever
-    // the last visit left it.
-    function close(d) {
-      d.removeAttribute('open');
-      d.querySelectorAll('[data-dl-direct][open]').forEach(function (n) { n.removeAttribute('open'); });
-    }
     document.addEventListener('click', function (e) {
       document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {
-        if (!d.contains(e.target)) close(d);
+        if (!d.contains(e.target)) d.removeAttribute('open');
       });
     });
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
-      document.querySelectorAll('[data-dl-more][open]').forEach(close);
+      document.querySelectorAll('[data-dl-more][open]').forEach(function (d) {
+        d.removeAttribute('open');
+      });
     });
   })();
 </script>

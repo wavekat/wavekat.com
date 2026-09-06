@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
+import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
 import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
@@ -84,6 +85,12 @@ const highlights = [
     </div>
   </section>
 
+  <!-- All downloads — every installer, one column per system -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">全部下载</h2>
+    <VoiceDownloadAll />
+  </section>
+
   <!-- What you get -->
   <section class="mb-16">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -124,7 +131,7 @@ const highlights = [
       WaveKat Voice 已在 Microsoft Store 上架，支持 Windows 10 和 11，这也是最省事的安装方式：同一个商店页面同时覆盖 Intel、AMD 电脑和 ARM 电脑，商店会把适合你这台机器的版本交给你，并持续更新。安装包由 Microsoft 签名，首次启动不会弹出安全提示。
     </p>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
-      “其他平台”里“Windows 直接下载（.exe）”下的 .exe 直接下载尚未进行代码签名，因此第一次运行时，Windows SmartScreen 会弹出蓝色的“Windows 已保护你的电脑”提示。这条警告说的是我们还没购买的证书，而不是文件本身——按下面几步继续即可。
+      上面列表里的 .exe 直接下载尚未进行代码签名，因此第一次运行时，Windows SmartScreen 会弹出蓝色的“Windows 已保护你的电脑”提示。这条警告说的是我们还没购买的证书，而不是文件本身——按下面几步继续即可。
     </p>
     <ol class="space-y-3 mb-5 max-w-xl">
       {windowsSteps.map((s, i) => (
@@ -140,7 +147,7 @@ const highlights = [
       ))}
     </ol>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
-      两个直接下载的版本都在“其他平台”的“Windows 直接下载（.exe）”里，由你自己挑：“下载 Windows 版”是给 Intel 与 AMD 电脑的 64 位版本，“下载 ARM 版 Windows”是给骁龙等 ARM 电脑的原生版本。
+      两个直接下载的版本都在上面的 Windows 一栏里，由你自己挑：“下载 Windows 版”是给 Intel 与 AMD 电脑的 64 位版本，“下载 ARM 版 Windows”是给骁龙等 ARM 电脑的原生版本。
     </p>
   </section>
 

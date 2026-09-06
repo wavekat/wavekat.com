@@ -33,7 +33,7 @@ export const ui: UIStrings = {
   dlWindowsUnsigned:
     '직접 내려받은 Windows 빌드는 코드 서명이 되어 있지 않아 첫 실행 시 경고가 표시됩니다. Microsoft Store 버전은 서명되어 있습니다.',
   dlWindowsUnsignedLink: '넘어가는 방법',
-  dlWindowsDirect: 'Windows 직접 다운로드(.exe)',
+  dlAllDownloads: '모든 다운로드 및 설치 파일',
   talkHeading: '문의하기',
   talkBody:
     '궁금한 점이나 의견이 있으신가요? 지원했으면 하는 기기가 있으신가요? 이메일이 저희에게 연락하는 가장 좋은 방법입니다. 모든 메시지를 읽고 가능한 한 빨리 답변드립니다.',

@@ -33,7 +33,7 @@ export const ui: UIStrings = {
   dlWindowsUnsigned:
     'Die direkten Windows-Downloads sind nicht signiert, deshalb warnt Windows beim ersten Start. Die Version aus dem Microsoft Store ist signiert.',
   dlWindowsUnsignedLink: 'So kommen Sie daran vorbei',
-  dlWindowsDirect: 'Direkte .exe-Installer für Windows',
+  dlAllDownloads: 'Alle Downloads und Installer',
   talkHeading: 'Kontakt',
   talkBody:
     'Fragen, Feedback oder ein Gerät, das Sie sich von uns wünschen? Am besten erreichen Sie uns per E-Mail — wir lesen jede Nachricht und antworten, so schnell wir können.',

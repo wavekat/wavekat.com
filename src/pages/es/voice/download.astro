@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
+import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
 import { getDownload } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
@@ -84,6 +85,12 @@ const highlights = [
     </div>
   </section>
 
+  <!-- All downloads — every installer, one column per system -->
+  <section class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Todas las descargas</h2>
+    <VoiceDownloadAll />
+  </section>
+
   <!-- What you get -->
   <section class="mb-16">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -124,7 +131,7 @@ const highlights = [
       WaveKat Voice está en Microsoft Store para Windows 10 y 11, y es la forma más sencilla de instalarlo: una sola ficha que cubre tanto los PC con Intel y AMD como los PC con ARM, así que la tienda le entrega a su equipo la versión que le corresponde y la mantiene actualizada. Microsoft firma el paquete, así que no aparece ningún aviso de seguridad al abrirlo por primera vez.
     </p>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
-      Las descargas directas del .exe, en «Otras plataformas» tras «Instaladores .exe directos para Windows», todavía no están firmadas digitalmente, así que la primera vez que ejecute una Windows SmartScreen mostrará el recuadro azul «Windows protegió su PC». El aviso es por un certificado que aún no hemos comprado, no por el archivo — así puede continuar.
+      Las descargas directas del .exe, en la lista de arriba, todavía no están firmadas digitalmente, así que la primera vez que ejecute una Windows SmartScreen mostrará el recuadro azul «Windows protegió su PC». El aviso es por un certificado que aún no hemos comprado, no por el archivo — así puede continuar.
     </p>
     <ol class="space-y-3 mb-5 max-w-xl">
       {windowsSteps.map((s, i) => (
@@ -140,7 +147,7 @@ const highlights = [
       ))}
     </ol>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
-      Las dos versiones directas están en «Otras plataformas», tras «Instaladores .exe directos para Windows», y elige usted: «Descargar para Windows» es la versión de 64 bits para PC con Intel y AMD, y «Descargar para Windows en ARM» es la versión nativa para Snapdragon y otros procesadores ARM.
+      Las dos versiones directas están arriba, en la columna de Windows, y elige usted: «Descargar para Windows» es la versión de 64 bits para PC con Intel y AMD, y «Descargar para Windows en ARM» es la versión nativa para Snapdragon y otros procesadores ARM.
     </p>
   </section>
 
