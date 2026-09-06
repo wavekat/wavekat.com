@@ -32,6 +32,12 @@ COUNT="${RUNNER_COUNT:-4}"
 PREFIX="${RUNNER_PREFIX:-$(hostname -s)}"
 RUNNER_LABELS="${RUNNER_LABELS:-wavekat-ci,${PREFIX}}"
 IMAGE="${RUNNER_IMAGE:-wavekat/gha-runner:latest}"
+# Resolvers to write into each container's /etc/resolv.conf. Empty by
+# default: on this host containers inherit the machine's own resolvers
+# and have never lost DNS, and pinning public servers would break any
+# LAN-internal name. The macOS twin defaults these ON — see
+# docs/06-self-hosted-runners.md §6 for why the two differ.
+RUNNER_DNS="${RUNNER_DNS:-}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCKER_CONTEXT="${SCRIPT_DIR}/docker"
 
@@ -89,6 +95,13 @@ TOKEN="$(get_token)"
 #    restarts and host reboots.
 UNIT_PATH="/etc/systemd/system/gha-runner@.service"
 log "writing ${UNIT_PATH}"
+DNS_FLAGS=""
+if [[ -n "${RUNNER_DNS}" ]]; then
+  for ns in ${RUNNER_DNS}; do DNS_FLAGS+=$'\n'"  --dns ${ns} \\"; done
+  DNS_FLAGS+=$'\n'"  --dns-option timeout:2 --dns-option attempts:3 \\"
+  log "container resolvers: ${RUNNER_DNS}"
+fi
+
 sudo tee "${UNIT_PATH}" >/dev/null <<EOF
 [Unit]
 Description=GitHub Actions runner (container %i)
@@ -101,7 +114,7 @@ Type=simple
 EnvironmentFile=/etc/gha-runner/%i.env
 ExecStartPre=-/usr/bin/docker rm -f gha-runner-%i
 ExecStart=/usr/bin/docker run --rm \\
-  --name gha-runner-%i \\
+  --name gha-runner-%i \\${DNS_FLAGS}
   --hostname gha-runner-%i \\
   -v gha-runner-%i:/home/runner/runner \\
   -e RUNNER_ORG=\${RUNNER_ORG} \\
@@ -109,7 +122,7 @@ ExecStart=/usr/bin/docker run --rm \\
   -e RUNNER_LABELS=\${RUNNER_LABELS} \\
   -e RUNNER_TOKEN=\${RUNNER_TOKEN} \\
   ${IMAGE}
-ExecStop=/usr/bin/docker stop --time=120 gha-runner-%i
+ExecStop=/usr/bin/docker stop -t 120 gha-runner-%i
 Restart=always
 RestartSec=10
 TimeoutStopSec=180

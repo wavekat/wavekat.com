@@ -54,7 +54,8 @@ cd wavekat.com
 
 Tear down with `./scripts/uninstall-gha-runners-macos.sh`. Both take the same
 env vars as the Linux scripts (`RUNNER_ORG`, `RUNNER_COUNT`, `RUNNER_PREFIX`,
-`RUNNER_LABELS`, `RUNNER_IMAGE`, `RUNNER_TOKEN`).
+`RUNNER_LABELS`, `RUNNER_IMAGE`, `RUNNER_TOKEN`), plus two the Mac needs:
+`RUNNER_DNS` and `RUNNER_KEEP_VOLUME` — see §6.
 
 Differences from `setup-gha-runners-docker.sh` (the Linux container script):
 
@@ -187,6 +188,100 @@ on one host and not the other is usually stale state, not code. The reset is
 `docker rm -f gha-runner-N && docker volume rm gha-runner-N`, then re-run the
 setup script.
 
+### Re-creating the runners without re-registering them
+
+Changing a `docker run` flag means re-creating the containers, and the setup
+script's normal path wipes each volume and burns a fresh registration token.
+For a flag change that is unnecessary and slow — the volume holds `.runner`,
+`.credentials` *and* the warm cargo/pnpm/Playwright caches that make these
+runners fast.
+
+```sh
+RUNNER_KEEP_VOLUME=1 ./scripts/setup-gha-runners-macos.sh
+```
+
+keeps both. It needs no token (the entrypoint only calls `config.sh` when
+`.runner` is absent) and stops each container with `docker stop --time=180`, so
+a runner that is mid-job finishes that job before its container goes away
+rather than failing it. Check `docker exec gha-runner-N bash -c 'ps -eo comm=
+| grep -i "[R]unner.Worker"'` first if you want to know what is in flight.
+
+Add `RUNNER_SKIP_BUILD=1` unless you actually changed the image. On its own,
+`RUNNER_KEEP_VOLUME=1` still rebuilds first, and that is not reliably cheap: if
+the `ubuntu:24.04` base has moved since the last build, every layer misses
+cache and the apt/rustup/runner-tarball steps run again — ~25 minutes on Apple
+Silicon, for a change that needs no new image. With both flags the whole
+operation takes seconds.
+
+**Expect `A session for this runner already exists.` right afterwards.** The
+new container connects before GitHub has released the old container's session,
+so each runner logs `Runner connect error: Error: Conflict. Retrying until
+reconnected.` and sits there for a few minutes. Nothing is wrong and nothing
+needs restarting — the registration is intact (`.runner` still carries the
+right `agentName`), and each runner reaches `Listening for Jobs` on its own
+once the stale session expires. Wait for that line before concluding the
+re-create worked:
+
+```sh
+for n in 1 2 3 4; do docker logs --tail 15 gha-runner-$n | grep -E \
+  'Connected to GitHub|Listening for Jobs'; done
+```
+
+## 6. DNS: the containers get their own resolvers
+
+The Mac's runner containers are started with
+
+```
+--dns 1.1.1.1 --dns 8.8.8.8 --dns-option timeout:2 --dns-option attempts:3
+```
+
+(`RUNNER_DNS` in `setup-gha-runners-macos.sh`, defaulting to those two). That
+is not belt-and-braces; it removes the single point of failure that was taking
+jobs down.
+
+**What the default looks like.** Docker Desktop writes exactly one nameserver
+into a container — `192.168.65.7`, its own forwarder inside the VM — which
+proxies to whatever the Mac's primary interface hands it. On this host that is
+Wi-Fi (`en1`), and the resolver list is an IPv6 link-local RDNSS address
+followed by the router at `192.168.1.1`. So every runner on the machine
+resolves through one hop that they all share, and glibc has no second
+nameserver to fall over to when it answers with an error.
+
+**How it fails.** `actions/checkout` dies with
+
+```
+fatal: unable to access 'https://github.com/wavekat/wavekat-voice/':
+Could not resolve host: github.com
+```
+
+on all three of its built-in retries, and the job is over before `cargo` runs.
+Four details identify it:
+
+- **The failures are instant** — 15–25 ms per attempt. That is the forwarder
+  *answering* with an error, not a timeout and not packet loss. Retrying harder
+  would not have helped.
+- **Sibling containers fail in the same second.** `gha-runner-2` and
+  `gha-runner-3` both died at `05:30:08Z`, which rules out a per-container
+  glitch and points at the shared hop.
+- **The Linux workstation, on the same LAN and the same router, stayed green**
+  through the window. The break is inside the Docker Desktop VM, not on the
+  network.
+- **It arrives in bursts.** Six failures in three weeks of `_diag` history
+  (~590 jobs), all six inside one 46-minute window. Nothing in the Docker
+  Desktop host log — no restart, no network event — marks it.
+
+**Why `--dns` is the fix and not a workaround.** Pointing the containers at two
+public resolvers takes Docker Desktop's forwarder out of the path completely,
+and gives glibc a second server to try. Verified on the host: a container
+started with `--dns 192.0.2.1` (TEST-NET) *fails* to resolve, which proves
+Docker Desktop is not quietly intercepting port 53 — the flag really decides
+where the query goes.
+
+The Linux twin (`setup-gha-runners-docker.sh`) has the same `RUNNER_DNS` knob
+but leaves it **empty by default**: containers there inherit the machine's own
+resolvers, have never lost DNS, and pinning public servers would break any
+LAN-internal name that host needs.
+
 ### `Name or service not known` on `Set up job` is a DNS blip, not a broken runner
 
 A job can die before its first step with
@@ -196,10 +291,12 @@ Failed to download action 'https://codeload.github.com/…'.
 Error: Name or service not known (codeload.github.com:443)
 ```
 
-That is Docker's embedded resolver (`127.0.0.11`) briefly failing to reach its
-upstream inside the Docker Desktop VM — a container-level DNS hiccup, not a
-network outage and not a container that needs rebuilding. Two things make it
-easy to misread:
+That is the same shared DNS hop as above, hit before the workflow's first step
+rather than during `actions/checkout` — not a network outage and not a
+container that needs rebuilding. Pinned resolvers should have closed this off
+too; if it recurs *after* the containers were re-created with `--dns`, the
+cause is upstream of the Mac and this section's advice still applies. Two
+things make it easy to misread:
 
 - **It looks fatal.** The runner's own three attempts (~22 s apart) all fall
   inside the same blip, so the job fails hard at `Set up job` with nothing of
@@ -207,7 +304,9 @@ easy to misread:
 - **It looks host-specific.** It hits one container while its siblings on the
   same Mac mini pass minutes either side, so the tempting conclusion is that
   that runner is broken. It isn't: re-running the job on the *same* container
-  succeeds.
+  succeeds. (Check the sibling containers' `_diag` timestamps before believing
+  it: the `checkout` variant of this looked per-container too, and turned out
+  to hit two of them in the same second.)
 
 **Re-run the failed job first** (`gh run rerun <id> --failed`) and only start
 tearing containers down if it fails again on a second host. Nothing in a
