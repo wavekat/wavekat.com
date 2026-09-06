@@ -29,7 +29,6 @@ export const ui: UIStrings = {
   dlArchMsStore: 'Windows 10 및 11, Intel · AMD · ARM',
   dlArchWindowsX64: 'Windows 10 및 11, Intel 및 AMD(x64)',
   dlArchWindowsArm64: 'Windows 11, Snapdragon(ARM64)',
-  dlEarly: '초기 버전',
   dlWindowsUnsigned:
     '직접 내려받은 Windows 빌드는 코드 서명이 되어 있지 않아 첫 실행 시 경고가 표시됩니다. Microsoft Store 버전은 서명되어 있습니다.',
   dlWindowsUnsignedLink: '넘어가는 방법',

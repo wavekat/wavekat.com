@@ -246,8 +246,6 @@ export interface UIStrings {
   dlArchMsStore: string;
   dlArchWindowsX64: string;
   dlArchWindowsArm64: string;
-  /** Tag on the Windows choices: shipped, but younger than the others. */
-  dlEarly: string;
   /**
    * Caveat on the two direct .exe rows — NOT on Windows as a whole. The
    * Microsoft Store package is signed, so the sentence has to say which
@@ -342,7 +340,6 @@ const strings: Record<string, UIStrings> = {
     dlArchMsStore: 'Windows 10 & 11, Intel, AMD & ARM',
     dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
     dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
-    dlEarly: 'Early',
     dlWindowsUnsigned:
       "The direct Windows downloads aren't code-signed, so Windows warns on first launch. The Microsoft Store version is signed.",
     dlWindowsUnsignedLink: 'How to get past it',
@@ -397,7 +394,6 @@ const strings: Record<string, UIStrings> = {
     dlArchMsStore: 'Windows 10 与 11，Intel、AMD 与 ARM',
     dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
     dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',
-    dlEarly: '早期版本',
     dlWindowsUnsigned:
       '直接下载的 Windows 版尚未进行代码签名，首次启动时系统会弹出提醒；Microsoft Store 版本已签名。',
     dlWindowsUnsignedLink: '如何继续安装',

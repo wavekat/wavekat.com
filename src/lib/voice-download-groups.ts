@@ -45,7 +45,7 @@ export interface DownloadGroup {
   key: PlatformGroupKey;
   /** Column heading on the grid. A product name, so it isn't translated. */
   title: string;
-  /** Windows rows carry the Early tag, and only Windows has an unsigned note. */
+  /** Only Windows carries the unsigned-download note under its column. */
   windows: boolean;
   rows: DownloadRow[];
 }

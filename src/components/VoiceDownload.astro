@@ -242,7 +242,7 @@ const allCls =
       </summary>
       <div class={panelCls}>
         {entries.map((e) => (
-          <VoiceDownloadRow group={e.group} row={e.row} ui={ui} context="menu" hidden={isDefaultPrimary(e)} />
+          <VoiceDownloadRow group={e.group} row={e.row} context="menu" hidden={isDefaultPrimary(e)} />
         ))}
 
         {/* The last line, and the only one that isn't a download: every
