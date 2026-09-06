@@ -33,8 +33,14 @@
 #   RUNNER_COUNT=2 RUNNER_PREFIX=mac-mini RUNNER_LABELS=wavekat-ci,mac-mini \
 #     ./setup-gha-runners-macos.sh
 #
+#   # Re-create the containers with current flags, WITHOUT re-registering:
+#   # keeps each volume, so .runner/.credentials and the warm caches survive
+#   # and no registration token is needed.
+#   RUNNER_KEEP_VOLUME=1 ./setup-gha-runners-macos.sh
+#
 # Re-running is safe: existing containers are torn down, their volumes
-# wiped, and the runners re-registered with a fresh token.
+# wiped, and the runners re-registered with a fresh token — unless
+# RUNNER_KEEP_VOLUME=1, which keeps both.
 
 set -euo pipefail
 
@@ -44,6 +50,12 @@ PREFIX="${RUNNER_PREFIX:-$(hostname -s)}"
 RUNNER_LABELS="${RUNNER_LABELS:-wavekat-ci,${PREFIX}}"
 IMAGE="${RUNNER_IMAGE:-wavekat/gha-runner:latest}"
 RUNNER_VERSION="${RUNNER_VERSION:-}" # empty = the Dockerfile's default
+# Resolvers written into each container's /etc/resolv.conf. See
+# docs/06-self-hosted-runners.md §6 for why Docker Desktop's own default
+# — a single forwarder, no fallback — took CI down. Set RUNNER_DNS=
+# (empty) to go back to it.
+RUNNER_DNS="${RUNNER_DNS:-1.1.1.1 8.8.8.8}"
+KEEP_VOLUME="${RUNNER_KEEP_VOLUME:-0}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCKER_CONTEXT="${SCRIPT_DIR}/docker"
 
@@ -117,8 +129,31 @@ EOF
     || die "failed to fetch registration token (is gh authed as a wavekat admin?)"
 }
 
-TOKEN="$(get_token)"
-[[ -n "${TOKEN}" ]] || die "got empty registration token"
+# Keeping the volumes means keeping `.runner`/`.credentials`, and the
+# entrypoint only calls `config.sh` when `.runner` is absent — so a
+# re-create needs no token, and must not burn one.
+if [[ "${KEEP_VOLUME}" == "1" ]]; then
+  TOKEN=""
+  log "RUNNER_KEEP_VOLUME=1 — re-creating containers in place, no re-registration"
+else
+  TOKEN="$(get_token)"
+  [[ -n "${TOKEN}" ]] || die "got empty registration token"
+fi
+
+# Pin the containers' resolvers. Docker Desktop otherwise gives a
+# container one nameserver — its in-VM forwarder, 192.168.65.7 — which
+# proxies to whatever the Mac's Wi-Fi hands it. glibc has nothing to
+# fail over to when that one answers with an error, and every runner
+# loses DNS at the same instant. Two public resolvers plus a short
+# timeout take that forwarder out of the path entirely.
+DNS_ARGS=()
+if [[ -n "${RUNNER_DNS}" ]]; then
+  for ns in ${RUNNER_DNS}; do DNS_ARGS+=(--dns "${ns}"); done
+  DNS_ARGS+=(--dns-option timeout:2 --dns-option attempts:3)
+  log "container resolvers: ${RUNNER_DNS}"
+else
+  warn "RUNNER_DNS is empty — containers will use Docker Desktop's forwarder"
+fi
 
 # 5. (Re)create N runners. One container each, with its own named volume
 #    so registration survives restarts and Docker Desktop upgrades.
@@ -131,16 +166,26 @@ for i in $(seq 1 "${COUNT}"); do
   CONTAINER="gha-runner-${i}"
   log "configuring runner ${NAME} (container ${CONTAINER})"
 
-  # Tear down any previous instance and wipe its volume, so the fresh
-  # registration token is applied cleanly instead of the entrypoint
-  # short-circuiting on a stale .runner file.
-  "${DOCKER}" rm -f "${CONTAINER}" >/dev/null 2>&1 || true
-  "${DOCKER}" volume rm "${CONTAINER}" >/dev/null 2>&1 || true
+  if [[ "${KEEP_VOLUME}" == "1" ]]; then
+    # `docker stop` sends SIGTERM, which the entrypoint forwards to
+    # run.sh — so a runner mid-job finishes that job before exiting
+    # rather than failing it. Then drop the container but keep the
+    # volume: registration and the warm caches survive.
+    "${DOCKER}" stop --time=180 "${CONTAINER}" >/dev/null 2>&1 || true
+    "${DOCKER}" rm -f "${CONTAINER}" >/dev/null 2>&1 || true
+  else
+    # Tear down any previous instance and wipe its volume, so the fresh
+    # registration token is applied cleanly instead of the entrypoint
+    # short-circuiting on a stale .runner file.
+    "${DOCKER}" rm -f "${CONTAINER}" >/dev/null 2>&1 || true
+    "${DOCKER}" volume rm "${CONTAINER}" >/dev/null 2>&1 || true
+  fi
 
   "${DOCKER}" run -d \
     --name "${CONTAINER}" \
     --hostname "${CONTAINER}" \
     --restart unless-stopped \
+    ${DNS_ARGS[@]+"${DNS_ARGS[@]}"} \
     -v "${CONTAINER}:/home/runner/runner" \
     -e "RUNNER_ORG=${ORG}" \
     -e "RUNNER_NAME=${NAME}" \
