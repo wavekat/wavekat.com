@@ -188,14 +188,23 @@ const allCls =
       // inconsistency to tidy away later — it's the same `href` vs `dl`
       // split the rest of this file turns on, drawn at button size.
       //
+      // It reads correctly here and would not in the menu below, for a
+      // reason about the surface rather than the row: exactly ONE primary
+      // is ever shown, so a badge stands alone with nothing beside it to
+      // look mismatched against. The menu shows all three systems at once
+      // in one column, where a badge next to an icon-and-label row reads as
+      // two offers and a leftover — so no menu row draws one. See
+      // VoiceDownloadRow.
+      //
       // Except on the download page, where the grid below already draws
       // both badges: a second copy of the same artwork one screen higher
       // reads as a bug rather than as emphasis. There the primary returns
       // to the orange pill, which also keeps the brand control above the
       // fold on the one page whose body is store artwork. Keyed on the
       // page and not on which platform is promoted, because the promotion
-      // happens in the browser — see the same reasoning in
-      // VoiceDownloadRow.
+      // happens in the browser — a Windows visitor's primary swaps after
+      // the HTML is served, so anything keyed on "which badge is showing"
+      // would be right for the Mac default and wrong for everyone else.
       const store = onDownloadPage ? null : badgeStoreFor(e.row.key);
       return (
         <e.Tag

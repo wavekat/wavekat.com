@@ -286,13 +286,21 @@ pill**: Linux has no store, so the rule simply doesn't fire there.
   `max-width:100%` with an `aspect-ratio` — without that, the German Microsoft
   badge (183px, the widest in the set) hangs out of its card at the `sm`
   breakpoint, where a grid column is ~195px.
+- **The badge draws where a control stands alone; never in a list beside our
+  own.** The hero primary is one control with nothing next to it, so it wears
+  the store's artwork. The "other platforms" menu shows all three systems in a
+  single column, where a badge above an icon-and-label row reads as two offers
+  and a leftover rather than three equal choices — and since Linux has no store
+  and can never have a badge, the only style all three rows can share is ours.
+  So **no menu row draws a badge**. The download grid is the opposite case and
+  keeps them: each store row sits in its own platform's column, compared with
+  that system's other builds rather than with Linux.
 - **One badge per store per page.** `/voice/download/` renders both the compact
   control and the full grid, so there the **grid owns the badges** and the hero
-  falls back to the orange pill while the menu falls back to icon-and-label
-  rows. Keyed on the *page*, not on which platform is promoted — promotion
-  happens in the browser, so a Windows visitor's primary swaps after the HTML
-  is served, and anything keyed on "which badge is showing" would be right for
-  the Mac default and wrong for everyone else.
+  falls back to the orange pill. Keyed on the *page*, not on which platform is
+  promoted — promotion happens in the browser, so a Windows visitor's primary
+  swaps after the HTML is served, and anything keyed on "which badge is
+  showing" would be right for the Mac default and wrong for everyone else.
 - **Never restyle the artwork** — no background, no corner radius, no filter, no
   recolour. Both stores require the badge as published, and Apple's guidelines
   additionally say its badge may not be drawn smaller than a competitor's shown
