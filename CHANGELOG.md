@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.63...wavekat-com-v1.0.0) (2026-09-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop the Early tag from the Windows download rows ([#181](https://github.com/wavekat/wavekat.com/issues/181))
+
+### Features
+
+* drop the Early tag from the Windows download rows ([#181](https://github.com/wavekat/wavekat.com/issues/181)) ([e2d5f98](https://github.com/wavekat/wavekat.com/commit/e2d5f9833fb109a5c21eccbf5af7bcf90d2a3e1e))
+
 ## [0.0.63](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.62...wavekat-com-v0.0.63) (2026-09-06)
 
 
