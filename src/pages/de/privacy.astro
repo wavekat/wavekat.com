@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: 'Brauche ich für WaveKat Voice ein WaveKat-Konto?',
-    a: 'Nein. Ohne Konto arbeitet die App vollständig lokal: Anrufe, Aufnahmen, Transkripte und SIP-Passwörter bleiben auf Ihrem Rechner. Nur anonyme Absturzberichte, die ein Schalter unter Einstellungen → Über abschaltet, und eine anonyme Installationszählung verlassen ihn.',
+    a: 'Nein. Ohne Konto arbeitet die App vollständig lokal: Anrufe, Aufnahmen, Transkripte und SIP-Passwörter bleiben auf Ihrem Rechner. Nur anonyme Absturzberichte und eine anonyme Installationszählung verlassen ihn — und jedes hat unter Einstellungen → Über seinen eigenen Schalter.',
   },
   {
     q: 'Ist es legal, meine Anrufe mit WaveKat aufzuzeichnen?',
@@ -548,12 +548,11 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           keinen Rechnernamen.
         </p>
         <p class={p}>
-          Absturzberichte sind standardmäßig an und lassen sich mit dem Schalter
-          <strong class={strong}>Fehlerberichte senden</strong> unter Einstellungen → Über
-          abschalten. Dieser Schalter steuert nur Absturzberichte — die Installationszählung ist
-          davon nicht betroffen und läuft, wie die Suche nach Updates, immer, solange die App
-          geöffnet ist. Die Suche nach App-Updates lädt Dateien von unserem Update-Server —
-          gewöhnliche Web-Anfragen ohne angehängte personenbezogene Daten.
+          Beides ist standardmäßig an, und jedes hat unter Einstellungen → Über seinen eigenen
+          Schalter: <strong class={strong}>Fehlerberichte senden</strong> für Absturzberichte,
+          <strong class={strong}>Diese Installation zählen</strong> für die Installationszählung.
+          Der eine beeinflusst den anderen nicht. Die Suche nach App-Updates lädt Dateien von
+          unserem Update-Server — gewöhnliche Web-Anfragen ohne angehängte personenbezogene Daten.
         </p>
       </section>
 

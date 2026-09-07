@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: 'Serve un account WaveKat per usare WaveKat Voice?',
-    a: 'No. Senza account l’app è interamente locale: chiamate, registrazioni, trascrizioni e password SIP restano sul tuo computer. Le uniche cose che escono sono segnalazioni di crash anonime, che un interruttore in Impostazioni → Informazioni spegne, e un conteggio anonimo delle installazioni.',
+    a: 'No. Senza account l’app è interamente locale: chiamate, registrazioni, trascrizioni e password SIP restano sul tuo computer. Le uniche cose che escono sono segnalazioni di crash anonime e un conteggio anonimo delle installazioni, e ciascuno ha il proprio interruttore in Impostazioni → Informazioni.',
   },
   {
     q: 'È legale registrare le mie chiamate con WaveKat?',
@@ -542,12 +542,12 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           nessun nome di computer.
         </p>
         <p class={p}>
-          Le segnalazioni di crash sono attive di default e si spengono con l’interruttore
-          <strong class={strong}>Invia segnalazioni di errore</strong> in Impostazioni →
-          Informazioni. Quell’interruttore controlla solo le segnalazioni di crash — il conteggio
-          delle installazioni non ne è influenzato e, come il controllo degli aggiornamenti, viene
-          inviato finché l’app è aperta. Il controllo degli aggiornamenti scarica file dal nostro
-          server di aggiornamento — normali richieste web senza dati personali allegati.
+          Entrambi sono attivi di default, e ciascuno ha il proprio interruttore in Impostazioni →
+          Informazioni: <strong class={strong}>Invia segnalazioni di errore</strong> per le
+          segnalazioni di crash, <strong class={strong}>Conta questa installazione</strong> per il
+          conteggio delle installazioni. L’uno non influisce sull’altro. Il controllo degli
+          aggiornamenti scarica file dal nostro server di aggiornamento — normali richieste web
+          senza dati personali allegati.
         </p>
       </section>
 

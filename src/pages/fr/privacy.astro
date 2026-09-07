@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: 'Faut-il un compte WaveKat pour utiliser WaveKat Voice ?',
-    a: 'Non. Sans compte, l’application est entièrement locale : appels, enregistrements, transcriptions et mots de passe SIP restent sur votre ordinateur. Seuls en sortent des rapports de plantage anonymes — qu’un interrupteur dans Réglages → À propos coupe — et un comptage anonyme des installations.',
+    a: 'Non. Sans compte, l’application est entièrement locale : appels, enregistrements, transcriptions et mots de passe SIP restent sur votre ordinateur. Seuls en sortent des rapports de plantage anonymes et un comptage anonyme des installations, et chacun a son propre interrupteur dans Réglages → À propos.',
   },
   {
     q: 'Ai-je le droit d’enregistrer mes appels avec WaveKat ?',
@@ -554,12 +554,12 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           pas de nom, pas de compte, pas de nom de machine.
         </p>
         <p class={p}>
-          Les rapports de plantage sont activés par défaut et se coupent avec l’interrupteur
-          <strong class={strong}>Envoyer les rapports d’erreur</strong> dans Réglages → À propos.
-          Cet interrupteur ne contrôle que les rapports de plantage — le comptage des installations
-          n’en dépend pas et, comme la recherche de mises à jour, s’exécute tant que l’application
-          est ouverte. La recherche de mises à jour télécharge des fichiers depuis notre serveur de
-          mise à jour — des requêtes web ordinaires sans donnée personnelle attachée.
+          Les deux sont activés par défaut, et chacun a son propre interrupteur dans Réglages → À
+          propos : <strong class={strong}>Envoyer les rapports d’erreur</strong> pour les rapports
+          de plantage, <strong class={strong}>Compter cette installation</strong> pour le comptage
+          des installations. L’un n’agit pas sur l’autre. La recherche de mises à jour télécharge
+          des fichiers depuis notre serveur de mise à jour — des requêtes web ordinaires sans donnée
+          personnelle attachée.
         </p>
       </section>
 

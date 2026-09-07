@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     q: 'Do I need a WaveKat account to use WaveKat Voice?',
-    a: 'No. Without an account the app is entirely local: calls, recordings, transcripts, and SIP passwords stay on your computer. The only things that leave are anonymous crash reports, which one switch in Settings → About turns off, and an anonymous install count.',
+    a: 'No. Without an account the app is entirely local: calls, recordings, transcripts, and SIP passwords stay on your computer. The only things that leave are anonymous crash reports and an anonymous install count, and each has its own switch in Settings → About.',
   },
   {
     q: 'Is it legal for me to record my calls with WaveKat?',
@@ -542,11 +542,11 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           no account, no computer name.
         </p>
         <p class={p}>
-          Crash reports are on by default and turned off by the <strong class={strong}>Send error
-          reports</strong> switch in Settings → About. That switch controls crash reports only — the
-          install count is not affected by it and, like checking for updates, runs whenever the app
-          is open. Checking for app updates downloads files from our update server — ordinary web
-          requests with no personal data attached.
+          Both are on by default, and each has its own switch in Settings → About:
+          <strong class={strong}>Send error reports</strong> for crash reports,
+          <strong class={strong}>Count this install</strong> for the install count. One does not
+          affect the other. Checking for app updates downloads files from our update server —
+          ordinary web requests with no personal data attached.
         </p>
       </section>
 
