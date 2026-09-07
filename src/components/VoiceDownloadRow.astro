@@ -10,7 +10,6 @@
 // of component imports.
 import { Apple, Package, AppWindow } from '@lucide/astro';
 import StoreBadge from './StoreBadge.astro';
-import type { UIStrings } from '../lib/i18n';
 import { resolveLocale } from '../lib/i18n';
 import { badgeStoreFor } from '../lib/badges';
 import type { DownloadGroup, DownloadRow, PlatformGroupKey } from '../lib/voice-download-groups';
@@ -19,7 +18,6 @@ import { rowAvailable } from '../lib/voice-download-groups';
 interface Props {
   group: DownloadGroup;
   row: DownloadRow;
-  ui: UIStrings;
   /**
    * `menu` rows carry `data-dl-alt*`, which the promotion script uses to
    * hide whichever row the button is already offering. Grid rows carry
@@ -30,7 +28,7 @@ interface Props {
   /** Menu only: whether this row starts hidden because it is the SSR primary. */
   hidden?: boolean;
 }
-const { group, row, ui, context, hidden = false } = Astro.props;
+const { group, row, context, hidden = false } = Astro.props;
 
 // The icon earns its place in the menu, where rows from all three systems
 // sit in one list and it is what tells them apart at a glance. In the grid
@@ -85,17 +83,6 @@ const avail = rowAvailable(row);
 
 const rowCls =
   'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
-
-// `shrink-0 whitespace-nowrap` — the label beside it wraps in several
-// languages, and a two-line pill looks broken.
-// Inline rather than a flex sibling of the label. As a sibling it was laid
-// out beside the whole label, so a label that wrapped to two lines pushed
-// the pill out to the row's right edge with a gap in between; inline, it
-// simply follows the last word wherever that lands. `align-middle` because
-// its font is smaller than the label's, and `whitespace-nowrap` so the pill
-// itself is never the thing that breaks.
-const tagCls =
-  'ml-1.5 inline-block rounded-full bg-gray-100 px-1.5 py-0.5 align-middle text-[10px] font-semibold whitespace-nowrap uppercase tracking-wide text-gray-500 dark:bg-white/10 dark:text-gray-400';
 ---
 
 {/* Each row is WRAPPED so promoting a platform toggles the wrapper while
@@ -122,7 +109,7 @@ const tagCls =
         <StoreBadge store={badgeStore} locale={badgeLocale} alt={row.label} class="mb-1" />
       ) : (
         <span class="text-sm font-bold text-gray-900 dark:text-white">
-          {row.label}{group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
+          {row.label}
         </span>
       )}
       {/* The size is ours to state only for a file we publish. A store row
@@ -144,12 +131,7 @@ const tagCls =
           context === 'menu' && 'sm:whitespace-nowrap',
         ]}
       >
-        {row.arch}{row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={row.key}>{row.dl.size}</span></span>}{/*
-          The Early tag rides the label on a normal row, but a badge row has
-          no label — the artwork is fixed and may not be annotated. So on
-          those rows it moves down here, which keeps the claim on the page
-          for the Microsoft Store row instead of quietly dropping it. */}
-        {badgeStore && group.windows && <span class={tagCls}>{ui.dlEarly}</span>}
+        {row.arch}{row.dl && <span class="whitespace-nowrap"> · <span data-dl-size={row.key}>{row.dl.size}</span></span>}
       </span>
     </span>
   </Tag>

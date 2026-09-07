@@ -29,7 +29,6 @@ export const ui: UIStrings = {
   dlArchMsStore: 'Windows 10 與 11，Intel、AMD 與 ARM',
   dlArchWindowsX64: 'Windows 10 與 11，Intel 與 AMD（x64）',
   dlArchWindowsArm64: 'Windows 11，Snapdragon（ARM64）',
-  dlEarly: '早期版本',
   dlWindowsUnsigned:
     '直接下載的 Windows 版尚未進行程式碼簽章，首次啟動時系統會跳出提醒；Microsoft Store 版本已簽章。',
   dlWindowsUnsignedLink: '如何繼續安裝',
