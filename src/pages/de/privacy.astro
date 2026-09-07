@@ -394,8 +394,17 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           Anmeldung ist es standardmäßig an — lädt die App Ihre Anrufliste (Datum, Nummer,
           Zeitstempel, Dauer und Ausgang des Anrufs), Ihre Aufnahmen und Ihre Transkripte in Ihr
           privates WaveKat-Konto hoch, damit Ihre Anrufe auf jedem Gerät erscheinen, auf dem Sie sich
-          anmelden. Die Anmeldung registriert außerdem den Rechner — Name, Betriebssystem und
-          App-Version — damit Sie sehen können, welche Geräte verbunden sind.
+          anmelden. Die Anmeldung registriert außerdem den Rechner — seinen Namen, Betriebssystem
+          samt Version, Prozessortyp, App-Version und wann die App zuletzt gestartet wurde — damit
+          Sie sehen können, welche Geräte verbunden sind.
+        </p>
+        <p class={`${p} mb-4`}>
+          Solange Sie angemeldet sind, hält die App außerdem etwa alle 15 Minuten eine kurze
+          Verbindungsübersicht aktuell: wie viele SIP-Konten eingerichtet sind, wie viele verbunden
+          sind, und den letzten Verbindungsfehler. Ihre SIP-Adresse und der Servername Ihres
+          Anbieters werden aus diesem Fehler entfernt, bevor er gesendet wird. Damit erkennen wir,
+          wenn Verbindungen bei vielen Installationen fehlschlagen. Es enthält nie Anrufdetails, und
+          das Abmelden beendet es.
         </p>
         <p class={p}>
           Schalten Sie <strong class={strong}>In die Cloud synchronisieren</strong> aus, bleibt alles
@@ -529,10 +538,14 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           Kontakte.
         </p>
         <p class={`${p} mb-3`}>
-          Einmal pro Start sendet die App außerdem ein anonymes Signal, damit wir wissen, wie viele
-          Installationen existieren und welche Versionen und Betriebssysteme wir unterstützen müssen.
-          Es enthält eine zufällige Installationskennung, die App-Version, Ihr Betriebssystem samt
-          Version, den Prozessortyp und die Sprache — keinen Namen, kein Konto, keinen Rechnernamen.
+          Einmal pro Start und danach alle 6 Stunden, solange die App geöffnet ist, sendet die App
+          außerdem ein anonymes Signal, damit wir wissen, wie viele Installationen existieren und
+          welche Versionen und Betriebssysteme wir unterstützen müssen. Es enthält eine zufällige
+          Installationskennung, die App-Version und den Build, Ihr Betriebssystem samt Version, den
+          Prozessortyp (und ob die App nativ darauf läuft), die Sprache, wie Sie die App installiert
+          haben, welchem Update-Kanal sie folgt, ob automatische Updates an sind und wie die letzte
+          Suche nach Updates verlief, sowie wann die App gestartet wurde — keinen Namen, kein Konto,
+          keinen Rechnernamen.
         </p>
         <p class={p}>
           Beides ist standardmäßig an, und beides schaltet der eine Schalter

@@ -401,8 +401,17 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           fois connecté — l’application téléverse vers votre compte WaveKat privé votre historique
           d’appels (date, numéro, horodatages, durée et issue de l’appel), vos enregistrements et vos
           transcriptions, pour que vos appels apparaissent sur chaque appareil où vous vous connectez.
-          La connexion enregistre aussi l’ordinateur — son nom, son système d’exploitation et la
-          version de l’application — pour que vous voyiez quels appareils sont reliés.
+          La connexion enregistre aussi l’ordinateur — son nom, son système d’exploitation et sa
+          version, le type de processeur, la version de l’application, et la dernière fois que
+          l’application a été lancée — pour que vous voyiez quels appareils sont reliés.
+        </p>
+        <p class={`${p} mb-4`}>
+          Pendant que vous êtes connecté, l’application tient aussi à jour un court résumé de
+          connexion, environ toutes les 15 minutes : le nombre de comptes SIP configurés, le nombre de
+          comptes connectés, et la dernière erreur de connexion. Votre adresse SIP et le nom du
+          serveur de votre opérateur sont retirés de cette erreur avant son envoi. Nous nous en
+          servons pour repérer quand les connexions échouent sur de nombreuses installations. Cela
+          n’inclut jamais le détail des appels, et se déconnecter l’arrête.
         </p>
         <p class={p}>
           Désactivez <strong class={strong}>Synchroniser vers le cloud</strong> pour que tout reste
@@ -534,11 +543,15 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           n’incluent jamais d’audio d’appel, d’historique, de numéros de téléphone ni de contacts.
         </p>
         <p class={`${p} mb-3`}>
-          Une fois par lancement, l’application envoie aussi un signal anonyme pour que nous sachions
-          combien d’installations existent et quelles versions et systèmes d’exploitation soutenir. Il
-          contient un identifiant d’installation aléatoire, la version de l’application, votre système
-          d’exploitation et sa version, le type de processeur et la langue — pas de nom, pas de
-          compte, pas de nom de machine.
+          Une fois par lancement, puis toutes les 6 heures pendant que l’application est ouverte, elle
+          envoie aussi un signal anonyme pour que nous sachions combien d’installations existent et
+          quelles versions et quels systèmes d’exploitation soutenir. Il contient un identifiant
+          d’installation aléatoire, la version et le build de l’application, votre système
+          d’exploitation et sa version, le type de processeur (et si l’application s’exécute
+          nativement dessus), la langue, la façon dont vous avez installé l’application, le canal de
+          mise à jour qu’elle suit, si les mises à jour automatiques sont activées et comment s’est
+          déroulée la dernière vérification, ainsi que le moment où l’application a été démarrée —
+          pas de nom, pas de compte, pas de nom de machine.
         </p>
         <p class={p}>
           Les deux sont activés par défaut, et le seul interrupteur
