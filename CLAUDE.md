@@ -46,7 +46,11 @@ All repos live under the `wavekat` GitHub org. SSH access uses the `github.com-w
 This repo uses **release-please**. Since GitHub squash-merges use the PR title as the commit message, the PR title must have a conventional prefix or release-please will silently ignore the commit.
 
 - `feat:` / `fix:` → patch bump (pre-1.0, per `bump-patch-for-minor-pre-major`)
-- `feat!:` / `fix!:` → minor bump (pre-1.0)
+- `feat!:` / `fix!:` → minor bump (pre-1.0, per `bump-minor-pre-major`)
+
+**The squash also drops the commit body, so a `!` in the title is the whole decision** — there is no `BREAKING CHANGE:` footer to reconsider later, and nothing else in the PR moderates it. Reach for `!` only for a change that genuinely breaks something; a copy tweak, a removed badge or a restyled control is a `feat:`. This is not theoretical: #181 removed a download-row badge, was titled `feat!:`, and — with `bump-minor-pre-major` then unset — release-please proposed **1.0.0**, which had to be walked back by hand in #182.
+
+For the same reason, **`Release-As: x.y.z` does not work here.** It is read from a commit body, and the squash discards it. To pin a version, edit the release PR instead: its title, its body (release-please parses the released version out of the body on merge, so the tag follows it), `CHANGELOG.md`, `.release-please-manifest.json`, `package.json` and `package-lock.json` — all six, or the tag and the manifest disagree.
 
 ## Tech decisions
 
