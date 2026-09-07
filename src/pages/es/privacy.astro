@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: '¿Necesito una cuenta de WaveKat para usar WaveKat Voice?',
-    a: 'No. Sin cuenta, la aplicación es completamente local: llamadas, grabaciones, transcripciones y contraseñas SIP se quedan en tu ordenador. Lo único que sale son informes de fallos anónimos y un recuento anónimo de instalaciones, y un solo interruptor en Ajustes → Acerca de apaga ambos.',
+    a: 'No. Sin cuenta, la aplicación es completamente local: llamadas, grabaciones, transcripciones y contraseñas SIP se quedan en tu ordenador. Lo único que sale son informes de fallos anónimos, que un interruptor en Ajustes → Acerca de apaga, y un recuento anónimo de instalaciones.',
   },
   {
     q: '¿Es legal grabar mis llamadas con WaveKat?',
@@ -543,10 +543,12 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           se inició la aplicación — sin nombre, sin cuenta, sin nombre de equipo.
         </p>
         <p class={p}>
-          Ambos vienen activados por defecto y ambos se apagan con el único interruptor
-          <strong class={strong}>Enviar informes de errores</strong> en Ajustes → Acerca de. Buscar
-          actualizaciones descarga archivos de nuestro servidor de actualizaciones — peticiones web
-          corrientes sin datos personales adjuntos.
+          Los informes de fallos vienen activados por defecto y se apagan con el interruptor
+          <strong class={strong}>Enviar informes de errores</strong> en Ajustes → Acerca de. Ese
+          interruptor controla solo los informes de fallos — el recuento de instalaciones no se ve
+          afectado y, como la búsqueda de actualizaciones, se envía siempre que la aplicación está
+          abierta. Buscar actualizaciones descarga archivos de nuestro servidor de actualizaciones —
+          peticiones web corrientes sin datos personales adjuntos.
         </p>
       </section>
 
