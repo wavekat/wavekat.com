@@ -541,6 +541,13 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           updates are on and how the last update check went, and when the app was started — no name,
           no account, no computer name.
         </p>
+        <p class={`${p} mb-3`}>
+          It also sends a short log of setup milestones — that you added a SIP account or removed
+          one, that it connected for the first time, that a call connected (and whether it was
+          incoming or outgoing), and that a call flow was turned on or answered a call and how that
+          ended — each with the time it happened. No phone numbers, names, or call contents. The log
+          follows the same <strong class={strong}>Count this install</strong> switch.
+        </p>
         <p class={p}>
           Both are on by default, and each has its own switch in Settings → About:
           <strong class={strong}>Send error reports</strong> for crash reports,
