@@ -553,6 +553,14 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           déroulée la dernière vérification, ainsi que le moment où l’application a été démarrée —
           pas de nom, pas de compte, pas de nom de machine.
         </p>
+        <p class={`${p} mb-3`}>
+          Elle envoie aussi un bref journal des étapes de configuration — que vous avez ajouté ou
+          supprimé un compte SIP, qu’elle s’est connectée pour la première fois, qu’un appel a été
+          connecté (et s’il était entrant ou sortant), et qu’un flux d’appel a été activé ou a
+          répondu à un appel et comment celui-ci s’est terminé — chacun avec l’heure à laquelle
+          c’est arrivé. Aucun numéro de téléphone, nom ou contenu d’appel. Le journal suit le même
+          interrupteur <strong class={strong}>Compter cette installation</strong>.
+        </p>
         <p class={p}>
           Les deux sont activés par défaut, et chacun a son propre interrupteur dans Réglages → À
           propos : <strong class={strong}>Envoyer les rapports d’erreur</strong> pour les rapports
