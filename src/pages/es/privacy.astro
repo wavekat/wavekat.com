@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: '¿Necesito una cuenta de WaveKat para usar WaveKat Voice?',
-    a: 'No. Sin cuenta, la aplicación es completamente local: llamadas, grabaciones, transcripciones y contraseñas SIP se quedan en tu ordenador. Lo único que sale son informes de fallos anónimos y un recuento anónimo de instalaciones, y un solo interruptor en Ajustes → Acerca de apaga ambos.',
+    a: 'No. Sin cuenta, la aplicación es completamente local: llamadas, grabaciones, transcripciones y contraseñas SIP se quedan en tu ordenador. Lo único que sale son informes de fallos anónimos y un recuento anónimo de instalaciones, y cada uno tiene su propio interruptor en Ajustes → Acerca de.',
   },
   {
     q: '¿Es legal grabar mis llamadas con WaveKat?',
@@ -395,8 +395,17 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           — la aplicación sube a tu cuenta privada de WaveKat tu historial de llamadas (fecha, número,
           marcas de tiempo, duración y cómo terminó la llamada), tus grabaciones y tus
           transcripciones, para que tus llamadas aparezcan en todos los dispositivos donde entres.
-          Iniciar sesión también registra el ordenador — su nombre, sistema operativo y versión de la
-          aplicación — para que veas qué dispositivos están conectados.
+          Iniciar sesión también registra el ordenador — su nombre, sistema operativo y versión, tipo
+          de procesador, versión de la aplicación y cuándo se inició por última vez — para que veas
+          qué dispositivos están conectados.
+        </p>
+        <p class={`${p} mb-4`}>
+          Mientras tienes la sesión iniciada, la aplicación también mantiene al día un breve resumen
+          de conexión, aproximadamente cada 15 minutos: cuántas cuentas SIP tienes configuradas,
+          cuántas están conectadas y el error de conexión más reciente. Tu dirección SIP y el nombre
+          del servidor de tu proveedor se eliminan de ese error antes de enviarlo. Usamos esto para
+          detectar cuándo fallan las conexiones en muchas instalaciones a la vez. Nunca incluye
+          detalles de las llamadas, y cerrar sesión lo detiene.
         </p>
         <p class={p}>
           Desactiva <strong class={strong}>Sincronizar con la nube</strong> para que todo se quede en
@@ -524,17 +533,21 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           llamadas, historial, números de teléfono ni contactos.
         </p>
         <p class={`${p} mb-3`}>
-          Una vez por arranque, la aplicación envía además una señal anónima para que sepamos cuántas
-          instalaciones existen y qué versiones y sistemas operativos mantener. Contiene un
-          identificador de instalación aleatorio, la versión de la aplicación, tu sistema operativo y
-          su versión, el tipo de procesador y el idioma — sin nombre, sin cuenta, sin nombre de
-          equipo.
+          Una vez por arranque, y después cada 6 horas mientras la aplicación está abierta, la
+          aplicación también envía una señal anónima para que sepamos cuántas instalaciones existen y
+          qué versiones y sistemas operativos mantener. Contiene un identificador de instalación
+          aleatorio, la versión de la aplicación y su compilación, tu sistema operativo y su versión,
+          el tipo de procesador (y si la aplicación se ejecuta de forma nativa en él), el idioma, cómo
+          instalaste la aplicación, qué canal de actualización sigue, si las actualizaciones
+          automáticas están activadas y cómo fue la última comprobación de actualizaciones, y cuándo
+          se inició la aplicación — sin nombre, sin cuenta, sin nombre de equipo.
         </p>
         <p class={p}>
-          Ambos vienen activados por defecto y ambos se apagan con el único interruptor
-          <strong class={strong}>Enviar informes de errores</strong> en Ajustes → Acerca de. Buscar
-          actualizaciones descarga archivos de nuestro servidor de actualizaciones — peticiones web
-          corrientes sin datos personales adjuntos.
+          Ambos vienen activados por defecto, y cada uno tiene su propio interruptor en Ajustes →
+          Acerca de: <strong class={strong}>Enviar reportes de errores</strong> para los informes de
+          fallos y <strong class={strong}>Contar esta instalación</strong> para el recuento de
+          instalaciones. Uno no afecta al otro. Buscar actualizaciones descarga archivos de nuestro
+          servidor de actualizaciones — peticiones web corrientes sin datos personales adjuntos.
         </p>
       </section>
 

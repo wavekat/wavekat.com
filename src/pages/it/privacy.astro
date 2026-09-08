@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: 'Serve un account WaveKat per usare WaveKat Voice?',
-    a: 'No. Senza account l’app è interamente locale: chiamate, registrazioni, trascrizioni e password SIP restano sul tuo computer. Le uniche cose che escono sono segnalazioni di crash anonime e un conteggio anonimo delle installazioni, e un solo interruttore in Impostazioni → Informazioni spegne entrambi.',
+    a: 'No. Senza account l’app è interamente locale: chiamate, registrazioni, trascrizioni e password SIP restano sul tuo computer. Le uniche cose che escono sono segnalazioni di crash anonime e un conteggio anonimo delle installazioni, e ciascuno ha il proprio interruttore in Impostazioni → Informazioni.',
   },
   {
     q: 'È legale registrare le mie chiamate con WaveKat?',
@@ -392,8 +392,16 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           l’app carica nel tuo account WaveKat privato la cronologia chiamate (data, numero, marche
           temporali, durata e come è finita la chiamata), le registrazioni e le trascrizioni, così le
           tue chiamate compaiono su ogni dispositivo in cui accedi. L’accesso registra anche il
-          computer — nome, sistema operativo e versione dell’app — perché tu veda quali dispositivi
-          sono collegati.
+          computer — nome, sistema operativo e versione, tipo di processore, versione dell’app e
+          quando è stato avviato l’ultima volta — perché tu veda quali dispositivi sono collegati.
+        </p>
+        <p class={`${p} mb-4`}>
+          Finché hai effettuato l’accesso, l’app mantiene aggiornato anche un breve riepilogo dei
+          collegamenti, circa ogni 15 minuti: quanti account SIP sono configurati, quanti sono
+          collegati e l’errore di collegamento più recente. Il tuo indirizzo SIP e il nome del server
+          del tuo operatore vengono rimossi da quell’errore prima che venga inviato. Lo usiamo per
+          individuare quando i collegamenti falliscono su molte installazioni. Non include mai i
+          dettagli delle chiamate, e uscire lo interrompe.
         </p>
         <p class={p}>
           Disattiva <strong class={strong}>Sincronizza nel cloud</strong> perché tutto resti su quel
@@ -524,17 +532,22 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           cronologia, numeri di telefono o contatti.
         </p>
         <p class={`${p} mb-3`}>
-          Una volta per avvio, l’app invia inoltre un segnale anonimo perché sappiamo quante
-          installazioni esistono e quali versioni e sistemi operativi supportare. Contiene un
-          identificativo di installazione casuale, la versione dell’app, il tuo sistema operativo con
-          la sua versione, il tipo di processore e la lingua — nessun nome, nessun account, nessun
-          nome di computer.
+          Una volta per avvio, e poi ogni 6 ore mentre l’app è aperta, l’app invia inoltre un segnale
+          anonimo perché sappiamo quante installazioni esistono e quali versioni e sistemi operativi
+          supportare. Contiene un identificativo di installazione casuale, la versione dell’app e la
+          build, il tuo sistema operativo con la sua versione, il tipo di processore (e se l’app gira
+          in modo nativo su di esso), la lingua, come hai installato l’app, quale canale di
+          aggiornamento segue, se gli aggiornamenti automatici sono attivi e come è andato l’ultimo
+          controllo degli aggiornamenti, e quando l’app è stata avviata — nessun nome, nessun account,
+          nessun nome di computer.
         </p>
         <p class={p}>
-          Entrambi sono attivi di default ed entrambi si spengono con l’unico interruttore
-          <strong class={strong}>Invia segnalazioni di errore</strong> in Impostazioni → Informazioni.
-          Il controllo degli aggiornamenti scarica file dal nostro server di aggiornamento — normali
-          richieste web senza dati personali allegati.
+          Entrambi sono attivi di default, e ciascuno ha il proprio interruttore in Impostazioni →
+          Informazioni: <strong class={strong}>Invia segnalazioni di errore</strong> per le
+          segnalazioni di crash, <strong class={strong}>Conta questa installazione</strong> per il
+          conteggio delle installazioni. L’uno non influisce sull’altro. Il controllo degli
+          aggiornamenti scarica file dal nostro server di aggiornamento — normali richieste web
+          senza dati personali allegati.
         </p>
       </section>
 

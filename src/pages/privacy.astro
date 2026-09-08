@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     q: 'Do I need a WaveKat account to use WaveKat Voice?',
-    a: 'No. Without an account the app is entirely local: calls, recordings, transcripts, and SIP passwords stay on your computer. The only things that leave are anonymous crash reports and an anonymous install count, and one switch in Settings → About turns both off.',
+    a: 'No. Without an account the app is entirely local: calls, recordings, transcripts, and SIP passwords stay on your computer. The only things that leave are anonymous crash reports and an anonymous install count, and each has its own switch in Settings → About.',
   },
   {
     q: 'Is it legal for me to record my calls with WaveKat?',
@@ -402,8 +402,15 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           on — it is on by default once signed in — the app uploads your call history (date, number,
           timestamps, duration, and how the call ended), your call recordings, and your transcripts to
           your private WaveKat account, so your calls appear on every device you sign in on. Signing
-          in also registers the computer — its name, operating system, and app version — so you can
-          see which devices are connected.
+          in also registers the computer — its name, operating system and version, processor type, app
+          version, and when the app was last started — so you can see which devices are connected.
+        </p>
+        <p class={`${p} mb-4`}>
+          While you are signed in, the app also keeps a short connection summary up to date, about
+          every 15 minutes: how many SIP accounts are set up, how many are connected, and the most
+          recent connection error. Your SIP address and your provider's server name are removed from
+          that error before it is sent. We use this to spot when connections are failing across many
+          installs. It never includes call details, and signing out stops it.
         </p>
         <p class={p}>
           Turn <strong class={strong}>Sync to cloud</strong> off to keep everything on that computer;
@@ -526,16 +533,20 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           phone numbers, or contacts.
         </p>
         <p class={`${p} mb-3`}>
-          Once per launch the app also sends one anonymous ping so we know how many installs exist and
-          which versions and operating systems to support. It contains a random install identifier,
-          the app version, your operating system and its version, processor type, and language — no
-          name, no account, no computer name.
+          Once per launch, and then every 6 hours while the app is open, the app also sends one
+          anonymous ping so we know how many installs exist and which versions and operating systems
+          to support. It contains a random install identifier, the app version and build, your
+          operating system and its version, processor type (and whether the app runs natively on it),
+          language, how you installed the app, which update channel it follows, whether automatic
+          updates are on and how the last update check went, and when the app was started — no name,
+          no account, no computer name.
         </p>
         <p class={p}>
-          Both are on by default and both are turned off by the single
-          <strong class={strong}>Send error reports</strong> switch in Settings → About. Checking for
-          app updates downloads files from our update server — ordinary web requests with no personal
-          data attached.
+          Both are on by default, and each has its own switch in Settings → About:
+          <strong class={strong}>Send error reports</strong> for crash reports,
+          <strong class={strong}>Count this install</strong> for the install count. One does not
+          affect the other. Checking for app updates downloads files from our update server —
+          ordinary web requests with no personal data attached.
         </p>
       </section>
 
