@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -186,7 +186,7 @@ const faqs = [
   },
   {
     q: '它能在什麼系統上執行？',
-    a: `Mac、Windows 和 Linux。在 macOS 上支援 12 及以上版本，需要${ui.dlArchMac}；Windows 支援 10 和 11；在 Linux 上是面向 ${ui.dlArchLinux} 的 .deb 安裝包。`,
+    a: `Mac、Windows 和 Linux。在 macOS 上支援 12 及以上版本，需要${ui.dlArchMac}；Windows 支援 10 和 11；在 Linux 上已上架 Snap Store，也提供面向 ${ui.dlArchLinux} 的 .deb 安裝包。`,
   },
   {
     q: 'WaveKat Voice 在 Mac App Store 上嗎？',
@@ -195,6 +195,10 @@ const faqs = [
   {
     q: 'WaveKat Voice 在 Microsoft Store 上嗎？',
     a: '在。WaveKat Voice 已上架 Microsoft Store，免費下載，這也是在 Windows 上安裝它最簡單的方式——安裝套件由 Microsoft 簽章，不會跳出「未知發行者」提示，同一個商店頁面同時涵蓋 Intel、AMD 電腦與 ARM 電腦。它和從 wavekat.com 直接下載的 .exe 是同一個應用程式，直接下載依然保留。需要 Windows 10 或 11。',
+  },
+  {
+    q: 'WaveKat Voice 在 Snap Store 上嗎？',
+    a: '在。WaveKat Voice 已上架 Snap Store，免費安裝，在 Ubuntu 上這是最簡單的安裝方式——一個 snap 同時涵蓋 Intel、AMD 與 ARM 機器，snapd 會在背景保持更新。用「sudo snap install wavekat-voice」即可安裝。它和 wavekat.com 上的 .deb 下載是同一個應用程式，.deb 也繼續提供；snapd 是 Ubuntu 內建的，大多數其他發行版也能裝上。',
   },
   {
     q: 'WaveKat Voice 能在 Windows 上執行嗎？',
@@ -221,7 +225,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/zh-hant/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL],
   description:
     '一款把你的電腦變成辦公電話的桌面應用程式——接聽和撥打電話，每通電話都自動錄音並轉寫。相容你已經在用的電話電信業者。',
   featureList: [
@@ -236,11 +240,17 @@ const appSchema = {
     '九種應用語言，支援 macOS、Windows 與 Linux',
   ],
   // One Offer per storefront, because that is the property that carries
-  // "you can get it here" — `sameAs` only says the listing is us. Both are
-  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // "you can get it here" — `sameAs` only says the listing is us. All three
+  // are free, so they differ by `url` and `seller` alone. `installUrl`
   // above stays single-valued and stays on Apple: Google has only ever
   // documented it against one URL, and an untested array there would trade
   // a property that works for one that might not.
+  //
+  // The Snap Store is a storefront on the same footing as the other two
+  // here — Canonical hosts the package, resolves the architecture and
+  // updates it — so it earns an Offer even though it is not the promoted
+  // Linux control on the page itself. Which control the page promotes is a
+  // design decision; which storefronts carry the app is a fact.
   offers: [
     {
       '@type': 'Offer',
@@ -257,6 +267,14 @@ const appSchema = {
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: SNAP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Snap Store' },
     },
   ],
   publisher: { '@id': 'https://wavekat.com/#organization' },

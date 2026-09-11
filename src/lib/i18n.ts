@@ -225,6 +225,22 @@ export interface UIStrings {
    * rows behind it in the menu.
    */
   dlMsStore: string;
+  /**
+   * The Snap Store control. Unlike the other two store labels this is NOT a
+   * primary button: the .deb keeps the promoted Linux control, so this label
+   * is only ever read in the menu and on the download grid.
+   *
+   * Translated, unlike "WaveKat Voice" — "Snap Store" is Canonical's product
+   * name and stays as it is, but the verb around it is localized chrome.
+   *
+   * On the seven locales Canonical publishes artwork for, this doubles as the
+   * badge's alt text. It is OUR translation rather than a transcription of
+   * the artwork, because the artwork cannot be transcribed: Canonical outlines
+   * the badge text to paths, so the SVG carries no readable string (and no
+   * <title>) to copy. Each locale therefore mirrors how that locale already
+   * phrases `dlMsStore`, which is the same call the Microsoft line makes.
+   */
+  dlSnapStore: string;
   /** Downloads the x64 installer — the build every Windows PC can run. */
   dlWindows: string;
   dlWindowsArm64: string;
@@ -244,6 +260,22 @@ export interface UIStrings {
    * the store publishes its own and nothing here can read it.
    */
   dlArchMsStore: string;
+  /**
+   * Requirement line under the Snap Store control. Like the other two store
+   * lines it carries no size — the store publishes its own — and like the
+   * Microsoft one it names every architecture rather than one, because a
+   * single snap name carries both amd64 and arm64 revisions.
+   *
+   * It names the distro family rather than a version: snapd ships by default
+   * on Ubuntu and installs on most other distributions, which is a different
+   * claim from the .deb rows' "Debian & Ubuntu" and has to read as one.
+   */
+  dlArchSnapStore: string;
+  /**
+   * Lead-in to the terminal install at the foot of the Linux column, e.g.
+   * "Or from a terminal:" — the command itself is not translated.
+   */
+  dlSnapInstall: string;
   dlArchWindowsX64: string;
   dlArchWindowsArm64: string;
   /**
@@ -330,6 +362,7 @@ const strings: Record<string, UIStrings> = {
     dlLinux: 'Download for Linux',
     dlLinuxArm64: 'Download for Linux on ARM',
     dlMsStore: 'Get it from Microsoft Store',
+    dlSnapStore: 'Get it from the Snap Store',
     dlWindows: 'Download for Windows',
     dlWindowsArm64: 'Download for Windows on ARM',
     dlOther: 'Other Platforms',
@@ -338,6 +371,8 @@ const strings: Record<string, UIStrings> = {
     dlArchLinux: 'Debian & Ubuntu (.deb, Intel & AMD 64-bit)',
     dlArchLinuxArm64: 'Debian & Ubuntu (.deb, ARM64)',
     dlArchMsStore: 'Windows 10 & 11, Intel, AMD & ARM',
+    dlArchSnapStore: 'Ubuntu & most Linux distros (Intel, AMD & ARM)',
+    dlSnapInstall: 'Or from a terminal:',
     dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
     dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
     dlWindowsUnsigned:
@@ -384,6 +419,7 @@ const strings: Record<string, UIStrings> = {
     dlLinux: '下载 Linux 版',
     dlLinuxArm64: '下载 ARM 版 Linux',
     dlMsStore: '从 Microsoft Store 获取',
+    dlSnapStore: '从 Snap Store 获取',
     dlWindows: '下载 Windows 版',
     dlWindowsArm64: '下载 ARM 版 Windows',
     dlOther: '其他平台',
@@ -392,6 +428,8 @@ const strings: Record<string, UIStrings> = {
     dlArchLinux: 'Debian 与 Ubuntu（.deb，Intel 与 AMD 64 位）',
     dlArchLinuxArm64: 'Debian 与 Ubuntu（.deb，ARM64）',
     dlArchMsStore: 'Windows 10 与 11，Intel、AMD 与 ARM',
+    dlArchSnapStore: 'Ubuntu 与大多数 Linux 发行版（Intel、AMD 与 ARM）',
+    dlSnapInstall: '或在终端中运行：',
     dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
     dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',
     dlWindowsUnsigned:

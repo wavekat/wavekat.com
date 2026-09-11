@@ -19,6 +19,7 @@ export const ui: UIStrings = {
   dlLinux: '下載 Linux 版',
   dlLinuxArm64: '下載 ARM 版 Linux',
   dlMsStore: '從 Microsoft Store 取得',
+  dlSnapStore: '從 Snap Store 取得',
   dlWindows: '下載 Windows 版',
   dlWindowsArm64: '下載 ARM 版 Windows',
   dlOther: '其他平台',
@@ -27,6 +28,8 @@ export const ui: UIStrings = {
   dlArchLinux: 'Debian 與 Ubuntu（.deb，64 位元）',
   dlArchLinuxArm64: 'Debian 與 Ubuntu（.deb，ARM64）',
   dlArchMsStore: 'Windows 10 與 11，Intel、AMD 與 ARM',
+  dlArchSnapStore: 'Ubuntu 與大多數 Linux 發行版（Intel、AMD 與 ARM）',
+  dlSnapInstall: '或在終端機中執行：',
   dlArchWindowsX64: 'Windows 10 與 11，Intel 與 AMD（x64）',
   dlArchWindowsArm64: 'Windows 11，Snapdragon（ARM64）',
   dlWindowsUnsigned:

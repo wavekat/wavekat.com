@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
+import { SNAP_INSTALL_CMD } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 // Hardware requirements are localised chrome, not release data.
@@ -11,7 +12,7 @@ const steps = [
   {
     n: '1',
     title: '설치하기',
-    body: 'Mac에서는 App Store가 WaveKat Voice를 설치해 주며, "응용 프로그램" 폴더에서 열 수 있습니다. Windows에서는 Microsoft Store가 같은 일을 합니다. 직접 내려받은 경우에는 Mac에서 .dmg 파일을 더블 클릭하고 WaveKat Voice를 "응용 프로그램" 폴더로 끌어다 놓거나, Windows에서 .exe 파일을 실행합니다. Linux에서는 소프트웨어 설치 프로그램으로 .deb 파일을 열거나, 터미널에서 apt 또는 dpkg로 설치합니다.',
+    body: 'Mac에서는 App Store가 WaveKat Voice를 설치해 주며, "응용 프로그램" 폴더에서 열 수 있습니다. Windows에서는 Microsoft Store가 같은 일을 합니다. 직접 내려받은 경우에는 Mac에서 .dmg 파일을 더블 클릭하고 WaveKat Voice를 "응용 프로그램" 폴더로 끌어다 놓거나, Windows에서 .exe 파일을 실행합니다. Linux에서는 Snap Store가 설치와 업데이트를 모두 맡아 줍니다. 소프트웨어 설치 프로그램으로 .deb 파일을 열거나, 터미널에서 apt 또는 dpkg로 설치할 수도 있습니다.',
   },
   {
     n: '2',
@@ -139,6 +140,28 @@ const highlights = [
     </p>
   </section>
 
+  <!-- Installing on Linux -->
+  <section id="linux" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Linux에 설치하기</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
+      WaveKat Voice는 Snap Store에 있으며, Ubuntu에서는 이것이 가장 간단한 설치 방법입니다. 하나의 패키지가 Intel 및 AMD 컴퓨터와 ARM 컴퓨터를 모두 포함하므로 Snap Store가 각 컴퓨터에 맞는 빌드를 전달하고 백그라운드에서 계속 업데이트합니다. snapd는 Ubuntu에 기본으로 들어 있고 대부분의 다른 배포판에도 설치할 수 있어서, 이 한 줄이면 거의 어디서나 됩니다.
+    </p>
+    {/* The command, set apart so it reads as something to run rather than as
+        prose. `overflow-x-auto` because a terminal line must never be the
+        thing that widens the page on a phone, and `select-all` so one click
+        takes the whole command rather than one word of it. */}
+    <div class="mb-5 max-w-xl overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-white/10 dark:bg-wk-surface">
+      <code class="select-all font-mono text-sm whitespace-pre text-gray-900 dark:text-white">{SNAP_INSTALL_CMD}</code>
+    </div>
+    {/* The two .deb rows, named with the labels the buttons actually carry —
+        interpolated from the UI strings rather than retyped, so a relabelled
+        button can never leave this paragraph quoting a control that is no
+        longer there. */}
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      .deb를 선호한다면 위의 Linux 열에 두 가지 빌드가 모두 있습니다. "{ui.dlLinux}"는 Intel 및 AMD 컴퓨터용 64비트 빌드이고, "{ui.dlLinuxArm64}"는 ARM 컴퓨터용 네이티브 빌드입니다. 둘 중 어느 것이든 소프트웨어 설치 프로그램으로 열거나 apt 또는 dpkg로 설치할 수 있습니다.
+    </p>
+  </section>
+
   <!-- What you'll need -->
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">필요한 것</h2>
@@ -157,7 +180,7 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">최신 상태 유지</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice는 스스로 최신 상태를 유지합니다. Mac App Store나 Microsoft Store에서 받은 앱은 다른 스토어 앱과 똑같이 업데이트되고,
+      WaveKat Voice는 스스로 최신 상태를 유지합니다. Mac App Store, Microsoft Store, Snap Store에서 받은 앱은 다른 스토어 앱과 똑같이 업데이트되고,
       직접 내려받은 앱은 백그라운드에서 조용히 새 버전을 확인하고 업데이트합니다. 어느 쪽이든 새 버전을 받으러 다시 이곳에 올 필요가 없습니다.
     </p>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">

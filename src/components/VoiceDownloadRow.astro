@@ -11,7 +11,7 @@
 import { Apple, Package, AppWindow } from '@lucide/astro';
 import StoreBadge from './StoreBadge.astro';
 import { resolveLocale } from '../lib/i18n';
-import { badgeStoreFor } from '../lib/badges';
+import { badgeStoreFor, hasBadge } from '../lib/badges';
 import type { DownloadGroup, DownloadRow, PlatformGroupKey } from '../lib/voice-download-groups';
 import { rowAvailable } from '../lib/voice-download-groups';
 
@@ -64,7 +64,16 @@ const { code: badgeLocale } = resolveLocale(Astro.url.pathname);
 // artwork on any page, with no test on which page it is: the download
 // page draws the grid and no compact control at all, and every other page
 // draws the control and no grid.
-const badgeStore = context === 'grid' ? badgeStoreFor(row.key) : null;
+//
+// `hasBadge` is the second half of the test, and it is about the LANGUAGE
+// rather than the surface: Canonical publishes no Simplified Chinese or
+// Korean Snap Store badge, so on `/zh/` and `/ko/` this row falls back to
+// the same icon-and-label style the .deb rows use, with its own translated
+// label. Substituting the English artwork was rejected — a page that is
+// localized everywhere else should not hand those readers a phrase in a
+// language they didn't ask for. See BADGE_LOCALES in lib/badges.ts.
+const store = context === 'grid' ? badgeStoreFor(row.key) : null;
+const badgeStore = store && hasBadge(store, badgeLocale) ? store : null;
 
 // The icon is the menu's own mark for a platform — it is what tells three
 // systems apart at a glance in a single column — and since no menu row

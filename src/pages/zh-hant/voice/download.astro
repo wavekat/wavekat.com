@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
+import { SNAP_INSTALL_CMD } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 // Hardware requirements are localised chrome, not release data.
@@ -11,7 +12,7 @@ const steps = [
   {
     n: '1',
     title: '安裝',
-    body: '在 Mac 上，App Store 會替你裝好 WaveKat Voice，之後在「應用程式」裡就能打開；在 Windows 上，Microsoft Store 做的是同一件事。如果你用的是直接下載，在 Mac 上雙擊 .dmg 檔案，把 WaveKat Voice 拖進「應用程式」資料夾，在 Windows 上執行 .exe 檔案。在 Linux 上，用你的軟體安裝程式打開 .deb 檔案，或在終端機裡用 apt 或 dpkg 安裝。',
+    body: '在 Mac 上，App Store 會替你裝好 WaveKat Voice，之後在「應用程式」裡就能打開；在 Windows 上，Microsoft Store 做的是同一件事。如果你用的是直接下載，在 Mac 上雙擊 .dmg 檔案，把 WaveKat Voice 拖進「應用程式」資料夾，在 Windows 上執行 .exe 檔案。在 Linux 上，Snap Store 會替你安裝並自動更新；你也可以用軟體安裝程式打開 .deb 檔案，或在終端機裡用 apt 或 dpkg 安裝。',
   },
   {
     n: '2',
@@ -139,6 +140,28 @@ const highlights = [
     </p>
   </section>
 
+  <!-- Installing on Linux -->
+  <section id="linux" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">在 Linux 上安裝</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
+      WaveKat Voice 已上架 Snap Store，在 Ubuntu 上這是最簡單的安裝方式：一個軟體套件同時涵蓋 Intel、AMD 與 ARM 機器，Snap Store 會把對應的版本交給你的機器，並在背景保持更新。snapd 是 Ubuntu 內建的，大多數其他發行版也能裝上，所以這一行指令幾乎到哪都能用：
+    </p>
+    {/* The command, set apart so it reads as something to run rather than as
+        prose. `overflow-x-auto` because a terminal line must never be the
+        thing that widens the page on a phone, and `select-all` so one click
+        takes the whole command rather than one word of it. */}
+    <div class="mb-5 max-w-xl overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-white/10 dark:bg-wk-surface">
+      <code class="select-all font-mono text-sm whitespace-pre text-gray-900 dark:text-white">{SNAP_INSTALL_CMD}</code>
+    </div>
+    {/* The two .deb rows, named with the labels the buttons actually carry —
+        interpolated from the UI strings rather than retyped, so a relabelled
+        button can never leave this paragraph quoting a control that is no
+        longer there. */}
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      更想用 .deb？上面的 Linux 一欄裡兩個版本都有，你自己挑：「{ui.dlLinux}」是給 Intel 與 AMD 機器的 64 位元版本，「{ui.dlLinuxArm64}」是給 ARM 機器的原生版本。兩個都可以用軟體安裝程式打開，或用 apt 或 dpkg 安裝。
+    </p>
+  </section>
+
   <!-- What you'll need -->
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">你需要準備什麼</h2>
@@ -157,7 +180,7 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">保持最新</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice 會自動保持最新。從 Mac App Store 或 Microsoft Store 裝的版本，和其他商店應用程式一樣自動更新；
+      WaveKat Voice 會自動保持最新。從 Mac App Store、Microsoft Store 或 Snap Store 裝的版本，和其他商店應用程式一樣自動更新；
       直接下載的版本會在背景安靜地檢查並更新到新版本。無論哪一種，你都不用回到這裡下載更新的版本。
     </p>
     <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">

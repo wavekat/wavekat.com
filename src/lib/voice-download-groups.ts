@@ -22,10 +22,42 @@ import type { Download } from './voice-download';
  * installers we hand out ourselves when a store already covers the platform
  * better, so they live on the download page, in the open, rather than in a
  * menu that should only ever offer the one recommended control per system.
+ *
+ * `menu` is listed beside the promotable rows but is never promoted — the
+ * one combination the other three can't express. See `inMenu` below for why
+ * it had to exist.
  */
-export type ArchKey = 'default' | 'arm64' | 'direct' | 'direct-arm64';
+export type ArchKey = 'default' | 'arm64' | 'direct' | 'direct-arm64' | 'menu';
 
+/**
+ * May the promotion script put this row on the primary button?
+ *
+ * Arch is the whole question: `default` is what a platform's visitor gets
+ * before anything is known about the chip, `arm64` what they get once the
+ * browser confirms one.
+ */
 export const isPromotable = (archKey: ArchKey) => archKey === 'default' || archKey === 'arm64';
+
+/**
+ * Does the compact menu list this row?
+ *
+ * Until the Snap Store this was the same question as `isPromotable`, and one
+ * predicate answered both — the menu listed exactly the rows that could be
+ * the button, which is the "arch mechanism read one way round" the rest of
+ * this file turns on.
+ *
+ * The snap row is the first place the two come apart, and the reason is not
+ * arch. It is a store handoff, so it belongs in a menu whose job is to show
+ * the one recommended control per system; but the button it would displace
+ * offers a stable .deb, and the snap cannot be promoted over that while it
+ * is the less conservative choice of the two. So "in the menu" and "can be
+ * the button" became two questions, and this is the second one.
+ *
+ * Deliberately a superset of `isPromotable`, not an independent list: a row
+ * that CAN be the button must always be in the menu, or the menu would hide
+ * a choice the script can still promote.
+ */
+export const inMenu = (archKey: ArchKey) => isPromotable(archKey) || archKey === 'menu';
 
 export interface DownloadRow {
   /** Platform target, and the key the download endpoint resolves. */
@@ -45,8 +77,18 @@ export interface DownloadGroup {
   key: PlatformGroupKey;
   /** Column heading on the grid. A product name, so it isn't translated. */
   title: string;
-  /** Only Windows carries the unsigned-download note under its column. */
-  windows: boolean;
+  /**
+   * The footnote under this column on the grid, or `null` for a column that
+   * needs none.
+   *
+   * A name rather than a boolean because there are now two different notes
+   * and they say unrelated things: `windows` warns that the two direct .exe
+   * rows above it are unsigned, `linux` prints the terminal install for the
+   * snap. Both are about specific rows in their own column, which is why
+   * each sits at the foot of that column rather than anywhere near a button
+   * on a page whose visitor may well be on a third platform.
+   */
+  note: 'windows' | 'linux' | null;
   rows: DownloadRow[];
 }
 
@@ -63,6 +105,7 @@ export interface GroupDownloads {
 export interface GroupUrls {
   macAppStore: string;
   msStore: string;
+  snapStore: string;
 }
 
 /**
@@ -76,7 +119,7 @@ export function buildGroups(ui: UIStrings, dl: GroupDownloads, urls: GroupUrls):
     {
       key: 'mac',
       title: 'Mac',
-      windows: false,
+      note: null,
       rows: [
         {
           // The Mac App Store is the default Mac primary. It carries an
@@ -109,7 +152,7 @@ export function buildGroups(ui: UIStrings, dl: GroupDownloads, urls: GroupUrls):
     {
       key: 'windows',
       title: 'Windows',
-      windows: true,
+      note: 'windows',
       rows: [
         {
           // The Microsoft Store is the Windows primary, and the only row on
@@ -161,8 +204,41 @@ export function buildGroups(ui: UIStrings, dl: GroupDownloads, urls: GroupUrls):
     {
       key: 'linux',
       title: 'Linux',
-      windows: false,
+      note: 'linux',
       rows: [
+        {
+          // The Snap Store — the third store handoff, and the first one that
+          // is NOT its platform's primary.
+          //
+          // It carries an `href` and no `dl` for the reason the other two
+          // store rows do: Canonical resolves the channel, installs the snap
+          // and updates it, and reports no version or size back here.
+          //
+          // `menu` rather than `default`: it is listed beside the .deb rows,
+          // but the promotion script may never put it on the button. The .deb
+          // below stays the promoted Linux control because it is the more
+          // conservative of the two — it is the package Debian can take as
+          // well as Ubuntu, and the snap's recommendation rests on a channel
+          // we don't resolve here. See `inMenu`.
+          //
+          // Like the Microsoft Store row and unlike the .deb pair, it names
+          // no architecture: one snap name carries both amd64 and arm64
+          // revisions and `snap install` hands each machine its own. That is
+          // why it has no ARM counterpart and why it does not make the Linux
+          // arch probe below redundant — the probe is still the only thing
+          // choosing between two .deb files that are not interchangeable.
+          key: 'snap-store',
+          archKey: 'menu',
+          conversion: 'download_snap_store',
+          label: ui.dlSnapStore,
+          arch: ui.dlArchSnapStore,
+          // Untagged, and the only store row for which that is not a
+          // deliberate split between a tagged link and a canonical one: the
+          // Snap Store reads no attribution parameter at all. See
+          // SNAP_STORE_URL in voice-download.ts.
+          href: urls.snapStore,
+          dl: null,
+        },
         {
           key: 'linux-x64',
           archKey: 'default',
@@ -173,10 +249,16 @@ export function buildGroups(ui: UIStrings, dl: GroupDownloads, urls: GroupUrls):
           dl: dl.linuxX64,
         },
         {
-          // Linux is the one platform left that has to work the architecture
-          // out for itself: no store is there to choose between two packages
-          // that are not interchangeable. So this one stays promotable, and
-          // stays in the menu.
+          // Linux is the one platform left whose PROMOTED control has to work
+          // the architecture out for itself, and the Snap Store above does
+          // not change that. A store only settles the arch question for the
+          // row it is on: the snap picks its own revision, but it is not
+          // promotable, so the button still offers one of two .deb files that
+          // are not interchangeable — and something has to choose. Hence this
+          // row stays promotable, and stays in the menu.
+          //
+          // Contrast Windows, where the store row IS the primary and the arch
+          // probe therefore has nothing left to do.
           key: 'linux-arm64',
           archKey: 'arm64',
           conversion: 'download_linux_arm64',

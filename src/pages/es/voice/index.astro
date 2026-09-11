@@ -22,7 +22,7 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
+import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -186,7 +186,7 @@ const faqs = [
   },
   {
     q: '¿En qué funciona?',
-    a: `Mac, Windows y Linux. En macOS funciona en la versión 12 y posteriores — ${ui.dlArchMac}; en Windows son Windows 10 y 11; en Linux es un paquete .deb para ${ui.dlArchLinux}.`,
+    a: `Mac, Windows y Linux. En macOS funciona en la versión 12 y posteriores — ${ui.dlArchMac}; en Windows son Windows 10 y 11; en Linux está en Snap Store y como paquete .deb para ${ui.dlArchLinux}.`,
   },
   {
     q: '¿Está WaveKat Voice en el Mac App Store?',
@@ -195,6 +195,10 @@ const faqs = [
   {
     q: '¿Está WaveKat Voice en Microsoft Store?',
     a: 'Sí. WaveKat Voice está en Microsoft Store, gratis, y es la forma más sencilla de instalarlo en Windows: Microsoft firma el paquete, así que no aparece ningún aviso de editor desconocido, y una sola ficha cubre tanto los PC con Intel y AMD como los PC con ARM. Es la misma app que las descargas directas del .exe desde wavekat.com, que siguen disponibles si las prefiere. Requiere Windows 10 u 11.',
+  },
+  {
+    q: '¿Está WaveKat Voice en Snap Store?',
+    a: 'Sí. WaveKat Voice está en Snap Store, gratis, y en Ubuntu es la forma más sencilla de instalarlo: un solo snap cubre igual los equipos con Intel y AMD que los ARM, y snapd lo mantiene actualizado en segundo plano. Instálelo con «sudo snap install wavekat-voice». Es la misma app que las descargas .deb de wavekat.com, que siguen disponibles si las prefiere, y snapd viene con Ubuntu y se instala en la mayoría de las demás distribuciones.',
   },
   {
     q: '¿WaveKat Voice funciona en Windows?',
@@ -221,7 +225,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/es/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL],
   description:
     'Una app de escritorio que convierte su computadora en su teléfono de empresa: conteste y haga llamadas, con cada llamada grabada y transcrita. Funciona con el proveedor de telefonía que ya tiene.',
   featureList: [
@@ -236,11 +240,17 @@ const appSchema = {
     'Nueve idiomas de la app, en macOS, Windows y Linux',
   ],
   // One Offer per storefront, because that is the property that carries
-  // "you can get it here" — `sameAs` only says the listing is us. Both are
-  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // "you can get it here" — `sameAs` only says the listing is us. All three
+  // are free, so they differ by `url` and `seller` alone. `installUrl`
   // above stays single-valued and stays on Apple: Google has only ever
   // documented it against one URL, and an untested array there would trade
   // a property that works for one that might not.
+  //
+  // The Snap Store is a storefront on the same footing as the other two
+  // here — Canonical hosts the package, resolves the architecture and
+  // updates it — so it earns an Offer even though it is not the promoted
+  // Linux control on the page itself. Which control the page promotes is a
+  // design decision; which storefronts carry the app is a fact.
   offers: [
     {
       '@type': 'Offer',
@@ -257,6 +267,14 @@ const appSchema = {
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: SNAP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Snap Store' },
     },
   ],
   publisher: { '@id': 'https://wavekat.com/#organization' },
