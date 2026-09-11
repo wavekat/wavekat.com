@@ -22,7 +22,13 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL } from '../../../lib/voice-download';
+import {
+  getDownload,
+  MAC_APP_STORE_URL,
+  MS_STORE_URL,
+  SNAP_INSTALL_CMD,
+  SNAP_STORE_URL,
+} from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -198,7 +204,7 @@ const faqs = [
   },
   {
     q: 'WaveKat Voice를 Snap Store에서 받을 수 있나요?',
-    a: '네. WaveKat Voice는 Snap Store에 무료로 올라와 있으며, Ubuntu에 설치하는 가장 쉬운 방법입니다 — 하나의 snap이 Intel·AMD 컴퓨터와 ARM 컴퓨터를 모두 아우르고, snapd가 백그라운드에서 계속 업데이트합니다. "sudo snap install wavekat-voice"로 설치하세요. wavekat.com에서 내려받는 .deb와 같은 앱이고, 직접 다운로드도 그대로 남아 있습니다. snapd는 Ubuntu에 기본으로 들어 있고 대부분의 다른 배포판에도 설치할 수 있습니다.',
+    a: `네. WaveKat Voice는 Snap Store에 무료로 올라와 있으며, Ubuntu에 설치하는 가장 쉬운 방법입니다 — 하나의 snap이 Intel·AMD 컴퓨터와 ARM 컴퓨터를 모두 아우르고, snapd가 백그라운드에서 계속 업데이트합니다. "${SNAP_INSTALL_CMD}"로 설치하세요. wavekat.com에서 내려받는 .deb와 같은 앱이고, 직접 다운로드도 그대로 남아 있습니다. snapd는 Ubuntu에 기본으로 들어 있고 대부분의 다른 배포판에도 설치할 수 있습니다.`,
   },
   {
     q: 'WaveKat Voice가 Windows에서 실행되나요?',

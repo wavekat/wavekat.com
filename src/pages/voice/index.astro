@@ -15,7 +15,13 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL } from '../../lib/voice-download';
+import {
+  getDownload,
+  MAC_APP_STORE_URL,
+  MS_STORE_URL,
+  SNAP_INSTALL_CMD,
+  SNAP_STORE_URL,
+} from '../../lib/voice-download';
 import { resolveLocale, t } from '../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -191,7 +197,7 @@ const faqs = [
   },
   {
     q: 'Is WaveKat Voice on the Snap Store?',
-    a: 'Yes. WaveKat Voice is on the Snap Store, free to install, and it is the easiest way to install it on Ubuntu — one snap covers Intel, AMD and ARM machines alike, and snapd keeps it updated in the background. Install it with "sudo snap install wavekat-voice". It is the same app as the .deb downloads from wavekat.com, which stay available if you prefer them, and snapd ships with Ubuntu and installs on most other distributions.',
+    a: `Yes. WaveKat Voice is on the Snap Store, free to install, and it is the easiest way to install it on Ubuntu — one snap covers Intel, AMD and ARM machines alike, and snapd keeps it updated in the background. Install it with "${SNAP_INSTALL_CMD}". It is the same app as the .deb downloads from wavekat.com, which stay available if you prefer them, and snapd ships with Ubuntu and installs on most other distributions.`,
   },
   {
     q: 'Does WaveKat Voice run on Windows?',

@@ -22,7 +22,13 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL } from '../../../lib/voice-download';
+import {
+  getDownload,
+  MAC_APP_STORE_URL,
+  MS_STORE_URL,
+  SNAP_INSTALL_CMD,
+  SNAP_STORE_URL,
+} from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -198,7 +204,7 @@ const faqs = [
   },
   {
     q: 'WaveKat Voice 在 Snap Store 上嗎？',
-    a: '在。WaveKat Voice 已上架 Snap Store，免費安裝，在 Ubuntu 上這是最簡單的安裝方式——一個 snap 同時涵蓋 Intel、AMD 與 ARM 機器，snapd 會在背景保持更新。用「sudo snap install wavekat-voice」即可安裝。它和 wavekat.com 上的 .deb 下載是同一個應用程式，.deb 也繼續提供；snapd 是 Ubuntu 內建的，大多數其他發行版也能裝上。',
+    a: `在。WaveKat Voice 已上架 Snap Store，免費安裝，在 Ubuntu 上這是最簡單的安裝方式——一個 snap 同時涵蓋 Intel、AMD 與 ARM 機器，snapd 會在背景保持更新。用「${SNAP_INSTALL_CMD}」即可安裝。它和 wavekat.com 上的 .deb 下載是同一個應用程式，.deb 也繼續提供；snapd 是 Ubuntu 內建的，大多數其他發行版也能裝上。`,
   },
   {
     q: 'WaveKat Voice 能在 Windows 上執行嗎？',

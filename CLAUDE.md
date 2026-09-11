@@ -294,6 +294,13 @@ button block emits a second eager `StoreBadge` the script can never show.
   an otherwise fully localized page is worse than no artwork. Because
   `badgeFiles()` skips the nulls, `check:badges` still asserts exactly the set
   that can exist and stays a hard gate.
+- **The two locale lists are not cross-checked, and only one direction of
+  drift is loud.** `store-badges.js` says what to fetch; `hasBadge` says what a
+  page may reference. A locale in `hasBadge` but not the downloader throws at
+  build (missing file). A locale in the downloader but not `hasBadge` is
+  **silent** — the file downloads, `check:badges` passes, and the page renders
+  the text fallback forever. So when a store starts publishing a language it
+  didn't before, edit **both**; no gate will remind you.
 - **The locale codes are a table, not a transformation** (`scripts/lib/store-badges.js`).
   No two stores agree with our codes or with each other's: Traditional Chinese
   is Apple `zh-hk`, Microsoft `zh-tw`, Canonical `tw`; Japanese is Apple

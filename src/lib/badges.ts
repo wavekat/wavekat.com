@@ -52,10 +52,21 @@ export type BadgeStore = 'apple' | 'ms' | 'snap';
  * Kept here rather than imported from `scripts/lib/store-badges.js` because
  * the two answer different questions: that table maps our code to each
  * store's own code so files can be FETCHED, this one says which files a page
- * may reference. They are checked against each other by `check:badges`,
- * which iterates the downloader's table — so a locale added there without
- * being added here renders no badge, and one added here without being added
- * there fails the build rather than shipping a broken image.
+ * may reference.
+ *
+ * Nothing cross-checks them, and the two directions of drift are NOT
+ * symmetric — worth knowing before trusting `check:badges` to catch either:
+ *
+ *   * A locale added HERE but not to the downloader fails loudly. The file is
+ *     never fetched, `aspect()` throws on the missing path, and the build
+ *     stops with the path and the fix in the message.
+ *   * A locale added to the DOWNLOADER but not here is SILENT. The file
+ *     downloads, `check:badges` passes on a complete set, and the page keeps
+ *     rendering the text fallback forever with nothing to flag it.
+ *
+ * So when a store starts publishing a locale it didn't before — Canonical
+ * adding Korean, say — this list is the edit that is easy to forget and that
+ * no gate will remind you about. Add it in both places.
  */
 const BADGE_LOCALES: Record<BadgeStore, readonly string[] | null> = {
   apple: null,
@@ -144,7 +155,15 @@ function aspect(path: string): number {
   // such rect happens to be the full-bleed background — so a whole-file
   // search would appear to work and would silently start tracking a shape
   // inside the drawing.
-  const open = svg.slice(0, svg.indexOf('>') + 1);
+  //
+  // Found by SEEKING `<svg` rather than slicing from the start of the file,
+  // because the file need not start there: `sync-badges.js` deliberately
+  // accepts a cached badge whose head is `<?xml`, and an endpoint that began
+  // prefixing a prolog or a licence comment would otherwise leave `open`
+  // holding only that — no viewBox, no width, and a thrown error that fails
+  // every later build on a file the cache considers good.
+  const start = svg.indexOf('<svg');
+  const open = start === -1 ? '' : svg.slice(start, svg.indexOf('>', start) + 1);
 
   const vb = open.match(/viewBox="[\d.]+ [\d.]+ ([\d.]+) ([\d.]+)"/);
   const wh = open.match(/\bwidth="([\d.]+)(?:px)?"[^>]*?\bheight="([\d.]+)(?:px)?"/);
