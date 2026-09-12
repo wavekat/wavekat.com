@@ -1,13 +1,13 @@
 ---
 title: "Metti in attesa, alterna e trasferisci le chiamate"
-description: "WaveKat Voice mette le chiamate in attesa, risponde a una seconda e trasferisce — cieco o assistito — su Mac e Linux. In attesa la registrazione si ferma."
+description: "WaveKat Voice mette in attesa, risponde a una seconda chiamata e trasferisce, cieco o assistito, su Mac, Windows e Linux. In attesa la registrazione si ferma."
 date: 2026-07-05
 author: Eason Guo
 tags: [voice-ai, chiamate]
 lang: "it"
 ---
 
-WaveKat Voice — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora sa fare le tre cose che una reception fa tutto il giorno: mettere in attesa chi chiama, rispondere a una seconda chiamata mentre la prima aspetta e trasferire chi chiama a qualcun altro — subito, oppure dopo averlo prima consultato. Arriva con WaveKat Voice [0.0.42](/it/voice/changelog/#0.0.42).
+WaveKat Voice — il softphone SIP per Mac, Windows e Linux che registra e trascrive ogni chiamata — ora sa fare le tre cose che una reception fa tutto il giorno: mettere in attesa chi chiama, rispondere a una seconda chiamata mentre la prima aspetta e trasferire chi chiama a qualcun altro — subito, oppure dopo averlo prima consultato. Arriva con WaveKat Voice [0.0.42](/it/voice/changelog/#0.0.42).
 
 È il passo più letterale finora verso il nostro obiettivo: [dare a ogni piccola attività la voce di una grande](/it/blog/hello-world/). Quando chiami una grande azienda, qualcuno dice «un attimo, la metto in linea» — e funziona, perché c'è una centralinista con un centralino. Ora [WaveKat Voice](/it/voice/), che già registra e trascrive ogni chiamata, dà a un negozio con una sola persona le stesse mosse. Attesa, avviso di chiamata e trasferimento sono i comandi che chi sta a una scrivania usa di continuo, e qualsiasi [softphone](/it/voice/alternatives/) serio deve averli — WaveKat Voice ora li ha, con un tocco tutto suo: quello che succede durante l'attesa resta fuori dalla registrazione. Comandi come questi vivono nel profondo del segnalamento telefonico stesso, il che è in parte il motivo per cui WaveKat Voice ora gira su un [motore SIP scritto da zero tutto suo](/it/blog/our-own-sip-engine/).
 

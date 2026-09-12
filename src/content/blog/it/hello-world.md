@@ -23,7 +23,7 @@ WaveKat costruisce strumenti per l’AI vocale in tempo reale. Iniziamo con un i
 - **wavekat-turn** — rilevamento del turno che capisce quando chi parla ha finito
 - **wavekat-lab** — una dashboard interattiva per testare e confrontare i backend audio
 
-Sopra queste librerie abbiamo costruito **WaveKat Voice** — un softphone desktop per Mac e Linux che trasforma il tuo computer nel telefono della tua attività. Risponde e fa chiamate tramite il provider SIP che già hai, registra ogni chiamata e trascrive in diretta ciò che viene detto. Un [assistente IA può usare il tastierino al posto tuo](/it/blog/place-calls-from-the-command-line/) — a parlare sei tu; un assistente che sostiene la conversazione da sé è la direzione in cui stiamo andando.
+Sopra queste librerie abbiamo costruito **WaveKat Voice** — un softphone desktop per Mac, Windows e Linux che trasforma il tuo computer nel telefono della tua attività. Risponde e fa chiamate tramite il provider SIP che già hai, registra ogni chiamata e trascrive in diretta ciò che viene detto. Un [assistente IA può usare il tastierino al posto tuo](/it/blog/place-calls-from-the-command-line/) — a parlare sei tu; un assistente che sostiene la conversazione da sé è la direzione in cui stiamo andando.
 
 ## Perché iniziare dall’open source?
 
@@ -33,4 +33,4 @@ Crediamo che la tecnologia di base — VAD, rilevamento del turno, elaborazione 
 
 Siamo a testa bassa a costruire. Seguici su [GitHub](https://github.com/wavekat) o torna a trovarci qui — scriveremo dell’ingegneria dietro la voce in tempo reale, dei compromessi che stiamo facendo e di ciò che impariamo lungo il cammino.
 
-**WaveKat Voice** è oggi in beta pubblica gratuita — [scaricalo](/it/voice/download/) per Mac o Linux.
+**WaveKat Voice** è oggi in beta pubblica gratuita — [scaricalo](/it/voice/download/) per Mac, Windows o Linux.

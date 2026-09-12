@@ -6,7 +6,7 @@ author: Eason Guo
 tags: [voice-ai, engineering, open-source, sip]
 ---
 
-WaveKat Voice — the softphone for Mac and Linux that [records and transcribes every call](/voice/) — now runs on a SIP engine we wrote from scratch. [`wavekat-sip`](https://github.com/wavekat/wavekat-sip) is an open-source Rust crate that handles the phone signaling and audio transport itself, with no third-party SIP stack underneath. Every call you place or answer, every hold and transfer, now goes through code we own end to end.
+WaveKat Voice — the softphone for Mac, Windows and Linux that [records and transcribes every call](/voice/) — now runs on a SIP engine we wrote from scratch. [`wavekat-sip`](https://github.com/wavekat/wavekat-sip) is an open-source Rust crate that handles the phone signaling and audio transport itself, with no third-party SIP stack underneath. Every call you place or answer, every hold and transfer, now goes through code we own end to end.
 
 This is another step toward the thing we keep coming back to: [giving every small business the voice of a big one](/blog/hello-world/). A big phone system is dependable because the people who run it control every layer of it. Owning the SIP engine is us controlling the layer your call actually travels on — so when something needs to be more reliable, or a feature needs to ship, there's no black box in the way.
 
@@ -68,4 +68,4 @@ It's the real engine behind a real product, so it's already in daily use — but
 
 Mostly, WaveKat Voice's calls won't feel any different — and that's the point. They connect and sound the way they should. What changes is behind the scenes: the features that make WaveKat Voice feel like a real front desk — hold, call waiting, transfer, HD audio — now ship on our timeline instead of a dependency's, and when something needs to be steadier, we can go straight to the code that runs it.
 
-WaveKat Voice is [free during the public beta](/voice/download/) on Mac and Linux. Connect the phone provider you already have, and your next call runs on an engine we built ourselves — and gave away.
+WaveKat Voice is [free during the public beta](/voice/download/) on Mac, Windows and Linux. Connect the phone provider you already have, and your next call runs on an engine we built ourselves — and gave away.

@@ -1,13 +1,13 @@
 ---
 title: "点击拨号：点网页上的电话号码就能打"
-description: "WaveKat Voice 现在支持 Mac 和 Linux 上的 tel: 与 sip: 链接——点击网页上的电话号码，它就落在拨号栏里，随时可拨。"
+description: "WaveKat Voice 现在支持 Mac、Windows 和 Linux 上的 tel: 与 sip: 链接——点击网页上的电话号码，它就落在拨号栏里，随时可拨。"
 date: 2026-07-25
 author: Eason Guo
 tags: [语音AI, 通话]
 lang: "zh-Hans"
 ---
 
-点击拨号，指的是网页上的电话号码本身就是一个可以点击拨打的链接，而不必你把它复制出来再手动输进电话里。[WaveKat Voice](/zh/voice/)——一款可在 Mac 和 Linux 上运行、会记录并转写每一通通话的 SIP 软电话——现在可以成为电脑打开这类链接时所用的那个应用。在任何地方点击 `tel:` 或 `sip:` 链接——公司的联系页面、搜索结果、供应商的发票——WaveKat Voice 就会跳到前台，号码已经填好，只等你按下「拨打」。该功能随 [0.0.43](/zh/voice/changelog/#0.0.43) 推出。
+点击拨号，指的是网页上的电话号码本身就是一个可以点击拨打的链接，而不必你把它复制出来再手动输进电话里。[WaveKat Voice](/zh/voice/)——一款可在 Mac、Windows 和 Linux 上运行、会记录并转写每一通通话的 SIP 软电话——现在可以成为电脑打开这类链接时所用的那个应用。在任何地方点击 `tel:` 或 `sip:` 链接——公司的联系页面、搜索结果、供应商的发票——WaveKat Voice 就会跳到前台，号码已经填好，只等你按下「拨打」。该功能随 [0.0.43](/zh/voice/changelog/#0.0.43) 推出。
 
 它在商务座机上是最基本的能力，也是那种只有缺失时才会被注意到的功能：你在页面上看到一个号码，点一下，电话就拨出去了。这是同一个版本里「打出去」的那一半——另一半是让 WaveKat Voice [用来电流程替你接听来电](/zh/blog/answer-calls-with-a-call-flow/)。和其余的通话能力一样，它也跑在[我们自研的 SIP 引擎](/zh/blog/our-own-sip-engine/)上。
 

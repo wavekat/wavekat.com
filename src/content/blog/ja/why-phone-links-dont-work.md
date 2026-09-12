@@ -1,6 +1,6 @@
 ---
 title: "パソコンで電話番号をクリックしても何も起きない理由"
-description: "スマホなら鳴るのに、パソコンでは電話番号リンクが無反応。原因は空のままの「電話アプリ」枠。WaveKat Voice が Mac と Linux でそこを埋めます。"
+description: "スマホなら鳴るのに、パソコンでは電話番号リンクが無反応。原因は空の「電話アプリ」枠。WaveKat Voice が Mac・Windows・Linux でそこを埋めます。"
 date: 2026-08-07
 author: Eason Guo
 tags: [音声AI, 通話]
@@ -47,7 +47,7 @@ OS は決まった場所を見に行きます。**「電話アプリ」と書か
       <button type="button" data-os="mac">Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac / Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">どれでも + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">スマホ</p>
@@ -83,7 +83,7 @@ OS は決まった場所を見に行きます。**「電話アプリ」と書か
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac / Linux + WaveKat Voice</p>
+      <p class="panel-name">Mac・Windows・Linux + WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">クリックすると</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">枠の中は</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice——スイッチひとつで、自分で入れたもの</span></span></li>
@@ -95,7 +95,7 @@ OS は決まった場所を見に行きます。**「電話アプリ」と書か
 
 ## WaveKat Voice が枠を埋める
 
-[WaveKat Voice](/ja/voice/) は Mac と Linux 向けの電話アプリです。契約している電話会社を通じて実際の通話を発着信でき、通話はすべて録音・文字起こしされます。そして、あの枠に入ることができます。
+[WaveKat Voice](/ja/voice/) は Mac・Windows・Linux 向けの電話アプリです。契約している電話会社を通じて実際の通話を発着信でき、通話はすべて録音・文字起こしされます。そして、あの枠に入ることができます。
 
 やることはスイッチひとつ。**設定 → 一般**にある**電話リンク**をオンにするだけです。自分でオンにするまではオフ——パソコン全体の電話リンクを引き受けるのは、アプリがインストール時に勝手にやることではなく、あなたが選ぶべきことだからです。オンにすれば、どのウェブページで番号をクリックしても、WaveKat Voice が番号の入った状態で前面に出ます。確認して、発信を押すだけ。
 
@@ -129,10 +129,10 @@ Apple が最初から FaceTime を Mac の電話リンク担当として登録�
 
 ### 電話リンクを WaveKat Voice で開くにはどうすればいいですか？
 
-設定 → 一般で**電話リンク**のスイッチをオンにします（既定はオフです）。以降は、どのウェブページでも番号をクリックすれば、番号が入力済みの WaveKat Voice が開き、すぐに発信できます。Mac と Linux で使え、0.0.43 で提供されました。
+設定 → 一般で**電話リンク**のスイッチをオンにします（既定はオフです）。以降は、どのウェブページでも番号をクリックすれば、番号が入力済みの WaveKat Voice が開き、すぐに発信できます。Mac・Windows・Linux で使え、0.0.43 で提供されました。
 
 ## もう一度、あの番号を
 
-電話リンクは何十年ものあいだ、あらゆる問い合わせページで静かに待っていました。パソコンに足りなかったのは、応えてくれる誰かだけです。クリックで電話が鳴るようにしたければ、Mac または Linux 用の [WaveKat Voice をダウンロード](/ja/voice/download/)して、スイッチをひとつオンにして、このページ冒頭の番号をもう一度クリックしてみてください。
+電話リンクは何十年ものあいだ、あらゆる問い合わせページで静かに待っていました。パソコンに足りなかったのは、応えてくれる誰かだけです。クリックで電話が鳴るようにしたければ、Mac・Windows・Linux 用の [WaveKat Voice をダウンロード](/ja/voice/download/)して、スイッチをひとつオンにして、このページ冒頭の番号をもう一度クリックしてみてください。
 
 <script src="/blog/phone-slot/widget.js" defer></script>

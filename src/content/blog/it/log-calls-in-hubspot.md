@@ -116,7 +116,7 @@ No. Il collegamento è un clic attraverso la schermata di consenso di HubSpot st
 
 ### Su quali piattaforme funziona?
 
-WaveKat Voice funziona oggi su Mac e Linux. L’integrazione con HubSpot vive nel tuo account WaveKat, quindi si comporta allo stesso modo da entrambi — e le chiamate che registra si leggono su HubSpot da qualsiasi browser.
+WaveKat Voice funziona su Mac, Windows e Linux. L’integrazione con HubSpot vive nel tuo account WaveKat, quindi si comporta allo stesso modo da tutti e tre — e le chiamate che registra si leggono su HubSpot da qualsiasi browser.
 
 ## Provalo
 

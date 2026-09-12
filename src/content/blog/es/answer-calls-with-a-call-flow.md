@@ -7,7 +7,7 @@ tags: [voz-ia, llamadas]
 lang: "es"
 ---
 
-[WaveKat Voice](/es/voice/) —el softphone SIP para Mac y Linux que graba y transcribe cada llamada— ya puede contestar por ti. Lo que contesta es un **flujo de llamada**: saluda a quien llama, comprueba si estás abierto, ofrece un menú, te llama a ti, toma un mensaje o transfiere la llamada. El flujo se arma en la web, se asigna a una de tus líneas y, desde ese momento, las llamadas que no alcanzas a atender igual reciben respuesta. Llega en la versión [0.0.43](/es/voice/changelog/#0.0.43).
+[WaveKat Voice](/es/voice/) —el softphone SIP para Mac, Windows y Linux que graba y transcribe cada llamada— ya puede contestar por ti. Lo que contesta es un **flujo de llamada**: saluda a quien llama, comprueba si estás abierto, ofrece un menú, te llama a ti, toma un mensaje o transfiere la llamada. El flujo se arma en la web, se asigna a una de tus líneas y, desde ese momento, las llamadas que no alcanzas a atender igual reciben respuesta. Llega en la versión [0.0.43](/es/voice/changelog/#0.0.43).
 
 Es el paso más grande hasta ahora hacia aquello a lo que siempre volvemos: [darle a cada negocio pequeño la voz de uno grande](/es/blog/hello-world/). Una empresa grande contesta todas las llamadas: tiene recepción, un menú telefónico que le armó un consultor y un servicio para fuera de horario. Un local de tres personas tiene un teléfono que suena hasta que alguien puede secarse las manos, y quien se cansa y cuelga es una reserva que nunca ocurrió. Los flujos de llamada cierran esa brecha, y funcionan en la computadora que ya está sobre tu escritorio.
 

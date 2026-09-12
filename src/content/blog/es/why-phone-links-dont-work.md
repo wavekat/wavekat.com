@@ -1,6 +1,6 @@
 ---
 title: "Por qué los enlaces de teléfono no funcionan"
-description: "En tu teléfono pulsas un número y llama; en la computadora no pasa nada: el hueco de la app de teléfono está vacío. WaveKat Voice lo llena en Mac y Linux."
+description: "En tu teléfono pulsas un número y llama; en la computadora no pasa nada: falta la app de teléfono. WaveKat Voice llena ese hueco en Mac, Windows y Linux."
 date: 2026-08-07
 author: Eason Guo
 tags: [voz-ia, llamadas]
@@ -47,7 +47,7 @@ Fíjate en lo importante: el enlace nunca estuvo roto. La web hizo su parte, el 
       <button type="button" data-os="mac">un Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac o Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">Cualquiera + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">Un teléfono</p>
@@ -83,7 +83,7 @@ Fíjate en lo importante: el enlace nunca estuvo roto. La web hizo su parte, el 
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac o Linux con WaveKat Voice</p>
+      <p class="panel-name">Mac, Windows o Linux con WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">Haces clic</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">En el hueco</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice — lo pusiste tú, con un interruptor</span></span></li>
@@ -95,7 +95,7 @@ Fíjate en lo importante: el enlace nunca estuvo roto. La web hizo su parte, el 
 
 ## Cómo llena WaveKat Voice ese hueco
 
-[WaveKat Voice](/es/voice/) es una app de teléfono para Mac y Linux: hace y recibe llamadas reales a través de tu operador, y graba y transcribe cada una. Y puede ser lo que ocupe el hueco.
+[WaveKat Voice](/es/voice/) es una app de teléfono para Mac, Windows y Linux: hace y recibe llamadas reales a través de tu operador, y graba y transcribe cada una. Y puede ser lo que ocupe el hueco.
 
 Activas un solo interruptor: **Enlaces de teléfono**, en Ajustes → General. Está desactivado hasta que tú lo enciendas, a propósito — quedarse con los enlaces de teléfono de toda tu computadora debería ser decisión tuya, no algo que una app agarra al instalarse. Una vez activado, hacer clic en un número en cualquier página web trae al frente WaveKat Voice con el número ya escrito en el cuadro de llamada. Lo miras, y pulsas Llamar.
 
@@ -129,10 +129,10 @@ Apple registra FaceTime de fábrica como gestor de los enlaces de teléfono del 
 
 ### ¿Cómo hago que los enlaces de teléfono se abran en WaveKat Voice?
 
-Activa el interruptor Enlaces de teléfono en Ajustes → General — viene desactivado. Después, hacer clic en un número en cualquier página web abre WaveKat Voice con el número ya escrito, listo para marcar. Funciona en Mac y Linux y llegó en la versión 0.0.43.
+Activa el interruptor Enlaces de teléfono en Ajustes → General — viene desactivado. Después, hacer clic en un número en cualquier página web abre WaveKat Voice con el número ya escrito, listo para marcar. Funciona en Mac, Windows y Linux y llegó en la versión 0.0.43.
 
 ## Vuelve a probar ese número
 
-Los enlaces de teléfono llevan décadas esperando en silencio en cada página de contacto; a tu computadora solo le faltaba alguien en casa que respondiera. Si quieres que tus clics suenen, [descarga WaveKat Voice](/es/voice/download/) para Mac o Linux, enciende el interruptor y vuelve a probar el número del principio de esta página.
+Los enlaces de teléfono llevan décadas esperando en silencio en cada página de contacto; a tu computadora solo le faltaba alguien en casa que respondiera. Si quieres que tus clics suenen, [descarga WaveKat Voice](/es/voice/download/) para Mac, Windows o Linux, enciende el interruptor y vuelve a probar el número del principio de esta página.
 
 <script src="/blog/phone-slot/widget.js" defer></script>

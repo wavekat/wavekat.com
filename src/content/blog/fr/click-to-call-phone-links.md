@@ -1,13 +1,13 @@
 ---
 title: "Click-to-call : cliquez un numéro sur le web"
-description: "WaveKat Voice ouvre les liens tel: et sip: sur Mac et Linux : cliquez un numéro de téléphone sur un site web et il s'inscrit, prêt à être appelé."
+description: "WaveKat Voice ouvre les liens tel: et sip: sur Mac, Windows et Linux : cliquez un numéro de téléphone sur un site web et il s'inscrit, prêt à être appelé."
 date: 2026-07-25
 author: Eason Guo
 tags: [ia-vocale, appels]
 lang: "fr"
 ---
 
-Le click-to-call, c'est quand un numéro de téléphone sur une page web est un lien sur lequel on clique pour composer, au lieu de quelque chose qu'on copie puis retape à la main. [WaveKat Voice](/fr/voice/) — le softphone SIP pour Mac et Linux qui enregistre et transcrit chaque appel — peut désormais être l'application que votre ordinateur ouvre pour ces liens. Cliquez sur un lien `tel:` ou `sip:` n'importe où — la page contact d'une entreprise, un résultat de recherche, la facture d'un fournisseur — et WaveKat Voice passe au premier plan avec le numéro déjà rempli, prêt à ce que vous appuyiez sur Appeler. Ça arrive avec la [0.0.43](/fr/voice/changelog/#0.0.43).
+Le click-to-call, c'est quand un numéro de téléphone sur une page web est un lien sur lequel on clique pour composer, au lieu de quelque chose qu'on copie puis retape à la main. [WaveKat Voice](/fr/voice/) — le softphone SIP pour Mac, Windows et Linux qui enregistre et transcrit chaque appel — peut désormais être l'application que votre ordinateur ouvre pour ces liens. Cliquez sur un lien `tel:` ou `sip:` n'importe où — la page contact d'une entreprise, un résultat de recherche, la facture d'un fournisseur — et WaveKat Voice passe au premier plan avec le numéro déjà rempli, prêt à ce que vous appuyiez sur Appeler. Ça arrive avec la [0.0.43](/fr/voice/changelog/#0.0.43).
 
 C'est la base sur un téléphone de bureau professionnel, et l'une de ces fonctions qu'on ne remarque que lorsqu'elle manque : vous voyez un numéro sur une page, vous cliquez, le téléphone compose. C'est la moitié sortante de la même version qui a appris à WaveKat Voice à [répondre aux appels entrants avec un flux d'appel](/fr/blog/answer-calls-with-a-call-flow/) — et, comme le reste de la téléphonie, cela tourne sur [notre propre moteur SIP](/fr/blog/our-own-sip-engine/).
 

@@ -7,7 +7,7 @@ tags: [ia-vocale, ingénierie, open-source, SIP]
 lang: "fr"
 ---
 
-WaveKat Voice — le softphone pour Mac et Linux qui [enregistre et transcrit chaque appel](/fr/voice/) — tourne désormais sur un moteur SIP que nous avons écrit de zéro. [`wavekat-sip`](https://github.com/wavekat/wavekat-sip) est un crate Rust open source qui prend en charge lui-même la signalisation téléphonique et le transport audio, sans aucune pile SIP tierce en dessous. Chaque appel que vous passez ou décrochez, chaque mise en attente et chaque transfert passe maintenant par du code que nous maîtrisons de bout en bout.
+WaveKat Voice — le softphone pour Mac, Windows et Linux qui [enregistre et transcrit chaque appel](/fr/voice/) — tourne désormais sur un moteur SIP que nous avons écrit de zéro. [`wavekat-sip`](https://github.com/wavekat/wavekat-sip) est un crate Rust open source qui prend en charge lui-même la signalisation téléphonique et le transport audio, sans aucune pile SIP tierce en dessous. Chaque appel que vous passez ou décrochez, chaque mise en attente et chaque transfert passe maintenant par du code que nous maîtrisons de bout en bout.
 
 C'est un pas de plus vers ce à quoi nous revenons sans cesse : [donner à chaque petite entreprise la voix d'une grande](/fr/blog/hello-world/). Un grand système téléphonique est fiable parce que ceux qui l'exploitent en contrôlent chaque couche. Maîtriser le moteur SIP, c'est maîtriser la couche sur laquelle votre appel voyage réellement — ainsi, quand quelque chose doit gagner en fiabilité, ou qu'une fonction doit sortir, aucune boîte noire ne se met en travers.
 
@@ -69,4 +69,4 @@ C'est le vrai moteur derrière un vrai produit, il est donc déjà utilisé au q
 
 Le plus souvent, les appels de WaveKat Voice ne vous sembleront pas différents — et c'est bien le but. Ils s'établissent et sonnent comme ils le doivent. Ce qui change est en coulisses : les fonctions qui donnent à WaveKat Voice des airs de véritable accueil — mise en attente, double appel, transfert, audio HD — sortent désormais à notre rythme plutôt qu'à celui d'une dépendance, et quand quelque chose doit gagner en stabilité, nous pouvons aller droit au code qui l'exécute.
 
-WaveKat Voice est [gratuit pendant la bêta publique](/fr/voice/download/) sur Mac et Linux. Connectez l'opérateur téléphonique que vous avez déjà, et votre prochain appel tournera sur un moteur que nous avons construit nous-mêmes — et offert.
+WaveKat Voice est [gratuit pendant la bêta publique](/fr/voice/download/) sur Mac, Windows et Linux. Connectez l'opérateur téléphonique que vous avez déjà, et votre prochain appel tournera sur un moteur que nous avons construit nous-mêmes — et offert.

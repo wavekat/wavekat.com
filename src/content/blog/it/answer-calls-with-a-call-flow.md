@@ -7,7 +7,7 @@ tags: [voice-ai, chiamate]
 lang: "it"
 ---
 
-[WaveKat Voice](/it/voice/) — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora può rispondere al posto tuo. A rispondere è un **flusso di chiamata**: saluta chi chiama, controlla se sei aperto, propone un menu, ti fa squillare, registra un messaggio oppure trasferisce la chiamata. Il flusso si costruisce sul web, si assegna a una delle tue linee e da quel momento anche le chiamate che non riesci a prendere ricevono una risposta. Arriva con la versione [0.0.43](/it/voice/changelog/#0.0.43).
+[WaveKat Voice](/it/voice/) — il softphone SIP per Mac, Windows e Linux che registra e trascrive ogni chiamata — ora può rispondere al posto tuo. A rispondere è un **flusso di chiamata**: saluta chi chiama, controlla se sei aperto, propone un menu, ti fa squillare, registra un messaggio oppure trasferisce la chiamata. Il flusso si costruisce sul web, si assegna a una delle tue linee e da quel momento anche le chiamate che non riesci a prendere ricevono una risposta. Arriva con la versione [0.0.43](/it/voice/changelog/#0.0.43).
 
 È il passo più grande finora verso ciò a cui torniamo sempre: [dare a ogni piccola attività la voce di una grande](/it/blog/hello-world/). Un'azienda grande risponde a tutte le chiamate: ha una reception, un menu telefonico costruito da un consulente, un servizio per il fuori orario. Un negozio di tre persone ha un telefono che squilla finché qualcuno riesce ad asciugarsi le mani, e chi si stanca e riattacca è una prenotazione che non è mai esistita. I flussi di chiamata colmano quella distanza, e girano sul computer che è già sulla tua scrivania.
 

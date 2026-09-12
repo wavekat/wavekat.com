@@ -23,7 +23,7 @@ WaveKat 正在打造实时语音 AI 的工具。我们从一组开源库开始�
 - **wavekat-turn** —— 知道说话者何时讲完的轮次检测
 - **wavekat-lab** —— 用于测试和比较音频后端的交互式仪表盘
 
-在这些库之上，我们做出了 **WaveKat Voice** —— 一款适用于 Mac 和 Linux 的桌面软电话，把你的电脑变成企业电话。它通过你现有的 SIP 运营商接打电话，自动录音每一通通话，并实时写下通话内容。[AI 助手可以替你操作拨号盘](/zh/blog/place-calls-from-the-command-line/) —— 说话的仍然是你；而能亲自进行对话的助手，正是我们前进的方向。
+在这些库之上，我们做出了 **WaveKat Voice** —— 一款适用于 Mac、Windows 和 Linux 的桌面软电话，把你的电脑变成企业电话。它通过你现有的 SIP 运营商接打电话，自动录音每一通通话，并实时写下通话内容。[AI 助手可以替你操作拨号盘](/zh/blog/place-calls-from-the-command-line/) —— 说话的仍然是你；而能亲自进行对话的助手，正是我们前进的方向。
 
 ## 为什么从开源开始？
 
@@ -33,4 +33,4 @@ WaveKat 正在打造实时语音 AI 的工具。我们从一组开源库开始�
 
 我们正埋头开发。欢迎在 [GitHub](https://github.com/wavekat) 上关注我们，或者常回这里看看 —— 我们会撰写关于实时语音背后的工程实践、我们正在做的权衡，以及我们一路上学到的经验。
 
-**WaveKat Voice** 今天已开放免费公测 —— 为你的 Mac 或 Linux 电脑[下载](/zh/voice/download/)。
+**WaveKat Voice** 今天已开放免费公测 —— 为你的 Mac、Windows 或 Linux 电脑[下载](/zh/voice/download/)。

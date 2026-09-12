@@ -1,13 +1,13 @@
 ---
 title: "Anrufe halten, wechseln und weiterleiten"
-description: "WaveKat Voice hält Anrufe, nimmt einen zweiten Anruf an und leitet weiter — ohne oder mit Rückfrage, auf Mac und Linux. Beim Halten pausiert die Aufnahme."
+description: "WaveKat Voice hält Anrufe, nimmt einen zweiten an und leitet weiter — ohne oder mit Rückfrage, auf Mac, Windows und Linux. Beim Halten pausiert die Aufnahme."
 date: 2026-07-05
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
 lang: "de"
 ---
 
-WaveKat Voice — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die drei Dinge, die ein Empfang den ganzen Tag tut: einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, und einen Anrufer an jemand anderen weiterleiten — entweder sofort oder erst nach Rücksprache. Sie erscheinen mit WaveKat Voice [0.0.42](/de/voice/changelog/#0.0.42).
+WaveKat Voice — das SIP-Softphone für Mac, Windows und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die drei Dinge, die ein Empfang den ganzen Tag tut: einen Anrufer in die Warteschleife legen, einen zweiten Anruf annehmen, während der erste wartet, und einen Anrufer an jemand anderen weiterleiten — entweder sofort oder erst nach Rücksprache. Sie erscheinen mit WaveKat Voice [0.0.42](/de/voice/changelog/#0.0.42).
 
 Das ist der bislang wörtlichste Schritt hin zu unserem Ziel, [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Wer bei einem großen Unternehmen anruft, hört „Einen Moment, ich stelle Sie durch" — und es funktioniert, weil dort eine Empfangskraft mit einer Telefonzentrale sitzt. Jetzt gibt [WaveKat Voice](/de/voice/) — das bereits jeden Anruf aufzeichnet und transkribiert — einem Ein-Personen-Betrieb dieselben Handgriffe. Halten, Anklopfen und Weiterleiten sind die Bedienelemente, nach denen am Empfang ständig gegriffen wird, und jedes ernstzunehmende [Softphone](/de/voice/alternatives/) muss sie haben — WaveKat Voice hat sie jetzt, mit einer eigenen Besonderheit: Was während des Haltens passiert, bleibt aus der Aufnahme heraus. Bedienelemente wie diese stecken tief in der Telefonsignalisierung selbst, was mit ein Grund ist, warum WaveKat Voice nun auf einer [eigenen, von Grund auf gebauten SIP-Engine](/de/blog/our-own-sip-engine/) läuft.
 

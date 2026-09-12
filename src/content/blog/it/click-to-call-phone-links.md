@@ -1,13 +1,13 @@
 ---
 title: "Click-to-call: clicca un numero sul web"
-description: "WaveKat Voice apre i link tel: e sip: su Mac e Linux: clicca un numero di telefono su un sito e finisce nel campo di chiamata, pronto da comporre."
+description: "WaveKat Voice apre i link tel: e sip: su Mac, Windows e Linux: clicca un numero di telefono su un sito e finisce nel campo di chiamata, pronto da comporre."
 date: 2026-07-25
 author: Eason Guo
 tags: [voice-ai, chiamate]
 lang: "it"
 ---
 
-Click-to-call vuol dire che un numero di telefono su una pagina web è un link su cui puoi cliccare per chiamare, invece di qualcosa da copiare e ridigitare a mano. [WaveKat Voice](/it/voice/) — il softphone SIP per Mac e Linux che registra e trascrive ogni chiamata — ora può essere l'app che il tuo computer apre per quei link. Clicca un link `tel:` o `sip:` ovunque — la pagina contatti di un'azienda, un risultato di ricerca, la fattura di un fornitore — e WaveKat Voice viene in primo piano con il numero già inserito, pronto perché tu prema Chiama. Arriva con la [0.0.43](/it/voice/changelog/#0.0.43).
+Click-to-call vuol dire che un numero di telefono su una pagina web è un link su cui puoi cliccare per chiamare, invece di qualcosa da copiare e ridigitare a mano. [WaveKat Voice](/it/voice/) — il softphone SIP per Mac, Windows e Linux che registra e trascrive ogni chiamata — ora può essere l'app che il tuo computer apre per quei link. Clicca un link `tel:` o `sip:` ovunque — la pagina contatti di un'azienda, un risultato di ricerca, la fattura di un fornitore — e WaveKat Voice viene in primo piano con il numero già inserito, pronto perché tu prema Chiama. Arriva con la [0.0.43](/it/voice/changelog/#0.0.43).
 
 È lo standard minimo su un telefono da scrivania aziendale, e una di quelle funzioni che noti solo quando manca: vedi un numero su una pagina, ci clicchi, il telefono compone. Questa è la metà in uscita della stessa versione in cui WaveKat Voice ha imparato a [rispondere alle chiamate in arrivo con un flusso di chiamata](/it/blog/answer-calls-with-a-call-flow/) — e, come il resto della telefonia, gira sul [nostro motore SIP](/it/blog/our-own-sip-engine/).
 

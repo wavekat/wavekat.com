@@ -1,12 +1,12 @@
 ---
 title: "Hold, Switch, and Transfer Calls Like a Front Desk"
-description: "WaveKat Voice puts callers on hold, answers a second call, and transfers them — blind or attended — on Mac and Linux. Recording pauses while a call is held."
+description: "WaveKat Voice puts callers on hold, answers a second call, and transfers them — blind or attended — on Mac, Windows and Linux. Recording pauses on hold."
 date: 2026-07-05
 author: Eason Guo
 tags: [voice-ai, calls]
 ---
 
-WaveKat Voice — the SIP softphone for Mac and Linux that records and transcribes every call — can now do the three things a front desk does all day: put a caller on hold, answer a second call while the first one waits, and transfer a caller to someone else, either straight away or after checking with them first. It lands in [0.0.42](/voice/changelog/#0.0.42).
+WaveKat Voice — the SIP softphone for Mac, Windows and Linux that records and transcribes every call — can now do the three things a front desk does all day: put a caller on hold, answer a second call while the first one waits, and transfer a caller to someone else, either straight away or after checking with them first. It lands in [0.0.42](/voice/changelog/#0.0.42).
 
 This is the most literal step yet toward [giving every small business the voice of a big one](/blog/hello-world/). When you call a big company, someone says "one moment, let me put you through" — and it works, because there's a receptionist with a switchboard. Now [WaveKat Voice](/voice/), which already records and transcribes every call, gives a one-person shop the same moves. Hold, call waiting, and transfer are the controls a desk worker reaches for constantly, and any serious [softphone](/voice/alternatives/) is expected to have them — WaveKat Voice now does, with its own twist: what happens on hold stays out of the recording. Controls like these live deep in the phone signaling itself, which is part of why WaveKat Voice now runs on [its own from-scratch SIP engine](/blog/our-own-sip-engine/).
 

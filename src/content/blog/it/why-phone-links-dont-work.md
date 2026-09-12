@@ -1,6 +1,6 @@
 ---
 title: "Perché i link telefonici non funzionano sul PC"
-description: "Sul telefono clicchi un numero e parte la chiamata; sul computer niente, perché nessuna app gestisce i link tel:. WaveKat Voice risolve su Mac e Linux."
+description: "Sul telefono clicchi un numero e parte la chiamata; sul computer niente, perché nessuna app gestisce i link tel:. WaveKat Voice risolve su Mac, Windows e Linux."
 date: 2026-08-07
 author: Eason Guo
 tags: [voice-ai, chiamate]
@@ -47,7 +47,7 @@ La cosa da notare: il link non è mai stato rotto. Il sito ha fatto il suo lavor
       <button type="button" data-os="mac">un Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac o Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">Uno qualsiasi + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">Un telefono</p>
@@ -83,7 +83,7 @@ La cosa da notare: il link non è mai stato rotto. Il sito ha fatto il suo lavor
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac o Linux con WaveKat Voice</p>
+      <p class="panel-name">Mac, Windows o Linux con WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">Clicchi</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">Nella casella</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice — ce l'hai messa tu, con un interruttore</span></span></li>
@@ -95,7 +95,7 @@ La cosa da notare: il link non è mai stato rotto. Il sito ha fatto il suo lavor
 
 ## Come WaveKat Voice riempie la casella
 
-[WaveKat Voice](/it/voice/) è un'app per telefonare su Mac e Linux: effettua e riceve chiamate vere tramite il tuo operatore, e le registra e trascrive tutte. E può essere lei, la cosa nella casella.
+[WaveKat Voice](/it/voice/) è un'app per telefonare su Mac, Windows e Linux: effettua e riceve chiamate vere tramite il tuo operatore, e le registra e trascrive tutte. E può essere lei, la cosa nella casella.
 
 Attivi un interruttore: **Link telefonici**, in Impostazioni → Generali. È spento finché non lo accendi tu, di proposito — prendersi i link telefonici di tutto il computer dev'essere una tua scelta, non qualcosa che un'app si piglia all'installazione. Una volta acceso, cliccare un numero su qualsiasi pagina web fa comparire WaveKat Voice con il numero già inserito nel campo di chiamata. Lo guardi, e premi Chiama.
 
@@ -129,10 +129,10 @@ Perché Apple registra FaceTime di serie come gestore dei link telefonici del Ma
 
 ### Come faccio ad aprire i link telefonici con WaveKat Voice?
 
-Attiva l'interruttore Link telefonici in Impostazioni → Generali — è disattivato di default. Da quel momento, cliccare un numero su qualsiasi pagina web apre WaveKat Voice con il numero già inserito, pronto da comporre. Funziona su Mac e Linux ed è arrivato con la versione 0.0.43.
+Attiva l'interruttore Link telefonici in Impostazioni → Generali — è disattivato di default. Da quel momento, cliccare un numero su qualsiasi pagina web apre WaveKat Voice con il numero già inserito, pronto da comporre. Funziona su Mac, Windows e Linux ed è arrivato con la versione 0.0.43.
 
 ## Riprova quel numero
 
-I link telefonici aspettano in silenzio su ogni pagina contatti da decenni; al tuo computer mancava solo qualcuno in casa che rispondesse. Se vuoi che i tuoi clic facciano squillare davvero, [scarica WaveKat Voice](/it/voice/download/) per Mac o Linux, accendi quell'unico interruttore, e riprova il numero in cima a questa pagina.
+I link telefonici aspettano in silenzio su ogni pagina contatti da decenni; al tuo computer mancava solo qualcuno in casa che rispondesse. Se vuoi che i tuoi clic facciano squillare davvero, [scarica WaveKat Voice](/it/voice/download/) per Mac, Windows o Linux, accendi quell'unico interruttore, e riprova il numero in cima a questa pagina.
 
 <script src="/blog/phone-slot/widget.js" defer></script>

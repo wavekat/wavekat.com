@@ -7,7 +7,7 @@ tags: [Sprach-KI, Technik, Open-Source, SIP]
 lang: "de"
 ---
 
-WaveKat Voice — das Softphone für Mac und Linux, das [jeden Anruf aufzeichnet und transkribiert](/de/voice/) — läuft jetzt auf einer SIP-Engine, die wir von Grund auf selbst geschrieben haben. [`wavekat-sip`](https://github.com/wavekat/wavekat-sip) ist ein quelloffenes Rust-Crate, das die Telefonsignalisierung und den Audiotransport selbst übernimmt, ganz ohne fremden SIP-Stack darunter. Jeder Anruf, den Sie führen oder annehmen, jedes Halten und jede Weiterleitung läuft nun über Code, der uns von A bis Z gehört.
+WaveKat Voice — das Softphone für Mac, Windows und Linux, das [jeden Anruf aufzeichnet und transkribiert](/de/voice/) — läuft jetzt auf einer SIP-Engine, die wir von Grund auf selbst geschrieben haben. [`wavekat-sip`](https://github.com/wavekat/wavekat-sip) ist ein quelloffenes Rust-Crate, das die Telefonsignalisierung und den Audiotransport selbst übernimmt, ganz ohne fremden SIP-Stack darunter. Jeder Anruf, den Sie führen oder annehmen, jedes Halten und jede Weiterleitung läuft nun über Code, der uns von A bis Z gehört.
 
 Das ist ein weiterer Schritt hin zu dem, worauf wir immer wieder zurückkommen: [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Eine große Telefonanlage ist verlässlich, weil die Menschen, die sie betreiben, jede ihrer Schichten kontrollieren. Die SIP-Engine selbst zu besitzen bedeutet, dass wir die Schicht kontrollieren, auf der Ihr Anruf tatsächlich reist — wenn also etwas zuverlässiger werden muss oder eine Funktion ausgeliefert werden soll, steht keine Blackbox im Weg.
 
@@ -69,4 +69,4 @@ Es ist die echte Engine hinter einem echten Produkt, also bereits täglich im Ei
 
 Meistens werden sich die Anrufe von WaveKat Voice überhaupt nicht anders anfühlen — und genau das ist der Sinn. Sie kommen zustande und klingen so, wie sie sollen. Was sich ändert, spielt sich hinter den Kulissen ab: Die Funktionen, die WaveKat Voice wie einen echten Empfang wirken lassen — Halten, Anklopfen, Weiterleiten, HD-Audio — werden nun nach unserem Zeitplan ausgeliefert statt nach dem einer Abhängigkeit, und wenn etwas stabiler werden muss, gehen wir direkt zu dem Code, der es betreibt.
 
-WaveKat Voice ist während der öffentlichen Beta [kostenlos](/de/voice/download/) auf Mac und Linux. Verbinden Sie den Telefonanbieter, den Sie bereits haben, und Ihr nächster Anruf läuft auf einer Engine, die wir selbst gebaut — und verschenkt — haben.
+WaveKat Voice ist während der öffentlichen Beta [kostenlos](/de/voice/download/) auf Mac, Windows und Linux. Verbinden Sie den Telefonanbieter, den Sie bereits haben, und Ihr nächster Anruf läuft auf einer Engine, die wir selbst gebaut — und verschenkt — haben.

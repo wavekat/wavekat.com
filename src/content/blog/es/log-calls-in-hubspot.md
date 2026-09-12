@@ -116,7 +116,7 @@ Es una función Pro. Durante el acceso anticipado Pro es gratis: un clic en la p
 
 ### ¿En qué plataformas funciona?
 
-WaveKat Voice funciona hoy en Mac y Linux. La integración con HubSpot vive en tu cuenta de WaveKat, así que se comporta igual desde cualquiera de las dos, y las llamadas que registra se leen en HubSpot desde cualquier navegador.
+WaveKat Voice funciona en Mac, Windows y Linux. La integración con HubSpot vive en tu cuenta de WaveKat, así que se comporta igual desde cualquiera de los tres, y las llamadas que registra se leen en HubSpot desde cualquier navegador.
 
 ## Pruébalo
 

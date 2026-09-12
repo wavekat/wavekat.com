@@ -23,7 +23,7 @@ WaveKat entwickelt Werkzeuge für Echtzeit-Sprach-KI. Wir beginnen mit einer Rei
 - **wavekat-turn** — Sprecherwechselerkennung, die weiß, wann eine sprechende Person fertig ist
 - **wavekat-lab** — ein interaktives Dashboard zum Testen und Vergleichen von Audio-Backends
 
-Auf diesen Bibliotheken aufbauend haben wir **WaveKat Voice** gebaut — ein Desktop-Softphone für Mac und Linux, das Ihren Computer zum Geschäftstelefon macht. Es nimmt Anrufe an und tätigt sie über den SIP-Anbieter, den Sie bereits haben, zeichnet jeden Anruf auf und schreibt das Gesagte live mit. Ein [KI-Assistent kann das Wählfeld für Sie bedienen](/de/blog/place-calls-from-the-command-line/) — sprechen tun Sie; ein Assistent, der das Gespräch selbst führt, ist der nächste Schritt, auf den wir hinarbeiten.
+Auf diesen Bibliotheken aufbauend haben wir **WaveKat Voice** gebaut — ein Desktop-Softphone für Mac, Windows und Linux, das Ihren Computer zum Geschäftstelefon macht. Es nimmt Anrufe an und tätigt sie über den SIP-Anbieter, den Sie bereits haben, zeichnet jeden Anruf auf und schreibt das Gesagte live mit. Ein [KI-Assistent kann das Wählfeld für Sie bedienen](/de/blog/place-calls-from-the-command-line/) — sprechen tun Sie; ein Assistent, der das Gespräch selbst führt, ist der nächste Schritt, auf den wir hinarbeiten.
 
 ## Warum mit Open Source beginnen?
 
@@ -33,4 +33,4 @@ Wir sind überzeugt, dass die grundlegende Technologie — VAD, Sprecherwechsele
 
 Wir sind voll im Entwicklungsmodus. Folgen Sie uns auf [GitHub](https://github.com/wavekat) oder schauen Sie hier wieder vorbei — wir werden über die Technik hinter Echtzeit-Sprache schreiben, über die Abwägungen, die wir treffen, und über das, was wir unterwegs lernen.
 
-**WaveKat Voice** ist heute in der kostenlosen öffentlichen Beta — [laden Sie es herunter](/de/voice/download/), für Mac oder Linux.
+**WaveKat Voice** ist heute in der kostenlosen öffentlichen Beta — [laden Sie es herunter](/de/voice/download/), für Mac, Windows oder Linux.

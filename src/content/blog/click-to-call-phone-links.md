@@ -1,12 +1,12 @@
 ---
 title: "Click-to-Call: Dial Phone Links From Any Website"
-description: "WaveKat Voice now opens tel: and sip: links on Mac and Linux — click a phone number on any website and it lands in the dial field, ready to call."
+description: "WaveKat Voice now opens tel: and sip: links on Mac, Windows and Linux — click a phone number on any website and it lands in the dial field, ready to call."
 date: 2026-07-25
 author: Eason Guo
 tags: [voice-ai, calls]
 ---
 
-Click-to-call means a phone number on a web page is a link you can click to dial, instead of something you copy out and retype by hand. [WaveKat Voice](/voice/) — the SIP softphone for Mac and Linux that records and transcribes every call — can now be the app your computer opens for those links. Click a `tel:` or `sip:` link anywhere — a company's contact page, a search result, a supplier's invoice — and WaveKat Voice comes to the front with the number already filled in, ready for you to press Call. It lands in [0.0.43](/voice/changelog/#0.0.43).
+Click-to-call means a phone number on a web page is a link you can click to dial, instead of something you copy out and retype by hand. [WaveKat Voice](/voice/) — the SIP softphone for Mac, Windows and Linux that records and transcribes every call — can now be the app your computer opens for those links. Click a `tel:` or `sip:` link anywhere — a company's contact page, a search result, a supplier's invoice — and WaveKat Voice comes to the front with the number already filled in, ready for you to press Call. It lands in [0.0.43](/voice/changelog/#0.0.43).
 
 It's table-stakes on a business desk phone, and one of those features you only notice when it's missing: you see a number on a page, you click it, the phone dials. This is the outgoing half of the same release that taught WaveKat Voice to [answer your incoming calls with a call flow](/blog/answer-calls-with-a-call-flow/) — and, like the rest of the calling, it runs on [our own from-scratch SIP engine](/blog/our-own-sip-engine/).
 

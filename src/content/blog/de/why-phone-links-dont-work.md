@@ -1,6 +1,6 @@
 ---
 title: "Warum Telefon-Links am PC nicht funktionieren"
-description: "Am Handy klingelt eine angeklickte Nummer sofort, am Computer passiert nichts — die Telefon-App fehlt. WaveKat Voice füllt die Lücke auf Mac und Linux."
+description: "Am Handy klingelt eine angeklickte Nummer sofort, am Computer passiert nichts — die Telefon-App fehlt. WaveKat Voice füllt die Lücke auf Mac, Windows und Linux."
 date: 2026-08-07
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
@@ -47,7 +47,7 @@ Das Entscheidende dabei: Der Link war nie kaputt. Die Website hat ihren Teil erl
       <button type="button" data-os="mac">ein Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac oder Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">Jedes davon + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">Ein Handy</p>
@@ -83,7 +83,7 @@ Das Entscheidende dabei: Der Link war nie kaputt. Die Website hat ihren Teil erl
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac oder Linux mit WaveKat Voice</p>
+      <p class="panel-name">Mac, Windows oder Linux mit WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">Sie klicken</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">Im Fach</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice — von Ihnen dort hingelegt, mit einem Schalter</span></span></li>
@@ -95,7 +95,7 @@ Das Entscheidende dabei: Der Link war nie kaputt. Die Website hat ihren Teil erl
 
 ## Wie WaveKat Voice das Fach füllt
 
-[WaveKat Voice](/de/voice/) ist eine Telefon-App für Mac und Linux — sie tätigt und empfängt echte Anrufe über Ihren Telefonanbieter und zeichnet jeden davon auf und transkribiert ihn. Und sie kann das Ding im Fach sein.
+[WaveKat Voice](/de/voice/) ist eine Telefon-App für Mac, Windows und Linux — sie tätigt und empfängt echte Anrufe über Ihren Telefonanbieter und zeichnet jeden davon auf und transkribiert ihn. Und sie kann das Ding im Fach sein.
 
 Sie legen einen einzigen Schalter um: **Telefon-Links**, unter Einstellungen → Allgemein. Er ist aus, bis Sie ihn einschalten — mit Absicht: Die Telefon-Links Ihres ganzen Computers zu übernehmen, sollte Ihre Entscheidung sein und nichts, was sich eine App bei der Installation einfach greift. Ist er an, öffnet ein Klick auf eine Nummer auf jeder beliebigen Webseite WaveKat Voice, mit der Nummer bereits im Anruffeld. Sie schauen sie an und drücken auf „Anrufen".
 
@@ -129,10 +129,10 @@ Apple registriert FaceTime ab Werk als Handler für Telefon-Links auf dem Mac. F
 
 ### Wie öffne ich Telefon-Links in WaveKat Voice?
 
-Schalten Sie den Schalter Telefon-Links unter Einstellungen → Allgemein ein — er ist standardmäßig aus. Danach öffnet ein Klick auf eine Nummer auf jeder Webseite WaveKat Voice mit bereits eingetragener Nummer, bereit zum Wählen. Das funktioniert auf Mac und Linux und kam mit Version 0.0.43.
+Schalten Sie den Schalter Telefon-Links unter Einstellungen → Allgemein ein — er ist standardmäßig aus. Danach öffnet ein Klick auf eine Nummer auf jeder Webseite WaveKat Voice mit bereits eingetragener Nummer, bereit zum Wählen. Das funktioniert auf Mac, Windows und Linux und kam mit Version 0.0.43.
 
 ## Probieren Sie die Nummer noch einmal
 
-Telefon-Links warten seit Jahrzehnten still auf jeder Kontaktseite; Ihrem Computer fehlte immer nur jemand, der zu Hause ist und rangeht. Wenn Ihre Klicks klingeln sollen: [Laden Sie WaveKat Voice herunter](/de/voice/download/) für Mac oder Linux, legen Sie den einen Schalter um — und klicken Sie die Nummer oben auf dieser Seite noch einmal an.
+Telefon-Links warten seit Jahrzehnten still auf jeder Kontaktseite; Ihrem Computer fehlte immer nur jemand, der zu Hause ist und rangeht. Wenn Ihre Klicks klingeln sollen: [Laden Sie WaveKat Voice herunter](/de/voice/download/) für Mac, Windows oder Linux, legen Sie den einen Schalter um — und klicken Sie die Nummer oben auf dieser Seite noch einmal an.
 
 <script src="/blog/phone-slot/widget.js" defer></script>
