@@ -99,7 +99,7 @@ export function getTerms(locale: string): TermsDoc {
  * schema's dateModified. Change it whenever any locale's text changes — the
  * document is one agreement, so the nine pages carry one date.
  */
-export const TERMS_UPDATED = new Date('2026-09-12');
+export const TERMS_UPDATED = new Date('2026-09-13');
 
 const ESCAPES: Record<string, string> = {
   '&': '&amp;',

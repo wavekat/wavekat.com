@@ -6,12 +6,12 @@ import type { TermsDoc } from '../terms';
 export const terms: TermsDoc = {
   seoTitle: "Conditions d'utilisation — WaveKat",
   seoDescription:
-    "L'accord entre vous et WaveKat : à quoi sert WaveKat Voice, pourquoi il n'appelle pas les secours, et qui répond de l'enregistrement des appels.",
+    "L'accord entre vous et WaveKat : à quoi sert WaveKat Voice, pourquoi il ne peut pas joindre les secours, et qui répond de l'enregistrement des appels.",
   h1: "Conditions d'utilisation",
   updatedPrefix: 'Dernière mise à jour le',
   lead: [
-    "Ces conditions constituent l'accord entre vous et WaveKat. Elles couvrent l'application WaveKat Voice, votre compte WaveKat et ce site. Utiliser l'un d'eux, c'est accepter ce qui suit.",
-    "Nous les avons écrites comme la [politique de confidentialité](/privacy/) : en langage clair, par ceux qui fabriquent le produit, y compris les passages qu'il est gênant de dire. Si une phrase n'est pas claire, écrivez-nous et nous corrigerons la phrase.",
+    "Ces conditions constituent l'accord entre vous et WaveKat. Elles couvrent l'application WaveKat Voice, votre compte WaveKat, l'outil en ligne de commande wk, ainsi que ce site et les outils qu'il propose. Utiliser l'un d'eux, c'est accepter ce qui suit.",
+    "Cette page est écrite en langage clair par celles et ceux qui fabriquent WaveKat. Ce n'est pas un conseil juridique. Elle est publiée en neuf langues ; si une traduction diffère un jour de la version anglaise, c'est la version anglaise qui s'applique.",
   ],
   highlightsLabel: "Trois choses à savoir d'abord",
   highlights: [
@@ -27,7 +27,7 @@ export const terms: TermsDoc = {
       body: [
         {
           kind: 'p',
-          text: "Vous acceptez ces conditions dès la première de ces actions, selon celle qui vient en premier : installer ou utiliser WaveKat Voice, créer un compte WaveKat, ou utiliser une fonctionnalité payante. L'application vous demande votre accord au premier lancement, et la page de connexion le dit au-dessus du bouton — mais utiliser WaveKat sans jamais avoir lu cette page ne vous place pas hors de l'accord.",
+          text: "Vous acceptez ces conditions dès la première de ces actions, selon celle qui vient en premier : installer ou utiliser WaveKat Voice, créer un compte WaveKat, ou utiliser une fonctionnalité Pro. L'application vous demande votre accord au premier lancement, et la page de connexion le dit au-dessus du bouton — mais utiliser WaveKat sans jamais avoir lu cette page ne vous place pas hors de l'accord.",
         },
         {
           kind: 'p',
@@ -35,7 +35,7 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "La [politique de confidentialité](/privacy/) fait partie de cet accord. Elle décrit ce que WaveKat collecte et ce qui reste sur votre propre ordinateur, et rien ici ne la remplace.",
+          text: "La [politique de confidentialité](/privacy/) ne fait pas partie de ce contrat — elle décrit ce que WaveKat collecte et ce qui reste sur votre propre ordinateur, et nous y sommes tenus que vous l'ayez lue ou non. Si cette page et celle-là semblent un jour se contredire au sujet de vos données, c'est la politique de confidentialité qui l'emporte.",
         },
       ],
     },
@@ -63,7 +63,7 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "Si vous en créez un, il est à vous et c'est à vous d'y veiller. La connexion passe par GitHub, Google ou Apple : le mot de passe qui protège votre compte WaveKat est donc en réalité le leur. Gardez-le en bon état, ainsi que la double authentification. Écrivez-nous à [hello@wavekat.com](mailto:hello@wavekat.com) si vous pensez que quelqu'un d'autre y est entré.",
+          text: "Si vous en créez un, il est à vous et c'est à vous d'y veiller. Vous vous connectez avec GitHub, Google ou Apple, et pouvez ensuite ajouter un mot de passe au compte. Gardez celui que vous utilisez — ainsi que la double authentification qui le protège — en bon état, et écrivez-nous à [hello@wavekat.com](mailto:hello@wavekat.com) si vous pensez que quelqu'un d'autre y est entré. Ce qui est fait depuis votre compte est de votre ressort tant que vous ne nous avez pas prévenus.",
         },
         {
           kind: 'p',
@@ -71,13 +71,13 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "Un nouveau compte peut devoir être approuvé avant de pouvoir faire quoi que ce soit. Ce n'est pas un jugement sur vous : c'est une petite équipe qui regarde qui arrive.",
+          text: "Un nouveau compte peut devoir être approuvé avant de pouvoir faire quoi que ce soit.",
         },
       ],
     },
     {
       id: 'plans',
-      heading: 'Gratuit et Pro',
+      heading: 'Ce que ça coûte',
       body: [
         {
           kind: 'p',
@@ -85,11 +85,11 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "Une offre Pro dure un an à compter du jour où elle commence. Les prix sont affichés avant le paiement, dans la devise indiquée, et les taxes s'ajoutent là où la loi l'exige. Nous pouvons changer un tarif à l'avenir, mais jamais pour une année déjà payée.",
+          text: "Pendant la phase d'accès anticipé, Pro ne coûte rien. Si vous en faites la demande sur le site, nous vous l'accordons pour une durée annoncée et sans frais, et nous ne commencerons pas à facturer une période déjà accordée. Il n'y a aujourd'hui aucun paiement nulle part dans WaveKat, donc rien ici ne peut vous prendre d'argent.",
         },
         {
           kind: 'p',
-          text: "Si Pro n'est pas ce que vous attendiez, écrivez-nous dans les 14 jours suivant le paiement et nous vous remboursons. Passé ce délai, nous vous écoutons toujours : un remboursement hors délai relève de notre appréciation, et « ça a cessé de fonctionner et nous n'avons pas pu le réparer » est le cas où nous disons oui. Là où le droit de la consommation de votre pays vous donne plus, c'est lui qui s'applique.",
+          text: "Quand Pro aura un prix, nous vous indiquerons le prix, la devise et la durée avant tout paiement, et nous mettrons cette page à jour. Rien ne vous sera facturé sans que vous l'ayez d'abord accepté. Là où le droit de la consommation de votre pays vous donne alors plus que ce que nous écrivons, c'est votre droit local qui l'emporte.",
         },
       ],
     },
@@ -120,7 +120,21 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "WaveKat Voice se met à jour tout seul pour que les correctifs atteignent réellement les gens. Là où il est installé depuis une boutique, c'est la boutique qui s'en charge.",
+          text: "L'exemplaire de WaveKat Voice que vous téléchargez chez nous vérifie les mises à jour et les installe lui-même, pour que les correctifs atteignent réellement les gens. Là où il est installé depuis une boutique, c'est la boutique qui s'en charge.",
+        },
+      ],
+    },
+    {
+      id: 'stores',
+      heading: "Si vous l'avez installé depuis une boutique",
+      body: [
+        {
+          kind: 'p',
+          text: "WaveKat Voice est aussi disponible sur le Mac App Store, le Microsoft Store et le Snap Store. Si vous l'avez obtenu par l'un d'eux, les conditions propres à cette boutique s'appliquent au téléchargement et à toute mise à jour qu'elle livre, en plus de cet accord.",
+        },
+        {
+          kind: 'p',
+          text: "Cet accord est conclu entre vous et WaveKat, pas avec la boutique. Apple, Microsoft et Canonical n'ont pas fabriqué WaveKat Voice, ne vous doivent ni maintenance ni assistance à son sujet, et ne sont responsables ni de l'application, ni d'aucune réclamation la concernant, ni de ce qu'elle fait de vos données. Ils peuvent en revanche se prévaloir de cet accord et le faire valoir contre vous comme s'ils y étaient parties — les règles d'Apple nous obligent à le préciser.",
         },
       ],
     },
@@ -163,6 +177,10 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
+          text: "Un parcours d'appel répond à vos interlocuteurs en votre nom — un message d'accueil, un menu, une messagerie vocale, un transfert — tant que l'application tourne sur un ordinateur allumé. Ce qu'il leur dit, et ce qu'il fait de ce qu'ils laissent, est de votre responsabilité, comme si vous aviez décroché vous-même. Ce n'est pas un remplacement pour un téléphone auquel on répond.",
+        },
+        {
+          kind: 'p',
           text: "Vous êtes responsable de ce que votre fournisseur vous facture, y compris les appels qu'un parcours d'appel décroche ou passe pendant que vous ne regardez pas.",
         },
       ],
@@ -173,7 +191,7 @@ export const terms: TermsDoc = {
       body: [
         {
           kind: 'p',
-          text: "WaveKat Voice enregistre les appels, et l'enregistrement est actif dès l'installation. Tout est enregistré et transcrit sur votre propre ordinateur.",
+          text: "WaveKat Voice enregistre les appels, et l'enregistrement est actif dès l'installation. La transcription en direct est désactivée tant que vous ne l'activez pas. Les deux se font sur votre propre ordinateur — aucun audio n'est envoyé nulle part pour être enregistré ou transcrit.",
         },
         {
           kind: 'p',
@@ -195,15 +213,23 @@ export const terms: TermsDoc = {
       body: [
         {
           kind: 'p',
-          text: "Vos enregistrements, transcriptions, contacts, parcours d'appel et notes sont à vous. Nous n'en revendiquons pas la propriété et nous ne nous en servons pas pour entraîner des modèles.",
+          text: "Vos enregistrements, transcriptions, contacts, parcours d'appel et notes sont à vous. Nous n'en revendiquons pas la propriété, et nous ne nous en servons pas pour entraîner des modèles, sauf si vous avez explicitement choisi de nous y autoriser.",
         },
         {
           kind: 'p',
-          text: "Si vous activez la synchronisation dans le cloud, vous nous autorisez à stocker et à déplacer ce contenu dans un seul but : faire fonctionner le service pour vous — le synchroniser entre vos appareils, vous le montrer sur le site, et servir un enregistrement à quelqu'un à qui vous avez donné un lien. Cette autorisation prend fin quand vous supprimez le contenu ou votre compte.",
+          text: "Si vous vous connectez et laissez la synchronisation dans le cloud activée — elle l'est par défaut dès que vous vous connectez —, vous nous autorisez à stocker et à déplacer ce contenu dans un seul but : faire fonctionner le service pour vous. Cela veut dire le synchroniser entre vos appareils, vous le montrer sur le site, et servir un enregistrement à quelqu'un à qui vous avez partagé un lien. Cette autorisation prend fin quand vous supprimez le contenu ou votre compte.",
+        },
+        {
+          kind: 'p',
+          text: "Les annonces vocales que vous créez avec le générateur de ce site sont à vous, pour votre propre système téléphonique. N'en utilisez pas une pour imiter la voix d'une personne réelle ou pour vous faire passer pour quelqu'un que vous n'êtes pas.",
         },
         {
           kind: 'p',
           text: "Nous pouvons retirer un contenu ou suspendre un compte si nous y sommes obligés — une injonction légale, ou un contenu qui enfreint la section ci-dessus. Nous vous le dirons le cas échéant, sauf si nous n'en avons pas le droit.",
+        },
+        {
+          kind: 'p',
+          text: "Si vous nous envoyez une suggestion ou un rapport de bug, nous pouvons nous en servir pour améliorer WaveKat sans rien vous devoir en retour.",
         },
       ],
     },
@@ -231,11 +257,7 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "La partie cloud de WaveKat n'offre aucune garantie de disponibilité. Pas d'engagement de niveau de service, pas de compensation, pas de promesse que la synchronisation soit joignable à un instant donné. C'est un choix de conception : cela compte moins qu'il n'y paraît, puisque l'application continue de fonctionner sur votre ordinateur quand nos serveurs, eux, ne fonctionnent plus.",
-        },
-        {
-          kind: 'p',
-          text: "Si nous devions un jour fermer le service, nous vous préviendrions dans un délai raisonnable et vous donnerions un moyen d'emporter vos données.",
+          text: "La partie cloud de WaveKat n'offre aucune garantie de disponibilité. Pas d'engagement de niveau de service, pas de compensation, pas de promesse que la synchronisation soit joignable à un instant donné. L'application est conçue pour fonctionner sans nos serveurs, donc si la partie cloud tombe en panne, change, ou disparaît un jour, ce qui se trouve sur votre propre ordinateur y reste et continue de fonctionner.",
         },
       ],
     },
@@ -253,7 +275,7 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "Certains pays accordent aux consommateurs des garanties qu'on ne peut pas écarter — le droit de la consommation français et européen, celui du Royaume-Uni, la Consumer Guarantees Act néo-zélandaise et leurs équivalents. Rien ici ne vous les retire. Là où vous en bénéficiez, elles s'ajoutent à cette section et l'emportent sur elle.",
+          text: "Certains pays accordent aux consommateurs des garanties qu'on ne peut pas écarter — la Consumer Guarantees Act néo-zélandaise, les règles de consommation de l'UE et du Royaume-Uni, et leurs équivalents. Rien ici ne vous les retire. Là où vous en bénéficiez, elles s'ajoutent à cette section et l'emportent sur elle. Si vous utilisez WaveKat pour une entreprise, vous acceptez que ces garanties de consommation ne s'appliquent pas, dans la mesure où la loi vous permet d'en convenir ainsi.",
         },
       ],
     },
@@ -267,15 +289,15 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "Là où nous sommes responsables, notre responsabilité totale envers vous pour tout ce qui découle de cet accord est plafonnée à ce que vous nous avez payé dans les douze mois précédant le fait que vous contestez — et si vous ne nous avez jamais rien payé, à 100 NZD.",
+          text: "Si la loi nous rend malgré tout responsables envers vous, le maximum que vous pouvez récupérer auprès de nous pour tout ce qui découle de cet accord est ce que vous nous avez payé au cours des douze mois précédant l'événement — et si vous ne nous avez jamais rien payé, 100 dollars néo-zélandais.",
         },
         {
           kind: 'p',
-          text: "Rien de tout cela ne limite une responsabilité qui ne peut l'être par la loi : notre propre fraude, un décès ou un dommage corporel que nous aurions causé, ou une garantie de consommation dont vous bénéficiez et qui ne peut être écartée.",
+          text: "Rien de tout cela ne limite ce que la loi ne nous permet pas de limiter — notre propre fraude, un dommage corporel causé par notre propre négligence, ou une garantie de consommation dont vous bénéficiez et qui ne peut être écartée.",
         },
         {
           kind: 'p',
-          text: "Si votre usage de WaveKat conduit un tiers à nous réclamer quelque chose — un appel que vous avez passé, une personne que vous avez enregistrée, un contenu que vous avez partagé —, vous en assumerez le coût pour nous.",
+          text: "Si votre usage de WaveKat en violation de ces conditions ou de la loi conduit un tiers à nous réclamer quelque chose — un appel que vous avez passé, une personne que vous avez enregistrée, un contenu que vous avez partagé —, vous en assumerez le coût pour nous, dans la mesure où le droit de votre pays vous permet d'en convenir ainsi. Nous vous informerons rapidement de la réclamation et ne la réglerons pas en votre nom sans vous consulter.",
         },
       ],
     },
@@ -303,11 +325,7 @@ export const terms: TermsDoc = {
       body: [
         {
           kind: 'p',
-          text: "Quand ces conditions changent, la date en haut change avec elles. Pour un changement qui touche vraiment à vos droits ou à ce que vous acceptez, nous vous préviendrons avant son entrée en vigueur — dans l'application, ou par e-mail si vous avez un compte — plutôt que de réécrire une phrase en silence.",
-        },
-        {
-          kind: 'p',
-          text: "Si vous n'acceptez pas un changement, cessez d'utiliser WaveKat et supprimez votre compte avant qu'il prenne effet. Continuer à l'utiliser ensuite, c'est l'accepter.",
+          text: "Quand ces conditions changent, la date en haut change avec elles, et la nouvelle version s'applique à partir de ce moment-là. Si un changement affecte substantiellement vos droits, nous le dirons dans l'application ou sur cette page. Continuer à utiliser WaveKat après un changement vaut acceptation ; si vous n'acceptez pas, cessez d'utiliser WaveKat et supprimez votre compte.",
         },
       ],
     },
@@ -321,11 +339,11 @@ export const terms: TermsDoc = {
         },
         {
           kind: 'p',
-          text: "Avant que quiconque n'approche d'un tribunal, écrivez à [hello@wavekat.com](mailto:hello@wavekat.com). Une vraie personne le lit, et presque tout se règle moins cher comme ça.",
+          text: "Si vous avez un litige avec nous, écrivez d'abord à [hello@wavekat.com](mailto:hello@wavekat.com) et laissez-nous une chance de le résoudre avant toute autre démarche.",
         },
         {
           kind: 'p',
-          text: "Ces conditions et la politique de confidentialité forment l'intégralité de l'accord entre nous au sujet de WaveKat. Si un tribunal juge qu'une partie ne tient pas, le reste tient toujours. Ne pas faire appliquer quelque chose tout de suite n'est pas y renoncer.",
+          text: "Ces conditions forment l'intégralité de l'accord entre nous au sujet de WaveKat. Si un tribunal juge qu'une partie ne tient pas, le reste tient toujours. Ne pas faire appliquer quelque chose tout de suite n'est pas y renoncer. Vous ne pouvez pas céder cet accord à quelqu'un d'autre ; nous pouvons le céder à une entreprise qui reprendrait WaveKat, et nous vous le dirons si nous le faisons.",
         },
       ],
     },
@@ -346,11 +364,11 @@ export const terms: TermsDoc = {
     },
     {
       q: "WaveKat possède-t-il mes enregistrements, ou s'en sert-il pour entraîner des modèles ?",
-      a: "Non aux deux. Vos enregistrements, transcriptions, contacts et parcours d'appel sont à vous. Si vous activez la synchronisation dans le cloud, vous nous autorisez à les stocker et à les déplacer pour que le service fonctionne, et cette autorisation prend fin quand vous supprimez le contenu ou votre compte.",
+      a: "Non aux deux. Vos enregistrements, transcriptions, contacts et parcours d'appel sont à vous, et nous ne les utilisons pas pour entraîner des modèles sauf si vous avez explicitement choisi de nous y autoriser. Si vous vous connectez et laissez la synchronisation dans le cloud activée, vous nous autorisez à les stocker et à les déplacer pour que le service fonctionne pour vous, et cette autorisation prend fin quand vous supprimez le contenu ou votre compte.",
     },
     {
-      q: "Puis-je être remboursé d'une offre Pro ?",
-      a: "Oui — écrivez à hello@wavekat.com dans les 14 jours suivant le paiement et nous vous remboursons. Ensuite, cela relève de notre appréciation, et « ça a cessé de fonctionner et nous n'avons pas pu le réparer » est le cas où nous disons oui. Là où le droit de la consommation de votre pays vous donne davantage, c'est lui qui s'applique.",
+      q: "WaveKat Voice coûte-t-il quelque chose ?",
+      a: "Pas aujourd'hui. L'application est gratuite, et Pro ne coûte rien pendant la phase d'accès anticipé — si vous en faites la demande sur le site, nous vous l'accordons pour une durée annoncée et sans frais, et nous ne commencerons pas à facturer une période déjà accordée. Il n'y a pas de paiement dans WaveKat. Quand Pro aura un prix, vous le verrez avant de payer quoi que ce soit, et cette page sera mise à jour pour le dire.",
     },
     {
       q: "Qu'advient-il de mes données si j'arrête d'utiliser WaveKat ?",
@@ -359,5 +377,5 @@ export const terms: TermsDoc = {
   ],
   contactHeading: 'Nous contacter',
   contactIntro:
-    "Quelque chose sur cette page n'est pas clair, ou une clause vous semble fausse — écrivez-nous, une personne vous répondra.",
+    "Si quelque chose sur cette page n'est pas clair, ou si une clause vous semble fausse, écrivez-nous.",
 };
