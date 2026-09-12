@@ -19,6 +19,7 @@ export const ui: UIStrings = {
   dlLinux: 'Linux 版をダウンロード',
   dlLinuxArm64: 'ARM 版 Linux をダウンロード',
   dlMsStore: 'Microsoft Store から入手',
+  dlSnapStore: 'Snap Store から入手',
   dlWindows: 'Windows 版をダウンロード',
   dlWindowsArm64: 'ARM 版 Windows をダウンロード',
   dlOther: 'その他のプラットフォーム',
@@ -27,6 +28,8 @@ export const ui: UIStrings = {
   dlArchLinux: 'Debian・Ubuntu（.deb、64ビット）',
   dlArchLinuxArm64: 'Debian・Ubuntu（.deb、ARM64）',
   dlArchMsStore: 'Windows 10・11（Intel・AMD・ARM）',
+  dlArchSnapStore: 'Ubuntu・主要な Linux ディストリビューション（Intel・AMD・ARM）',
+  dlSnapInstall: 'またはターミナルで:',
   dlArchWindowsX64: 'Windows 10・11（Intel・AMD、x64）',
   dlArchWindowsArm64: 'Windows 11（Snapdragon、ARM64）',
   dlWindowsUnsigned:

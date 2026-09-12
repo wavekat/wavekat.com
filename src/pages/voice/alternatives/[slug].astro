@@ -3,10 +3,10 @@ import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import VoiceDownload from '../../../components/VoiceDownload.astro';
 import { Check, ArrowLeft, ArrowRight } from '@lucide/astro';
-import { alternatives, type Alternative } from '../../../lib/voice-alternatives';
+import { getAlternatives, type Alternative } from '../../../lib/voice-alternatives';
 
 export function getStaticPaths() {
-  return alternatives.map((alt) => ({
+  return getAlternatives('en').map((alt) => ({
     params: { slug: alt.slug },
     props: { alt },
   }));

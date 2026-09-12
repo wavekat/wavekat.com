@@ -19,6 +19,7 @@ export const ui: UIStrings = {
   dlLinux: 'Linux용 다운로드',
   dlLinuxArm64: 'ARM용 Linux 다운로드',
   dlMsStore: 'Microsoft Store에서 다운로드',
+  dlSnapStore: 'Snap Store에서 다운로드',
   dlWindows: 'Windows용 다운로드',
   dlWindowsArm64: 'ARM용 Windows 다운로드',
   dlOther: '다른 플랫폼',
@@ -27,6 +28,8 @@ export const ui: UIStrings = {
   dlArchLinux: 'Debian 및 Ubuntu (.deb, 64비트)',
   dlArchLinuxArm64: 'Debian 및 Ubuntu (.deb, ARM64)',
   dlArchMsStore: 'Windows 10 및 11, Intel · AMD · ARM',
+  dlArchSnapStore: 'Ubuntu 및 대부분의 Linux 배포판 (Intel · AMD · ARM)',
+  dlSnapInstall: '또는 터미널에서:',
   dlArchWindowsX64: 'Windows 10 및 11, Intel 및 AMD(x64)',
   dlArchWindowsArm64: 'Windows 11, Snapdragon(ARM64)',
   dlWindowsUnsigned:

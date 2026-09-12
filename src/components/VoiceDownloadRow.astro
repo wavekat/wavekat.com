@@ -8,10 +8,10 @@
 // decided by the platform and nothing else, so it is a fact about drawing a
 // row, not a field of the data. That keeps `voice-download-groups.ts` free
 // of component imports.
-import { Apple, Package, AppWindow } from '@lucide/astro';
+import { Apple, Package, AppWindow, ExternalLink } from '@lucide/astro';
 import StoreBadge from './StoreBadge.astro';
 import { resolveLocale } from '../lib/i18n';
-import { badgeStoreFor } from '../lib/badges';
+import { badgeStoreFor, hasBadge } from '../lib/badges';
 import type { DownloadGroup, DownloadRow, PlatformGroupKey } from '../lib/voice-download-groups';
 import { rowAvailable } from '../lib/voice-download-groups';
 
@@ -51,8 +51,13 @@ const { code: badgeLocale } = resolveLocale(Astro.url.pathname);
 // choices, and a row there is read against the rows above it rather than
 // on its own. Two rows drawn as trademarked artwork and a third drawn as
 // an icon beside a label don't read as three equal choices; they read as
-// two offers and a leftover. Linux has no store and so can never have a
-// badge, which means the only style all three rows can share is ours.
+// two offers and a leftover. Linux has a store of its own now, so that
+// third row is no longer condemned to our style everywhere — but it still
+// is on `/zh/` and `/ko/`, where Canonical publishes no artwork (see
+// below), and a rule that drew three badges in seven languages and two in
+// the other two would put the mismatch back in precisely the places least
+// able to absorb it. Ours is the one style all three rows can share in
+// every language.
 //
 // The grid is the opposite case and keeps them. There each store row sits
 // in its own platform's column, under that platform's heading, so it is
@@ -64,7 +69,16 @@ const { code: badgeLocale } = resolveLocale(Astro.url.pathname);
 // artwork on any page, with no test on which page it is: the download
 // page draws the grid and no compact control at all, and every other page
 // draws the control and no grid.
-const badgeStore = context === 'grid' ? badgeStoreFor(row.key) : null;
+//
+// `hasBadge` is the second half of the test, and it is about the LANGUAGE
+// rather than the surface: Canonical publishes no Simplified Chinese or
+// Korean Snap Store badge, so on `/zh/` and `/ko/` this row falls back to
+// the same icon-and-label style the .deb rows use, with its own translated
+// label. Substituting the English artwork was rejected — a page that is
+// localized everywhere else should not hand those readers a phrase in a
+// language they didn't ask for. See BADGE_LOCALES in lib/badges.ts.
+const store = context === 'grid' ? badgeStoreFor(row.key) : null;
+const badgeStore = store && hasBadge(store, badgeLocale) ? store : null;
 
 // The icon is the menu's own mark for a platform — it is what tells three
 // systems apart at a glance in a single column — and since no menu row
@@ -80,6 +94,26 @@ const Icon = context === 'menu' ? ICONS[group.key] : null;
 // it to ask.
 const Tag = row.href ? 'a' : 'button';
 const avail = rowAvailable(row);
+
+// A handoff says so. The store's own artwork is the first way it says it —
+// a visitor who recognises the badge already knows the click ends up at
+// Apple's, Microsoft's or Canonical's listing rather than at a file — so
+// where a badge draws, that is the affordance and this glyph would only
+// crowd artwork we may not alter anyway.
+//
+// Where a badge DOESN'T draw, nothing was saying it. Two surfaces land
+// there, for unrelated reasons: the menu draws no badge on any row in any
+// language (see above), and the grid falls back to our own style on the
+// snap row in `/zh/` and `/ko/`, where Canonical publishes none. Both end
+// up with a store row that is pixel-identical to the .deb row under it —
+// same platform icon, same label weight, same requirement line — and the
+// only thing left distinguishing them is the verb in the label and the
+// absence of a size, neither of which is visible at a glance.
+//
+// Hence the predicate is `href && no badge` rather than anything about the
+// Snap Store: it is the same sentence read twice, and the row it is really
+// about is whichever one the artwork didn't reach.
+const handoff = !!row.href && !badgeStore;
 
 const rowCls =
   'w-full cursor-pointer items-center gap-2.5 rounded border-0 bg-transparent px-3 py-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-white/5';
@@ -110,6 +144,16 @@ const rowCls =
       ) : (
         <span class="text-sm font-bold text-gray-900 dark:text-white">
           {row.label}
+          {/* Inline rather than a flex item pinned to the row's end: below
+              `sm` the menu panel is the width of the screen and the grid
+              column is a third of the page, so these labels wrap — and a
+              glyph in the text flow trails the last line, where a centred
+              flex item would float beside the middle of a two-line label.
+              Lucide marks it `aria-hidden`, which is right: the label
+              already reads "Get it from the Snap Store". */}
+          {handoff && (
+            <ExternalLink class="ml-1 inline-block h-3.5 w-3.5 shrink-0 align-[-0.125em] text-gray-400 dark:text-gray-500" />
+          )}
         </span>
       )}
       {/* The size is ours to state only for a file we publish. A store row

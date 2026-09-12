@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
+import { SNAP_INSTALL_CMD } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 // Hardware requirements are localised chrome, not release data.
@@ -11,7 +12,7 @@ const steps = [
   {
     n: '1',
     title: 'Installez-le',
-    body: 'Sur un Mac, l’App Store installe WaveKat Voice pour vous et vous le retrouvez dans le dossier Applications ; sous Windows, le Microsoft Store fait la même chose. Si vous avez choisi un téléchargement direct, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications sur un Mac, ou lancez le fichier .exe sous Windows. Sur Linux, ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
+    body: 'Sur un Mac, l’App Store installe WaveKat Voice pour vous et vous le retrouvez dans le dossier Applications ; sous Windows, le Microsoft Store fait la même chose. Si vous avez choisi un téléchargement direct, double-cliquez sur le fichier .dmg et glissez WaveKat Voice dans le dossier Applications sur un Mac, ou lancez le fichier .exe sous Windows. Sur Linux, le Snap Store l’installe et le met à jour pour vous — ou ouvrez le .deb dans votre installateur de logiciels, ou installez-le depuis un terminal avec apt ou dpkg.',
   },
   {
     n: '2',
@@ -139,6 +140,28 @@ const highlights = [
     </p>
   </section>
 
+  <!-- Installing on Linux -->
+  <section id="linux" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installation sous Linux</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
+      WaveKat Voice est sur le Snap Store et, sous Ubuntu, c’est la façon la plus simple de l’installer : un paquet qui couvre aussi bien les machines Intel et AMD que les machines ARM, si bien que le Snap Store donne à votre machine la bonne version et la maintient à jour en arrière-plan. snapd est livré avec Ubuntu et s’installe sur la plupart des autres distributions, donc cette seule ligne fonctionne presque partout :
+    </p>
+    {/* The command, set apart so it reads as something to run rather than as
+        prose. `overflow-x-auto` because a terminal line must never be the
+        thing that widens the page on a phone, and `select-all` so one click
+        takes the whole command rather than one word of it. */}
+    <div class="mb-5 max-w-xl overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-white/10 dark:bg-wk-surface">
+      <code class="select-all font-mono text-sm whitespace-pre text-gray-900 dark:text-white">{SNAP_INSTALL_CMD}</code>
+    </div>
+    {/* The two .deb rows, named with the labels the buttons actually carry —
+        interpolated from the UI strings rather than retyped, so a relabelled
+        button can never leave this paragraph quoting a control that is no
+        longer there. */}
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Vous préférez un .deb ? Les deux versions se trouvent dans la colonne Linux ci-dessus, et vous choisissez la vôtre : « {ui.dlLinux} » est la version 64 bits pour les machines Intel et AMD, et « {ui.dlLinuxArm64} » la version native pour les machines ARM. Ouvrez l’une ou l’autre dans votre installateur de logiciels, ou installez-la avec apt ou dpkg.
+    </p>
+  </section>
+
   <!-- What you'll need -->
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Ce dont vous aurez besoin</h2>
@@ -158,7 +181,7 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Rester à jour</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice se maintient à jour tout seul. Une copie venue du Mac App Store ou du Microsoft Store se met à
+      WaveKat Voice se maintient à jour tout seul. Une copie venue du Mac App Store, du Microsoft Store ou du Snap Store se met à
       jour comme n’importe quelle autre app de boutique ; un téléchargement direct vérifie discrètement les nouvelles
       versions et se met à jour en arrière-plan. Dans les deux cas, vous n’aurez jamais à revenir ici pour en télécharger une plus récente.
     </p>

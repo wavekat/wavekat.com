@@ -22,7 +22,13 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
+import {
+  getDownload,
+  MAC_APP_STORE_URL,
+  MS_STORE_URL,
+  SNAP_INSTALL_CMD,
+  SNAP_STORE_URL,
+} from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -186,7 +192,7 @@ const faqs = [
   },
   {
     q: 'Sur quoi fonctionne-t-il ?',
-    a: `Mac, Windows et Linux. Sur macOS, il fonctionne à partir de la version 12 — ${ui.dlArchMac} ; sur Windows, ce sont Windows 10 et 11 ; sur Linux, c’est un paquet .deb pour ${ui.dlArchLinux}.`,
+    a: `Mac, Windows et Linux. Sur macOS, il fonctionne à partir de la version 12 — ${ui.dlArchMac} ; sur Windows, ce sont Windows 10 et 11 ; sur Linux, il est sur le Snap Store et en paquet .deb pour ${ui.dlArchLinux}.`,
   },
   {
     q: 'WaveKat Voice est-il sur le Mac App Store ?',
@@ -195,6 +201,10 @@ const faqs = [
   {
     q: 'WaveKat Voice est-il sur le Microsoft Store ?',
     a: 'Oui. WaveKat Voice est sur le Microsoft Store, gratuitement, et c’est la façon la plus simple de l’installer sous Windows : Microsoft signe le paquet, donc aucun avertissement « éditeur inconnu » n’apparaît, et une seule fiche couvre aussi bien les PC Intel et AMD que les PC ARM. C’est la même app que les téléchargements directs du .exe depuis wavekat.com, qui restent disponibles si vous les préférez. Il faut Windows 10 ou 11.',
+  },
+  {
+    q: 'Comment installer WaveKat Voice sur Ubuntu ?',
+    a: `Exécutez « ${SNAP_INSTALL_CMD} » dans un terminal. WaveKat Voice est sur le Snap Store, gratuitement, et sous Ubuntu c’est la façon la plus simple de l’installer : un seul snap couvre aussi bien les machines Intel et AMD que les machines ARM, et snapd le maintient à jour en arrière-plan. C’est la même application que les téléchargements .deb de wavekat.com, qui restent disponibles si vous les préférez, et snapd est livré avec Ubuntu et s’installe sur la plupart des autres distributions.`,
   },
   {
     q: 'WaveKat Voice fonctionne-t-il sous Windows ?',
@@ -221,7 +231,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/fr/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL],
   description:
     'Une application de bureau qui transforme votre ordinateur en téléphone professionnel — recevez et passez des appels, chaque appel étant enregistré et retranscrit. Compatible avec l’opérateur téléphonique que vous utilisez déjà.',
   featureList: [
@@ -236,11 +246,17 @@ const appSchema = {
     'Neuf langues d’interface, sur macOS, Windows et Linux',
   ],
   // One Offer per storefront, because that is the property that carries
-  // "you can get it here" — `sameAs` only says the listing is us. Both are
-  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // "you can get it here" — `sameAs` only says the listing is us. All three
+  // are free, so they differ by `url` and `seller` alone. `installUrl`
   // above stays single-valued and stays on Apple: Google has only ever
   // documented it against one URL, and an untested array there would trade
   // a property that works for one that might not.
+  //
+  // The Snap Store is a storefront on the same footing as the other two
+  // here — Canonical hosts the package, resolves the architecture and
+  // updates it — so it earns an Offer even though it is not the promoted
+  // Linux control on the page itself. Which control the page promotes is a
+  // design decision; which storefronts carry the app is a fact.
   offers: [
     {
       '@type': 'Offer',
@@ -257,6 +273,14 @@ const appSchema = {
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: SNAP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Snap Store' },
     },
   ],
   publisher: { '@id': 'https://wavekat.com/#organization' },

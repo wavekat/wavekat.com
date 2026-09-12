@@ -2,6 +2,7 @@
 import Voice from '../../../layouts/Voice.astro';
 import { PhoneCall, Mic, FileText } from '@lucide/astro';
 import VoiceDownloadAll from '../../../components/VoiceDownloadAll.astro';
+import { SNAP_INSTALL_CMD } from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 // Hardware requirements are localised chrome, not release data.
@@ -11,7 +12,7 @@ const steps = [
   {
     n: '1',
     title: 'Installalo',
-    body: 'Su Mac, l’App Store installa WaveKat Voice al posto tuo e lo trovi nella cartella Applicazioni; su Windows fa lo stesso il Microsoft Store. Se hai scelto un download diretto, su Mac fai doppio clic sul .dmg e trascina WaveKat Voice nella cartella Applicazioni, oppure su Windows avvia il .exe. Su Linux, apri il .deb nel tuo gestore di software, oppure installalo da terminale con apt o dpkg.',
+    body: 'Su Mac, l’App Store installa WaveKat Voice al posto tuo e lo trovi nella cartella Applicazioni; su Windows fa lo stesso il Microsoft Store. Se hai scelto un download diretto, su Mac fai doppio clic sul .dmg e trascina WaveKat Voice nella cartella Applicazioni, oppure su Windows avvia il .exe. Su Linux, lo Snap Store lo installa e lo aggiorna per te — oppure apri il .deb nel tuo gestore di software, o installalo da terminale con apt o dpkg.',
   },
   {
     n: '2',
@@ -139,6 +140,28 @@ const highlights = [
     </p>
   </section>
 
+  <!-- Installing on Linux -->
+  <section id="linux" class="mb-16">
+    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installazione su Linux</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
+      WaveKat Voice è nello Snap Store e, su Ubuntu, è il modo più semplice per installarlo: un pacchetto che copre allo stesso modo le macchine Intel e AMD e quelle ARM, così lo Snap Store dà alla tua macchina la versione giusta e la tiene aggiornata in background. snapd è incluso in Ubuntu e si installa sulla maggior parte delle altre distribuzioni, quindi questa riga funziona quasi ovunque:
+    </p>
+    {/* The command, set apart so it reads as something to run rather than as
+        prose. `overflow-x-auto` because a terminal line must never be the
+        thing that widens the page on a phone, and `select-all` so one click
+        takes the whole command rather than one word of it. */}
+    <div class="mb-5 max-w-xl overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-white/10 dark:bg-wk-surface">
+      <code class="select-all font-mono text-sm whitespace-pre text-gray-900 dark:text-white">{SNAP_INSTALL_CMD}</code>
+    </div>
+    {/* The two .deb rows, named with the labels the buttons actually carry —
+        interpolated from the UI strings rather than retyped, so a relabelled
+        button can never leave this paragraph quoting a control that is no
+        longer there. */}
+    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
+      Preferisci un .deb? Entrambe le versioni sono nella colonna Linux qui sopra, e scegli tu: «{ui.dlLinux}» è la versione a 64 bit per macchine Intel e AMD, e «{ui.dlLinuxArm64}» è la versione nativa per macchine ARM. Apri una delle due nel tuo gestore di software, oppure installala con apt o dpkg.
+    </p>
+  </section>
+
   <!-- What you'll need -->
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Cosa ti serve</h2>
@@ -158,7 +181,7 @@ const highlights = [
   <section class="mb-4">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Restare aggiornato</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
-      WaveKat Voice si mantiene aggiornato da solo. Una copia dal Mac App Store o dal Microsoft Store si aggiorna
+      WaveKat Voice si mantiene aggiornato da solo. Una copia dal Mac App Store, dal Microsoft Store o dallo Snap Store si aggiorna
       come qualsiasi altra app di store; un download diretto controlla in silenzio la presenza di nuove versioni e si
       aggiorna in background. In entrambi i casi, non dovrai mai tornare qui per scaricarne una più recente.
     </p>

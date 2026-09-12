@@ -118,7 +118,7 @@ This site is optimized for classic search (SEO) **and** generative answer engine
 - **Q&A blocks earn their keep twice** — they render as a human FAQ *and* feed `FAQPage` schema *and* are the single most-quoted structure in AI answers. Phrase questions the way a user would type them ("Can WaveKat Voice connect to the same SIP provider as Linphone?"), and answer in 1–3 plain sentences.
 - **Comparison tables are extractable gold.** Keep cells short, factual, and parallel across rows; models lift table rows almost verbatim into "X vs Y" answers.
 - **Be specific and honest.** Concrete specifics (platforms, versions, prices, "records every call automatically") get quoted; vague superlatives get skipped. On comparison pages, name what the competitor is genuinely good at — fair framing reads as a trustworthy source to both readers and models, and avoids the "marketing fluff" discount.
-- **Keep entity naming consistent.** Always "WaveKat Voice" (not "the app", "Voice", "WaveKat" interchangeably) so engines bind the facts to one entity. Same for platform claims — match the truth in `voice/index.astro` (**Mac, Windows and Linux**; Windows ships an x64 and an ARM64 installer, is younger than the other two, and isn't code-signed yet).
+- **Keep entity naming consistent.** Always "WaveKat Voice" (not "the app", "Voice", "WaveKat" interchangeably) so engines bind the facts to one entity. Same for platform claims — match the truth in `voice/index.astro` (**Mac, Windows and Linux**; Windows ships an x64 and an ARM64 installer, is younger than the other two, and isn't code-signed yet). Store claims are part of this: the app is on **three** stores — Mac App Store, Microsoft Store and Snap Store — so any sentence that enumerates "both stores" is now stale. `grep` for `both stores`/`two stores` before claiming a set is complete; the synced `docs/voice/installation.md` still says two and must be fixed **upstream in `wavekat-voice/docs/site/`**, never here.
 - **Don't target a single platform in copy.** Voice runs on all three desktops; write "your computer" / "desktop" in body copy and put the platforms in a table row or a "Mac, Windows & Linux" qualifier. Titles may still include "Mac" to catch the high-volume "… for Mac" queries, but never *exclude* the other two.
 - **A platform claim is never one sentence.** Promoting a platform means the lead, the meta description, the FAQ answer, *and* the clause after it ("works on both" → "all three") — in all nine locales. Changing only the FAQ leaves the page contradicting itself, and the lead is the passage answer engines quote first. `grep` the whole post, not the section you came for.
 
@@ -159,10 +159,10 @@ i18n is **global, URL-driven infrastructure**, not a per-section feature. `src/l
 
 1. Create the page under the slug dir, mirroring the English page **section-for-section** (e.g. `src/pages/zh/voice/index.astro` mirrors `voice/index.astro`). Translate the *body* copy in the page; the chrome localizes itself via the shared components.
 2. Add the base path to that locale's list in `translatedRoutes`. That one line lights up hreflang, the sitemap, and the switcher.
-3. Add the locale's chrome strings. `en` and `zh-Hans` live inline in the `strings` dict in `i18n.ts`; every other locale keeps its `UIStrings` in its own file `src/lib/ui/<slug>.ts` (imported into the dict) so locales can be authored independently without colliding on one file. Keep each locale's `UIStrings` complete — page body copy lives in the page, only shared chrome lives here.
+3. Add the locale's chrome strings. **Every locale keeps its `UIStrings` in its own file, `src/lib/ui/<slug>.ts`**, imported into the `strings` dict in `i18n.ts` — so locales can be authored independently without colliding on one file, and the directory listing is the list of locales. `en` and `zh-Hans` were inline in the dict until they were extracted to `ui/en.ts` and `ui/zh.ts`; there is no longer an exception, and adding one back makes the file tree lie about which languages ship. Note the file is named for the **slug**, not the code — `zh.ts` holds `zh-Hans`, `zh-hant.ts` holds `zh-Hant` — matching the URL segment. Keep each locale's `UIStrings` complete — page body copy lives in the page, only shared chrome lives here.
 4. Keep localized JSON-LD in sync: set the localized `url` and add `inLanguage` (see `zh/voice/index.astro`).
 
-**Blog posts** are localized via the content collection: English posts live at `src/content/blog/*.md`; translations live under `src/content/blog/<lang>/*.md` with a `lang:` frontmatter field (schema in `content.config.ts`). The default-locale blog routes filter to `data.lang === 'en'`; each `/​<slug>/blog/` route filters to its own language and strips the `<slug>/` id prefix for the URL. Every blog route (listings, per-post pages, RSS) filters through **`blogFilter(lang)` in `src/lib/blog.ts`**, the single place that drops `draft: true` posts — so drafts vanish everywhere at once. Drafts are hidden in normal builds; to preview one locally set `DRAFTS=1` (`make dev-draft` for the dev server, `make build-draft` for a production build). The var is read in Node at build/dev time, never ships to the client, and is unset in CI/Cloudflare so drafts can never leak to production. **Data-driven pages** (e.g. `voice/alternatives/`) keep one template per locale and read locale-keyed datasets via `getAlternatives(locale)` in `voice-alternatives.ts`; `en` and `zh-Hans` are inline there, every other locale's dataset lives in `src/lib/alternatives/<slug>.ts` and is imported (same per-locale-file pattern as the UI strings).
+**Blog posts** are localized via the content collection: English posts live at `src/content/blog/*.md`; translations live under `src/content/blog/<lang>/*.md` with a `lang:` frontmatter field (schema in `content.config.ts`). The default-locale blog routes filter to `data.lang === 'en'`; each `/​<slug>/blog/` route filters to its own language and strips the `<slug>/` id prefix for the URL. Every blog route (listings, per-post pages, RSS) filters through **`blogFilter(lang)` in `src/lib/blog.ts`**, the single place that drops `draft: true` posts — so drafts vanish everywhere at once. Drafts are hidden in normal builds; to preview one locally set `DRAFTS=1` (`make dev-draft` for the dev server, `make build-draft` for a production build). The var is read in Node at build/dev time, never ships to the client, and is unset in CI/Cloudflare so drafts can never leak to production. **Data-driven pages** (e.g. `voice/alternatives/`) keep one template per locale and read locale-keyed datasets via `getAlternatives(locale)` in `voice-alternatives.ts`; **every locale's dataset lives in `src/lib/alternatives/<slug>.ts`**, `en` and `zh-Hans` included (same per-locale-file pattern, and the same slug-not-code naming, as the UI strings). `voice-alternatives.ts` now holds only the `Alternative` types, the locale map and the two accessors — no copy. Read the data through `getAlternatives(locale)` even on English pages rather than importing a dataset directly: that is what makes every locale's template identical, and it is why the raw arrays are no longer exported.
 
 To add a whole new language: add its `localeDefs` entry (with `slug` and any `hreflangAliases`), add its base paths to `translatedRoutes`, add its slug↔code to both the `i18n` and `sitemap` maps in `astro.config.mjs`, create `src/lib/ui/<slug>.ts` + `src/lib/alternatives/<slug>.ts`, and create the `src/pages/<slug>/**` page tree + `src/content/blog/<slug>/*.md` posts.
 
@@ -248,34 +248,71 @@ it's below the 960×640 fold).
 
 ## Official store badges
 
-The Mac App Store and Microsoft Store download controls are each store's own
-**badge artwork**, not our own button — because that artwork is the thing a
-visitor already recognises, and it is what says "reviewed and signed by the
-platform" on a page that also hands out an unsigned Windows `.exe`.
+The Mac App Store, Microsoft Store and Snap Store download controls are each
+store's own **badge artwork**, not our own button — because that artwork is the
+thing a visitor already recognises, and it is what says "reviewed and signed by
+the platform" on a page that also hands out an unsigned Windows `.exe`.
 
 **The rule that decides badge vs button:** a download row with an `href` is a
 store handoff and draws the badge; a row with a `dl` is a file we publish and
 keeps our own control. That is the split `voice-download-groups.ts` already
-turns on, so it needs no new concept — and it is why **Linux keeps the orange
-pill**: Linux has no store, so the rule simply doesn't fire there.
+turns on, so it needs no new concept.
 
-- **Fetched, never committed** — `scripts/sync-badges.js` pulls 36 SVGs (2
-  stores × 9 locales × 2 themes, ~650 KB) from Apple's and Microsoft's own
-  endpoints into gitignored `public/badges/`, and caches them, exactly the way
+**Linux still keeps the orange pill on the hero, and the reason changed.** It
+used to be "Linux has no store, so the rule doesn't fire there". Linux now has
+one: WaveKat Voice is at `snapcraft.io/wavekat-voice`, its badge is a row in
+the menu and a row in the download grid, and it is in `sameAs` and a third
+`Offer` on `/voice/`. What the snap is **not** is *promotable* — the `.deb`
+stays the promoted Linux control, because it is the package Debian can take as
+well as Ubuntu. So the badge never reaches the hero on Linux. If that decision
+is ever reversed, the badge appears there for free.
+
+**That is also the one place the data model grew a concept.** `archKey` used to
+answer two questions at once — "can this row be the button?" and "is it in the
+menu?" — and the snap is the first row where those differ. So there are two
+predicates now: `isPromotable` builds the button's candidates, `inMenu` (a
+deliberate superset) builds the menu's rows, and `VoiceDownload.astro` keeps
+two lists. Don't collapse them back: a non-promotable row rendered in the
+button block emits a second eager `StoreBadge` the script can never show.
+
+- **Fetched, never committed** — `scripts/sync-badges.js` pulls 50 SVGs
+  (~780 KB) from Apple's, Microsoft's and Canonical's own endpoints into
+  gitignored `public/badges/`, and caches them, exactly the way
   `sync-fonts.js` caches the OG typefaces. It runs inside `npm run sync`, so
-  `make dev` and `make build` both have them. The artwork belongs to Apple and
-  Microsoft and may not be altered, so a checked-in copy would only ever be a
+  `make dev` and `make build` both have them. The artwork belongs to those
+  companies and may not be altered, so a checked-in copy would only ever be a
   stale fork of someone else's asset. `npm run check:badges` asserts the set;
   a missing file **throws the build** rather than shipping a page whose only
   download control is a broken image.
+- **50, not 54, and the shortfall is the point.** Apple and Microsoft each
+  publish all 9 locales × 2 themes; Canonical publishes **7** — there is no
+  Simplified Chinese and no Korean Snap Store badge, under any code (`zh`,
+  `zh-CN`, `zh-Hans`, `cn`, `ko`, `ko-KR` all 404). `hasBadge` in
+  `src/lib/badges.ts` is what the page consults, and on `/zh/` and `/ko/` the
+  snap row falls back to our own icon-and-label style with translated text.
+  **Don't "fix" that by serving the English badge** — untranslated artwork on
+  an otherwise fully localized page is worse than no artwork. Because
+  `badgeFiles()` skips the nulls, `check:badges` still asserts exactly the set
+  that can exist and stays a hard gate.
+- **The two locale lists are not cross-checked, and only one direction of
+  drift is loud.** `store-badges.js` says what to fetch; `hasBadge` says what a
+  page may reference. A locale in `hasBadge` but not the downloader throws at
+  build (missing file). A locale in the downloader but not `hasBadge` is
+  **silent** — the file downloads, `check:badges` passes, and the page renders
+  the text fallback forever. So when a store starts publishing a language it
+  didn't before, edit **both**; no gate will remind you.
 - **The locale codes are a table, not a transformation** (`scripts/lib/store-badges.js`).
-  Neither store agrees with our codes or with the other's: Traditional Chinese
-  is Apple `zh-hk` but Microsoft `zh-tw`; Japanese is Apple `ja-jp` but
-  Microsoft `ja`. `zh-hk` is not a typo — Apple files its Traditional artwork
-  under Hong Kong (its `<title>` reads `…_CNTC_…`) and `zh-tw` 404s there.
+  No two stores agree with our codes or with each other's: Traditional Chinese
+  is Apple `zh-hk`, Microsoft `zh-tw`, Canonical `tw`; Japanese is Apple
+  `ja-jp`, Microsoft `ja`, Canonical `jp`. `zh-hk` is not a typo — Apple files
+  its Traditional artwork under Hong Kong (its `<title>` reads `…_CNTC_…`) and
+  `zh-tw` 404s there. Canonical's codes are the *country*-code trap our own
+  i18n naming rules exist to avoid: `jp` **is** their Japanese badge and `ja`
+  404s, `tw` **is** their Traditional badge and every `zh-*` spelling 404s.
 - **Variants are named for the page, not the ink.** Each store names its files
-  after the badge's own colour — Apple `black`/`white`, Microsoft `dark`/`light`
-  — so "light" there means a light *badge*, which belongs on a **dark** page.
+  after the badge's own colour — Apple `black`/`white`, Canonical
+  `black`/`white`, Microsoft `dark`/`light` — so "light" there means a light
+  *badge*, which belongs on a **dark** page.
   Read as "for light backgrounds" it is exactly inverted. The site side
   therefore never says `black` or `light`; it says `on-light` / `on-dark` and
   the table resolves it. Getting this backwards is invisible in a light-theme
@@ -284,21 +321,38 @@ pill**: Linux has no store, so the rule simply doesn't fire there.
 - **Two `<img>`, never `<picture>`.** The theme here is a class on `<html>` from
   localStorage, so a `prefers-color-scheme` media query would ignore the
   visitor's actual toggle. Both variants ship and `dark:` picks one.
-- **Size is read from each SVG's `viewBox` at build time** (`src/lib/badges.ts`),
-  never hardcoded: the badges are a fixed height with a width set by the phrase
-  length, and that ranges 140–183px across locales. The badge is capped at
-  `max-width:100%` with an `aspect-ratio` — without that, the German Microsoft
-  badge (183px, the widest in the set) hangs out of its card at the `sm`
-  breakpoint, where a grid column is ~195px.
+- **Size is read from each SVG's intrinsic size at build time**
+  (`src/lib/badges.ts`), never hardcoded: the badges are a fixed height with a
+  width set by the phrase length, and that ranges 140–183px across locales. The
+  badge is capped at `max-width:100%` with an `aspect-ratio` — without that, the
+  German Microsoft badge (183px, the widest in the set) hangs out of its card at
+  the `sm` breakpoint, where a grid column is ~195px. **Two ways of declaring
+  that size, because the stores disagree:** Apple and Microsoft ship a
+  `viewBox`, Canonical ships `width`/`height` and no `viewBox` at all, so
+  `aspect()` reads either and throws on neither-present. It searches only the
+  opening `<svg>` tag — a whole-file search would find Canonical's full-bleed
+  background `<rect>` and appear to work.
 - **The badge draws where a control stands alone; never in a list beside our
   own.** The hero primary is one control with nothing next to it, so it wears
   the store's artwork. The "other platforms" menu shows all three systems in a
   single column, where a badge above an icon-and-label row reads as two offers
-  and a leftover rather than three equal choices — and since Linux has no store
-  and can never have a badge, the only style all three rows can share is ours.
-  So **no menu row draws a badge**. The download grid is the opposite case and
-  keeps them: each store row sits in its own platform's column, compared with
-  that system's other builds rather than with Linux.
+  and a leftover rather than three equal choices. So **no menu row draws a
+  badge** — not even the snap's, which has artwork. The download grid is the
+  opposite case and keeps them: each store row sits in its own platform's
+  column, compared with that system's other builds rather than across systems.
+- **A handoff that isn't wearing a badge says so with a glyph.** The badge is
+  the first thing that tells a visitor the click ends at Apple's, Microsoft's
+  or Canonical's listing rather than at a file — so where one draws, it is the
+  affordance and nothing is added beside it. Where one doesn't, nothing was
+  saying it at all: the menu draws no badge on any row in any language, and
+  the grid falls back to our own style on the snap row in `/zh/` and `/ko/`.
+  Both leave a store row pixel-identical to the `.deb` row under it, with only
+  the verb in the label and a missing size to tell them apart — neither
+  visible at a glance. So `VoiceDownloadRow` appends a small `ExternalLink`
+  after the label when `row.href && !badgeStore`. The predicate is about the
+  artwork, not about the Snap Store; it needs no new UI string (the label
+  already reads "Get it from the Snap Store", and lucide marks the glyph
+  `aria-hidden`), and it never lands next to artwork we may not alter.
 - **One badge per store per page, enforced by nothing.** The two surfaces never
   meet: `/voice/download/` draws the grid and no compact control (the grid *is*
   the page), and every other page draws the control and no grid. There is

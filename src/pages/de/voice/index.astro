@@ -22,7 +22,13 @@ import {
   Languages,
   Lock,
 } from '@lucide/astro';
-import { getDownload, MAC_APP_STORE_URL, MS_STORE_URL } from '../../../lib/voice-download';
+import {
+  getDownload,
+  MAC_APP_STORE_URL,
+  MS_STORE_URL,
+  SNAP_INSTALL_CMD,
+  SNAP_STORE_URL,
+} from '../../../lib/voice-download';
 import { resolveLocale, t } from '../../../lib/i18n';
 
 const macDownload = await getDownload('mac');
@@ -186,7 +192,7 @@ const faqs = [
   },
   {
     q: 'Worauf läuft es?',
-    a: `Mac, Windows und Linux. Unter macOS läuft es ab Version 12 — ${ui.dlArchMac}; unter Windows sind es Windows 10 und 11; unter Linux ist es ein .deb-Paket für ${ui.dlArchLinux}.`,
+    a: `Mac, Windows und Linux. Unter macOS läuft es ab Version 12 — ${ui.dlArchMac}; unter Windows sind es Windows 10 und 11; unter Linux ist es im Snap Store und als .deb-Paket für ${ui.dlArchLinux} erhältlich.`,
   },
   {
     q: 'Gibt es WaveKat Voice im Mac App Store?',
@@ -195,6 +201,10 @@ const faqs = [
   {
     q: 'Gibt es WaveKat Voice im Microsoft Store?',
     a: 'Ja. WaveKat Voice steht kostenlos im Microsoft Store, und das ist der einfachste Weg, es unter Windows zu installieren — Microsoft signiert das Paket, deshalb erscheint keine Warnung vor einem unbekannten Herausgeber, und ein Eintrag deckt PCs mit Intel und AMD ebenso ab wie ARM-PCs. Es ist dieselbe App wie die direkten .exe-Downloads von wavekat.com, die es weiterhin gibt. Vorausgesetzt werden Windows 10 oder 11.',
+  },
+  {
+    q: 'Wie installiere ich WaveKat Voice unter Ubuntu?',
+    a: `Führen Sie im Terminal „${SNAP_INSTALL_CMD}“ aus. WaveKat Voice ist im Snap Store, kostenlos zu installieren, und unter Ubuntu ist das der einfachste Weg — ein Snap deckt Rechner mit Intel und AMD ebenso ab wie ARM-Rechner, und snapd hält es im Hintergrund aktuell. Es ist dieselbe App wie die .deb-Downloads von wavekat.com, die weiterhin verfügbar bleiben, und snapd ist bei Ubuntu schon dabei und lässt sich auf den meisten anderen Distributionen nachinstallieren.`,
   },
   {
     q: 'Läuft WaveKat Voice unter Windows?',
@@ -221,7 +231,7 @@ const appSchema = {
   softwareVersion: macDownload?.version,
   downloadUrl: 'https://wavekat.com/de/voice/download/',
   installUrl: MAC_APP_STORE_URL,
-  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL],
+  sameAs: [MAC_APP_STORE_URL, MS_STORE_URL, SNAP_STORE_URL],
   description:
     'Eine Desktop-App, die Ihren Computer zu Ihrem Geschäftstelefon macht — Anrufe entgegennehmen und tätigen, wobei jeder Anruf automatisch aufgezeichnet und transkribiert wird. Funktioniert mit dem Telefonanbieter, den Sie bereits haben.',
   featureList: [
@@ -236,11 +246,17 @@ const appSchema = {
     'Neun App-Sprachen, auf macOS, Windows und Linux',
   ],
   // One Offer per storefront, because that is the property that carries
-  // "you can get it here" — `sameAs` only says the listing is us. Both are
-  // free, so the pair differs by `url` and `seller` alone. `installUrl`
+  // "you can get it here" — `sameAs` only says the listing is us. All three
+  // are free, so they differ by `url` and `seller` alone. `installUrl`
   // above stays single-valued and stays on Apple: Google has only ever
   // documented it against one URL, and an untested array there would trade
   // a property that works for one that might not.
+  //
+  // The Snap Store is a storefront on the same footing as the other two
+  // here — Canonical hosts the package, resolves the architecture and
+  // updates it — so it earns an Offer even though it is not the promoted
+  // Linux control on the page itself. Which control the page promotes is a
+  // design decision; which storefronts carry the app is a fact.
   offers: [
     {
       '@type': 'Offer',
@@ -257,6 +273,14 @@ const appSchema = {
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       seller: { '@type': 'Organization', name: 'Microsoft Store' },
+    },
+    {
+      '@type': 'Offer',
+      url: SNAP_STORE_URL,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Snap Store' },
     },
   ],
   publisher: { '@id': 'https://wavekat.com/#organization' },

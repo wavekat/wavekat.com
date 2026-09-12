@@ -13,7 +13,13 @@
 import VoiceDownloadRow from './VoiceDownloadRow.astro';
 import ConversionTracking from './ConversionTracking.astro';
 import VoiceDownloadScripts from './VoiceDownloadScripts.astro';
-import { getDownload, MAC_APP_STORE_CAMPAIGN_URL, MS_STORE_CAMPAIGN_URL } from '../lib/voice-download';
+import {
+  getDownload,
+  MAC_APP_STORE_CAMPAIGN_URL,
+  MS_STORE_CAMPAIGN_URL,
+  SNAP_INSTALL_CMD,
+  SNAP_STORE_URL,
+} from '../lib/voice-download';
 import { buildGroups } from '../lib/voice-download-groups';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
@@ -40,12 +46,16 @@ const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
 const groups = buildGroups(
   ui,
   { mac, linuxX64, linuxArm, winX64, winArm },
-  { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL },
+  {
+    macAppStore: MAC_APP_STORE_CAMPAIGN_URL,
+    msStore: MS_STORE_CAMPAIGN_URL,
+    snapStore: SNAP_STORE_URL,
+  },
 );
 ---
 
-{/* The version, once, above the whole grid — the page states five
-    targets and this states the release they all come from.
+{/* The version, once, above the whole grid — the page states eight
+    choices and this states the release the ones we publish come from.
 
     Keyed to `mac` and to nothing else, deliberately. The printed value and
     the browser-side correction have to name the SAME target or they can
@@ -58,8 +68,9 @@ const groups = buildGroups(
     below already does both for the rows.
 
     The store rows are the reason this is a page-level line rather than a
-    per-row one: Apple and Microsoft resolve their own builds and report no
-    version back here, so half the grid could never carry one. */}
+    per-row one: Apple, Microsoft and Canonical each resolve their own
+    builds and report no version back here, so three of the eight rows
+    could never carry one. */}
 <p
   data-dl-row="mac"
   data-dl-show="block"
@@ -84,16 +95,38 @@ const groups = buildGroups(
           <VoiceDownloadRow group={group} row={row} context="grid" />
         ))}
       </div>
-      {/* Only Windows has a note, and it is about the two direct .exe rows
-          directly above it — which is the whole reason it sits at the foot
-          of this column rather than anywhere near the button on a page
-          whose visitor may well be on a Mac. */}
-      {group.windows && (
+      {/* Two columns carry a note, and each is about specific rows directly
+          above it — which is the whole reason a note sits at the foot of its
+          own column rather than anywhere near the button on a page whose
+          visitor may well be on a third platform. */}
+      {group.note === 'windows' && (
         <p class="px-3 pt-2 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
           {ui.dlWindowsUnsigned}{' '}
           <a href={unsignedHref} class="underline underline-offset-2 hover:text-gray-900 dark:hover:text-white">
             {ui.dlWindowsUnsignedLink}
           </a>
+        </p>
+      )}
+      {/* The terminal install for the snap row above. A Linux visitor who is
+          already in a terminal does not want to open a store page, and this
+          is also the most quotable line on the page — an answer engine asked
+          how to install WaveKat Voice on Ubuntu lifts a command far more
+          readily than it lifts a button.
+
+          Selectable, not a copy button: one line of shell is a triple-click
+          away, and a button here would need a label, a confirmed state and a
+          clipboard permission to save nothing. `select-all` makes that
+          triple-click unnecessary.
+
+          `break-all` because the column is a third of the page at `sm` and
+          the command is 31 characters — it has to be allowed to break rather
+          than widen its card. */}
+      {group.note === 'linux' && (
+        <p class="px-3 pt-2 pb-1 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
+          {ui.dlSnapInstall}{' '}
+          <code class="select-all break-all font-mono text-gray-900 dark:text-white">
+            {SNAP_INSTALL_CMD}
+          </code>
         </p>
       )}
     </div>

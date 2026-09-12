@@ -2,8 +2,10 @@
 import Voice from '../../../layouts/Voice.astro';
 import TalkCTA from '../../../components/TalkCTA.astro';
 import { ArrowRight } from '@lucide/astro';
-import { alternatives } from '../../../lib/voice-alternatives';
+import { getAlternatives } from '../../../lib/voice-alternatives';
 import { getProviders } from '../../../lib/voice-providers';
+
+const alternatives = getAlternatives('en');
 
 // ItemList of the comparison pages — helps search engines see the hub as the
 // parent of the individual "<name> alternative" pages.

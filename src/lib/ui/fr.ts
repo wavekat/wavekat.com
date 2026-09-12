@@ -19,6 +19,7 @@ export const ui: UIStrings = {
   dlLinux: 'Télécharger pour Linux',
   dlLinuxArm64: 'Télécharger pour Linux sur ARM',
   dlMsStore: 'Obtenir sur le Microsoft Store',
+  dlSnapStore: 'Obtenir sur le Snap Store',
   dlWindows: 'Télécharger pour Windows',
   dlWindowsArm64: 'Télécharger pour Windows sur ARM',
   dlOther: 'Autres plateformes',
@@ -27,6 +28,8 @@ export const ui: UIStrings = {
   dlArchLinux: 'Debian et Ubuntu (.deb, 64 bits)',
   dlArchLinuxArm64: 'Debian et Ubuntu (.deb, ARM64)',
   dlArchMsStore: 'Windows 10 et 11, Intel, AMD et ARM',
+  dlArchSnapStore: 'Ubuntu et la plupart des distros Linux (Intel, AMD et ARM)',
+  dlSnapInstall: 'Ou depuis un terminal :',
   dlArchWindowsX64: 'Windows 10 et 11, Intel et AMD (x64)',
   dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
   dlWindowsUnsigned:

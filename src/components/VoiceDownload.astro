@@ -15,19 +15,27 @@
 // carefully, and stacking a second disclosure inside this one to hold the
 // difference was neither.
 //
-// That split needs no rule of its own: it is the arch mechanism read one
-// way round. A row whose `archKey` is promotable (`default`, or `arm64`
-// once the browser confirms the chip) is a candidate for the button, and
-// therefore a menu row; a `direct*` row is promoted by nothing, so it is a
-// page row. `isPromotable` in voice-download-groups.ts is the whole test.
+// That split is mostly the arch mechanism read one way round. A row whose
+// `archKey` is promotable (`default`, or `arm64` once the browser confirms
+// the chip) is a candidate for the button, and therefore a menu row; a
+// `direct*` row is promoted by nothing, so it is a page row.
 //
-// Which leaves Linux as the one platform that still has to work the
-// architecture out for itself — x64 is what everyone starts on, and a
-// machine that confirms it is ARM64 is upgraded to the native build. Mac
-// publishes a single arm64 build, and Windows hands the question to the
-// Microsoft Store, whose one listing carries both packages. Confirming the
-// chip takes `navigator.userAgentData`, so it happens a beat after the
-// platform swap rather than with it. See docs/05.
+// The Snap Store is the one row where "in the menu" and "can be the button"
+// had to come apart, so there are now two predicates rather than one:
+// `isPromotable` builds the button's candidates and `inMenu` (a superset)
+// builds the menu's rows. Both live in voice-download-groups.ts, and the
+// reason the snap is in the second list and not the first is there.
+//
+// Which leaves Linux as the one platform whose PROMOTED control still has
+// to work the architecture out for itself — x64 is what everyone starts on,
+// and a machine that confirms it is ARM64 is upgraded to the native build.
+// The Snap Store does not relieve it of that: the snap resolves its own
+// revision, but it is never the button, so the button is still choosing
+// between two .deb files that are not interchangeable. Mac publishes a
+// single arm64 build, and Windows hands the question to the Microsoft
+// Store, whose one listing carries both packages. Confirming the chip takes
+// `navigator.userAgentData`, so it happens a beat after the platform swap
+// rather than with it. See docs/05.
 //
 // With JS off, the <noscript> block still lists every build we publish.
 import { Apple, Package, AppWindow, ChevronDown, ArrowRight } from '@lucide/astro';
@@ -40,11 +48,12 @@ import {
   RELEASES_URL,
   MAC_APP_STORE_CAMPAIGN_URL,
   MS_STORE_CAMPAIGN_URL,
+  SNAP_STORE_URL,
 } from '../lib/voice-download';
 import StoreBadge from './StoreBadge.astro';
-import { buildGroups, isPromotable, rowAvailable } from '../lib/voice-download-groups';
+import { buildGroups, inMenu, isPromotable, rowAvailable } from '../lib/voice-download-groups';
 import type { PlatformGroupKey } from '../lib/voice-download-groups';
-import { badgeStoreFor } from '../lib/badges';
+import { badgeStoreFor, hasBadge } from '../lib/badges';
 import { localizedPath, resolveLocale, t } from '../lib/i18n';
 
 interface Props {
@@ -73,22 +82,36 @@ const [mac, linuxX64, linuxArm, winX64, winArm] = await Promise.all([
 const groups = buildGroups(
   ui,
   { mac, linuxX64, linuxArm, winX64, winArm },
-  { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL },
+  { macAppStore: MAC_APP_STORE_CAMPAIGN_URL, msStore: MS_STORE_CAMPAIGN_URL, snapStore: SNAP_STORE_URL },
 );
 
-// Every entry here is both a candidate primary and a menu row, and the two
-// are exact opposites: the menu lists precisely what the button isn't
-// offering. One list drives both, so the pair can't drift into showing a
-// choice twice or not at all. A Linux visitor on x64 still sees the ARM
+const decorate = (g: (typeof groups)[number], row: (typeof groups)[number]['rows'][number]) => ({
+  group: g,
+  row,
+  Tag: row.href ? ('a' as const) : ('button' as const),
+  avail: rowAvailable(row),
+});
+
+// The rows the button may offer. A Linux visitor on x64 still sees the ARM
 // build in the menu — it is the one choice their primary can't make for
 // them — and an ARM visitor sees x64 there for the same reason, in reverse.
-const entries = groups.flatMap((g) =>
-  g.rows.filter((row) => isPromotable(row.archKey)).map((row) => ({
-    group: g,
-    row,
-    Tag: row.href ? ('a' as const) : ('button' as const),
-    avail: rowAvailable(row),
-  })),
+const primaries = groups.flatMap((g) =>
+  g.rows.filter((row) => isPromotable(row.archKey)).map((row) => decorate(g, row)),
+);
+
+// The rows the menu lists: every candidate primary, plus the ones that are
+// listed but never promoted. Two lists rather than one because the Snap
+// Store pulled those apart (see `inMenu`), and they must not be collapsed
+// back: rendering a non-promotable row in the button block below would emit
+// a second StoreBadge — two eager <img> for artwork the script can never
+// show — and a `data-dl-primary` element whose arch no `order` ever matches.
+//
+// `menuRows` is a superset of `primaries`, which is what keeps the old
+// invariant intact: the menu still lists precisely what the button isn't
+// offering, so the pair can't drift into showing a choice twice or not at
+// all.
+const menuRows = groups.flatMap((g) =>
+  g.rows.filter((row) => inMenu(row.archKey)).map((row) => decorate(g, row)),
 );
 
 // The primary button's icon. The menu rows resolve their own (see
@@ -102,7 +125,7 @@ const ICONS: Record<PlatformGroupKey, any> = { mac: Apple, windows: AppWindow, l
 const DEFAULT = 'mac';
 const DEFAULT_ARCH = 'default';
 
-const isDefaultPrimary = (e: (typeof entries)[number]) =>
+const isDefaultPrimary = (e: (typeof primaries)[number]) =>
   e.group.key === DEFAULT && e.row.archKey === DEFAULT_ARCH;
 
 // Display utility is toggled separately from the rest: an element gets
@@ -122,9 +145,11 @@ const primaryCls =
 // pointer because the visitor is on a Mac rather than Linux would read as
 // broken. Everything else is deliberately absent: no padding, no
 // background, no radius of ours. The badge is already a complete control
-// with all three, and both stores require their artwork be used as
-// published — a background behind it or a corner radius over it is exactly
-// the alteration they forbid.
+// with all three, and Apple and Microsoft — the only two stores that ever
+// reach this block, since the Snap Store is never promoted — both require
+// their artwork be used as published. A background behind it or a corner
+// radius over it is exactly the alteration they forbid. Canonical asks the
+// same; see VoiceDownloadRow, where its badge does draw.
 //
 // The radius here is on the FOCUS RING alone, so keyboard focus traces the
 // badge's own corners rather than boxing it in a square.
@@ -180,12 +205,19 @@ const allCls =
         is a link worth having followed. `data-dl-avail` is the build's
         answer to "does this file exist", refreshed in the browser, and the
         promotion script won't put an unavailable target on the button. */}
-    {entries.map((e) => {
+    {primaries.map((e) => {
       const Icon = ICONS[e.group.key];
       // Mac and Windows promote to a store, so their primary IS the store's
-      // badge; Linux has no store and keeps the orange pill. That isn't an
-      // inconsistency to tidy away later — it's the same `href` vs `dl`
-      // split the rest of this file turns on, drawn at button size.
+      // badge; Linux keeps the orange pill. That isn't an inconsistency to
+      // tidy away later — it's the same `href` vs `dl` split the rest of
+      // this file turns on, drawn at button size.
+      //
+      // Linux keeping the pill is no longer "Linux has no store": it has
+      // one, and its badge is a row in this menu and a row on the download
+      // grid. What it is not is PROMOTABLE, so it never reaches this block
+      // — the .deb stays the promoted Linux control, and the pill is what a
+      // file we publish always wears. If the snap is ever promoted, this
+      // comment is wrong and the badge appears here for free.
       //
       // It reads correctly here and would not in the menu below, for a
       // reason about the surface rather than the row: exactly ONE primary
@@ -198,7 +230,18 @@ const allCls =
       // No page-level exception is needed either. This control is not
       // rendered on the download page, whose grid draws the same badges
       // one screen lower, so the two can't both appear.
-      const store = badgeStoreFor(e.row.key);
+      // `hasBadge` as well as `badgeStoreFor`, for the same reason the grid
+      // row checks both: a store can be a handoff here and still publish no
+      // artwork in this page's language. No promotable row needs it today —
+      // Apple and Microsoft cover all nine locales — but the comment above
+      // promises the Snap Store's badge would appear here "for free" if it
+      // were ever promoted, and without this line that promise is a build
+      // failure on /ko/ and /zh/ reading "badges/snap/on-light/ko.svg is
+      // missing", which misdirects the fix entirely: the file cannot be
+      // fetched, because Canonical publishes none. With it, those two
+      // locales fall back to the orange pill and the promise holds.
+      const handoff = badgeStoreFor(e.row.key);
+      const store = handoff && hasBadge(handoff, lang) ? handoff : null;
       return (
         <e.Tag
           type={e.row.href ? undefined : 'button'}
@@ -241,7 +284,7 @@ const allCls =
         <ChevronDown class="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
       </summary>
       <div class={panelCls}>
-        {entries.map((e) => (
+        {menuRows.map((e) => (
           <VoiceDownloadRow group={e.group} row={e.row} context="menu" hidden={isDefaultPrimary(e)} />
         ))}
 

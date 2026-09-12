@@ -115,6 +115,53 @@ export const MS_STORE_URL = 'https://apps.microsoft.com/detail/9N7F4FSRVNZB';
 // because schema should name the listing and not our attribution of it.
 export const MS_STORE_CAMPAIGN_URL = `${MS_STORE_URL}?cid=wavekat-com`;
 
+// The Snap Store listing — the third store handoff, and a handoff for every
+// reason the other two are: Canonical resolves the channel, installs the
+// snap and updates it in the background, and reports none of that back here.
+// So it has no release to read a version or a size from, nothing for the
+// browser-side refresh to correct, and no download for the platform to log,
+// which is why it stays out of getDownload() and off PlatformKey.
+//
+// Like the Microsoft Store listing and unlike the two .deb targets, it names
+// no architecture: the one snap name carries both amd64 and arm64 revisions
+// and `snap install` hands each machine its own. The .deb pair cannot do
+// that, which is why those remain two separate targets.
+//
+// No locale segment, for the reason the Apple and Microsoft links have none
+// — snapcraft.io serves one URL to every visitor.
+export const SNAP_STORE_URL = 'https://snapcraft.io/wavekat-voice';
+
+// There is deliberately NO campaign-tagged twin of the URL above, and its
+// absence is a fact about the Snap Store rather than an oversight here.
+//
+// Apple takes `pt`/`ct` and Microsoft takes `cid`, so each of those listings
+// has a tagged URL for the link and an untagged one for `sameAs` in the
+// structured data. Canonical publishes no install-attribution parameter at
+// all — snapcraft.io accepts no referrer key, and the Snap Store metrics we
+// can see (snapcraft.io/wavekat-voice/metrics) count installs by country and
+// distro with no notion of where the click came from. So one constant serves
+// both the link and the schema, and nobody should add a `_CAMPAIGN_URL`
+// here expecting it to be read.
+//
+// The practical consequence is worth knowing when reading the numbers: snap
+// installs cannot be attributed to this site the way App Store and Partner
+// Center installs can.
+
+/**
+ * The terminal install, printed beside the Snap Store row.
+ *
+ * A Linux visitor who is already in a terminal does not want a web page, and
+ * this line is also the single most quotable thing on the download page — an
+ * answer engine asked "how do I install WaveKat Voice on Ubuntu" lifts a
+ * command verbatim far more readily than it lifts a button.
+ *
+ * It names no channel, which is only correct once a revision is released to
+ * `latest/stable`: `snap install` defaults to the stable channel, and on a
+ * snap published to `beta` alone this exact command fails with "no snap
+ * revision on channel 'stable'". Keep that release ahead of this string.
+ */
+export const SNAP_INSTALL_CMD = 'sudo snap install wavekat-voice';
+
 export type PlatformKey =
   | 'mac'
   | 'linux-x64'
