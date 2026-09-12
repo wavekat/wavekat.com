@@ -6,7 +6,7 @@ import { Mail } from '@lucide/astro';
 
 // Single source of truth for the "last updated" line, the WebPage schema's
 // dateModified, and nothing else — change it whenever the policy text changes.
-const updated = new Date('2026-08-04');
+const updated = new Date('2026-09-12');
 const updatedLabel = updated.toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
@@ -338,6 +338,9 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           the time you last signed in. It's what lets us recognise you next time and show you as
           signed in. You can connect both GitHub and Google to the same account, and disconnect
           either one as long as it isn't your last way in.
+        </p>
+        <p class={`${p} mb-3`}>
+          By creating an account you agree that we may use the email address it gives us to contact you — about your account, about WaveKat and what we build, or whenever we have something we'd like to tell you. You can opt out of these messages at any time by replying to one or writing to <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a>; we'll still send the notices we have to, such as a security notice or a change to this policy.
         </p>
         <p class={p}>
           If you use the <code class="font-mono text-xs">wk</code> command-line tool, it signs in the

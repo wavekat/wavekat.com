@@ -6,7 +6,7 @@ import { Mail } from '@lucide/astro';
 
 // Mirrors /privacy/ section-for-section (see src/pages/privacy.astro).
 // Keep the date in sync with the English page — one policy, one revision.
-const updated = new Date('2026-08-04');
+const updated = new Date('2026-09-12');
 const updatedLabel = `${updated.getFullYear()}年${updated.getMonth() + 1}月${updated.getDate()}日`;
 
 // Section id → heading, in document order. Ids match the English page so a
@@ -226,6 +226,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <h2 class={h2}>{S.signin}</h2>
         <p class={`${p} mb-3`} set:html={`WaveKat アカウントは任意です——デスクトップアプリはアカウントなしで動きます。アカウントを作るときは、私たちが預かるパスワードではなく、${b('GitHub または Google')} でサインインします。あなたの GitHub や Google のパスワードを私たちが見ることは決してありません。`} />
         <p class={`${p} mb-3`}>そのサインインが私たちに渡し、私たちが保存するのは：ユーザー名、表示名、メールアドレス、プロフィール画像の URL、プロバイダー側のアカウント識別子、最後にサインインした時刻です。次回あなたを見分け、サインイン中であることを表示するために使います。GitHub と Google を同じアカウントに両方つなぐこともでき、最後のサインイン手段でない限りどちらかを外すこともできます。</p>
+        <p class={`${p} mb-3`} set:html={`アカウントを作成することで、そのとき私たちに渡されるメールアドレスを使ってご連絡することに同意いただいたものとします——アカウントについて、WaveKat や私たちが作るものについて、あるいはお伝えしたいことがあるときにご連絡します。こうしたメールはいつでも停止できます。どれかに返信するか、<a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a> までご連絡ください。セキュリティ上のお知らせやこのポリシーの変更など、お送りする必要のあるご案内は引き続きお届けします。`} />
         <p class={p} set:html={`コマンドラインツール <code class="font-mono text-xs">wk</code> を使う場合も同じ方法でサインインし、アクセストークンを保存します。トークンには要求したマシンの名前が付くので、自分の端末を見分けられます。`} />
       </section>
 

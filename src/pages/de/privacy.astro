@@ -6,7 +6,7 @@ import { Mail } from '@lucide/astro';
 
 // Mirrors /privacy/ section-for-section (see src/pages/privacy.astro).
 // Keep the date in sync with the English page — one policy, one revision.
-const updated = new Date('2026-08-04');
+const updated = new Date('2026-09-12');
 const updatedLabel = updated.toLocaleDateString('de-DE', {
   day: 'numeric',
   month: 'long',
@@ -328,6 +328,9 @@ const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-to
           Mal wieder und zeigen Sie als angemeldet an. Sie können GitHub und Google mit demselben
           Konto verknüpfen und jede der beiden Verknüpfungen wieder lösen, solange sie nicht Ihr
           letzter Zugang ist.
+        </p>
+        <p class={`${p} mb-3`}>
+          Mit dem Erstellen eines Kontos stimmen Sie zu, dass wir die dabei übermittelte E-Mail-Adresse nutzen dürfen, um Sie zu kontaktieren — zu Ihrem Konto, zu WaveKat und dem, was wir entwickeln, oder wann immer wir Ihnen etwas mitteilen möchten. Sie können diese Nachrichten jederzeit abbestellen, indem Sie auf eine davon antworten oder an <a href="mailto:hello@wavekat.com" class={link}>hello@wavekat.com</a> schreiben; Hinweise, die wir senden müssen, etwa einen Sicherheitshinweis oder eine Änderung dieser Richtlinie, erhalten Sie weiterhin.
         </p>
         <p class={p}>
           Wenn Sie das Kommandozeilenwerkzeug <code class="font-mono text-xs">wk</code> nutzen, meldet

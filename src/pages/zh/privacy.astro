@@ -6,7 +6,7 @@ import { Mail } from '@lucide/astro';
 
 // Mirrors /privacy/ section-for-section (see src/pages/privacy.astro).
 // Keep the date in sync with the English page — one policy, one revision.
-const updated = new Date('2026-08-04');
+const updated = new Date('2026-09-12');
 const updatedLabel = `${updated.getFullYear()} 年 ${updated.getMonth() + 1} 月 ${updated.getDate()} 日`;
 
 // Section id → heading, in document order. Ids match the English page so a
@@ -229,6 +229,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <h2 class={h2}>{S.signin}</h2>
         <p class={`${p} mb-3`} set:html={`WaveKat 账户是可选的——桌面应用不注册也能使用。当你确实要创建账户时，你通过 ${b('GitHub 或 Google')} 登录，而不是使用一个由我们保管的密码。我们永远看不到你的 GitHub 或 Google 密码。`} />
         <p class={`${p} mb-3`}>这次登录交给我们、并由我们保存的内容是：你的用户名或账号标识、显示名称、电子邮件地址、头像地址、该服务方的账户标识符，以及你最近一次登录的时间。它们用于下次认出你，并显示你已登录。你可以把 GitHub 和 Google 同时关联到同一个账户，也可以解除其中之一——只要它不是你最后的登录方式。</p>
+        <p class={`${p} mb-3`} set:html={`创建账户即表示你同意我们使用它交给我们的电子邮件地址与你联系——关于你的账户、关于 WaveKat 和我们做的东西，或在我们有事想告诉你的时候。你随时可以回复其中任意一封，或写信到 <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a> 来取消接收这些邮件；安全通知或本政策的变更等必须发送的通知，我们仍会发给你。`} />
         <p class={p} set:html={`如果你使用 <code class="font-mono text-xs">wk</code> 命令行工具，它以同样的方式登录，并保存一个访问令牌，令牌上标注着请求它的那台机器的名称，方便你区分自己的设备。`} />
       </section>
 
