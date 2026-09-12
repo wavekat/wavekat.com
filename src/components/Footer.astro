@@ -58,6 +58,10 @@ const groups = [
       // policy nobody can find isn't one. Locales without their own translation
       // yet fall through to the English page via localeHref.
       { href: localeHref('/privacy/'), label: ui.footerPrivacy },
+      // Sits beside privacy for the same reason: the app and the sign-in
+      // page both ask people to agree to it, so it has to be findable
+      // afterwards from anywhere on the site, in their own language.
+      { href: localeHref('/terms/'), label: ui.footerTerms },
       // English-only, deliberately: the wallpaper page itself isn't translated,
       // so it's offered where the reader is already reading English rather than
       // pointing a localized footer at an English destination. That also keeps

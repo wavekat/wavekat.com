@@ -46,6 +46,7 @@ export const ui: UIStrings = {
   footerEmail: 'Schreiben Sie uns',
   footerAbout: 'Über uns',
   footerPrivacy: 'Datenschutz',
+  footerTerms: 'AGB',
   footerPrompts: 'Sprachgenerator',
   footerPlatform: 'Plattform',
   footerMore: 'Mehr',
