@@ -324,9 +324,12 @@ export interface UIStrings {
   postUpdated: string;
 }
 
-// Per-locale chrome strings for the fully-translated locales live in their own
-// files (src/lib/ui/<slug>.ts) so each can be authored independently. en and
-// zh-Hans stay inline as the reference pair.
+// Every locale's chrome strings live in their own file (src/lib/ui/<slug>.ts)
+// so each can be authored independently and the directory listing is the list
+// of locales. The file is named for the URL slug, not the BCP-47 code, which
+// is why Simplified Chinese is ui/zh.ts and Traditional is ui/zh-hant.ts.
+import { ui as uiEn } from './ui/en';
+import { ui as uiZhHans } from './ui/zh';
 import { ui as uiZhHant } from './ui/zh-hant';
 import { ui as uiJa } from './ui/ja';
 import { ui as uiKo } from './ui/ko';
@@ -335,7 +338,11 @@ import { ui as uiEs } from './ui/es';
 import { ui as uiFr } from './ui/fr';
 import { ui as uiIt } from './ui/it';
 
+// Keyed by BCP-47 `code`, in the same order as `localeDefs` above — the
+// default locale first, since every other locale falls back to it.
 const strings: Record<string, UIStrings> = {
+  en: uiEn,
+  'zh-Hans': uiZhHans,
   'zh-Hant': uiZhHant,
   ja: uiJa,
   ko: uiKo,
@@ -343,120 +350,6 @@ const strings: Record<string, UIStrings> = {
   es: uiEs,
   fr: uiFr,
   it: uiIt,
-  en: {
-    navVoice: 'Voice',
-    navDocs: 'Docs',
-    navBlog: 'Blog',
-    switcherLabel: 'Change language',
-    bannerText: 'This page is available in English.',
-    bannerView: 'View',
-    bannerDismiss: 'Dismiss',
-    subOverview: 'Overview',
-    subUseCases: 'Use Cases',
-    subAlternatives: 'Alternatives',
-    subDownload: 'Download',
-    subChangelog: "What's New",
-    subTalk: 'Talk to Us',
-    dlMac: 'Download for Mac',
-    dlMacAppStore: 'Download on the Mac App Store',
-    dlLinux: 'Download for Linux',
-    dlLinuxArm64: 'Download for Linux on ARM',
-    dlMsStore: 'Get it from Microsoft Store',
-    dlSnapStore: 'Get it from the Snap Store',
-    dlWindows: 'Download for Windows',
-    dlWindowsArm64: 'Download for Windows on ARM',
-    dlOther: 'Other Platforms',
-    dlArchMac: 'Macs with Apple chip (M1 or newer)',
-    dlArchMacAppStore: 'macOS 12 or later, Apple chip',
-    dlArchLinux: 'Debian & Ubuntu (.deb, Intel & AMD 64-bit)',
-    dlArchLinuxArm64: 'Debian & Ubuntu (.deb, ARM64)',
-    dlArchMsStore: 'Windows 10 & 11, Intel, AMD & ARM',
-    dlArchSnapStore: 'Ubuntu & most Linux distros (Intel, AMD & ARM)',
-    dlSnapInstall: 'Or from a terminal:',
-    dlArchWindowsX64: 'Windows 10 & 11, Intel & AMD (x64)',
-    dlArchWindowsArm64: 'Windows 11, Snapdragon (ARM64)',
-    dlWindowsUnsigned:
-      "The direct Windows downloads aren't code-signed, so Windows warns on first launch. The Microsoft Store version is signed.",
-    dlWindowsUnsignedLink: 'How to get past it',
-    dlAllDownloads: 'All downloads and installers',
-    dlLatestRelease: 'Latest WaveKat Voice release',
-    talkHeading: 'Talk to us',
-    talkBody:
-      'Questions, feedback, or a device you wish we supported? Email is the best way to reach us — we read every message and reply as soon as we can.',
-    talkButton: 'Email us',
-    talkWritePre: 'Or write to ',
-    talkWritePost: ' directly.',
-    footerEmail: 'Email us',
-    footerSource: 'View source on GitHub',
-    footerAbout: 'About',
-    footerPrivacy: 'Privacy',
-    footerPrompts: 'Prompt Generator',
-    footerPlatform: 'Platform',
-    footerMore: 'More',
-    footerTools: 'Tools',
-    notFoundTitle: "Page not found",
-    notFoundBody: "The page you're looking for doesn't exist or has moved.",
-    notFoundHome: "Go to the homepage",
-    postBack: '← Back to Blog',
-    postUpdated: 'updated',
-  },
-  'zh-Hans': {
-    navVoice: '语音',
-    navDocs: '文档',
-    navBlog: '博客',
-    switcherLabel: '切换语言',
-    bannerText: '本页面有简体中文版本。',
-    bannerView: '查看',
-    bannerDismiss: '关闭',
-    subOverview: '概览',
-    subUseCases: '应用场景',
-    subAlternatives: '替代方案',
-    subDownload: '下载',
-    subChangelog: '更新日志',
-    subTalk: '联系我们',
-    dlMac: '下载 Mac 版',
-    dlMacAppStore: '从 Mac App Store 下载',
-    dlLinux: '下载 Linux 版',
-    dlLinuxArm64: '下载 ARM 版 Linux',
-    dlMsStore: '从 Microsoft Store 获取',
-    dlSnapStore: '从 Snap Store 获取',
-    dlWindows: '下载 Windows 版',
-    dlWindowsArm64: '下载 ARM 版 Windows',
-    dlOther: '其他平台',
-    dlArchMac: '搭载 Apple 芯片的 Mac（M1 或更新机型）',
-    dlArchMacAppStore: 'macOS 12 或更高版本，Apple 芯片',
-    dlArchLinux: 'Debian 与 Ubuntu（.deb，Intel 与 AMD 64 位）',
-    dlArchLinuxArm64: 'Debian 与 Ubuntu（.deb，ARM64）',
-    dlArchMsStore: 'Windows 10 与 11，Intel、AMD 与 ARM',
-    dlArchSnapStore: 'Ubuntu 与大多数 Linux 发行版（Intel、AMD 与 ARM）',
-    dlSnapInstall: '或在终端中运行：',
-    dlArchWindowsX64: 'Windows 10 与 11，Intel 与 AMD（x64）',
-    dlArchWindowsArm64: 'Windows 11，骁龙（ARM64）',
-    dlWindowsUnsigned:
-      '直接下载的 Windows 版尚未进行代码签名，首次启动时系统会弹出提醒；Microsoft Store 版本已签名。',
-    dlWindowsUnsignedLink: '如何继续安装',
-    dlAllDownloads: '所有下载与安装程序',
-    dlLatestRelease: 'WaveKat Voice 最新版本',
-    talkHeading: '联系我们',
-    talkBody:
-      '有疑问、建议，或希望我们支持某种设备？邮件是联系我们的最佳方式——我们会阅读每一条消息，并尽快回复。',
-    talkButton: '给我们发邮件',
-    talkWritePre: '或直接写信至 ',
-    talkWritePost: '。',
-    footerEmail: '给我们发邮件',
-    footerSource: '在 GitHub 上查看源码',
-    footerAbout: '关于',
-    footerPrivacy: '隐私政策',
-    footerPrompts: '语音生成器',
-    footerPlatform: '平台',
-    footerMore: '更多',
-    footerTools: '工具',
-    notFoundTitle: "页面不存在",
-    notFoundBody: "您要找的页面不存在或已被移动。",
-    notFoundHome: "返回首页",
-    postBack: '← 返回博客',
-    postUpdated: '更新于',
-  },
 };
 
 /** UI strings for a locale, falling back to the default locale. */
