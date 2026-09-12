@@ -340,6 +340,19 @@ button block emits a second eager `StoreBadge` the script can never show.
   badge** — not even the snap's, which has artwork. The download grid is the
   opposite case and keeps them: each store row sits in its own platform's
   column, compared with that system's other builds rather than across systems.
+- **A handoff that isn't wearing a badge says so with a glyph.** The badge is
+  the first thing that tells a visitor the click ends at Apple's, Microsoft's
+  or Canonical's listing rather than at a file — so where one draws, it is the
+  affordance and nothing is added beside it. Where one doesn't, nothing was
+  saying it at all: the menu draws no badge on any row in any language, and
+  the grid falls back to our own style on the snap row in `/zh/` and `/ko/`.
+  Both leave a store row pixel-identical to the `.deb` row under it, with only
+  the verb in the label and a missing size to tell them apart — neither
+  visible at a glance. So `VoiceDownloadRow` appends a small `ExternalLink`
+  after the label when `row.href && !badgeStore`. The predicate is about the
+  artwork, not about the Snap Store; it needs no new UI string (the label
+  already reads "Get it from the Snap Store", and lucide marks the glyph
+  `aria-hidden`), and it never lands next to artwork we may not alter.
 - **One badge per store per page, enforced by nothing.** The two surfaces never
   meet: `/voice/download/` draws the grid and no compact control (the grid *is*
   the page), and every other page draws the control and no grid. There is
