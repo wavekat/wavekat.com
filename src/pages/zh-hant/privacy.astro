@@ -60,7 +60,7 @@ const faqs = [
   },
   {
     q: '如何刪除 WaveKat 掌握的所有我的資料？',
-    a: '這台電腦上的資料，使用「設定 → WaveKat 帳戶 → 刪除本機資料」，它會清除通話記錄、錄音、轉寫文字以及你的登入狀態。已同步到 WaveKat 帳戶的資料，請寄信至 hello@wavekat.com，我們會為你刪除。',
+    a: '這台電腦上的資料，使用「設定 → WaveKat 帳戶 → 刪除本機資料」，它會清除通話記錄、錄音、轉寫文字以及你的登入狀態。要刪除帳戶本身以及同步到帳戶的全部資料，使用「設定 → WaveKat 帳戶 → 刪除帳號」：確認之前它會列出帳戶裡保存了什麼，由你決定這台電腦上的通話和錄音是否一併刪除。你也可以寄信至 hello@wavekat.com，我們會為你刪除。',
   },
 ];
 
@@ -344,7 +344,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
           <li class={li} set:html={`${dot}<span>${b('刪除單筆錄音')}——開啟該通話的詳情頁，在那裡刪除錄音。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('刪除全部錄音')}——「設定 → 錄音 → 清除所有錄音」。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('刪除這台電腦上的全部資料')}——「設定 → WaveKat 帳戶 → 刪除本機資料」會從該機器上清除通話記錄、錄音、轉寫文字以及你的登入狀態。</span>`} />
-          <li class={li} set:html={`${dot}<span>${b('刪除已同步到帳戶的資料')}——寄信至 <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>，我們會為你刪除。</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('刪除已同步到帳戶的資料')}——使用「設定 → WaveKat 帳戶 → 刪除帳號」可刪除帳戶及其全部同步資料，也可以寄信至 <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>，我們會為你刪除。</span>`} />
         </ul>
       </section>
 

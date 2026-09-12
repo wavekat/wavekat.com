@@ -60,7 +60,7 @@ const faqs = [
   },
   {
     q: 'WaveKat이 가진 내 데이터를 전부 지우려면?',
-    a: '이 컴퓨터의 데이터는 "설정 → WaveKat 계정 → 로컬 데이터 삭제"로 통화 기록, 녹음, 전사, 로그인 상태가 지워집니다. WaveKat 계정에 동기화된 데이터는 hello@wavekat.com으로 메일을 보내 주시면 삭제해 드립니다.',
+    a: '이 컴퓨터의 데이터는 "설정 → WaveKat 계정 → 로컬 데이터 삭제"로 통화 기록, 녹음, 전사, 로그인 상태가 지워집니다. 계정 자체와 계정에 동기화된 모든 데이터를 지우려면 "설정 → WaveKat 계정 → 계정 삭제"를 사용하세요. 확인 전에 계정에 무엇이 저장되어 있는지 보여 주고, 이 컴퓨터의 통화와 녹음도 함께 지울지 직접 선택합니다. hello@wavekat.com으로 메일을 보내 주시면 대신 삭제해 드릴 수도 있습니다.',
   },
 ];
 
@@ -343,7 +343,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
           <li class={li} set:html={`${dot}<span>${b('녹음 하나 지우기')}— 해당 통화의 상세 페이지를 열어 그곳에서 녹음을 삭제합니다.</span>`} />
           <li class={li} set:html={`${dot}<span>${b('녹음 전부 지우기')}— "설정 → 녹음 → 모든 녹음 지우기".</span>`} />
           <li class={li} set:html={`${dot}<span>${b('이 컴퓨터의 모든 것 지우기')}— "설정 → WaveKat 계정 → 로컬 데이터 삭제"가 그 기기에서 통화 기록, 녹음, 전사, 로그인 상태를 지웁니다.</span>`} />
-          <li class={li} set:html={`${dot}<span>${b('계정에 동기화된 데이터 지우기')}— <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>으로 메일을 주시면 삭제해 드립니다.</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('계정에 동기화된 데이터 지우기')}— "설정 → WaveKat 계정 → 계정 삭제"로 계정과 동기화된 데이터를 모두 지울 수 있고, <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>으로 메일을 주시면 대신 삭제해 드립니다.</span>`} />
         </ul>
       </section>
 

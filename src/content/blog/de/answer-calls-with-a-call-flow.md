@@ -25,7 +25,7 @@ Ein Anrufablauf in WaveKat Voice ist eine kurze Liste von Schritten, die ein ein
 | **Leitet weiter** | Wird zu einer anderen Nummer durchgestellt. |
 | **Legt auf** | Hört eine Verabschiedung, dann endet der Anruf. |
 
-Sie müssen keinen Menübaum von Grund auf zeichnen und nichts programmieren. Sie starten mit einer Vorlage — einer Galerie fertiger Abläufe, bevorzugt in Ihrer Sprache, die Sie in Ihr Konto kopieren — und ändern die Formulierungen. Ein leerer Ablauf steht ebenfalls bereit, wenn Sie lieber selbst bauen.
+Sie müssen keinen Menübaum von Grund auf zeichnen und nichts programmieren. Fertige Abläufe sind in der App enthalten, in Ihrer Sprache — öffnen Sie einen unter Anrufabläufe, hören Sie an, was Anrufende genau hören würden, und schalten Sie ihn für Ihre Leitung ein. Um die Formulierungen zu ändern, kopieren Sie ihn im Web in Ihr Konto; ein leerer Ablauf steht ebenfalls bereit, wenn Sie lieber selbst bauen.
 
 ![WaveKat Voice unter Ubuntu — die Seite eines Anrufablaufs mit seinem Schaubild: Begrüßung, eine Öffnungszeiten-Prüfung, die sich in geöffnet und geschlossen teilt, ein Anruf an Sie und der Anrufbeantworter.](/screenshots/flow-detail/de.webp)
 

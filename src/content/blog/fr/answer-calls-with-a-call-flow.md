@@ -25,7 +25,7 @@ Un flux d'appel dans WaveKat Voice, c'est une courte liste d'étapes qu'un appel
 | **Transfère l'appel** | L'appelant est mis en relation avec un autre numéro. |
 | **Raccroche** | Entend une formule de fin, et l'appel se termine. |
 
-Aucun arbre de menus à dessiner de zéro, rien à programmer. On part d'un modèle — une galerie de flux prêts à l'emploi, ceux de votre langue d'abord, que vous copiez dans votre compte — et on change les textes. Un flux vierge existe aussi, si vous préférez tout construire vous-même.
+Aucun arbre de menus à dessiner de zéro, rien à programmer. Des flux prêts à l'emploi sont fournis avec l'application, dans votre langue — ouvrez-en un dans Flux d'appel, écoutez exactement ce qu'entendrait un appelant, et activez-le pour votre ligne. Pour changer les textes, copiez-le dans votre compte sur le web ; un flux vierge existe aussi, si vous préférez tout construire vous-même.
 
 ![WaveKat Voice sous Ubuntu — la page d'un flux d'appel et son plan : un accueil, une vérification des horaires qui se sépare en « ouvert » et « fermé », une sonnerie chez vous, puis la messagerie.](/screenshots/flow-detail/fr.webp)
 
