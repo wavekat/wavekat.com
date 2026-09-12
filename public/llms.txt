@@ -4,8 +4,9 @@
 
 ## Core pages
 
-- [WaveKat Voice](https://wavekat.com/voice/): Desktop softphone for Mac, Windows and Linux — answer and place calls, every call recorded automatically, live transcript alongside each call. Works with SIP providers like Twilio, Telnyx, and 2talk. Free public beta.
-- [Download WaveKat Voice](https://wavekat.com/voice/download/): free on the Mac App Store (macOS 12+, Apple Silicon) and the Microsoft Store (Windows 10/11, one listing covering both x64 and ARM64). Direct downloads are also offered: a macOS .dmg, Windows x64 and ARM64 .exe installers (not code-signed yet, so SmartScreen warns on first launch — the Microsoft Store package is signed by Microsoft), and a Linux .deb (Debian/Ubuntu).
+- [WaveKat Voice](https://wavekat.com/voice/): Desktop softphone for Mac, Windows and Linux — answer and place calls, every call recorded automatically, live transcript alongside each call. Works with SIP providers like Twilio, Telnyx, and 2talk. A call flow answers incoming calls for you with a greeting, opening hours, a phone menu, voicemail or a transfer (the job an auto attendant does); ready-made flows come with the app, and a flow answers only while the app is running on a computer that is awake. A bundled CLI and MCP server let scripts and AI assistants place calls and pause or resume a line (`wavekat-voice call`, `pause`, `resume`, `status`). Free public beta.
+- [Download WaveKat Voice](https://wavekat.com/voice/download/): free on the Mac App Store (macOS 12+, Apple Silicon), the Microsoft Store (Windows 10/11, one listing covering both x64 and ARM64) and the Snap Store (`sudo snap install wavekat-voice`, or the Ubuntu App Center). Direct downloads are also offered: a macOS .dmg, Windows x64 and ARM64 .exe installers (not code-signed yet, so SmartScreen warns on first launch — the Microsoft Store package is signed by Microsoft), and a Linux .deb and AppImage, each built for x64 and arm64.
+- [Free voice prompt generator](https://wavekat.com/voice/prompts/): Turns text into telephony-ready audio for phone menus, IVR greetings, voicemail and on-hold messages — free, no account to start.
 - [Use cases](https://wavekat.com/voice/use-cases/): Who WaveKat Voice is for — small businesses that live on the phone.
 - [Softphone alternatives](https://wavekat.com/voice/alternatives/): How WaveKat Voice compares to other SIP softphones, e.g. [vs Linphone](https://wavekat.com/voice/alternatives/linphone/).
 - [Changelog](https://wavekat.com/voice/changelog/): Release notes for every WaveKat Voice version.
@@ -13,9 +14,15 @@
 
 ## Blog
 
+- [Call Flows — an Auto Attendant for Small Business](https://wavekat.com/blog/answer-calls-with-a-call-flow/): WaveKat Voice answers incoming calls with a call flow — a greeting, phone menu, opening hours, voicemail or transfer — running on your own computer. Watch each step live and pick the call up mid-message.
+- [Log Calls in HubSpot Automatically](https://wavekat.com/blog/log-calls-in-hubspot/): Every call is filed on the matching HubSpot contact, transcript included, with the recording playable inside HubSpot.
+- [Click-to-Call: Dial Phone Links From Any Website](https://wavekat.com/blog/click-to-call-phone-links/): WaveKat Voice opens tel: and sip: links on Mac, Windows and Linux — click a phone number on any website and it lands in the dial field, ready to call.
 - [Why Phone Links Don't Work on Your Computer](https://wavekat.com/blog/why-phone-links-dont-work/): Clickable phone numbers work on a phone because it has exactly one calling app; a computer has a "phone app" slot that is usually empty (macOS puts FaceTime in it, Windows asks, Linux has nothing). WaveKat Voice fills that slot on Mac, Windows and Linux.
+- [A Free Voice Generator for Phone Menus and IVR](https://wavekat.com/blog/phone-menu-ivr-voice-generator/): The WaveKat voice prompt generator turns text into telephony-ready audio — greetings, IVR menus, voicemail, on-hold messages — free, and no account to start.
+- [Hold, Switch, and Transfer Calls Like a Front Desk](https://wavekat.com/blog/hold-switch-and-transfer-calls/): WaveKat Voice puts callers on hold, answers a second call, and transfers them — blind or attended. Recording pauses while a call is held.
+- [Why WaveKat Voice Runs on Its Own SIP Engine](https://wavekat.com/blog/our-own-sip-engine/): WaveKat Voice runs on wavekat-sip, a from-scratch, open-source SIP/RTP engine — no third-party SIP stack between you and your calls.
 - [Share a Call Recording With a Link](https://wavekat.com/blog/share-a-call-recording/): Turn any recorded call into a shareable link — private, invite-only, or public.
-- [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls.
+- [Let Your AI Assistant Place Real Phone Calls](https://wavekat.com/blog/place-calls-from-the-command-line/): The wavekat-voice CLI and MCP server let assistants like Claude place and manage calls, and pause or resume a line.
 - [Common Voice Explorer](https://wavekat.com/blog/common-voice-explorer/): A free tool to browse and review Mozilla Common Voice dataset clips.
 - [Hello, World](https://wavekat.com/blog/hello-world/): Why WaveKat exists — giving every small business the voice of a big one.
 

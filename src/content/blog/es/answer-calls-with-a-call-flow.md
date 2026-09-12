@@ -25,7 +25,7 @@ Un flujo de llamada en WaveKat Voice es una lista corta de pasos que una llamada
 | **Transfiere la llamada** | Queda comunicado con otro número. |
 | **Cuelga** | Escucha una despedida y la llamada termina. |
 
-No hay que dibujar un árbol de menús desde cero ni programar nada. Se empieza desde una plantilla —una galería de flujos ya hechos, con los de tu idioma primero, que copias a tu cuenta— y se cambian las palabras. También hay un flujo en blanco, si prefieres armarlo tú.
+No hay que dibujar un árbol de menús desde cero ni programar nada. Los flujos ya hechos vienen con la app, en tu idioma: abre uno en Flujos de llamada, escucha exactamente lo que oiría quien llama y actívalo para tu línea. Para cambiar las palabras, cópialo a tu cuenta en la web; también hay un flujo en blanco, si prefieres armarlo tú.
 
 ![WaveKat Voice en Ubuntu: la página de un flujo de llamada con su mapa: un saludo, una comprobación de horario que se abre en «abierto» y «cerrado», un aviso a ti y el buzón de mensajes.](/screenshots/flow-detail/es.webp)
 

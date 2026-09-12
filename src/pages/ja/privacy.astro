@@ -60,7 +60,7 @@ const faqs = [
   },
   {
     q: 'WaveKat が持つ私のデータをすべて消すには？',
-    a: 'このパソコンについては「設定 → WaveKat アカウント → ローカルデータを削除」で、通話履歴・録音・文字起こし・サインイン状態が消えます。WaveKat アカウントに同期されたデータは hello@wavekat.com にメールをいただければ削除します。',
+    a: 'このパソコンについては「設定 → WaveKat アカウント → ローカルデータを削除」で、通話履歴・録音・文字起こし・サインイン状態が消えます。アカウント自体と、そこに同期されたすべてのデータを消すには「設定 → WaveKat アカウント → アカウントを削除」を使います。確認の前にアカウントに何が保存されているかが表示され、このパソコンの通話と録音も一緒に消すかどうかを選べます。hello@wavekat.com にメールをいただいて削除することもできます。',
   },
 ];
 
@@ -344,7 +344,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
           <li class={li} set:html={`${dot}<span>${b('録音を 1 件消す')}——その通話の詳細ページを開き、そこで録音を削除します。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('録音をすべて消す')}——「設定 → 録音 → すべての録音を消去」。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('このパソコン上のすべてを消す')}——「設定 → WaveKat アカウント → ローカルデータを削除」で、そのマシンから通話履歴・録音・文字起こし・サインイン状態が消えます。</span>`} />
-          <li class={li} set:html={`${dot}<span>${b('アカウントに同期されたデータを消す')}——<a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a> にメールをいただければ削除します。</span>`} />
+          <li class={li} set:html={`${dot}<span>${b('アカウントに同期されたデータを消す')}——「設定 → WaveKat アカウント → アカウントを削除」でアカウントと同期データをすべて消せます。<a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a> にメールをいただいて削除することもできます。</span>`} />
         </ul>
       </section>
 

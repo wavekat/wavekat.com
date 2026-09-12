@@ -24,7 +24,7 @@ A call flow in WaveKat Voice is a short list of steps that an incoming call walk
 | **Transfers the call** | Gets put through to another number. |
 | **Hangs up** | Hears a goodbye, and the call ends. |
 
-There's no menu tree to draw from scratch and nothing to program. You start from a template — a gallery of ready-made flows, offered in your own language, that you copy into your account — and change the words. A blank flow is there too, if you'd rather build it yourself.
+There's no menu tree to draw from scratch and nothing to program. Ready-made flows come with the app, in your own language — open one under Call flows, play back exactly what a caller would hear, and turn it on for your line. To change the words, copy it into your account on the web; a blank flow is there too, if you'd rather build it yourself.
 
 ![WaveKat Voice on Ubuntu — a call flow's page, showing its map: a greeting, a business-hours check that splits into open and closed, ringing you, and voicemail.](/screenshots/flow-detail/en.webp)
 
