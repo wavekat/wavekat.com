@@ -47,6 +47,7 @@ export const ui: UIStrings = {
   footerSource: '在 GitHub 上查看源码',
   footerAbout: '关于',
   footerPrivacy: '隐私政策',
+  footerTerms: '服务条款',
   footerPrompts: '语音生成器',
   footerPlatform: '平台',
   footerMore: '更多',

@@ -52,6 +52,7 @@ export const ui: UIStrings = {
   footerSource: 'View source on GitHub',
   footerAbout: 'About',
   footerPrivacy: 'Privacy',
+  footerTerms: 'Terms',
   footerPrompts: 'Prompt Generator',
   footerPlatform: 'Platform',
   footerMore: 'More',

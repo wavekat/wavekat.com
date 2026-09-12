@@ -46,6 +46,7 @@ export const ui: UIStrings = {
   footerEmail: '이메일 보내기',
   footerAbout: '소개',
   footerPrivacy: '개인정보 처리방침',
+  footerTerms: '이용약관',
   footerPrompts: '음성 생성기',
   footerPlatform: '플랫폼',
   footerMore: '기타',
