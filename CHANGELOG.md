@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.67](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.66...wavekat-com-v0.0.67) (2026-09-12)
+
+
+### Features
+
+* **privacy:** account holders agree we may contact them by email ([#192](https://github.com/wavekat/wavekat.com/issues/192)) ([f23000e](https://github.com/wavekat/wavekat.com/commit/f23000e245504e22903bebf27f862b100599f02b))
+
 ## [0.0.66](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.65...wavekat-com-v0.0.66) (2026-09-12)
 
 
