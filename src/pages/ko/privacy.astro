@@ -6,7 +6,7 @@ import { Mail } from '@lucide/astro';
 
 // Mirrors /privacy/ section-for-section (see src/pages/privacy.astro).
 // Keep the date in sync with the English page — one policy, one revision.
-const updated = new Date('2026-08-04');
+const updated = new Date('2026-09-12');
 const updatedLabel = `${updated.getFullYear()}년 ${updated.getMonth() + 1}월 ${updated.getDate()}일`;
 
 // Section id → heading, in document order. Ids match the English page so a
@@ -225,6 +225,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <h2 class={h2}>{S.signin}</h2>
         <p class={`${p} mb-3`} set:html={`WaveKat 계정은 선택 사항입니다 — 데스크톱 앱은 계정 없이도 동작합니다. 계정을 만들 때는 우리가 보관하는 비밀번호가 아니라 ${b('GitHub 또는 Google')}로 로그인합니다. 여러분의 GitHub나 Google 비밀번호를 우리는 절대 보지 못합니다.`} />
         <p class={`${p} mb-3`}>그 로그인이 우리에게 넘기고 우리가 저장하는 것은: 사용자 이름, 표시 이름, 이메일 주소, 프로필 사진 주소, 제공자의 계정 식별자, 마지막 로그인 시각입니다. 다음에 여러분을 알아보고 로그인 상태로 표시하는 데 쓰입니다. GitHub와 Google을 같은 계정에 모두 연결할 수 있고, 마지막 로그인 수단이 아닌 한 어느 쪽이든 연결을 해제할 수 있습니다.</p>
+        <p class={`${p} mb-3`} set:html={`계정과 관련해 가끔 이메일을 보낼 수 있습니다 — WaveKat이 잘 쓰이고 있는지 묻거나, 사용 중인 기능에 영향을 주는 변경을 알리기 위해서입니다. 메일링 리스트가 아니라 사람이 보내며, 드물게만 보냅니다. 어느 메일에든 <em>stop</em>이라고 답장하거나 <a href="mailto:hello@wavekat.com" class="${linkCls}">hello@wavekat.com</a>로 알려 주시면, 보안 공지나 이 정책의 변경처럼 꼭 필요한 경우를 빼고는 다시 보내지 않습니다. 이메일 주소를 광고에 쓰지 않으며, 다른 곳에 넘기지도 않습니다.`} />
         <p class={p} set:html={`명령줄 도구 <code class="font-mono text-xs">wk</code>를 쓰면 같은 방식으로 로그인하고 액세스 토큰을 저장하는데, 토큰에는 요청한 기기의 이름이 붙어 있어 자신의 기기를 구분할 수 있습니다.`} />
       </section>
 
