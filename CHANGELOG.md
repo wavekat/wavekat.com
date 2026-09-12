@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.65](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.64...wavekat-com-v0.0.65) (2026-09-12)
+
+
+### Features
+
+* add the Snap Store to Linux downloads ([#187](https://github.com/wavekat/wavekat.com/issues/187)) ([76c764e](https://github.com/wavekat/wavekat.com/commit/76c764ecc1389f6129f7f190edefc1eff2dec144))
+
 ## [0.0.64](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.63...wavekat-com-v0.0.64) (2026-09-07)
 
 
