@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.66](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.65...wavekat-com-v0.0.66) (2026-09-12)
+
+
+### Features
+
+* match the site to WaveKat Voice 0.0.53 ([#189](https://github.com/wavekat/wavekat.com/issues/189)) ([5c8cf97](https://github.com/wavekat/wavekat.com/commit/5c8cf975dc784a732608fbceac7fe2b21043eddb))
+
+
+### Bug Fixes
+
+* name Windows in older blog posts ([#190](https://github.com/wavekat/wavekat.com/issues/190)) ([8e59c20](https://github.com/wavekat/wavekat.com/commit/8e59c20ca208b35a34e428cd36bc6351c4cd7072))
+
 ## [0.0.65](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.64...wavekat-com-v0.0.65) (2026-09-12)
 
 
