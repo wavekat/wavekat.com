@@ -1,0 +1,21 @@
+---
+// Terms of Service. Every locale's page is this file, byte for byte: the copy
+// lives in src/lib/terms/<slug>.ts and the markup in TermsContent, which
+// derives the language from the URL. Adding a language is a data file, a
+// registry entry, and a copy of this file — no template work.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import TermsContent from '../components/TermsContent.astro';
+import { resolveLocale } from '../lib/i18n';
+import { getTerms } from '../lib/terms';
+
+const { code } = resolveLocale(Astro.url.pathname);
+const doc = getTerms(code);
+---
+
+<Base title={doc.seoTitle} description={doc.seoDescription}>
+  <Header />
+  <TermsContent />
+  <Footer />
+</Base>

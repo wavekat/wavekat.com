@@ -128,6 +128,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <p class="text-xs text-gray-400 dark:text-gray-600 mb-6">最後更新：{updatedLabel}</p>
         <p class={`${p} mb-3`}>WaveKat 只蒐集必需的最少資料。你的通話——音訊、轉寫文字、通話記錄——都留在你自己的電腦上，除非你登入 WaveKat 帳戶並保持雲端同步開啟，或者你自己把帳戶連接到了其他服務。本網站使用 Google Analytics 和 Google Ads 統計造訪情況。我們從未出售過個人資料，也不打算這樣做。</p>
         <p class={p} set:html={`本政策涵蓋 WaveKat 營運的全部內容：wavekat.com 網站、<a href="/zh-hant/voice/" class="${linkCls}">WaveKat Voice</a> 桌面應用程式，以及 WaveKat 帳戶。`} />
+        <p class={`${p} mt-3`} set:html={`<a href="/zh-hant/terms/" class="${linkCls}">服務條款</a>是本政策所屬的那份協議：您可以用 WaveKat 做什麼、為什麼它不能撥打緊急電話，以及雙方各自負責什麼。`} />
       </header>
 
       <aside

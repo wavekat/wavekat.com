@@ -46,6 +46,7 @@ export const ui: UIStrings = {
   footerEmail: '寄信給我們',
   footerAbout: '關於',
   footerPrivacy: '隱私權政策',
+  footerTerms: '服務條款',
   footerPrompts: '語音產生器',
   footerPlatform: '平台',
   footerMore: '更多',

@@ -130,6 +130,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <p class="text-xs text-gray-400 dark:text-gray-600 mb-6">最后更新：{updatedLabel}</p>
         <p class={`${p} mb-3`}>WaveKat 只采集必需的最少数据。你的通话——音频、转写文字、通话记录——都留在你自己的电脑上，除非你登录 WaveKat 账户并保持云同步开启，或者你自己把账户连接到了其他服务。本网站使用 Google Analytics 和 Google Ads 统计访问情况。我们从未出售过个人数据，也不打算这样做。</p>
         <p class={p} set:html={`本政策涵盖 WaveKat 运营的全部内容：wavekat.com 网站、<a href="/zh/voice/" class="${linkCls}">WaveKat Voice</a> 桌面应用，以及 WaveKat 账户。`} />
+        <p class={`${p} mt-3`} set:html={`<a href="/zh/terms/" class="${linkCls}">服务条款</a>是本政策所属的那份协议：您可以用 WaveKat 做什么、为什么它不能拨打紧急电话，以及双方各自负责什么。`} />
       </header>
 
       {/* 三件读者不该错过的事，提到目录之前，而不是留在各自的小节里。 */}

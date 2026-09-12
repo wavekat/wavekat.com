@@ -88,6 +88,7 @@ const fullSite = [
   '/blog/log-calls-in-hubspot/',
   '/about/',
   '/privacy/',
+  '/terms/',
 ];
 
 // Which base paths exist in which non-default locale. The default locale is
@@ -313,6 +314,7 @@ export interface UIStrings {
   footerSource: string;
   footerAbout: string;
   footerPrivacy: string;
+  footerTerms: string;
   footerPrompts: string;
   footerPlatform: string;
   footerMore: string;

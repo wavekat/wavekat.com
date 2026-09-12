@@ -47,6 +47,7 @@ export const ui: UIStrings = {
   footerEmail: 'メールを送る',
   footerAbout: 'WaveKat について',
   footerPrivacy: 'プライバシー',
+  footerTerms: '利用規約',
   footerPrompts: '音声ジェネレーター',
   footerPlatform: 'プラットフォーム',
   footerMore: 'その他',

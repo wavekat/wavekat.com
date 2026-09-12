@@ -1,0 +1,204 @@
+---
+// The /terms/ page body, rendered from a locale's TermsDoc.
+//
+// Nine locales, one document — so unlike the privacy policy (nine hand-written
+// pages) the markup lives here once and the copy lives in
+// src/lib/terms/<slug>.ts. The page files are byte-identical as a result,
+// which is the same arrangement the comparison pages use.
+//
+// Locale is derived from the URL, never passed as a prop (CLAUDE.md § i18n),
+// so this component is the only thing that needs to know which language it is
+// rendering — including for the in-body links, which are localized through
+// `localeHref` because check-links fails a localized page that points at an
+// English URL whose translation exists.
+import { Mail } from '@lucide/astro';
+import { resolveLocale, localesForPath, localizedPath } from '../lib/i18n';
+import { getTerms, renderRich, TERMS_UPDATED, type TermsBlock } from '../lib/terms';
+
+const { code: lang } = resolveLocale(Astro.url.pathname);
+const doc = getTerms(lang);
+const localeHref = (path: string) =>
+  localesForPath(path).includes(lang) ? localizedPath(path, lang) : path;
+
+// The date is formatted in the page's own language, but from one Date — the
+// nine pages are one agreement and must not appear to have been updated on
+// nine different days. `lang` is a BCP-47 code, which is exactly what
+// toLocaleDateString wants.
+const updatedLabel = TERMS_UPDATED.toLocaleDateString(lang === 'en' ? 'en-GB' : lang, {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+// Shared class strings, matching privacy.astro so the two legal pages read as
+// one pair rather than two designs.
+const sec = 'mb-12';
+const h2 = 'text-base font-bold text-gray-900 dark:text-white mb-4';
+const p = 'text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const li = 'flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed';
+const dot = 'mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600';
+const strong = 'font-bold text-gray-900 dark:text-gray-200';
+const link =
+  'text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors';
+
+const rich = (text: string) =>
+  renderRich(text, { linkClass: link, strongClass: strong, localeHref });
+
+// A paragraph carries bottom margin except when it closes its section — the
+// section's own `mb-12` provides that gap, and doubling them opens a hole.
+const isLast = (blocks: TermsBlock[], i: number) => i === blocks.length - 1;
+
+// Canonical absolute URL for this locale's page. Pinned to wavekat.com on
+// every deploy — a preview that names itself in structured data is a preview
+// competing with production (CLAUDE.md § SEO).
+const pageUrl = `https://wavekat.com${localizedPath('/terms/', lang)}`;
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': pageUrl,
+      url: pageUrl,
+      name: doc.h1,
+      description: doc.seoDescription,
+      inLanguage: lang,
+      dateModified: TERMS_UPDATED.toISOString().slice(0, 10),
+      isPartOf: { '@id': 'https://wavekat.com/#website' },
+      about: { '@id': 'https://wavekat.com/#organization' },
+      publisher: { '@id': 'https://wavekat.com/#organization' },
+    },
+  ],
+};
+
+// Built from the same array the Q&A renders, so the visible answers and the
+// structured data can never drift apart.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: doc.faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+  {/* Page container matches the sitewide 6xl width; the document itself stays
+      a centered reading column, the same measure privacy.astro uses. */}
+  <div class="mx-auto max-w-3xl">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white">
+        {doc.h1}
+      </h1>
+      <p class="text-xs text-gray-400 dark:text-gray-600 mb-6">
+        {doc.updatedPrefix} {updatedLabel}
+      </p>
+      {doc.lead.map((text, i) => (
+        <p class={i === doc.lead.length - 1 ? p : `${p} mb-3`} set:html={rich(text)} />
+      ))}
+    </header>
+
+    {/* The three things a reader must not miss, hoisted above the fold rather
+        than left to the section that covers each. Emergency calling is the one
+        that can cost somebody more than money. */}
+    <aside
+      class="mb-14 rounded-lg border p-5"
+      style="border-color: #ff6d0040; background-color: #ff6d0008;"
+    >
+      <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">
+        {doc.highlightsLabel}
+      </p>
+      <ul class="space-y-3">
+        {doc.highlights.map((text) => (
+          <li class={li}>
+            <span class={dot}></span>
+            <span set:html={rich(text)} />
+          </li>
+        ))}
+      </ul>
+    </aside>
+
+    <nav
+      aria-label={doc.onThisPage}
+      class="mb-14 border-t border-b border-gray-200 py-5 dark:border-white/10"
+    >
+      <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">
+        {doc.onThisPage}
+      </p>
+      <ul class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+        {doc.sections.map((s) => (
+          <li>
+            <a
+              href={`#${s.id}`}
+              class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              {s.heading}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {doc.sections.map((s) => (
+      <section id={s.id} class={sec}>
+        <h2 class={h2}>{s.heading}</h2>
+        {s.body.map((block, i) =>
+          block.kind === 'p' ? (
+            <p class={isLast(s.body, i) ? p : `${p} mb-3`} set:html={rich(block.text)} />
+          ) : (
+            <ul class={isLast(s.body, i) ? 'space-y-2' : 'space-y-2 mb-3'}>
+              {block.items.map((item) => (
+                <li class={li}>
+                  <span class={dot}></span>
+                  <span set:html={rich(item)} />
+                </li>
+              ))}
+            </ul>
+          ),
+        )}
+      </section>
+    ))}
+
+    <section id="faq" class={sec}>
+      <h2 class={h2}>{doc.faqHeading}</h2>
+      <div
+        class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10"
+      >
+        {doc.faqs.map((f) => (
+          <details class="group">
+            <summary
+              class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
+            >
+              {f.q}
+              <span
+                class="shrink-0 transition-transform group-open:rotate-45"
+                style="color: #ff6d00"
+                aria-hidden="true">+</span
+              >
+            </summary>
+            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pb-4 -mt-1">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section id="contact" class="mb-8">
+      <h2 class={h2}>{doc.contactHeading}</h2>
+      <p class={`${p} mb-5`} set:html={rich(doc.contactIntro)} />
+      <a
+        href="mailto:hello@wavekat.com"
+        class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
+        style="background-color: #ff6d00"
+      >
+        <Mail class="w-4 h-4" />
+        hello@wavekat.com
+      </a>
+    </section>
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
