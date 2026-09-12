@@ -116,7 +116,7 @@ Pro 기능입니다. 얼리 액세스 기간에는 Pro가 무료라, WaveKat 계
 
 ### 어떤 플랫폼에서 되나요?
 
-WaveKat Voice는 현재 Mac과 Linux를 지원합니다. HubSpot 연동은 WaveKat 계정 쪽에서 돌아가므로 어느 쪽에서든 똑같이 동작하고, 기록된 통화는 어떤 브라우저에서든 HubSpot으로 읽을 수 있습니다.
+WaveKat Voice는 Mac, Windows, Linux를 지원합니다. HubSpot 연동은 WaveKat 계정 쪽에서 돌아가므로 세 플랫폼 어디서든 똑같이 동작하고, 기록된 통화는 어떤 브라우저에서든 HubSpot으로 읽을 수 있습니다.
 
 ## 사용해 보기
 

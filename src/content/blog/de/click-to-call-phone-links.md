@@ -1,13 +1,13 @@
 ---
 title: "Click-to-Call: Telefonnummern im Web anklicken"
-description: "WaveKat Voice öffnet jetzt tel:- und sip:-Links auf Mac und Linux — Telefonnummer auf einer Website anklicken, und sie steht wählbereit im Anruffeld."
+description: "WaveKat Voice öffnet jetzt tel:- und sip:-Links auf Mac, Windows und Linux — Telefonnummer auf einer Website anklicken, und sie steht wählbereit im Anruffeld."
 date: 2026-07-25
 author: Eason Guo
 tags: [Sprach-KI, Anrufe]
 lang: "de"
 ---
 
-Click-to-Call bedeutet, dass eine Telefonnummer auf einer Webseite ein anklickbarer Link ist, den Sie zum Wählen anklicken, statt sie herauszukopieren und von Hand neu einzutippen. [WaveKat Voice](/de/voice/) — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die App sein, die Ihr Computer für solche Links öffnet. Klicken Sie irgendwo auf einen `tel:`- oder `sip:`-Link — die Kontaktseite eines Unternehmens, ein Suchergebnis, die Rechnung eines Lieferanten — und WaveKat Voice rückt in den Vordergrund, mit der bereits eingetragenen Nummer und bereit für Ihren Druck auf „Anrufen". Das kommt mit [0.0.43](/de/voice/changelog/#0.0.43).
+Click-to-Call bedeutet, dass eine Telefonnummer auf einer Webseite ein anklickbarer Link ist, den Sie zum Wählen anklicken, statt sie herauszukopieren und von Hand neu einzutippen. [WaveKat Voice](/de/voice/) — das SIP-Softphone für Mac, Windows und Linux, das jeden Anruf aufzeichnet und transkribiert — kann jetzt die App sein, die Ihr Computer für solche Links öffnet. Klicken Sie irgendwo auf einen `tel:`- oder `sip:`-Link — die Kontaktseite eines Unternehmens, ein Suchergebnis, die Rechnung eines Lieferanten — und WaveKat Voice rückt in den Vordergrund, mit der bereits eingetragenen Nummer und bereit für Ihren Druck auf „Anrufen". Das kommt mit [0.0.43](/de/voice/changelog/#0.0.43).
 
 Auf einem Bürotelefon ist das eine Selbstverständlichkeit und eine jener Funktionen, die man erst bemerkt, wenn sie fehlt: Man sieht eine Nummer auf einer Seite, klickt sie an, das Telefon wählt. Das ist die ausgehende Hälfte derselben Version, in der WaveKat Voice gelernt hat, [eingehende Anrufe mit einem Anrufablauf zu beantworten](/de/blog/answer-calls-with-a-call-flow/) — und wie der Rest der Telefonie läuft es auf [unserer eigenen SIP-Engine](/de/blog/our-own-sip-engine/).
 

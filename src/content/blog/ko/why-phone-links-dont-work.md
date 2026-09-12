@@ -1,6 +1,6 @@
 ---
 title: "컴퓨터에서 전화번호 클릭이 안 되는 이유"
-description: "전화번호 링크를 컴퓨터에서 클릭하면 아무 일도 없는 이유와, WaveKat Voice가 Mac·Linux에서 그 빈자리를 채우는 방법을 설명합니다."
+description: "전화번호 링크가 컴퓨터에서는 반응이 없는 이유와, WaveKat Voice가 Mac·Windows·Linux에서 그 빈자리를 채우는 방법을 설명합니다."
 date: 2026-08-07
 author: Eason Guo
 tags: [음성AI, 통화]
@@ -47,7 +47,7 @@ lang: "ko"
       <button type="button" data-os="mac">Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac·Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">어느 쪽이든 + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">휴대폰</p>
@@ -83,7 +83,7 @@ lang: "ko"
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac·Linux + WaveKat Voice</p>
+      <p class="panel-name">Mac·Windows·Linux + WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">클릭하면</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">자리에는</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice — 스위치 하나로 직접 넣은 앱</span></span></li>
@@ -95,7 +95,7 @@ lang: "ko"
 
 ## WaveKat Voice가 그 자리를 채웁니다
 
-[WaveKat Voice](/ko/voice/)는 Mac과 Linux용 전화 앱입니다. 전화 회선을 통해 실제로 전화를 걸고 받으며, 모든 통화를 녹음하고 받아 적습니다. 그리고 그 자리에 들어갈 수 있는 앱이기도 합니다.
+[WaveKat Voice](/ko/voice/)는 Mac, Windows, Linux용 전화 앱입니다. 전화 회선을 통해 실제로 전화를 걸고 받으며, 모든 통화를 녹음하고 받아 적습니다. 그리고 그 자리에 들어갈 수 있는 앱이기도 합니다.
 
 스위치 하나만 켜면 됩니다. **설정 → 일반**의 **전화 링크**입니다. 켜기 전까지는 꺼져 있습니다 — 일부러 그렇게 만들었습니다. 컴퓨터 전체의 전화 링크를 가져오는 일은 앱이 설치되자마자 슬쩍 저지를 일이 아니라 당신이 선택할 일이기 때문입니다. 켜고 나면, 어떤 웹 페이지에서든 번호를 클릭할 때 WaveKat Voice가 발신란에 번호가 이미 채워진 채로 나타납니다. 확인하고, 전화 걸기를 누르면 됩니다.
 
@@ -129,10 +129,10 @@ lang: "ko"
 
 ### 전화 링크가 WaveKat Voice에서 열리게 하려면 어떻게 하나요?
 
-설정 → 일반에서 전화 링크 스위치를 켜세요 — 기본으로 꺼져 있습니다. 그 뒤로는 어떤 웹 페이지에서든 번호를 클릭하면 WaveKat Voice가 번호가 채워진 채, 걸 준비가 된 상태로 열립니다. Mac과 Linux에서 작동하며 [0.0.43](/ko/voice/changelog/#0.0.43)에서 나왔습니다.
+설정 → 일반에서 전화 링크 스위치를 켜세요 — 기본으로 꺼져 있습니다. 그 뒤로는 어떤 웹 페이지에서든 번호를 클릭하면 WaveKat Voice가 번호가 채워진 채, 걸 준비가 된 상태로 열립니다. Mac, Windows, Linux에서 작동하며 [0.0.43](/ko/voice/changelog/#0.0.43)에서 나왔습니다.
 
 ## 그 번호를 다시 눌러 보세요
 
-전화 링크는 수십 년째 모든 연락처 페이지에서 조용히 기다리고 있었습니다. 컴퓨터에 없었던 것은 문을 열어 줄 사람뿐입니다. 클릭한 번호가 실제로 걸리기를 바란다면, Mac 또는 Linux용 [WaveKat Voice를 다운로드](/ko/voice/download/)하고, 스위치 하나를 켠 다음, 이 글 맨 위의 번호를 다시 눌러 보세요.
+전화 링크는 수십 년째 모든 연락처 페이지에서 조용히 기다리고 있었습니다. 컴퓨터에 없었던 것은 문을 열어 줄 사람뿐입니다. 클릭한 번호가 실제로 걸리기를 바란다면, Mac, Windows 또는 Linux용 [WaveKat Voice를 다운로드](/ko/voice/download/)하고, 스위치 하나를 켠 다음, 이 글 맨 위의 번호를 다시 눌러 보세요.
 
 <script src="/blog/phone-slot/widget.js" defer></script>

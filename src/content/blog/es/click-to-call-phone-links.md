@@ -1,13 +1,13 @@
 ---
 title: "Click-to-call: pulsa un número web y llama"
-description: "WaveKat Voice abre los enlaces tel: y sip: en Mac y Linux: haz clic en un número de teléfono en cualquier web y queda escrito, listo para marcar."
+description: "WaveKat Voice abre los enlaces tel: y sip: en Mac, Windows y Linux: haz clic en un número de teléfono en cualquier web y queda escrito, listo para marcar."
 date: 2026-07-25
 author: Eason Guo
 tags: [voz-ia, llamadas]
 lang: "es"
 ---
 
-Hacer clic para llamar (click-to-call) significa que un número de teléfono en una página web es un enlace en el que haces clic para marcar, en vez de algo que copias y vuelves a teclear a mano. [WaveKat Voice](/es/voice/) — el softphone SIP para Mac y Linux que graba y transcribe cada llamada — ahora puede ser la app que tu computadora abre para esos enlaces. Haz clic en un enlace `tel:` o `sip:` en cualquier parte — la página de contacto de una empresa, un resultado de búsqueda, la factura de un proveedor — y WaveKat Voice pasa al frente con el número ya escrito, listo para que pulses Llamar. Llega con [0.0.43](/es/voice/changelog/#0.0.43).
+Hacer clic para llamar (click-to-call) significa que un número de teléfono en una página web es un enlace en el que haces clic para marcar, en vez de algo que copias y vuelves a teclear a mano. [WaveKat Voice](/es/voice/) — el softphone SIP para Mac, Windows y Linux que graba y transcribe cada llamada — ahora puede ser la app que tu computadora abre para esos enlaces. Haz clic en un enlace `tel:` o `sip:` en cualquier parte — la página de contacto de una empresa, un resultado de búsqueda, la factura de un proveedor — y WaveKat Voice pasa al frente con el número ya escrito, listo para que pulses Llamar. Llega con [0.0.43](/es/voice/changelog/#0.0.43).
 
 Es lo mínimo en el teléfono de escritorio de una empresa, y una de esas funciones que solo notas cuando falta: ves un número en una página, haces clic, el teléfono marca. Esta es la mitad saliente de la misma versión en la que WaveKat Voice aprendió a [contestar las llamadas entrantes con un flujo de llamada](/es/blog/answer-calls-with-a-call-flow/) y, como el resto de las llamadas, funciona sobre [nuestro propio motor SIP](/es/blog/our-own-sip-engine/).
 

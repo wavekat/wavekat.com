@@ -1,13 +1,13 @@
 ---
 title: "클릭투콜 — 웹의 전화번호를 클릭해 걸기"
-description: "WaveKat Voice가 Mac과 Linux에서 tel: 및 sip: 링크를 엽니다. 웹의 전화번호를 클릭하면 발신란에 채워져 바로 걸 수 있습니다."
+description: "WaveKat Voice가 Mac·Windows·Linux에서 tel:·sip: 링크를 엽니다. 전화번호를 클릭하면 발신란에 채워져 걸 수 있습니다."
 date: 2026-07-25
 author: Eason Guo
 tags: [음성AI, 통화]
 lang: "ko"
 ---
 
-클릭투콜(click-to-call)이란 웹 페이지에 있는 전화번호가 손으로 복사해 다시 입력하는 대상이 아니라, 클릭해서 바로 거는 링크라는 뜻입니다. [WaveKat Voice](/ko/voice/)——모든 통화를 녹음하고 받아 적는 Mac·Linux용 SIP 소프트폰——가 이제 그런 링크를 클릭할 때 컴퓨터가 여는 앱이 될 수 있습니다. 어디서든 `tel:` 또는 `sip:` 링크를 클릭하면 — 회사의 연락처 페이지든, 검색 결과든, 공급업체의 청구서든 — WaveKat Voice가 앞으로 나오면서 번호가 이미 채워진 채로, 전화 걸기만 누르면 되는 상태가 됩니다. 이 기능은 [0.0.43](/ko/voice/changelog/#0.0.43)에서 제공됩니다.
+클릭투콜(click-to-call)이란 웹 페이지에 있는 전화번호가 손으로 복사해 다시 입력하는 대상이 아니라, 클릭해서 바로 거는 링크라는 뜻입니다. [WaveKat Voice](/ko/voice/)——모든 통화를 녹음하고 받아 적는 Mac·Windows·Linux용 SIP 소프트폰——가 이제 그런 링크를 클릭할 때 컴퓨터가 여는 앱이 될 수 있습니다. 어디서든 `tel:` 또는 `sip:` 링크를 클릭하면 — 회사의 연락처 페이지든, 검색 결과든, 공급업체의 청구서든 — WaveKat Voice가 앞으로 나오면서 번호가 이미 채워진 채로, 전화 걸기만 누르면 되는 상태가 됩니다. 이 기능은 [0.0.43](/ko/voice/changelog/#0.0.43)에서 제공됩니다.
 
 업무용 데스크 전화기에서는 기본 중의 기본이며, 없을 때에야 비로소 알아차리게 되는 그런 기능입니다. 페이지에서 번호를 보고, 클릭하면, 전화가 걸립니다. 이것은 같은 버전의 '거는 쪽' 절반이고, 나머지 절반은 WaveKat Voice가 [통화 플로우로 걸려 온 전화를 대신 받는](/ko/blog/answer-calls-with-a-call-flow/) 기능입니다. 나머지 통화 기능과 마찬가지로, [직접 만든 SIP 엔진](/ko/blog/our-own-sip-engine/) 위에서 돌아갑니다.
 

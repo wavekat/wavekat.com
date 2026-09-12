@@ -1,13 +1,13 @@
 ---
 title: "點擊撥號：點網頁上的電話號碼就能打"
-description: "WaveKat Voice 現在支援 Mac 和 Linux 上的 tel: 與 sip: 連結——點按網頁上的電話號碼，它就落在撥號欄裡，隨時可撥。"
+description: "WaveKat Voice 現在支援 Mac、Windows 和 Linux 上的 tel: 與 sip: 連結——點按網頁上的電話號碼，它就落在撥號欄裡，隨時可撥。"
 date: 2026-07-25
 author: Eason Guo
 tags: [語音AI, 通話]
 lang: "zh-Hant"
 ---
 
-點擊撥號，指的是網頁上的電話號碼本身就是一個可以點按撥打的連結，而不必你把它複製出來再手動輸進電話裡。[WaveKat Voice](/zh-hant/voice/)——一款可在 Mac 和 Linux 上執行、會記錄並轉寫每一通通話的 SIP 軟體電話——現在可以成為電腦開啟這類連結時所用的那個應用程式。在任何地方點按 `tel:` 或 `sip:` 連結——公司的聯絡頁面、搜尋結果、供應商的發票——WaveKat Voice 就會跳到最前面，號碼已經填好，只等你按下「撥號」。該功能隨 [0.0.43](/zh-hant/voice/changelog/#0.0.43) 推出。
+點擊撥號，指的是網頁上的電話號碼本身就是一個可以點按撥打的連結，而不必你把它複製出來再手動輸進電話裡。[WaveKat Voice](/zh-hant/voice/)——一款可在 Mac、Windows 和 Linux 上執行、會記錄並轉寫每一通通話的 SIP 軟體電話——現在可以成為電腦開啟這類連結時所用的那個應用程式。在任何地方點按 `tel:` 或 `sip:` 連結——公司的聯絡頁面、搜尋結果、供應商的發票——WaveKat Voice 就會跳到最前面，號碼已經填好，只等你按下「撥號」。該功能隨 [0.0.43](/zh-hant/voice/changelog/#0.0.43) 推出。
 
 這在商務座機上是最基本的能力，也是那種只有缺席時才會被察覺的功能：你在頁面上看到一個號碼，點一下，電話就撥出去了。這是同一個版本裡「打出去」的那一半——另一半是讓 WaveKat Voice [用通話流程替你接聽來電](/zh-hant/blog/answer-calls-with-a-call-flow/)。和其餘的通話能力一樣，它也跑在[我們自研的 SIP 引擎](/zh-hant/blog/our-own-sip-engine/)上。
 

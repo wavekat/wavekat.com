@@ -116,7 +116,7 @@ WaveKat Voice 现在可以把通话自动记录到 HubSpot。在你的 WaveKat �
 
 ### 支持哪些平台？
 
-WaveKat Voice 目前支持 Mac 和 Linux。HubSpot 集成在你的 WaveKat 账户里运行，两个平台上完全一样——它记录下的通话，在任何浏览器里打开 HubSpot 都能看到。
+WaveKat Voice 支持 Mac、Windows 和 Linux。HubSpot 集成在你的 WaveKat 账户里运行，三个平台上完全一样——它记录下的通话，在任何浏览器里打开 HubSpot 都能看到。
 
 ## 试一试
 

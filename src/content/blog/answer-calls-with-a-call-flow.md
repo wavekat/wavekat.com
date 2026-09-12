@@ -6,7 +6,7 @@ author: Eason Guo
 tags: [voice-ai, calls]
 ---
 
-[WaveKat Voice](/voice/) — the SIP softphone for Mac and Linux that records and transcribes every call — can now answer your incoming calls for you. A **call flow** is the thing that answers: it greets the caller, checks whether you're open, offers a menu, rings you, takes a message, or transfers the call on. You build the flow on the web, point it at one of your phone lines, and from then on the calls you can't get to still get answered. It lands in [0.0.43](/voice/changelog/#0.0.43).
+[WaveKat Voice](/voice/) — the SIP softphone for Mac, Windows and Linux that records and transcribes every call — can now answer your incoming calls for you. A **call flow** is the thing that answers: it greets the caller, checks whether you're open, offers a menu, rings you, takes a message, or transfers the call on. You build the flow on the web, point it at one of your phone lines, and from then on the calls you can't get to still get answered. It lands in [0.0.43](/voice/changelog/#0.0.43).
 
 This is the biggest step yet toward the thing we keep coming back to: [giving every small business the voice of a big one](/blog/hello-world/). A big company answers every call — there's a receptionist, a phone menu somebody paid a consultant to build, an after-hours service. A three-person shop has a phone that rings until someone can wipe their hands, and a caller who gives up is a booking that never happened. Call flows close that gap, and they run on the computer already sitting on your desk.
 

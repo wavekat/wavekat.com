@@ -1,6 +1,6 @@
 ---
 title: "Pourquoi les liens téléphoniques ne marchent pas"
-description: "Cliquer un numéro de téléphone ne fait rien sur la plupart des ordinateurs : aucune application ne prend l'appel. WaveKat Voice corrige ça sur Mac et Linux."
+description: "Cliquer un numéro ne fait rien sur la plupart des ordinateurs : aucune application ne prend l'appel. WaveKat Voice corrige ça sur Mac, Windows et Linux."
 date: 2026-08-07
 author: Eason Guo
 tags: [ia-vocale, appels]
@@ -47,7 +47,7 @@ Le point important : le lien n'a jamais été cassé. Le site a fait son travai
       <button type="button" data-os="mac">un Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac ou Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">N'importe lequel + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">Un téléphone</p>
@@ -83,7 +83,7 @@ Le point important : le lien n'a jamais été cassé. Le site a fait son travai
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac ou Linux avec WaveKat Voice</p>
+      <p class="panel-name">Mac, Windows ou Linux avec WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">Vous cliquez</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">Dans la case</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice — vous l'y avez mis, d'un seul réglage</span></span></li>
@@ -95,7 +95,7 @@ Le point important : le lien n'a jamais été cassé. Le site a fait son travai
 
 ## Comment WaveKat Voice remplit la case
 
-[WaveKat Voice](/fr/voice/) est une application de téléphonie pour Mac et Linux : elle passe et reçoit de vrais appels via votre opérateur, et enregistre et transcrit chacun d'eux. Et elle peut être ce qui occupe la case.
+[WaveKat Voice](/fr/voice/) est une application de téléphonie pour Mac, Windows et Linux : elle passe et reçoit de vrais appels via votre opérateur, et enregistre et transcrit chacun d'eux. Et elle peut être ce qui occupe la case.
 
 Vous basculez un seul réglage : **Liens téléphoniques**, dans Réglages → Général. Il est désactivé tant que vous ne l'activez pas, et c'est voulu — prendre en charge les liens téléphoniques de tout votre ordinateur devrait être votre choix, pas quelque chose qu'une application s'accapare à l'installation. Une fois le réglage activé, cliquer un numéro sur n'importe quelle page web fait apparaître WaveKat Voice avec le numéro déjà inscrit dans la fiche d'appel. Vous le regardez, et vous appuyez sur Appeler.
 
@@ -129,10 +129,10 @@ Apple enregistre d'office FaceTime comme gestionnaire des liens téléphoniques 
 
 ### Comment ouvrir les liens téléphoniques dans WaveKat Voice ?
 
-Activez les **Liens téléphoniques** dans Réglages → Général — le réglage est désactivé par défaut. Ensuite, cliquer un numéro sur n'importe quelle page web ouvre WaveKat Voice avec le numéro déjà inscrit, prêt à composer. Ça fonctionne sur Mac et Linux, depuis la version 0.0.43.
+Activez les **Liens téléphoniques** dans Réglages → Général — le réglage est désactivé par défaut. Ensuite, cliquer un numéro sur n'importe quelle page web ouvre WaveKat Voice avec le numéro déjà inscrit, prêt à composer. Ça fonctionne sur Mac, Windows et Linux, depuis la version 0.0.43.
 
 ## Réessayez ce numéro
 
-Les liens téléphoniques attendent en silence sur toutes les pages contact depuis des décennies ; il n'a jamais manqué à votre ordinateur que quelqu'un pour leur répondre. Si vous voulez que vos clics fassent sonner, [téléchargez WaveKat Voice](/fr/voice/download/) pour Mac ou Linux, basculez le seul réglage, et réessayez le numéro en haut de cette page.
+Les liens téléphoniques attendent en silence sur toutes les pages contact depuis des décennies ; il n'a jamais manqué à votre ordinateur que quelqu'un pour leur répondre. Si vous voulez que vos clics fassent sonner, [téléchargez WaveKat Voice](/fr/voice/download/) pour Mac, Windows ou Linux, basculez le seul réglage, et réessayez le numéro en haut de cette page.
 
 <script src="/blog/phone-slot/widget.js" defer></script>

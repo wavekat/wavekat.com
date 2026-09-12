@@ -1,6 +1,6 @@
 ---
 title: "Why Phone Links Don't Work on Your Computer"
-description: "Clicking a phone number does nothing on most computers because no app claims tel: links — here's why, and how WaveKat Voice fixes it on Mac and Linux."
+description: "Clicking a phone number does nothing on most computers because no app claims tel: links. Here's why, and how WaveKat Voice fixes it on Mac, Windows and Linux."
 date: 2026-08-07
 author: Eason Guo
 tags: [voice-ai, calls]
@@ -46,7 +46,7 @@ The important thing to notice: the link was never broken. The website did its jo
       <button type="button" data-os="mac">a Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac or Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">Any of them + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">A phone</p>
@@ -82,7 +82,7 @@ The important thing to notice: the link was never broken. The website did its jo
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac or Linux with WaveKat Voice</p>
+      <p class="panel-name">Mac, Windows or Linux with WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">You click</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">In the slot</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice — you put it there, with one switch</span></span></li>
@@ -94,7 +94,7 @@ The important thing to notice: the link was never broken. The website did its jo
 
 ## How WaveKat Voice fills the slot
 
-[WaveKat Voice](/voice/) is a phone app for Mac and Linux — it places and receives real calls over your phone provider, and records and transcribes every one. And it can be the thing in the slot.
+[WaveKat Voice](/voice/) is a phone app for Mac, Windows and Linux — it places and receives real calls over your phone provider, and records and transcribes every one. And it can be the thing in the slot.
 
 You flip one switch: **Phone links**, in Settings → General. It's off until you turn it on, deliberately — taking over phone links for your whole computer should be your choice, not something an app grabs on install. Once it's on, clicking a number on any web page brings up WaveKat Voice with the number already typed into the call box. You look at it, and you press Call.
 
@@ -128,10 +128,10 @@ Apple registers FaceTime as the Mac's phone-link handler out of the box. FaceTim
 
 ### How do I make phone links open in WaveKat Voice?
 
-Turn on the Phone links switch in Settings → General — it's off by default. After that, clicking a number on any web page opens WaveKat Voice with the number already typed in, ready to dial. It works on Mac and Linux and shipped in version 0.0.43.
+Turn on the Phone links switch in Settings → General — it's off by default. After that, clicking a number on any web page opens WaveKat Voice with the number already typed in, ready to dial. It works on Mac, Windows and Linux and shipped in version 0.0.43.
 
 ## Try that number again
 
-Phone links have been quietly waiting on every contact page for decades; all your computer ever lacked was somebody home to answer them. If you'd like your clicks to ring, [download WaveKat Voice](/voice/download/) for Mac or Linux, flip the one switch, and try the number at the top of this page again.
+Phone links have been quietly waiting on every contact page for decades; all your computer ever lacked was somebody home to answer them. If you'd like your clicks to ring, [download WaveKat Voice](/voice/download/) for Mac, Windows or Linux, flip the one switch, and try the number at the top of this page again.
 
 <script src="/blog/phone-slot/widget.js" defer></script>

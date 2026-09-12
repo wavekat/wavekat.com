@@ -115,7 +115,7 @@ It's a Pro feature. During early access, Pro is free — one click on your WaveK
 
 ### Which platforms does this work on?
 
-WaveKat Voice runs on Mac and Linux today. The HubSpot integration lives in your WaveKat account, so it works the same from either — and the calls it logs are readable in HubSpot from any browser.
+WaveKat Voice runs on Mac, Windows and Linux. The HubSpot integration lives in your WaveKat account, so it works the same from all three — and the calls it logs are readable in HubSpot from any browser.
 
 ## Try it
 

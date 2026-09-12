@@ -7,7 +7,7 @@ tags: [Sprach-KI, Anrufe]
 lang: "de"
 ---
 
-[WaveKat Voice](/de/voice/) — das SIP-Softphone für Mac und Linux, das jeden Anruf aufzeichnet und transkribiert — nimmt eingehende Anrufe jetzt für Sie an. Das, was abnimmt, ist ein **Anrufablauf**: Er begrüßt die Anruferin, prüft, ob Sie geöffnet haben, spielt ein Menü ab, ruft Sie, nimmt eine Nachricht auf oder leitet den Anruf weiter. Sie bauen den Ablauf im Web, weisen ihn einer Ihrer Leitungen zu — und ab dann bekommen auch die Anrufe eine Antwort, zu denen Sie es nicht schaffen. Enthalten ab [0.0.43](/de/voice/changelog/#0.0.43).
+[WaveKat Voice](/de/voice/) — das SIP-Softphone für Mac, Windows und Linux, das jeden Anruf aufzeichnet und transkribiert — nimmt eingehende Anrufe jetzt für Sie an. Das, was abnimmt, ist ein **Anrufablauf**: Er begrüßt die Anruferin, prüft, ob Sie geöffnet haben, spielt ein Menü ab, ruft Sie, nimmt eine Nachricht auf oder leitet den Anruf weiter. Sie bauen den Ablauf im Web, weisen ihn einer Ihrer Leitungen zu — und ab dann bekommen auch die Anrufe eine Antwort, zu denen Sie es nicht schaffen. Enthalten ab [0.0.43](/de/voice/changelog/#0.0.43).
 
 Das ist der bisher größte Schritt zu dem, worauf wir immer wieder zurückkommen: [jedem kleinen Unternehmen die Stimme eines großen zu geben](/de/blog/hello-world/). Ein großes Unternehmen beantwortet jeden Anruf — es gibt einen Empfang, ein Telefonmenü, das jemand von einem Berater bauen ließ, einen Dienst für die Zeit nach Feierabend. Ein Drei-Personen-Laden hat ein Telefon, das klingelt, bis sich jemand die Hände abtrocknen kann — und wer auflegt, ist eine Buchung, die nie zustande kam. Anrufabläufe schließen diese Lücke, und sie laufen auf dem Computer, der ohnehin auf Ihrem Schreibtisch steht.
 

@@ -23,7 +23,7 @@ WaveKat développe des outils pour l'IA vocale en temps réel. Nous commençons 
 - **wavekat-turn** — la détection de tour de parole, qui sait quand un locuteur a fini de parler
 - **wavekat-lab** — un tableau de bord interactif pour tester et comparer les backends audio
 
-Au-dessus de ces bibliothèques, nous avons construit **WaveKat Voice** — un softphone de bureau pour Mac et Linux qui transforme votre ordinateur en téléphone professionnel. Il répond et passe des appels via le fournisseur SIP que vous avez déjà, enregistre chaque appel et transcrit ce qui se dit en direct. Un [assistant IA peut manier le clavier de numérotation pour vous](/fr/blog/place-calls-from-the-command-line/) — c'est vous qui parlez ; un assistant qui tient la conversation lui-même, c'est la direction que nous prenons.
+Au-dessus de ces bibliothèques, nous avons construit **WaveKat Voice** — un softphone de bureau pour Mac, Windows et Linux qui transforme votre ordinateur en téléphone professionnel. Il répond et passe des appels via le fournisseur SIP que vous avez déjà, enregistre chaque appel et transcrit ce qui se dit en direct. Un [assistant IA peut manier le clavier de numérotation pour vous](/fr/blog/place-calls-from-the-command-line/) — c'est vous qui parlez ; un assistant qui tient la conversation lui-même, c'est la direction que nous prenons.
 
 ## Pourquoi commencer par l'open source ?
 
@@ -33,4 +33,4 @@ Nous pensons que la technologie fondamentale — VAD, détection de tour de paro
 
 Nous sommes plongés dans le développement. Suivez-nous sur [GitHub](https://github.com/wavekat) ou repassez ici — nous écrirons sur l'ingénierie derrière la voix en temps réel, les compromis que nous faisons et ce que nous apprenons en chemin.
 
-**WaveKat Voice** est aujourd’hui en bêta publique gratuite — [téléchargez-le](/fr/voice/download/) pour Mac ou Linux.
+**WaveKat Voice** est aujourd’hui en bêta publique gratuite — [téléchargez-le](/fr/voice/download/) pour Mac, Windows ou Linux.

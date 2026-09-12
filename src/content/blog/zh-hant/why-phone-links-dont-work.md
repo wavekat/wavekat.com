@@ -1,6 +1,6 @@
 ---
 title: "為什麼電腦上點電話號碼沒反應"
-description: "手機點網頁上的電話號碼就能撥，電腦上卻沒反應，因為「電話應用程式」的位置是空的，WaveKat Voice 把 Mac 和 Linux 上的這個位置填上了。"
+description: "手機點電話號碼就能撥，電腦上卻沒反應，因為「電話應用程式」的位置是空的，WaveKat Voice 把 Mac、Windows 和 Linux 上的這個位置填上了。"
 date: 2026-08-07
 author: Eason Guo
 tags: [語音AI, 通話]
@@ -39,7 +39,7 @@ lang: "zh-Hant"
       <button type="button" data-os="mac">Mac</button>
       <button type="button" data-os="windows">Windows</button>
       <button type="button" data-os="linux">Linux</button>
-      <button type="button" data-os="wavekat">Mac / Linux + WaveKat Voice</button>
+      <button type="button" data-os="wavekat">任何一台 + WaveKat Voice</button>
     </div>
     <div class="panel" data-os-panel="phone">
       <p class="panel-name">手機</p>
@@ -75,7 +75,7 @@ lang: "zh-Hant"
       </ol>
     </div>
     <div class="panel" data-os-panel="wavekat" hidden>
-      <p class="panel-name">Mac / Linux + WaveKat Voice</p>
+      <p class="panel-name">Mac、Windows 或 Linux + WaveKat Voice</p>
       <ol class="trace">
         <li><span class="who">你點了</span><span class="what"><code>+1 (415) 555-0123</code></span></li>
         <li><span class="who">位置裡是</span><span class="what"><span class="slotbox is-wavekat">WaveKat Voice，你自己放進去的，一個開關的事</span></span></li>
@@ -87,7 +87,7 @@ lang: "zh-Hant"
 
 ## WaveKat Voice 把這個位置填上了
 
-[WaveKat Voice](/zh-hant/voice/) 是 Mac 和 Linux 上的電話應用程式，每通電話都會自動錄音、轉成文字。從 [0.0.43](/zh-hant/voice/changelog/#0.0.43) 起，它可以登記進那個空位。
+[WaveKat Voice](/zh-hant/voice/) 是 Mac、Windows 和 Linux 上的電話應用程式，每通電話都會自動錄音、轉成文字。從 [0.0.43](/zh-hant/voice/changelog/#0.0.43) 起，它可以登記進那個空位。
 
 在 設定 → 一般 裡打開「電話連結」這一個開關就好。開關預設是關的：接管整台電腦的電話連結，這種事應該由你自己決定，而不是應用程式一裝好就搶。打開之後，在任何網頁上點電話號碼，WaveKat Voice 會跳到最前面，號碼已經填在撥號欄位裡。你看一眼，按「撥號」。
 
@@ -117,7 +117,7 @@ lang: "zh-Hant"
 
 ### 怎麼讓電腦直接撥打網頁上的電話號碼？
 
-在 Mac 或 Linux 上安裝 WaveKat Voice，在 設定 → 一般 裡打開「電話連結」。之後點任何網頁上的電話號碼，它都會跳到最前面並填好號碼，按「撥號」就撥出去了。
+在 Mac、Windows 或 Linux 上安裝 WaveKat Voice，在 設定 → 一般 裡打開「電話連結」。之後點任何網頁上的電話號碼，它都會跳到最前面並填好號碼，按「撥號」就撥出去了。
 
 ## 再回去點一次開頭那個號碼
 
