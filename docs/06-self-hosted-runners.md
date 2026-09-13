@@ -189,6 +189,34 @@ on one host and not the other is usually stale state, not code. The reset is
 `docker rm -f gha-runner-N && docker volume rm gha-runner-N`, then re-run the
 setup script.
 
+### No cloud caches on `wavekat-ci` — the volume is the cache
+
+Do not use GitHub's cache service in a job that runs on these runners: no
+`cache: pnpm` / `cache: npm` on `actions/setup-node`, no `Swatinem/rust-cache`,
+no `actions/cache` for dependency stores. The runners already keep that state
+on disk, and the cloud round-trip goes through the runners' own uplink instead of
+GitHub's own network.
+
+The cost is not theoretical. `wavekat-platform` run 34731393671 spent
+**10 minutes** of a 15-minute job timeout in `Setup Node`, downloading a
+255 MB pnpm-store tarball at ~0.4 MB/s — and the `pnpm install` that followed
+reused 325 of 325 packages from `/home/runner/runner/.pnpm-store`, the store
+that was already on the volume. `Swatinem/rust-cache` in `wavekat-asr` costs
+up to ~2.5 minutes per job the same way, saving a target dir that
+`CARGO_TARGET_DIR` already keeps on the volume.
+
+Where the warmth actually lives:
+
+| Cache | Location | Why it persists |
+|-------|----------|-----------------|
+| pnpm store | `/home/runner/runner/.pnpm-store` | pnpm puts its store on the project's filesystem, which is the volume |
+| cargo registry + target | `/home/runner/runner/cargo-{home,target}` | `CARGO_HOME` / `CARGO_TARGET_DIR` in the image |
+| npm cache, Playwright browsers | `/home/runner/.npm`, `~/.cache/ms-playwright` | container layer — survives restarts, not a re-create |
+
+A workflow that also runs on GitHub-hosted runners can keep its cache there
+and skip it here — `wavekat-voice/release.yml` does
+`cache: ${{ runner.environment == 'github-hosted' && 'pnpm' || '' }}`.
+
 ### Re-creating the runners without re-registering them
 
 Changing a `docker run` flag means re-creating the containers, and the setup

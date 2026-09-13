@@ -71,6 +71,8 @@ Since every runner is Ubuntu 24.04, GNU shell is fine — but **arch must never 
 
 To pin a job to one host, add the runner's automatic arch label: `runs-on: [self-hosted, wavekat-ci, X64]` or `..., ARM64]`.
 
+**No GitHub cloud caches on `wavekat-ci`** — no `cache: npm`/`cache: pnpm` on `setup-node`, no `Swatinem/rust-cache`, no `actions/cache` for dependency stores. The runner volume already keeps the pnpm store and cargo dirs warm, and the cloud round-trip goes over the runners' own uplink: `wavekat-platform` once spent 10 of a 15-minute timeout restoring a 255 MB pnpm tarball into a store that already had every package. Details in `docs/06-self-hosted-runners.md`.
+
 ## SEO & GEO — every new page must be both
 
 This site is optimized for classic search (SEO) **and** generative answer engines (GEO — being quoted by ChatGPT, Perplexity, Google AI Overviews, Claude). The two overlap but aren't identical: SEO wants crawlable, well-described, linkable pages; GEO wants self-contained, factual, extractable passages an LLM can lift verbatim. Build for both on every page.
