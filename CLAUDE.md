@@ -71,7 +71,7 @@ Since every runner is Ubuntu 24.04, GNU shell is fine — but **arch must never 
 
 To pin a job to one host, add the runner's automatic arch label: `runs-on: [self-hosted, wavekat-ci, X64]` or `..., ARM64]`.
 
-**No GitHub cloud caches on `wavekat-ci`** — no `cache: npm`/`cache: pnpm` on `setup-node`, no `Swatinem/rust-cache`, no `actions/cache` for dependency stores. The runner volume already keeps the pnpm store and cargo dirs warm, and the cloud round-trip goes over the runners' own uplink: `wavekat-platform` once spent 10 of a 15-minute timeout restoring a 255 MB pnpm tarball into a store that already had every package. Details in `docs/06-self-hosted-runners.md`.
+**No GitHub cloud caches on `wavekat-ci`** — no `cache: npm`/`cache: pnpm` on `setup-node`, no `Swatinem/rust-cache`, no `actions/cache` for dependency stores. The runner volume already keeps the pnpm store and cargo dirs warm, so the cloud round-trip is pure cost — slow downloads of packages already on disk. Runner containers are also memory-capped (`RUNNER_MEMORY`); `Killed`/exit 137 means the host or cap is too small, not a code bug. Details in `docs/06-self-hosted-runners.md`.
 
 ## SEO & GEO — every new page must be both
 
