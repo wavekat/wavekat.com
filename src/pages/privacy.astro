@@ -3,10 +3,11 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { Mail } from '@lucide/astro';
+import { PRIVACY_UPDATED } from '../lib/privacy';
 
-// Single source of truth for the "last updated" line, the WebPage schema's
-// dateModified, and nothing else — change it whenever the policy text changes.
-const updated = new Date('2026-09-12');
+// The date lives in src/lib/privacy.ts, shared by all nine locale pages and
+// published at /legal.json.
+const updated = PRIVACY_UPDATED;
 const updatedLabel = updated.toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
