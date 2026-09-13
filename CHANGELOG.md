@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.68](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.67...wavekat-com-v0.0.68) (2026-09-13)
+
+
+### Features
+
+* publish legal dates at /legal.json ([#195](https://github.com/wavekat/wavekat.com/issues/195)) ([3b8e2d3](https://github.com/wavekat/wavekat.com/commit/3b8e2d3f19b52fac9fa3e6311b77c6bfa09991ad))
+
 ## [0.0.67](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.66...wavekat-com-v0.0.67) (2026-09-12)
 
 
