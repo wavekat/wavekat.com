@@ -197,13 +197,9 @@ no `actions/cache` for dependency stores. The runners already keep that state
 on disk, and the cloud round-trip goes through the runners' own uplink instead of
 GitHub's own network.
 
-The cost is not theoretical. `wavekat-platform` run 34731393671 spent
-**10 minutes** of a 15-minute job timeout in `Setup Node`, downloading a
-255 MB pnpm-store tarball at ~0.4 MB/s — and the `pnpm install` that followed
-reused 325 of 325 packages from `/home/runner/runner/.pnpm-store`, the store
-that was already on the volume. `Swatinem/rust-cache` in `wavekat-asr` costs
-up to ~2.5 minutes per job the same way, saving a target dir that
-`CARGO_TARGET_DIR` already keeps on the volume.
+The pnpm store and cargo dirs are already on the volume, so the cache step only
+adds a slow download: on a large workspace it can take most of a job's timeout
+restoring a tarball of packages that `pnpm install` then finds already present.
 
 Where the warmth actually lives:
 
@@ -216,6 +212,37 @@ Where the warmth actually lives:
 A workflow that also runs on GitHub-hosted runners can keep its cache there
 and skip it here — `wavekat-voice/release.yml` does
 `cache: ${{ runner.environment == 'github-hosted' && 'pnpm' || '' }}`.
+
+### Memory: cap every container, size the count to the host
+
+`Killed` / `exit code 137` in a step (usually `pnpm install` or a vitest
+shard) is the kernel's OOM killer, not the job. Confirm on the host with
+`journalctl -k | grep "Out of memory"`.
+
+Uncapped containers can each use all of the host's RAM, so a busy pool
+overcommits it and the kernel picks a victim host-wide — any container, or
+anything else running on the machine. Removing the cloud caches (above) makes
+this easier to hit, because jobs no longer spend their first minutes on
+network I/O and reach their memory peak together.
+
+`setup-gha-runners-docker.sh` passes `--memory` with swap disabled.
+`RUNNER_MEMORY` defaults to `(host RAM − RUNNER_HOST_RESERVE_GB) / COUNT`,
+reserve 4 GB, and warns below 3 GB, which is roughly what a heavy Node test
+job needs. A job that outgrows its cap dies inside its own cgroup instead of
+taking a neighbour down. If the default comes out under 3 GB, lower
+`RUNNER_COUNT` rather than the cap.
+
+To shrink a host, remove the top instances first (this de-registers them,
+so it needs a remove token — `gh auth refresh -s admin:org`), then re-create
+the rest in place:
+
+```sh
+RUNNER_INSTANCES="3 4" ./scripts/uninstall-gha-runners-docker.sh
+RUNNER_COUNT=2 RUNNER_KEEP_VOLUME=1 RUNNER_SKIP_BUILD=1 ./scripts/setup-gha-runners-docker.sh
+```
+
+The setup script warns if instances above `RUNNER_COUNT` are still installed,
+because lowering the count alone leaves them running.
 
 ### Re-creating the runners without re-registering them
 

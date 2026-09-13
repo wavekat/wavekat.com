@@ -8,6 +8,7 @@
 # Usage:
 #   ./uninstall-gha-runners-docker.sh
 #   RUNNER_TOKEN=AAAA... ./uninstall-gha-runners-docker.sh   # remove-token
+#   RUNNER_INSTANCES="3 4" ./uninstall-gha-runners-docker.sh  # only these
 #
 # A *remove* token can be fetched via:
 #   gh api -X POST /orgs/wavekat/actions/runners/remove-token --jq .token
@@ -17,6 +18,9 @@ set -euo pipefail
 ORG="${RUNNER_ORG:-wavekat}"
 COUNT="${RUNNER_COUNT:-4}"
 PREFIX="${RUNNER_PREFIX:-$(hostname -s)}"
+# Which instance numbers to remove. Defaults to 1..RUNNER_COUNT; name a
+# subset to shrink a host (e.g. 4 → 2 runners) without touching the rest.
+INSTANCES="${RUNNER_INSTANCES:-$(seq 1 "${COUNT}")}"
 
 log()  { printf '\033[1;36m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*" >&2; }
@@ -49,7 +53,7 @@ EOF
 TOKEN="$(get_token)"
 [[ -n "${TOKEN}" ]] || die "got empty remove token"
 
-for i in $(seq 1 "${COUNT}"); do
+for i in ${INSTANCES}; do
   NAME="${PREFIX}-${i}"
   log "removing runner ${NAME}"
 

@@ -21,6 +21,10 @@
 #   RUNNER_COUNT=6 RUNNER_PREFIX=aoc-m3l RUNNER_LABELS=aoc-m3l,gpu \
 #     ./setup-gha-runners-docker.sh
 #
+#   # Shrink a host and cap each container's memory (see RUNNER_MEMORY):
+#   RUNNER_COUNT=2 RUNNER_KEEP_VOLUME=1 RUNNER_SKIP_BUILD=1 \
+#     ./setup-gha-runners-docker.sh
+#
 # Re-running is safe: existing containers/services are torn down and
 # re-registered. The registration token is only consumed on the first
 # start of a runner — subsequent restarts use the cached credentials.
@@ -66,6 +70,25 @@ SKIP_BUILD="${RUNNER_SKIP_BUILD:-0}"
 # Set it to a space-separated list to override. Set it to the empty string
 # to opt out entirely and let Docker do whatever it would have done.
 RUNNER_DNS_FALLBACK="${RUNNER_DNS_FALLBACK:-1.1.1.1 8.8.8.8}"
+# Hard memory cap per container (`docker run --memory`, swap disabled).
+#
+# Without one, every container may use all of the host's RAM, so N busy
+# runners overcommit it and the *kernel's* OOM killer picks the victim —
+# host-wide, from any container or anything else on the machine — and a job
+# dies with `Killed` / exit 137 through no fault of its own. With a cap, a job
+# that outgrows its share fails inside its own cgroup and nobody else is
+# touched.
+#
+# Left unset, it is derived: (host RAM − RUNNER_HOST_RESERVE_GB) / COUNT,
+# rounded down to whole GB. Set it explicitly (e.g. `3g`) to override, or to
+# the empty string to run uncapped.
+RUNNER_HOST_RESERVE_GB="${RUNNER_HOST_RESERVE_GB:-4}"
+if [[ -z "${RUNNER_MEMORY+set}" ]]; then
+  host_gb="$(awk '/^MemTotal/ {printf "%d", $2 / 1048576}' /proc/meminfo)"
+  per_gb=$(( (host_gb - RUNNER_HOST_RESERVE_GB) / COUNT ))
+  (( per_gb >= 1 )) || per_gb=1
+  RUNNER_MEMORY="${per_gb}g"
+fi
 if [[ -z "${RUNNER_DNS+set}" ]]; then
   # Loopback is the host's own stub (unreachable from a container) and
   # fe80:: is link-local; both are exactly what Docker already discards.
@@ -154,6 +177,18 @@ if [[ -n "${RUNNER_DNS}" ]]; then
   DNS_FLAGS+=$'\n'"  --dns-option timeout:2 --dns-option attempts:3 \\"
   log "container resolvers: ${RUNNER_DNS}"
 fi
+MEM_FLAGS=""
+if [[ -n "${RUNNER_MEMORY}" ]]; then
+  MEM_FLAGS=$'\n'"  --memory ${RUNNER_MEMORY} --memory-swap ${RUNNER_MEMORY} \\"
+  log "per-runner memory cap: ${RUNNER_MEMORY} × ${COUNT}"
+  # A heavy Node test job alone can reach ~2 GB RSS; under ~3 GB per
+  # runner those jobs will OOM routinely.
+  if [[ "${RUNNER_MEMORY}" =~ ^([0-9]+)g$ ]] && (( BASH_REMATCH[1] < 3 )); then
+    warn "${RUNNER_MEMORY} per runner is below the ~3g heavy jobs need — lower RUNNER_COUNT"
+  fi
+else
+  warn "RUNNER_MEMORY is empty — containers run uncapped"
+fi
 
 sudo tee "${UNIT_PATH}" >/dev/null <<EOF
 [Unit]
@@ -167,7 +202,7 @@ Type=simple
 EnvironmentFile=/etc/gha-runner/%i.env
 ExecStartPre=-/usr/bin/docker rm -f gha-runner-%i
 ExecStart=/usr/bin/docker run --rm \\
-  --name gha-runner-%i \\${DNS_FLAGS}
+  --name gha-runner-%i \\${DNS_FLAGS}${MEM_FLAGS}
   --hostname gha-runner-%i \\
   -v gha-runner-%i:/home/runner/runner \\
   -e RUNNER_ORG=\${RUNNER_ORG} \\
@@ -236,6 +271,17 @@ done
 # it in a root-owned 0600 file is harmless. Scrubbing it would make
 # systemd's auto-restart unable to recover if config.sh failed on the
 # first attempt (no token in the env file → no way to register).
+
+# Lowering RUNNER_COUNT does not remove the runners above it — they keep
+# taking jobs, uncapped by this run's arithmetic. Say so rather than leave
+# the host silently over budget.
+extra="$(systemctl list-units --all 'gha-runner@*.service' --no-legend 2>/dev/null \
+  | grep -oE 'gha-runner@[0-9]+' | cut -d@ -f2 \
+  | awk -v n="${COUNT}" '$1 > n' | sort -n | tr '\n' ' ')"
+if [[ -n "${extra}" ]]; then
+  warn "runner instance(s) ${extra}are above RUNNER_COUNT=${COUNT} and still installed — remove them with:"
+  warn "  RUNNER_INSTANCES='${extra% }' ./scripts/uninstall-gha-runners-docker.sh"
+fi
 
 log "done — ${COUNT} runner(s) registered to ${ORG}"
 log "check status:  systemctl list-units 'gha-runner@*.service'"
