@@ -108,19 +108,17 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
                 i === 0 ? 'opacity-100' : 'opacity-0',
               ]}
             >
-              {/* 11px, not 10: `uppercase` does nothing for CJK labels, so they
-                  lean on size alone to read as a label. */}
               {shot.href ? (
                 <a
                   href={shot.href}
                   tabindex={i === 0 ? undefined : -1}
-                  class="group/hc-label inline-flex items-center justify-center gap-1 font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-accent-fg uppercase transition-opacity hover:opacity-70"
+                  class="group/hc-label inline-flex items-center justify-center gap-1 text-xs leading-4 font-semibold text-wk-accent-fg transition-opacity hover:opacity-70"
                 >
                   {shot.label}
                   <ArrowUpRight class="h-3 w-3 transition-transform group-hover/hc-label:translate-x-0.5 group-hover/hc-label:-translate-y-0.5" />
                 </a>
               ) : (
-                <span class="font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-accent-fg uppercase">
+                <span class="text-xs leading-4 font-semibold text-wk-accent-fg">
                   {shot.label}
                 </span>
               )}

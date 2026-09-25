@@ -158,8 +158,8 @@ ${background}
   <!-- ======== FOREGROUND ======== -->
   <svg x="${PAD}" y="56" width="176" height="50" viewBox="50 12 184 53">${wordmark}</svg>
 
-  <text x="${PAD}" y="196" font-family="${fontStack}" font-size="22" font-weight="500"
-        letter-spacing="3.5" fill="#7b9bff">${esc(eyebrow.toUpperCase())}</text>
+  <text x="${PAD}" y="196" font-family="${fontStack}" font-size="26" font-weight="600"
+        fill="#7b9bff">${esc(eyebrow)}</text>
 
   <text font-family="${fontStack}" font-size="${size}" font-weight="700"
         letter-spacing="${TRACKING}" fill="#ffffff">${titleTspans}</text>

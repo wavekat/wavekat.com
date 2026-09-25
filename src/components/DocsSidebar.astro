@@ -51,7 +51,7 @@ const sections: Section[] = Array.from(sectionMap.entries())
 <nav class="text-sm" aria-label="Docs">
   <a
     href="/docs/"
-    class={`block text-xs uppercase tracking-wider mb-6 ${
+    class={`block text-sm mb-6 ${
       !activeId
         ? 'text-gray-700 dark:text-gray-200 font-bold'
         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
@@ -63,7 +63,7 @@ const sections: Section[] = Array.from(sectionMap.entries())
   {sections.map((section) => (
     <div class="mb-8">
       <div class="flex items-baseline gap-2 mb-3">
-        <div class="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-600">
+        <div class="text-xs text-gray-400 dark:text-gray-600">
           {section.label}
         </div>
         {versions[section.key] && (

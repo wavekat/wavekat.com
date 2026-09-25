@@ -103,7 +103,7 @@ const li = 'flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxe
 const linkCls =
   'text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors';
 const wrap = 'overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4';
-const th = 'px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase';
+const th = 'px-4 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400';
 const td = 'px-4 py-3 text-xs text-gray-600 dark:text-gray-400 leading-relaxed';
 const tdKey = 'px-4 py-3 text-xs font-bold text-gray-900 dark:text-white';
 const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-top';
@@ -140,7 +140,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         class="mb-14 rounded-lg border p-5"
         style="border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent); background-color: color-mix(in srgb, var(--wk-accent) 3%, transparent);"
       >
-        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">请先了解这三件事</p>
+        <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-4">请先了解这三件事</p>
         <ul class="space-y-3">
           <li class={li} set:html={`${dot}<span>${b('WaveKat Voice 会录制通话，且录音默认开启。')}你是否有权录制一通电话、是否必须告知对方，取决于你和对方所在的地区。这是你的责任，不是我们的。如果不确定，请告知对方，或者关闭录音。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('WaveKat 是一个处于公测阶段的小型独立项目。')}它不是拥有合规部门的大公司。请预期会有缺陷、会有变动，并为任何你承受不起丢失的内容自行保留备份。</span>`} />
@@ -152,7 +152,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         aria-label="本页目录"
         class="mb-14 border-t border-b border-gray-200 py-5 dark:border-white/10"
       >
-        <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">本页目录</p>
+        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">本页目录</p>
         <ul class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
           {Object.entries(S).map(([id, label]) => (
             <li>

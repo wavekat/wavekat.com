@@ -124,7 +124,7 @@ const {
   </div>
 
   <div class="flex items-center gap-2 mb-6">
-    <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold tracking-wider uppercase" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
+    <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
       <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--wk-accent)"></span>
       {badge}
     </span>
@@ -167,7 +167,7 @@ const {
 
 <!-- What it does: three spotlights, then the rest as a grid -->
 <section class="mb-24">
-  <h2 class="font-mono text-xs font-bold tracking-widest text-gray-400 uppercase mb-10">{headingFeatures}</h2>
+  <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-10">{headingFeatures}</h2>
 
   <div class="space-y-16 sm:space-y-20">
     {spotlights.map((s, i) => (
@@ -220,7 +220,7 @@ const {
 
 <!-- How it works -->
 <section class="mb-24">
-  <h2 class="font-mono text-xs font-bold tracking-widest text-gray-400 uppercase mb-8">{headingHow}</h2>
+  <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-8">{headingHow}</h2>
   <ol class="grid gap-8 sm:grid-cols-3 sm:gap-6">
     {steps.map((s) => (
       <li class="relative border-t border-gray-200 dark:border-white/10 pt-6">
@@ -235,7 +235,7 @@ const {
 
 <!-- Who it's for -->
 <section class="mb-24">
-  <h2 class="font-mono text-xs font-bold tracking-widest text-gray-400 uppercase mb-6">{headingWho}</h2>
+  <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-6">{headingWho}</h2>
   <a
     href={whoHref}
     class="group flex items-center justify-between gap-6 rounded-2xl border border-gray-200/80 dark:border-white/10 bg-gray-50/50 dark:bg-wk-surface p-6 sm:p-7 transition-colors hover:border-wk-accent/40"
@@ -274,7 +274,7 @@ const {
 
 <!-- Q&A -->
 <section class="mb-16">
-  <h2 class="font-mono text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{headingFaq}</h2>
+  <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">{headingFaq}</h2>
   <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
     {faqs.map((f) => (
       <details class="group">

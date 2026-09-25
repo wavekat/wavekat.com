@@ -200,7 +200,7 @@ const faqSchema = {
       </div>
 
       <div class="flex items-center gap-2 mb-5">
-        <span class="inline-flex items-center gap-1.5 rounded-full border border-wk-accent/25 px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase text-wk-accent-fg">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-wk-accent/25 px-2.5 py-1 text-xs font-semibold text-wk-accent-fg">
           <span class="w-1.5 h-1.5 rounded-full animate-pulse bg-wk-accent"></span>
           免費 · 免註冊即可試用
         </span>
@@ -237,7 +237,7 @@ const faqSchema = {
 
     <!-- What you can make -->
     <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">你可以做出什麼</h2>
+      <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">你可以做出什麼</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {uses.map((u) => (
           <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-wk-accent/40 hover:shadow-lg hover:shadow-wk-accent/5">
@@ -253,7 +253,7 @@ const faqSchema = {
 
     <!-- Features -->
     <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">為什麼選它</h2>
+      <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">為什麼選它</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {features.map((f) => (
           <div class="group rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-wk-accent/40 hover:shadow-lg hover:shadow-wk-accent/5">
@@ -269,7 +269,7 @@ const faqSchema = {
 
     <!-- How it works -->
     <section id="how" class="mb-16 scroll-mt-24">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">如何運作</h2>
+      <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">如何運作</h2>
       <ol class="space-y-4">
         {steps.map((s) => (
           <li class="flex gap-4">
@@ -308,7 +308,7 @@ const faqSchema = {
 
     <!-- Q&A -->
     <section class="mb-16">
-      <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">問答</h2>
+      <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">問答</h2>
       <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
         {faqs.map((f) => (
           <details class="group">

@@ -60,7 +60,7 @@ const highlights = [
     </div>
 
     <div class="flex items-center gap-2 mb-5">
-      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
         <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--wk-accent)"></span>
         無料パブリックベータ
       </span>
@@ -76,7 +76,7 @@ const highlights = [
 
   <!-- All downloads — every installer, one column per system -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">すべてのダウンロード</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">すべてのダウンロード</h2>
     <VoiceDownloadAll />
   </section>
 
@@ -94,7 +94,7 @@ const highlights = [
 
   <!-- Getting set up -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">セットアップ</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">セットアップ</h2>
     <ol class="space-y-4">
       {steps.map((s) => (
         <li class="flex gap-4">
@@ -115,7 +115,7 @@ const highlights = [
 
   <!-- Installing on Windows -->
   <section id="windows" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Windows へのインストール</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Windows へのインストール</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice は Windows 10 と 11 向けに Microsoft Store で配信していて、これが Windows に入れるいちばん簡単な方法です。ひとつの掲載ページが Intel・AMD の PC と ARM の PC の両方をカバーし、Store がお使いのマシンに合ったビルドを渡して更新も続けます。パッケージは Microsoft が署名しているため、初回起動時に警告は出ません。
     </p>
@@ -142,7 +142,7 @@ const highlights = [
 
   <!-- Installing on Linux -->
   <section id="linux" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Linux へのインストール</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Linux へのインストール</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice は Snap Store にあり、Ubuntu ではこれがいちばん簡単なインストール方法です。Intel・AMD マシンと ARM マシンを 1 つのパッケージでカバーするので、Snap Store がそれぞれのマシンに合ったビルドを渡し、バックグラウンドで更新し続けます。snapd は Ubuntu に標準で入っていて、ほかのほとんどのディストリビューションにも入れられるので、この 1 行はほぼどこでも動きます。
     </p>
@@ -164,7 +164,7 @@ const highlights = [
 
   <!-- What you'll need -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">必要なもの</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">必要なもの</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
       電話事業者のアカウント——Twilio、Telnyx、2talk など。インターネット電話を使うときと同じログインで、
       すでにオンラインでビジネス通話をしているなら、お使いの事業者はほぼ確実に利用できます。
@@ -178,7 +178,7 @@ const highlights = [
 
   <!-- Updates -->
   <section class="mb-4">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">最新の状態を保つ</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">最新の状態を保つ</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
       WaveKat Voice は自動で最新の状態を保ちます。Mac App Store や Microsoft Store、Snap Store から入れたものは、ほかのストアアプリと同じように更新されます。
       直接ダウンロードしたものは、バックグラウンドで静かに新しいバージョンを確認して更新します。どちらの場合も、新しいものをダウンロードするためにここへ戻る必要はありません。

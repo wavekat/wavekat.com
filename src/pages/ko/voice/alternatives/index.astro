@@ -39,7 +39,7 @@ const listSchema = {
   </section>
 
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">비교</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">비교</h2>
     <div class="grid grid-cols-1 gap-3">
       {alternatives.map((alt) => (
         <a
@@ -62,7 +62,7 @@ const listSchema = {
   <!-- Cross-link to the per-provider setup pages (SIP providers you connect
     to, distinct from the softphone alternatives above). -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">통신사</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">통신사</h2>
     <div class="grid grid-cols-1 gap-3">
       {getProviders('ko').map((p) => (
         <a
