@@ -37,19 +37,7 @@ Plain SIP usually runs over UDP on port 5060: each message is a separate packet 
 3. **SIP inside the tunnel.** Every SIP message after that, in both directions, travels encrypted over the same connection. The messages mark it themselves: `Via: SIP/2.0/TLS`, and a `Contact` with `;transport=tls`.
 4. **The connection stays open.** Registration keeps it alive, and the provider sends incoming calls back down it. That's also how an incoming INVITE reaches a phone behind NAT without any port forwarding.
 
-```
-WaveKat Voice                          provider  sip.example.com:5061
-  |-- TCP connect ------------------------->|
-  |-- TLS ClientHello --------------------->|
-  |<-- certificate chain -------------------|
-  |   verify: trusted CA + SIP domain       |
-  |<========= encrypted session ===========>|
-  |== REGISTER ============================>|
-  |<= 401 challenge ========================|
-  |== REGISTER + Authorization ============>|
-  |<= 200 OK ===============================|
-  |<= INVITE (incoming call) ===============|
-```
+![Sequence diagram of SIP over TLS: WaveKat Voice opens a TCP connection to the provider on port 5061, completes the TLS handshake and verifies the certificate against the SIP domain, then REGISTER, the 401 challenge, the authenticated REGISTER, 200 OK and an incoming INVITE all travel over the encrypted connection.](/blog/sip-over-tls/en.svg)
 
 TLS protects one hop: the link between WaveKat Voice and your provider. How your provider carries the call onward, to another carrier or the phone network, is up to them.
 
@@ -154,17 +142,45 @@ UDP has no connection to lose, so a network blip goes unnoticed. TLS is one long
 
 ## FAQ
 
+### Can I turn on TLS for just one line?
+
+Yes. Connection is a per-line setting, so each line can use UDP, TCP or TLS independently.
+
+### Do I have to use port 5061?
+
+No. 5061 is the default port for SIP over TLS, but follow your provider's documentation; some use a different port or a separate hostname.
+
 ### Is TCP on port 5061 the same as TLS?
 
 No. That sends plain-text SIP to a TLS port, and registration fails. Set Connection to `TLS`.
+
+### Which TLS versions are supported?
+
+TLS 1.2 and TLS 1.3. WaveKat Voice's TLS is built on `rustls`, which doesn't support the obsolete TLS 1.0 and 1.1, so a server that only offers those can't connect.
+
+### Do I need port forwarding on my router with TLS?
+
+No. Incoming calls arrive over the TLS connection the softphone opened itself. Your firewall only needs to allow outbound TCP on 5061, or whichever port your provider uses.
+
+### Does TLS make calls slower?
+
+Not noticeably. The TLS handshake happens once, when the connection is set up; registration and every call after that reuse the same connection instead of handshaking again.
 
 ### How do I confirm a line is actually encrypted?
 
 Open the line's Technical details: Connection is `TLS`, Reachable at ends in `;transport=tls`, and SIP messages show `Via: SIP/2.0/TLS`.
 
+### What happens if my provider's certificate expires or changes?
+
+An expired certificate fails verification: the line stops with a certificate error and never falls back to plain text. If the provider switches to another valid certificate from a trusted CA, there's nothing to do, because WaveKat Voice checks the chain and the SIP domain rather than pinning one specific certificate.
+
 ### Are self-signed certificates supported?
 
 No. WaveKat Voice trusts only the system's root CAs, so a server with a certificate from a private CA can't connect over TLS.
+
+### What's the difference between SIP over TLS and a `sips:` address?
+
+A `sips:` address asks for TLS on every hop the call takes; a `sip:` address with `;transport=tls` protects the current hop. WaveKat Voice lines use the latter, protecting the connection between you and your provider.
 
 ## Try it
 
