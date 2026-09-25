@@ -28,6 +28,31 @@ TLS is the standard way to protect it. The connection between WaveKat Voice and 
 
 The authentication row is the one people underestimate. SIP uses Digest authentication ([RFC 3261](https://www.rfc-editor.org/rfc/rfc3261)), so the password itself never crosses the wire — but the `response` in the `Authorization` header is a hash derived from it. Anyone on the same network who captures that packet over UDP can run a dictionary against it offline, and a weak password won't last. Over TLS, there's no packet to capture.
 
+## How SIP over TLS works
+
+Plain SIP usually runs over UDP on port 5060: each message is a separate packet of readable text. SIP over TLS changes the transport underneath, not SIP itself.
+
+1. **One connection.** The softphone opens a TCP connection to the provider, usually on port 5061.
+2. **Handshake.** Before any SIP is sent, the two sides run a TLS handshake. The provider presents its certificate; the softphone checks that it chains to a trusted certificate authority and that it's issued for the SIP domain. Then they agree on session keys.
+3. **SIP inside the tunnel.** Every SIP message after that, in both directions, travels encrypted over the same connection. The messages mark it themselves: `Via: SIP/2.0/TLS`, and a `Contact` with `;transport=tls`.
+4. **The connection stays open.** Registration keeps it alive, and the provider sends incoming calls back down it. That's also how an incoming INVITE reaches a phone behind NAT without any port forwarding.
+
+```
+WaveKat Voice                          provider  sip.example.com:5061
+  |-- TCP connect ------------------------->|
+  |-- TLS ClientHello --------------------->|
+  |<-- certificate chain -------------------|
+  |   verify: trusted CA + SIP domain       |
+  |<========= encrypted session ===========>|
+  |== REGISTER ============================>|
+  |<= 401 challenge ========================|
+  |== REGISTER + Authorization ============>|
+  |<= 200 OK ===============================|
+  |<= INVITE (incoming call) ===============|
+```
+
+TLS protects one hop: the link between WaveKat Voice and your provider. How your provider carries the call onward, to another carrier or the phone network, is up to them.
+
 ## How certificates are checked
 
 TLS only stops a man-in-the-middle if certificate checking is strict. Ours:
