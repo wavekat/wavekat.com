@@ -58,7 +58,7 @@ const breadcrumbSchema = {
   <section class="relative mb-16 pt-2">
     <div
       class="pointer-events-none absolute -top-24 -left-24 w-72 h-72 sm:w-[28rem] sm:h-[28rem] rounded-full opacity-20 blur-3xl -z-10"
-      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      style="background: radial-gradient(circle, var(--wk-accent) 0%, transparent 70%);"
       aria-hidden="true"
     >
     </div>
@@ -100,7 +100,7 @@ const breadcrumbSchema = {
         <li class="flex gap-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
           <span
             class="shrink-0 flex items-center justify-center w-5 h-5 rounded-full text-[11px] font-bold mt-0.5"
-            style="background-color: #ff6d0018; color: #ff6d00;"
+            style="background-color: color-mix(in srgb, var(--wk-accent) 9%, transparent); color: var(--wk-accent-fg);"
           >
             {i + 1}
           </span>
@@ -158,7 +158,7 @@ const breadcrumbSchema = {
             {provider.columns.map((col, i) => (
               <th
                 class="px-4 py-3 text-[10px] font-bold tracking-widest uppercase"
-                style={i === 0 ? 'color: #ff6d00' : ''}
+                style={i === 0 ? 'color: var(--wk-accent-fg)' : ''}
                 class:list={[i === 0 ? '' : 'text-gray-400']}
               >
                 {col}
@@ -196,7 +196,7 @@ const breadcrumbSchema = {
     <ul class="space-y-2.5">
       {provider.whatItIs.strengths.map((s) => (
         <li class="flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-          <Check class="w-4 h-4 mt-0.5 shrink-0" style="color: #ff6d00" />
+          <Check class="w-4 h-4 mt-0.5 shrink-0" style="color: var(--wk-accent-fg)" />
           <span>{s}</span>
         </li>
       ))}
@@ -207,14 +207,14 @@ const breadcrumbSchema = {
   <section class="mb-16">
     <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.chooseHeading}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <div class="rounded-lg border p-5" style="border-color: #ff6d0040; background-color: #ff6d0008;">
+      <div class="rounded-lg border p-5" style="border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent); background-color: color-mix(in srgb, var(--wk-accent) 3%, transparent);">
         <span class="text-sm font-bold block mb-3 text-gray-900 dark:text-white">
           {provider.chooseWavekatLabel}
         </span>
         <ul class="space-y-2.5">
           {provider.chooseWavekat.map((c) => (
             <li class="flex gap-2.5 text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-              <Check class="w-3.5 h-3.5 mt-0.5 shrink-0" style="color: #ff6d00" />
+              <Check class="w-3.5 h-3.5 mt-0.5 shrink-0" style="color: var(--wk-accent-fg)" />
               <span>{c}</span>
             </li>
           ))}
@@ -244,7 +244,7 @@ const breadcrumbSchema = {
         <details class="group">
           <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
             {f.q}
-            <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+            <span class="shrink-0 transition-transform group-open:rotate-45" style="color: var(--wk-accent-fg)" aria-hidden="true">+</span>
           </summary>
           <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed pb-4 -mt-1 max-w-xl">
             {f.a}

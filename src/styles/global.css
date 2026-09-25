@@ -10,19 +10,43 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', Menlo, 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
 
-  /* Brand accent */
-  --color-wk-orange: #ff6d00;
-
   /* Library accent colors */
   --color-wk-core: #00e676;
   --color-wk-vad: #00bcd4;
   --color-wk-turn: #7c4dff;
   --color-wk-lab: #ffd740;
-  --color-wk-voice: #ff6d00;
+  --color-wk-voice: #2d5bff;
 
   /* Site background */
   --color-wk-bg: #070b14;
   --color-wk-surface: #0a1018;
+}
+
+/* Brand accent — "line cobalt", the blue of telephone cabling and enamel
+   signage. Declared as plain custom properties so inline `style=""` and
+   canvas code can read the same values as the Tailwind utilities.
+   - accent:     fills, borders, glows. Fixed across themes; white text on it
+                 is 5.2:1.
+   - accent-fg:  accent-coloured *text*. #2d5bff is only 3.8:1 on the navy
+                 ground, so dark mode lifts it to a lighter tint.
+   - accent-end: the far stop of the headline gradient. */
+:root {
+  --wk-accent: #2d5bff;
+  --wk-accent-fg: #2d5bff;
+  --wk-accent-end: #5b8cff;
+}
+/* `.wk-on-dark` marks a band that is dark in both themes, so its accent text
+   takes the dark-mode tint even on the light site. */
+.dark,
+.wk-on-dark {
+  --wk-accent-fg: #7b9bff;
+  --wk-accent-end: #9cc8ff;
+}
+
+@theme inline {
+  --color-wk-accent: var(--wk-accent);
+  --color-wk-accent-fg: var(--wk-accent-fg);
+  --color-wk-accent-end: var(--wk-accent-end);
 }
 
 @layer base {
@@ -37,11 +61,11 @@
   }
 
   ::selection {
-    background-color: rgb(255 109 0 / 0.25);
+    background-color: rgb(45 91 255 / 0.25);
   }
 
   :focus-visible {
-    outline: 2px solid rgb(255 109 0 / 0.6);
+    outline: 2px solid rgb(45 91 255 / 0.6);
     outline-offset: 2px;
   }
 
@@ -83,7 +107,7 @@
 
   /* Brand gradient for headline accents. */
   .text-gradient-brand {
-    background: linear-gradient(100deg, #ff6d00 0%, #ffa040 60%, #ffd740 120%);
+    background: linear-gradient(100deg, var(--wk-accent-fg) 0%, var(--wk-accent-end) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

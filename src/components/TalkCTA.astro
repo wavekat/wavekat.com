@@ -20,7 +20,7 @@ const ui = t(lang);
   <div class="relative overflow-hidden rounded-2xl border border-gray-200/80 bg-gray-50/50 p-7 dark:border-white/10 dark:bg-wk-surface">
     <div
       class="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full opacity-15 blur-3xl"
-      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      style="background: radial-gradient(circle, var(--wk-accent) 0%, transparent 70%);"
       aria-hidden="true"
     >
     </div>
@@ -32,7 +32,7 @@ const ui = t(lang);
       <a
         href={emailHref}
         data-conversion="mailto_click"
-        class="inline-flex items-center gap-2 rounded-full bg-wk-orange px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/35"
+        class="inline-flex items-center gap-2 rounded-full bg-wk-accent px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-wk-accent/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-accent/35"
       >
         <Mail class="w-4 h-4" />
         {ui.talkButton}

@@ -22,7 +22,7 @@ export interface OgCard {
   src: string;
   /** The page's own title — the line set large on the card. */
   title: string;
-  /** Small orange label above the title (the section). */
+  /** Small accent-coloured label above the title (the section). */
   eyebrow: string;
   /** Muted line at the bottom, e.g. `wavekat.com/ja/blog`. */
   footer: string;

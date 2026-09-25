@@ -115,7 +115,7 @@ const pipelineBase = voicePipeline.slice(4);
       </div>
       <div
         class="absolute -top-40 left-1/2 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full opacity-[0.13] blur-3xl"
-        style="background: radial-gradient(closest-side, #ff6d00, transparent);"
+        style="background: radial-gradient(closest-side, var(--wk-accent), transparent);"
       >
       </div>
     </div>
@@ -124,10 +124,10 @@ const pipelineBase = voicePipeline.slice(4);
       <div>
         <a
           href="/ja/voice/"
-          class="animate-rise group inline-flex items-center gap-2 rounded-full border border-wk-orange/30 bg-wk-orange/5 py-1.5 pl-4 pr-3 text-xs font-medium text-wk-orange transition-colors hover:border-wk-orange/60 hover:bg-wk-orange/10"
+          class="animate-rise group inline-flex items-center gap-2 rounded-full border border-wk-accent/30 bg-wk-accent/5 py-1.5 pl-4 pr-3 text-xs font-medium text-wk-accent-fg transition-colors hover:border-wk-accent/60 hover:bg-wk-accent/10"
         >
           <span class="font-semibold">WaveKat Voice</span>
-          <span class="h-3 w-px bg-wk-orange/30" aria-hidden="true"></span>
+          <span class="h-3 w-px bg-wk-accent/30" aria-hidden="true"></span>
           free public beta
           <ArrowRight class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </a>
@@ -167,18 +167,18 @@ const pipelineBase = voicePipeline.slice(4);
   </section>
 
   <!-- Product statement: a dark full-bleed band in both themes -->
-  <section class="relative overflow-hidden border-y border-gray-200/60 bg-[#070b14] dark:border-white/10 dark:bg-white/[0.05]" data-reveal>
+  <section class="wk-on-dark relative overflow-hidden border-y border-gray-200/60 bg-[#070b14] dark:border-white/10 dark:bg-white/[0.05]" data-reveal>
     <div
       class="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full opacity-15 blur-3xl"
-      style="background: radial-gradient(circle, #ff6d00 0%, transparent 70%);"
+      style="background: radial-gradient(circle, var(--wk-accent) 0%, transparent 70%);"
       aria-hidden="true"
     >
     </div>
     <div class="relative mx-auto max-w-6xl px-6 py-16 sm:py-20">
       <h2 class="mb-8 font-mono text-xs font-bold uppercase tracking-widest text-white/40">私たちのアプリ</h2>
       <div class="flex flex-wrap items-center gap-4">
-        <span class="text-3xl font-bold tracking-tight text-wk-orange sm:text-4xl">WaveKat Voice</span>
-        <span class="inline-flex items-center rounded-full border border-wk-orange/30 bg-wk-orange/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-orange">
+        <span class="text-3xl font-bold tracking-tight text-wk-accent-fg sm:text-4xl">WaveKat Voice</span>
+        <span class="inline-flex items-center rounded-full border border-wk-accent/30 bg-wk-accent/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-accent-fg">
           free public beta
         </span>
       </div>
@@ -188,7 +188,7 @@ const pipelineBase = voicePipeline.slice(4);
       </p>
       <a
         href="/ja/voice/"
-        class="group mt-9 inline-flex items-center gap-2 rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40"
+        class="group mt-9 inline-flex items-center gap-2 rounded-full bg-wk-accent px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-accent/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-accent/40"
       >
         詳しく見る・ダウンロード
         <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -205,12 +205,12 @@ const pipelineBase = voicePipeline.slice(4);
     >
       <span
         class="absolute inset-x-0 top-0 h-0.5 opacity-60 transition-opacity group-hover:opacity-100"
-        style="background: linear-gradient(90deg, transparent, #ff6d00, transparent);"
+        style="background: linear-gradient(90deg, transparent, var(--wk-accent), transparent);"
         aria-hidden="true"
       ></span>
       <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div class="max-w-2xl">
-          <span class="inline-flex items-center rounded-full border border-wk-orange/30 bg-wk-orange/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-orange">
+          <span class="inline-flex items-center rounded-full border border-wk-accent/30 bg-wk-accent/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-wk-accent-fg">
             無料 · 登録不要
           </span>
           <h3 class="mt-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
@@ -223,7 +223,7 @@ const pipelineBase = voicePipeline.slice(4);
           </p>
           <a
             href="/ja/voice/prompts/"
-            class="group/more mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-wk-orange transition-opacity hover:opacity-70"
+            class="group/more mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-wk-accent-fg transition-opacity hover:opacity-70"
           >
             ジェネレーターについて詳しく見る
             <ArrowRight class="h-4 w-4 transition-transform group-hover/more:translate-x-0.5" />
@@ -231,7 +231,7 @@ const pipelineBase = voicePipeline.slice(4);
         </div>
         <a
           href="https://platform.wavekat.com/voice/prompts"
-          class="group/cta inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-wk-orange px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-orange/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-orange/40 sm:self-auto"
+          class="group/cta inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-wk-accent px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-accent/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-wk-accent/40 sm:self-auto"
         >
           無料で試す
           <ArrowUpRight class="h-4 w-4 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />

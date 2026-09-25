@@ -43,7 +43,7 @@ const listSchema = {
       {alternatives.map((alt) => (
         <a
           href={`/ja/voice/alternatives/${alt.slug}/`}
-          class="group block rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5"
+          class="group block rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-wk-accent/40 hover:shadow-lg hover:shadow-wk-accent/5"
         >
           <span class="text-sm font-bold block mb-1.5 text-gray-900 dark:text-white">
             WaveKat Voice と {alt.name} の比較
@@ -66,7 +66,7 @@ const listSchema = {
       {getProviders('ja').map((p) => (
         <a
           href={`/ja/voice/providers/${p.slug}/`}
-          class="group block rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-[#ff6d00]/40 hover:shadow-lg hover:shadow-[#ff6d00]/5"
+          class="group block rounded-lg border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-wk-surface transition-all hover:-translate-y-0.5 hover:border-wk-accent/40 hover:shadow-lg hover:shadow-wk-accent/5"
         >
           <span class="text-sm font-bold flex items-center gap-1.5 mb-1.5 text-gray-900 dark:text-white">
             {p.name}

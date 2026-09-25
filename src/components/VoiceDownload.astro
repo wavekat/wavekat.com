@@ -135,8 +135,8 @@ const isDefaultPrimary = (e: (typeof primaries)[number]) =>
 // `data-dl-show` so the script never has to guess which one to restore.
 const primaryCls =
   variant === 'cta'
-    ? 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ff6d00]/30'
-    : 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff6d00]/25 transition-all hover:shadow-xl hover:shadow-[#ff6d00]/35 hover:-translate-y-0.5';
+    ? 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-wk-accent/30'
+    : 'items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wk-accent/25 transition-all hover:shadow-xl hover:shadow-wk-accent/35 hover:-translate-y-0.5';
 
 // The primary when it is a store handoff rather than one of our files.
 //
@@ -154,7 +154,7 @@ const primaryCls =
 // The radius here is on the FOCUS RING alone, so keyboard focus traces the
 // badge's own corners rather than boxing it in a square.
 const badgePrimaryCls =
-  'items-center rounded-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff6d00]';
+  'items-center rounded-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wk-accent';
 
 // `text-left` because the CTA card centres its text and the menu shouldn't
 // inherit that — the rows are left-aligned, so the note under them is too.
@@ -208,7 +208,7 @@ const allCls =
     {primaries.map((e) => {
       const Icon = ICONS[e.group.key];
       // Mac and Windows promote to a store, so their primary IS the store's
-      // badge; Linux keeps the orange pill. That isn't an inconsistency to
+      // badge; Linux keeps the accent pill. That isn't an inconsistency to
       // tidy away later — it's the same `href` vs `dl` split the rest of
       // this file turns on, drawn at button size.
       //
@@ -239,7 +239,7 @@ const allCls =
       // failure on /ko/ and /zh/ reading "badges/snap/on-light/ko.svg is
       // missing", which misdirects the fix entirely: the file cannot be
       // fetched, because Canonical publishes none. With it, those two
-      // locales fall back to the orange pill and the promise holds.
+      // locales fall back to the accent pill and the promise holds.
       const handoff = badgeStoreFor(e.row.key);
       const store = handoff && hasBadge(handoff, lang) ? handoff : null;
       return (
@@ -257,7 +257,7 @@ const allCls =
             'cursor-pointer border-0',
             isDefaultPrimary(e) ? 'inline-flex' : 'hidden',
           ]}
-          style={store ? undefined : 'background-color: #ff6d00'}
+          style={store ? undefined : 'background-color: var(--wk-accent)'}
         >
           {store ? (
             /* `eager`: on /voice/ this is the hero control, above the fold,
@@ -311,7 +311,7 @@ const allCls =
                 href={r.href ?? r.dl!.url}
                 class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-2 dark:text-white"
               >
-                <Icon class="h-4 w-4" style="color: #ff6d00" />
+                <Icon class="h-4 w-4" style="color: var(--wk-accent-fg)" />
                 {r.label}
               </a>
             );

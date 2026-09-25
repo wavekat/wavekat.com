@@ -18,13 +18,13 @@ const ui = t(lang);
   <div class="max-w-6xl mx-auto px-6 py-12">
 
     <section class="mb-20 py-16 text-center">
-      <p class="text-6xl font-bold mb-6" style="color: #ff6d00;">404</p>
+      <p class="text-6xl font-bold mb-6" style="color: var(--wk-accent-fg);">404</p>
       <h1 class="text-2xl font-bold leading-snug mb-3 text-gray-900 dark:text-white">{ui.notFoundTitle}</h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10">
         {ui.notFoundBody}
       </p>
       <div class="flex flex-wrap items-center justify-center gap-3 text-sm">
-        <a href={localizedPath('/', lang)} class="rounded px-4 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90" style="background-color: #ff6d00;">{ui.notFoundHome}</a>
+        <a href={localizedPath('/', lang)} class="rounded px-4 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90" style="background-color: var(--wk-accent);">{ui.notFoundHome}</a>
         <a href={localizedPath('/voice/', lang)} class="rounded border border-gray-200 dark:border-white/10 px-4 py-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">WaveKat Voice</a>
         <a href={localizedPath('/blog/', lang)} class="rounded border border-gray-200 dark:border-white/10 px-4 py-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">{ui.navBlog}</a>
       </div>

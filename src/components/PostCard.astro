@@ -18,12 +18,12 @@ const formatDate = (d: Date) =>
 
 <a
   href={`${hrefBase}${slug}`}
-  class="group block rounded-2xl border border-gray-200/80 bg-gray-50/50 p-6 transition-all hover:-translate-y-0.5 hover:border-wk-orange/40 hover:shadow-lg hover:shadow-wk-orange/5 dark:border-white/10 dark:bg-wk-surface dark:hover:border-wk-orange/40"
+  class="group block rounded-2xl border border-gray-200/80 bg-gray-50/50 p-6 transition-all hover:-translate-y-0.5 hover:border-wk-accent/40 hover:shadow-lg hover:shadow-wk-accent/5 dark:border-white/10 dark:bg-wk-surface dark:hover:border-wk-accent/40"
 >
   <time datetime={date.toISOString()} class="font-mono text-[11px] uppercase tracking-wider text-gray-400 dark:text-gray-500">
     {formatDate(date)}
   </time>
-  <h3 class="mt-2 mb-2 text-base font-semibold leading-snug text-gray-900 transition-colors group-hover:text-wk-orange dark:text-white">
+  <h3 class="mt-2 mb-2 text-base font-semibold leading-snug text-gray-900 transition-colors group-hover:text-wk-accent-fg dark:text-white">
     {title}
   </h3>
   <p class="mb-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
