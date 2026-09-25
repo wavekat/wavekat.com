@@ -59,41 +59,71 @@ TLS 实现用的是 Rust 的 `rustls`，三个平台都不依赖 OpenSSL。
 
 ## 切换之前，先检查服务商的 TLS
 
-在应用里改任何设置之前，用两条标准命令就能判断这条线能不能走 TLS。把 `example.com` 换成你账户的 SIP 域名。
+在应用里改任何设置之前，用两条标准命令就能判断服务商的 TLS 能不能用。下面的输出是我们在 2026 年 9 月 26 日对两家 SIP 服务商的实测结果：新西兰的 2talk，以及 Telnyx。
 
-**找出 TLS 的主机和端口。** 如果服务商发布了 SIP over TLS 的 SRV 记录（[RFC 3263](https://www.rfc-editor.org/rfc/rfc3263)），里面就写着这两项：
+### 第一步：找出 TLS 的主机和端口
 
-```sh
-dig +short SRV _sips._tcp.example.com
-# 10 0 5061 sip.example.com.   ← 优先级、权重、端口、主机
-```
-
-查不到只说明对方没发布，按服务商文档里的主机和端口来就行。
-
-**像严格的客户端一样检查证书。** 连上这台主机，让 OpenSSL 按你的 SIP 域名校验证书：
+有的服务商会发布 SIP over TLS 的 SRV 记录（[RFC 3263](https://www.rfc-editor.org/rfc/rfc3263)），直接告诉你连哪台主机、哪个端口。Telnyx 就发布了：
 
 ```sh
-openssl s_client -connect sip.example.com:5061 \
-  -servername example.com -verify_hostname example.com </dev/null
+$ dig +short SRV _sips._tcp.sip.telnyx.com
+1 45 5061 sip-anycast1.telnyx.com.
+1 95 5061 sip-anycast2.telnyx.com.
 ```
 
-看输出末尾的 `Verify return code`：
+每行依次是优先级、权重、端口、主机。优先级数字越小越优先；优先级相同的记录按权重分担流量。这里两台主机优先级都是 1、端口都是 5061，客户端会把连接分散到两台上，大约三分之二落到 `sip-anycast2`。
+
+2talk 没有发布 SRV 记录，同样的查询什么也不返回。这种情况很常见，按服务商文档来就行：2talk 的文档给的是 `lyra.2talk.co.nz`，TLS 端口 5061。
+
+### 第二步：像严格的客户端一样检查证书
+
+连上这台主机，让 OpenSSL 按 SIP 域名校验证书。以 2talk 为例（输出有删减）：
+
+```sh
+$ openssl s_client -connect lyra.2talk.co.nz:5061 \
+    -servername lyra.2talk.co.nz -verify_hostname lyra.2talk.co.nz </dev/null
+depth=2 C=US, O=DigiCert Inc, OU=www.digicert.com, CN=DigiCert Global Root G2
+depth=1 C=US, O=DigiCert Inc, OU=www.digicert.com, CN=RapidSSL TLS RSA CA G1
+depth=0 CN=*.2talk.co.nz
+Verification: OK
+Protocol: TLSv1.3
+Verify return code: 0 (ok)
+```
+
+从这段输出能读出三件事：证书是签给 `*.2talk.co.nz` 的通配符证书，覆盖 `lyra.2talk.co.nz`；证书链一路追溯到 DigiCert 的公共根证书；连接用的是 TLS 1.3。`0 (ok)` 说明证书这一关应该能过。
+
+如果域名填错了，结果会是这样。同一台服务器，按一个它不覆盖的名字校验：
+
+```sh
+$ openssl s_client -connect lyra.2talk.co.nz:5061 \
+    -servername lyra.2talk.co.nz -verify_hostname sip.example.com </dev/null
+Verification error: hostname mismatch
+Verify return code: 62 (hostname mismatch)
+```
+
+WaveKat Voice 遇到这种情况会拒绝连接，并提示证书错误。常见的返回码：
 
 | 结果 | 含义 |
 |---|---|
-| `0 (ok)` | 证书受信任，且对你的 SIP 域名有效，线路应该能走 TLS |
+| `0 (ok)` | 证书受信任，且对你的 SIP 域名有效 |
 | `62 (hostname mismatch)` | 证书不是签给这个 SIP 域名的，找服务商核对域名 |
 | `18`、`19` 或 `20` | 自签名或私有 CA 签发，系统不信任 |
 | 连接被拒绝或超时 | 这个主机和端口没有提供 TLS，或者被防火墙拦了 |
 
 OpenSSL 用的是它自己的 CA 证书包。大多数 Linux 上就是系统证书库；在 Mac 上往往不是，所以在 Mac 上看到 `20`，只能当作参考，不能当结论。
 
-想和 WaveKat Voice 证书错误里的指纹对一下，可以打印证书的 SHA-256 指纹。OpenSSL 输出的是带冒号的大写形式，十六进制数字是一样的：
+### 第三步（可选）：记下证书指纹
+
+想和 WaveKat Voice 证书错误里的指纹对一下，可以打印证书的 SHA-256 指纹和到期时间：
 
 ```sh
-openssl s_client -connect sip.example.com:5061 -servername example.com </dev/null 2>/dev/null \
-  | openssl x509 -noout -fingerprint -sha256
+$ openssl s_client -connect lyra.2talk.co.nz:5061 -servername lyra.2talk.co.nz </dev/null 2>/dev/null \
+    | openssl x509 -noout -fingerprint -sha256 -enddate
+sha256 Fingerprint=1D:64:FB:48:21:19:A1:CB:18:43:3B:20:9A:BB:03:96:A1:D2:43:9A:E6:F3:A4:B4:35:3A:33:86:E4:E0:E4:8F
+notAfter=Feb 18 23:59:59 2027 GMT
 ```
+
+OpenSSL 输出的是带冒号的大写形式，WaveKat Voice 显示的是不带冒号的小写形式，十六进制数字是一样的。服务商到期换证书后，指纹会变，这是正常的。
 
 ## 配置
 

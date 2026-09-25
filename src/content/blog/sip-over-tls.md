@@ -59,41 +59,71 @@ Self-signed certificates and private CAs aren't supported, and there's no "trust
 
 ## Check your provider's TLS before you switch
 
-Two standard commands tell you whether a line will connect over TLS, before you change anything in the app. Replace `example.com` with your account's SIP domain.
+Two standard commands tell you whether your provider's TLS will work, before you change anything in the app. The output below is from real runs on 26 September 2026 against two SIP providers: 2talk in New Zealand, and Telnyx.
 
-**Find the TLS host and port.** If your provider publishes an SRV record for SIP over TLS ([RFC 3263](https://www.rfc-editor.org/rfc/rfc3263)), it names both:
+### Step 1: find the TLS host and port
 
-```sh
-dig +short SRV _sips._tcp.example.com
-# 10 0 5061 sip.example.com.   ← priority, weight, port, host
-```
-
-No answer just means they don't publish one; use the host and port from their documentation.
-
-**Check the certificate the way a strict client does.** Connect to that host, and ask OpenSSL to verify the certificate against your SIP domain:
+Some providers publish an SRV record for SIP over TLS ([RFC 3263](https://www.rfc-editor.org/rfc/rfc3263)) that names the host and port to use. Telnyx does:
 
 ```sh
-openssl s_client -connect sip.example.com:5061 \
-  -servername example.com -verify_hostname example.com </dev/null
+$ dig +short SRV _sips._tcp.sip.telnyx.com
+1 45 5061 sip-anycast1.telnyx.com.
+1 95 5061 sip-anycast2.telnyx.com.
 ```
 
-Read the `Verify return code` line near the end:
+Each line is priority, weight, port, host. Lower priority wins; records with the same priority share the load by weight. Here both hosts have priority 1 and port 5061, so a client spreads connections across them, sending roughly two in three to `sip-anycast2`.
+
+2talk publishes no SRV record, and the same query returns nothing. That's common; use the provider's documentation instead. 2talk's gives `lyra.2talk.co.nz`, TLS on port 5061.
+
+### Step 2: check the certificate the way a strict client does
+
+Connect to that host and ask OpenSSL to verify the certificate against the SIP domain. For 2talk (output trimmed):
+
+```sh
+$ openssl s_client -connect lyra.2talk.co.nz:5061 \
+    -servername lyra.2talk.co.nz -verify_hostname lyra.2talk.co.nz </dev/null
+depth=2 C=US, O=DigiCert Inc, OU=www.digicert.com, CN=DigiCert Global Root G2
+depth=1 C=US, O=DigiCert Inc, OU=www.digicert.com, CN=RapidSSL TLS RSA CA G1
+depth=0 CN=*.2talk.co.nz
+Verification: OK
+Protocol: TLSv1.3
+Verify return code: 0 (ok)
+```
+
+That tells you three things: the certificate is a wildcard for `*.2talk.co.nz`, which covers `lyra.2talk.co.nz`; the chain runs up to DigiCert's public root; and the connection is TLS 1.3. `0 (ok)` means the certificate check should pass.
+
+Here's what a wrong domain looks like — the same server, verified against a name it doesn't cover:
+
+```sh
+$ openssl s_client -connect lyra.2talk.co.nz:5061 \
+    -servername lyra.2talk.co.nz -verify_hostname sip.example.com </dev/null
+Verification error: hostname mismatch
+Verify return code: 62 (hostname mismatch)
+```
+
+WaveKat Voice refuses that connection with a certificate error. The codes you'll see most:
 
 | Result | Meaning |
 |---|---|
-| `0 (ok)` | Trusted and valid for your SIP domain. The line should connect over TLS |
+| `0 (ok)` | Trusted and valid for your SIP domain |
 | `62 (hostname mismatch)` | The certificate isn't issued for this SIP domain. Check the domain with your provider |
 | `18`, `19` or `20` | Self-signed or from a private CA. Not trusted by your system |
 | Connection refused or timed out | TLS isn't served on that host and port, or a firewall is blocking it |
 
 OpenSSL checks against its own CA bundle. On most Linux systems that's the system store; on a Mac it often isn't, so treat a `20` there as a hint rather than a verdict.
 
-To compare with the fingerprint in WaveKat Voice's certificate error, print the certificate's SHA-256 fingerprint. OpenSSL prints it in uppercase with colons; the hex digits are the same:
+### Step 3 (optional): note the certificate fingerprint
+
+To compare with the fingerprint in WaveKat Voice's certificate error, print the certificate's SHA-256 fingerprint and expiry:
 
 ```sh
-openssl s_client -connect sip.example.com:5061 -servername example.com </dev/null 2>/dev/null \
-  | openssl x509 -noout -fingerprint -sha256
+$ openssl s_client -connect lyra.2talk.co.nz:5061 -servername lyra.2talk.co.nz </dev/null 2>/dev/null \
+    | openssl x509 -noout -fingerprint -sha256 -enddate
+sha256 Fingerprint=1D:64:FB:48:21:19:A1:CB:18:43:3B:20:9A:BB:03:96:A1:D2:43:9A:E6:F3:A4:B4:35:3A:33:86:E4:E0:E4:8F
+notAfter=Feb 18 23:59:59 2027 GMT
 ```
+
+OpenSSL prints it uppercase with colons; WaveKat Voice shows it lowercase without them. The hex digits are the same. When the provider renews its certificate, the fingerprint changes; that's expected.
 
 ## Setting it up
 
