@@ -41,7 +41,7 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
        inside the margin below sm, full spread above it. -->
   <div
     class="pointer-events-none absolute -inset-4 rounded-full opacity-25 blur-3xl sm:-inset-10"
-    style="background: radial-gradient(closest-side, #ff6d00, transparent);"
+    style="background: radial-gradient(closest-side, var(--wk-accent), transparent);"
     aria-hidden="true"
   >
   </div>
@@ -114,13 +114,13 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
                 <a
                   href={shot.href}
                   tabindex={i === 0 ? undefined : -1}
-                  class="group/hc-label inline-flex items-center justify-center gap-1 font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-orange uppercase transition-opacity hover:opacity-70"
+                  class="group/hc-label inline-flex items-center justify-center gap-1 font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-accent-fg uppercase transition-opacity hover:opacity-70"
                 >
                   {shot.label}
                   <ArrowUpRight class="h-3 w-3 transition-transform group-hover/hc-label:translate-x-0.5 group-hover/hc-label:-translate-y-0.5" />
                 </a>
               ) : (
-                <span class="font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-orange uppercase">
+                <span class="font-mono text-[11px] leading-4 font-bold tracking-wider text-wk-accent-fg uppercase">
                   {shot.label}
                 </span>
               )}
@@ -141,7 +141,7 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
                 aria-label={shot.label}
                 aria-current={i === 0 ? 'true' : 'false'}
               >
-                <span class="hc-fill absolute inset-0 rounded-full bg-wk-orange" />
+                <span class="hc-fill absolute inset-0 rounded-full bg-wk-accent" />
               </button>
             ))}
           </div>
@@ -154,7 +154,7 @@ const { imgCode, shots, interval = 4500 } = Astro.props;
 <style>
   /* The bar starts empty, so the track has to say which slide is current. */
   .hc-dot[aria-current='true'] {
-    background-color: rgb(255 109 0 / 0.25);
+    background-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);
   }
 
   .hc-fill {

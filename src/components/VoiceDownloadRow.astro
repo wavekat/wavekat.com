@@ -137,7 +137,7 @@ const rowCls =
     data-dl-show="inline-flex"
     class:list={[rowCls, avail ? 'inline-flex' : 'hidden']}
   >
-    {Icon && <Icon class="h-4 w-4 shrink-0" style="color: #ff6d00" />}
+    {Icon && <Icon class="h-4 w-4 shrink-0" style="color: var(--wk-accent-fg)" />}
     <span class="flex min-w-0 flex-col">
       {badgeStore ? (
         <StoreBadge store={badgeStore} locale={badgeLocale} alt={row.label} class="mb-1" />

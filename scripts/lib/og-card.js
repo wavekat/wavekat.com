@@ -159,12 +159,12 @@ ${background}
   <svg x="${PAD}" y="56" width="176" height="50" viewBox="50 12 184 53">${wordmark}</svg>
 
   <text x="${PAD}" y="196" font-family="${fontStack}" font-size="22" font-weight="500"
-        letter-spacing="3.5" fill="#ff6d00">${esc(eyebrow.toUpperCase())}</text>
+        letter-spacing="3.5" fill="#7b9bff">${esc(eyebrow.toUpperCase())}</text>
 
   <text font-family="${fontStack}" font-size="${size}" font-weight="700"
         letter-spacing="${TRACKING}" fill="#ffffff">${titleTspans}</text>
 
-  <path d="M ${PAD},516 h 64 v 3 H ${PAD} Z" fill="#ff6d00" opacity="0.9"/>
+  <path d="M ${PAD},516 h 64 v 3 H ${PAD} Z" fill="#7b9bff" opacity="0.9"/>
   <text x="${PAD}" y="566" font-family="${fontStack}" font-size="24" font-weight="500"
         fill="#8b93a1">${esc(footer)}</text>
 

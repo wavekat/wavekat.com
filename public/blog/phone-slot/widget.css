@@ -12,7 +12,7 @@
  */
 
 .wk-slot {
-  --accent: #ff6d00;
+  --accent: var(--wk-accent-fg, #2d5bff);
   --pass: #047857;
   --fail: #b91c1c;
   --bd: rgb(0 0 0 / 0.1);
@@ -89,7 +89,7 @@
 .wk-slot .chips button:hover { border-color: var(--accent); color: var(--ink); }
 .wk-slot .chips button[aria-pressed='true'] {
   border-color: var(--accent);
-  background: rgb(255 109 0 / 0.1);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   color: var(--ink);
   font-weight: 500;
 }
@@ -144,7 +144,7 @@
 }
 .wk-slot .slotbox.is-wavekat {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: rgb(255 109 0 / 0.1);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 /* Outcome colouring. */

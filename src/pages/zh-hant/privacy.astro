@@ -135,7 +135,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
 
       <aside
         class="mb-14 rounded-lg border p-5"
-        style="border-color: #ff6d0040; background-color: #ff6d0008;"
+        style="border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent); background-color: color-mix(in srgb, var(--wk-accent) 3%, transparent);"
       >
         <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">請先了解這三件事</p>
         <ul class="space-y-3">
@@ -385,7 +385,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
             <details class="group">
               <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-sm font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
                 {f.q}
-                <span class="shrink-0 transition-transform group-open:rotate-45" style="color: #ff6d00" aria-hidden="true">+</span>
+                <span class="shrink-0 transition-transform group-open:rotate-45" style="color: var(--wk-accent-fg)" aria-hidden="true">+</span>
               </summary>
               <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pb-4 -mt-1">
                 {f.a}
@@ -401,7 +401,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         <a
           href="mailto:hello@wavekat.com"
           class="inline-flex items-center gap-2 rounded px-4 py-2.5 text-xs font-bold text-white transition-opacity hover:opacity-90"
-          style="background-color: #ff6d00"
+          style="background-color: var(--wk-accent)"
         >
           <Mail class="w-4 h-4" />
           hello@wavekat.com

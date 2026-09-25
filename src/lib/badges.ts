@@ -103,7 +103,7 @@ export function hasBadge(store: BadgeStore, locale: string): boolean {
  * artwork's intrinsic size — which they declare differently anyway (Apple
  * and Microsoft ship a viewBox, Canonical ships width/height).
  *
- * 44 because it matches the height of the orange pill it stands in for on
+ * 44 because it matches the height of the accent pill it stands in for on
  * the hero (`px-6 py-3 text-sm`), so promoting Linux over Mac swaps the
  * control without moving the page — and because it clears Apple's 40px
  * minimum with room to spare.

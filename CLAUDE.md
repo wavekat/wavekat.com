@@ -170,6 +170,10 @@ To add a whole new language: add its `localeDefs` entry (with `slug` and any `hr
 
 **Nine locales ship, all fully translated** — `en` (default) plus `zh-Hans`, `zh-Hant`, `ja`, `ko`, `de`, `es`, `fr`, `it`, matching the languages the WaveKat Voice app supports. "Fully translated" = the homepage, the entire `voice/*` section (overview, use-cases, download, talk, changelog chrome, alternatives hub + each comparison), and the blog (listing + every post). **Nav-label convention:** the lowercase `voice`/`docs`/`blog` nav is localized per `UIStrings` (`navVoice`/`navDocs`/`navBlog`); the *product* word "voice" becomes the local common noun (语音/語音/音声/보이스/voz/voix/voce/stimme) while the full product name **WaveKat Voice** is never translated anywhere. **Not translatable from this repo** (synced from the private `wavekat-voice` upstream at build, so they must be localized there): `docs/*` and the changelog *body* — `/​<slug>/voice/changelog/` chrome is localized, but its release notes come from the synced markdown.
 
+## Brand accent colour
+
+The site accent is **line cobalt `#2d5bff`**, and it lives in exactly one place: the `--wk-accent*` custom properties in `src/styles/global.css`. Never hardcode an accent hex in a page — use `bg-wk-accent` / `border-wk-accent/40` for fills, borders and glows, `text-wk-accent-fg` for accent *text* (it lifts to `#7b9bff` in dark mode, because `#2d5bff` is only 3.8:1 on the navy ground), `from-wk-accent-fg to-wk-accent-end` for headline gradients, and `var(--wk-accent)` / `color-mix(in srgb, var(--wk-accent) 25%, transparent)` inside `style=""`. It replaced a `#ff6d00` orange that was hardcoded hundreds of times across 100+ files and read as Claude's terracotta — so no warm orange/clay accent, and keep it that way. Canvas code (`SiteBackground.astro`, `brand/wallpaper.astro`) and the OG card renderer (`scripts/lib/og-card.js`) can't read CSS variables and carry the RGB literally; change them alongside `global.css`.
+
 ## Brand assets
 
 Logo SVGs come from `vendor/wavekat-brand` (git submodule — source of truth, never edit here).
@@ -260,7 +264,7 @@ store handoff and draws the badge; a row with a `dl` is a file we publish and
 keeps our own control. That is the split `voice-download-groups.ts` already
 turns on, so it needs no new concept.
 
-**Linux still keeps the orange pill on the hero, and the reason changed.** It
+**Linux still keeps the accent pill on the hero, and the reason changed.** It
 used to be "Linux has no store, so the rule doesn't fire there". Linux now has
 one: WaveKat Voice is at `snapcraft.io/wavekat-voice`, its badge is a row in
 the menu and a row in the download grid, and it is in `sameAs` and a third
