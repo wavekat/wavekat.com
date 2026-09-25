@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.69](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.68...wavekat-com-v0.0.69) (2026-09-25)
+
+
+### Features
+
+* cobalt brand accent ([#200](https://github.com/wavekat/wavekat.com/issues/200)) ([bfbc9b1](https://github.com/wavekat/wavekat.com/commit/bfbc9b1a944ca43106f463a23920f43047a11ea8))
+* plain page headlines ([#202](https://github.com/wavekat/wavekat.com/issues/202)) ([b171e87](https://github.com/wavekat/wavekat.com/commit/b171e8797f13aae93db584970e53b07fd5b7f386))
+* sentence-case labels ([#203](https://github.com/wavekat/wavekat.com/issues/203)) ([ce15b0a](https://github.com/wavekat/wavekat.com/commit/ce15b0a817b1d70163947b10659a373271b9bbe2))
+
 ## [0.0.68](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.67...wavekat-com-v0.0.68) (2026-09-13)
 
 
