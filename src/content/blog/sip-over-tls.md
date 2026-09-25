@@ -46,6 +46,8 @@ The most common cause is a domain that's slightly off: the certificate is checke
 
 Every line now has a **Technical details** page, one link under its connection details. It lists each setting with the value that's *in effect* on the live connection — not the value you typed — and points out any setting that didn't take effect. Below that are the SIP messages the line has sent and received, newest first, each expanding to the full text, with a button that copies everything for a support request.
 
+![WaveKat Voice on Ubuntu — a line's Technical details page, showing the connection in effect is TLS and the device is reachable at transport=tls.](/screenshots/line-technical-details-tls/en.webp)
+
 That page exists because of a bug it would have caught in a minute. Until this release, setting a line's Connection to `TCP` quietly used UDP underneath, and every screen in the app agreed the line was on TCP — because every screen read the *setting*, and none read the connection. That's fixed in 0.0.56, and it's why the page compares the two side by side: when you switch a line to TLS, you can see the messages going out over TLS instead of hoping they are.
 
 The message log stays in memory on your computer: it's never written to disk and is gone when the app quits. Before a message reaches the page, the one value derived from your SIP password — the digest response in the authorization header — is blanked, so a copied log is safe to paste into an email.
