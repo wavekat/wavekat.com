@@ -9,13 +9,11 @@ draft: false
 
 WaveKat Voice supports SIP over TLS as of [0.0.56](/voice/changelog/#0.0.56). Set a line's **Connection** to `TLS` and the port to `5061`, and all SIP signaling between the softphone and your provider — REGISTER, INVITE, REFER, BYE — goes over an encrypted connection. It works on Mac, Windows and Linux.
 
-## Why we built it
+## Why TLS matters
 
-We tell people WaveKat protects their data. Our [privacy policy](/privacy/) says everything moving between you and WaveKat — the website, cloud sync, downloads — travels over encrypted connections, and that your SIP password never leaves your computer.
+Every call starts with signaling: your phone registers with your provider, says who it's calling, and sets the call up. That traffic carries your SIP account, the numbers you dial, and the authentication exchange. Over plain UDP, anyone on the same network path can read it.
 
-That's true, and it left out the part that matters most. On every call, WaveKat Voice exchanges signaling with your SIP provider: who's calling whom, when, your SIP account, and the authentication handshake. That leg went out as plain-text UDP. The privacy policy filed it under "between you and your provider", which was only half right. The provider has to support TLS, yes — but whether the client can use it is on us, and WaveKat Voice had no option for it.
-
-We said we protect your data and didn't, on the link that carries the most about your calls. This closes that gap.
+TLS is the standard way to protect it. The connection between WaveKat Voice and your provider is encrypted, and the provider's identity is verified before anything is sent. A phone that carries your business calls should be able to do that, and protecting your communication is part of earning your trust. So every line in WaveKat Voice can use TLS.
 
 ## What's encrypted
 
@@ -53,7 +51,7 @@ Self-signed certificates and private CAs aren't supported, and there's no "trust
 3. Check that the account's SIP domain matches exactly what your provider gave you — that's the name the certificate is checked against.
 4. Save. The line re-registers over TLS.
 
-A common trap: **Connection** `TCP` with port `5061` is not TLS. It sends plain-text SIP to a port waiting for a TLS handshake, and registration fails. Our own 2talk setup guide once got this wrong; it's been corrected.
+A common trap: **Connection** `TCP` with port `5061` is not TLS. It sends plain-text SIP to a port waiting for a TLS handshake, and registration fails.
 
 Line settings sync to your WaveKat account, so the line is still TLS when you sign in on another computer.
 
@@ -74,7 +72,7 @@ Via: SIP/2.0/TLS 192.0.2.24:5066;branch=z9hG4bK…
 Contact: <sip:1001@192.0.2.24:5066;transport=tls>
 ```
 
-A bug forced this page into existence. Lines set to `TCP` were quietly running on UDP, and every screen in the app said TCP, because every screen read the configuration and none looked at the actual connection. We spent a full day guessing at that one. So TLS had to ship with a way to see the transport actually in use — otherwise "encrypted" is something you'd have to take on faith.
+Encryption you can't check is encryption you have to take on faith, so TLS ships with a way to see the transport actually in use.
 
 The SIP message log lives in memory only: never written to disk, gone when the app quits. The `response` in `Authorization` and `Proxy-Authorization` headers is blanked at capture, so a copied log doesn't leak the password hash to whoever you send it to.
 
