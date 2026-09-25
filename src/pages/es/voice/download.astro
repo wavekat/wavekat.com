@@ -60,7 +60,7 @@ const highlights = [
     </div>
 
     <div class="flex items-center gap-2 mb-5">
-      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
         <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--wk-accent)"></span>
         beta pública gratuita
       </span>
@@ -76,7 +76,7 @@ const highlights = [
 
   <!-- All downloads — every installer, one column per system -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Todas las descargas</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Todas las descargas</h2>
     <VoiceDownloadAll />
   </section>
 
@@ -94,7 +94,7 @@ const highlights = [
 
   <!-- Getting set up -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Cómo configurarlo</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Cómo configurarlo</h2>
     <ol class="space-y-4">
       {steps.map((s) => (
         <li class="flex gap-4">
@@ -115,7 +115,7 @@ const highlights = [
 
   <!-- Installing on Windows -->
   <section id="windows" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Instalación en Windows</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Instalación en Windows</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice está en Microsoft Store para Windows 10 y 11, y es la forma más sencilla de instalarlo: una sola ficha que cubre tanto los PC con Intel y AMD como los PC con ARM, así que la tienda le entrega a su equipo la versión que le corresponde y la mantiene actualizada. Microsoft firma el paquete, así que no aparece ningún aviso de seguridad al abrirlo por primera vez.
     </p>
@@ -142,7 +142,7 @@ const highlights = [
 
   <!-- Installing on Linux -->
   <section id="linux" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Instalación en Linux</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Instalación en Linux</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice está en Snap Store y, en Ubuntu, esa es la forma más sencilla de instalarlo: un paquete que cubre igual los equipos con Intel y AMD que los ARM, así que Snap Store entrega a su equipo la versión correcta y la mantiene actualizada en segundo plano. snapd viene con Ubuntu y se instala en la mayoría de las demás distribuciones, de modo que esta única línea funciona casi en cualquier sitio:
     </p>
@@ -164,7 +164,7 @@ const highlights = [
 
   <!-- What you'll need -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Lo que necesitará</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Lo que necesitará</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
       Una cuenta con un proveedor de telefonía — Twilio, Telnyx, 2talk y más. Es el mismo inicio de sesión
       que usaría con cualquier teléfono por internet, y si ya hace llamadas de negocio en línea, su
@@ -179,7 +179,7 @@ const highlights = [
 
   <!-- Updates -->
   <section class="mb-4">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Mantenerse al día</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Mantenerse al día</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
       WaveKat Voice se mantiene actualizado por sí solo. Una copia del Mac App Store, de Microsoft Store o de Snap Store se
       actualiza como cualquier otra app de tienda; una descarga directa comprueba en segundo plano si hay versiones

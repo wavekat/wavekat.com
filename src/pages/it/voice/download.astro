@@ -60,7 +60,7 @@ const highlights = [
     </div>
 
     <div class="flex items-center gap-2 mb-5">
-      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
         <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--wk-accent)"></span>
         beta pubblica gratuita
       </span>
@@ -76,7 +76,7 @@ const highlights = [
 
   <!-- All downloads — every installer, one column per system -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Tutti i download</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Tutti i download</h2>
     <VoiceDownloadAll />
   </section>
 
@@ -94,7 +94,7 @@ const highlights = [
 
   <!-- Getting set up -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Configurazione</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Configurazione</h2>
     <ol class="space-y-4">
       {steps.map((s) => (
         <li class="flex gap-4">
@@ -115,7 +115,7 @@ const highlights = [
 
   <!-- Installing on Windows -->
   <section id="windows" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installazione su Windows</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Installazione su Windows</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice è su Microsoft Store per Windows 10 e 11, ed è il modo più semplice per installarlo: una sola scheda che copre sia i PC Intel e AMD sia i PC ARM, così è lo Store a consegnare al tuo computer la versione giusta e a tenerla aggiornata. Microsoft firma il pacchetto, quindi al primo avvio non compare alcun avviso di sicurezza.
     </p>
@@ -142,7 +142,7 @@ const highlights = [
 
   <!-- Installing on Linux -->
   <section id="linux" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installazione su Linux</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Installazione su Linux</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice è nello Snap Store e, su Ubuntu, è il modo più semplice per installarlo: un pacchetto che copre allo stesso modo le macchine Intel e AMD e quelle ARM, così lo Snap Store dà alla tua macchina la versione giusta e la tiene aggiornata in background. snapd è incluso in Ubuntu e si installa sulla maggior parte delle altre distribuzioni, quindi questa riga funziona quasi ovunque:
     </p>
@@ -164,7 +164,7 @@ const highlights = [
 
   <!-- What you'll need -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Cosa ti serve</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Cosa ti serve</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
       Un account con un operatore telefonico — Twilio, Telnyx, 2talk e altri. È lo stesso accesso
       che useresti per qualsiasi telefono via internet e, se già effettui chiamate aziendali online,
@@ -179,7 +179,7 @@ const highlights = [
 
   <!-- Updates -->
   <section class="mb-4">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Restare aggiornato</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Restare aggiornato</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
       WaveKat Voice si mantiene aggiornato da solo. Una copia dal Mac App Store, dal Microsoft Store o dallo Snap Store si aggiorna
       come qualsiasi altra app di store; un download diretto controlla in silenzio la presenza di nuove versioni e si

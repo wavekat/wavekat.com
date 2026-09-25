@@ -60,7 +60,7 @@ const highlights = [
     </div>
 
     <div class="flex items-center gap-2 mb-5">
-      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
+      <span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold" style="color: var(--wk-accent-fg); border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent);">
         <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--wk-accent)"></span>
         free public beta
       </span>
@@ -76,7 +76,7 @@ const highlights = [
 
   <!-- All downloads — every installer, one column per system -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">All downloads</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">All downloads</h2>
     <VoiceDownloadAll />
   </section>
 
@@ -94,7 +94,7 @@ const highlights = [
 
   <!-- Getting set up -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Getting set up</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Getting set up</h2>
     <ol class="space-y-4">
       {steps.map((s) => (
         <li class="flex gap-4">
@@ -115,7 +115,7 @@ const highlights = [
 
   <!-- Installing on Windows -->
   <section id="windows" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installing on Windows</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Installing on Windows</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice is on the Microsoft Store for Windows 10 and 11, and that is the simplest way to
       install it: one listing that covers Intel and AMD PCs and ARM PCs alike, so the Store hands
@@ -149,7 +149,7 @@ const highlights = [
 
   <!-- Installing on Linux -->
   <section id="linux" class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Installing on Linux</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Installing on Linux</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-4">
       WaveKat Voice is in the Snap Store, and on Ubuntu that is the simplest way to install it: one package that covers Intel, AMD and ARM machines alike, so the Snap Store hands your machine the right build and keeps it updated in the background. snapd ships with Ubuntu and installs on most other distributions, so this one line works almost everywhere:
     </p>
@@ -171,7 +171,7 @@ const highlights = [
 
   <!-- What you'll need -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">What you'll need</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">What you'll need</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-3">
       An account with a phone provider — Twilio, Telnyx, 2talk, and more. It's the same login
       you'd use for any internet phone, and if you already make business calls online, your
@@ -186,7 +186,7 @@ const highlights = [
 
   <!-- Updates -->
   <section class="mb-4">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Staying up to date</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Staying up to date</h2>
     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-3">
       WaveKat Voice keeps itself up to date. A copy from the Mac App Store, the Microsoft Store or the Snap Store
       updates the way every other store app does; a direct download quietly checks for new versions

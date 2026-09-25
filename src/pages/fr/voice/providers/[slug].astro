@@ -93,7 +93,7 @@ const breadcrumbSchema = {
 
   <!-- How to set up -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.setup.heading}</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">{provider.setup.heading}</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
       {provider.setup.summary}
     </p>
@@ -147,19 +147,19 @@ const breadcrumbSchema = {
 
   <!-- Comparison table -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">
       {provider.comparisonHeading}
     </h2>
     <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10">
       <table class="w-full text-left border-collapse min-w-[34rem]">
         <thead>
           <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-wk-surface">
-            <th class="px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase w-1/4">
+            <th class="px-4 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 w-1/4">
               &nbsp;
             </th>
             {provider.columns.map((col, i) => (
               <th
-                class="px-4 py-3 text-[10px] font-bold tracking-widest uppercase"
+                class="px-4 py-3 text-xs font-semibold"
                 style={i === 0 ? 'color: var(--wk-accent-fg)' : ''}
                 class:list={[i === 0 ? '' : 'text-gray-400']}
               >
@@ -191,7 +191,7 @@ const breadcrumbSchema = {
 
   <!-- What the provider is -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.whatItIs.heading}</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">{provider.whatItIs.heading}</h2>
     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-w-xl mb-5">
       {provider.whatItIs.summary}
     </p>
@@ -207,7 +207,7 @@ const breadcrumbSchema = {
 
   <!-- Which to choose -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.chooseHeading}</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">{provider.chooseHeading}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div class="rounded-lg border p-5" style="border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent); background-color: color-mix(in srgb, var(--wk-accent) 3%, transparent);">
         <span class="text-sm font-bold block mb-3 text-gray-900 dark:text-white">
@@ -240,7 +240,7 @@ const breadcrumbSchema = {
 
   <!-- Q&A -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">{provider.faqsHeading}</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">{provider.faqsHeading}</h2>
     <div class="divide-y divide-gray-200 dark:divide-white/10 border-t border-b border-gray-200 dark:border-white/10">
       {provider.faqs.map((f) => (
         <details class="group">
@@ -258,7 +258,7 @@ const breadcrumbSchema = {
 
   <!-- Where to go next -->
   <section class="mb-16">
-    <h2 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-5">Pour aller plus loin</h2>
+    <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-5">Pour aller plus loin</h2>
     <ul class="space-y-2.5">
       {[
         { href: '/fr/voice/alternatives/linphone/', label: 'WaveKat Voice face à Linphone' },

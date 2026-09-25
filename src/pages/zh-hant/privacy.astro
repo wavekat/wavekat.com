@@ -103,7 +103,7 @@ const li = 'flex gap-2.5 text-sm text-gray-600 dark:text-gray-400 leading-relaxe
 const linkCls =
   'text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:text-gray-900 dark:hover:text-white transition-colors';
 const wrap = 'overflow-x-auto rounded-lg border border-gray-200 dark:border-white/10 mb-4';
-const th = 'px-4 py-3 text-[10px] font-bold tracking-widest text-gray-400 uppercase';
+const th = 'px-4 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400';
 const td = 'px-4 py-3 text-xs text-gray-600 dark:text-gray-400 leading-relaxed';
 const tdKey = 'px-4 py-3 text-xs font-bold text-gray-900 dark:text-white';
 const row = 'border-b border-gray-100 dark:border-white/5 last:border-0 align-top';
@@ -137,7 +137,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         class="mb-14 rounded-lg border p-5"
         style="border-color: color-mix(in srgb, var(--wk-accent) 25%, transparent); background-color: color-mix(in srgb, var(--wk-accent) 3%, transparent);"
       >
-        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4">請先了解這三件事</p>
+        <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-4">請先了解這三件事</p>
         <ul class="space-y-3">
           <li class={li} set:html={`${dot}<span>${b('WaveKat Voice 會錄製通話，且錄音預設開啟。')}你是否有權錄製一通電話、是否必須告知對方，取決於你和對方所在的地區。這是你的責任，不是我們的。如果不確定，請告知對方，或者關閉錄音。</span>`} />
           <li class={li} set:html={`${dot}<span>${b('WaveKat 是一個處於公開測試階段的小型獨立專案。')}它不是擁有法遵部門的大公司。請預期會有缺陷、會有變動，並為任何你承受不起遺失的內容自行保留備份。</span>`} />
@@ -149,7 +149,7 @@ const b = (text: string) => `<strong class="font-bold text-gray-900 dark:text-gr
         aria-label="本頁目錄"
         class="mb-14 border-t border-b border-gray-200 py-5 dark:border-white/10"
       >
-        <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">本頁目錄</p>
+        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">本頁目錄</p>
         <ul class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
           {Object.entries(S).map(([id, label]) => (
             <li>
