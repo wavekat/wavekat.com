@@ -1,6 +1,6 @@
 ---
 title: "SIP over TLS: Encrypted Softphone Signaling"
-description: "WaveKat Voice now connects to SIP providers over TLS on port 5061, encrypting SIP signaling on Mac, Windows and Linux. Call audio (RTP) is not encrypted."
+description: "WaveKat Voice now connects to SIP providers over TLS on port 5061, encrypting SIP signaling (registration, calls, transfers) on Mac, Windows and Linux."
 date: 2026-09-26
 author: Eason Guo
 tags: [voice-ai, sip, privacy]
@@ -8,8 +8,6 @@ draft: false
 ---
 
 WaveKat Voice supports SIP over TLS as of [0.0.56](/voice/changelog/#0.0.56). Set a line's **Connection** to `TLS` and the port to `5061`, and all SIP signaling between the softphone and your provider — REGISTER, INVITE, REFER, BYE — goes over an encrypted connection. It works on Mac, Windows and Linux.
-
-The scope, up front: this encrypts signaling, not audio. The RTP media stream is not encrypted.
 
 ## Why we built it
 
@@ -31,8 +29,6 @@ We said we protect your data and didn't, on the link that carries the most about
 | Usual port | 5060 | 5061 |
 
 The authentication row is the one people underestimate. SIP uses Digest authentication ([RFC 3261](https://www.rfc-editor.org/rfc/rfc3261)), so the password itself never crosses the wire — but the `response` in the `Authorization` header is a hash derived from it. Anyone on the same network who captures that packet over UDP can run a dictionary against it offline, and a weak password won't last. Over TLS, there's no packet to capture.
-
-Audio travels as RTP, which TLS doesn't touch, and WaveKat Voice doesn't support SRTP ([RFC 3711](https://www.rfc-editor.org/rfc/rfc3711)). If your concern is someone listening to the call itself, TLS doesn't address it.
 
 ## How certificates are checked
 
@@ -108,10 +104,6 @@ Before shipping, we ran Asterisk 22 in Docker with pjsip on 5061 and a certifica
 UDP has no connection to lose, so a network blip goes unnoticed. TLS is one long-lived connection: if the provider restarts or a router reaps it, the line stays unregistered until you press **Sign in again**. If a line needs to take calls unattended — say, one a [call flow](/blog/answer-calls-with-a-call-flow/) answers overnight — factor that in before switching.
 
 ## FAQ
-
-### Does SIP over TLS encrypt call audio?
-
-No. TLS encrypts SIP signaling only. Audio travels as RTP and needs SRTP to be encrypted; WaveKat Voice doesn't support SRTP.
 
 ### Is TCP on port 5061 the same as TLS?
 

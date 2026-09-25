@@ -1,6 +1,6 @@
 ---
 title: "SIP over TLS：给软电话信令加密"
-description: "WaveKat Voice 现可通过 TLS（端口 5061）连接 SIP 服务商，在 Mac、Windows 和 Linux 上加密登录和通话信息。语音不在加密范围内。"
+description: "WaveKat Voice 现可通过 TLS（端口 5061）连接 SIP 服务商，在 Mac、Windows 和 Linux 上加密注册、呼叫和转接等 SIP 信令。"
 date: 2026-09-26
 author: Eason Guo
 tags: [语音AI, SIP, 隐私]
@@ -8,8 +8,6 @@ lang: "zh-Hans"
 ---
 
 WaveKat Voice 从 [0.0.56](/zh/voice/changelog/#0.0.56) 开始支持 SIP over TLS。线路的**连接方式**选 `TLS`，端口填 `5061`，软电话和服务商之间的注册、呼叫、转接、挂断等 SIP 信令就全部走加密连接。Mac、Windows、Linux 都支持。
-
-先说清楚范围：加密的是信令，不是语音。RTP 语音流不加密。
 
 ## 为什么现在做
 
@@ -31,8 +29,6 @@ WaveKat Voice 从 [0.0.56](/zh/voice/changelog/#0.0.56) 开始支持 SIP over TL
 | 常用端口 | 5060 | 5061 |
 
 认证交换这一行最容易被低估。SIP 用 Digest 认证（[RFC 3261](https://www.rfc-editor.org/rfc/rfc3261)），密码本身不上网，但 `Authorization` 头里的 `response` 是用密码算出来的哈希。在 UDP 上，同一个网络里的人抓到这个包，就可以离线跑字典，弱密码撑不了多久。换成 TLS，这个包就抓不到了。
-
-语音走 RTP，TLS 管不到；WaveKat Voice 也不支持 SRTP（[RFC 3711](https://www.rfc-editor.org/rfc/rfc3711)）。如果你担心的是通话内容被窃听，TLS 解决不了。
 
 ## 证书怎么校验
 
@@ -110,10 +106,6 @@ SIP 消息日志只存在内存里，不写磁盘，退出应用就没了。`Aut
 UDP 没有连接可断，网络抖一下也无所谓。TLS 是一条长连接，服务商重启或者路由器把空闲连接回收了，线路会一直处于未注册状态，直到你在线路上点**重新登录**。如果某条线要无人值守地接电话，比如交给[来电流程](/zh/blog/answer-calls-with-a-call-flow/)通宵接听，切换前要考虑这一点。
 
 ## 常见问题
-
-### SIP over TLS 会加密通话语音吗？
-
-不会。TLS 只加密 SIP 信令，语音走 RTP，需要 SRTP 才能加密，WaveKat Voice 不支持 SRTP。
 
 ### TCP 加 5061 端口算 TLS 吗？
 
