@@ -34,7 +34,7 @@ TLS only stops a man-in-the-middle if certificate checking is strict. Ours:
 
 - **System roots only.** Certificates are checked against your operating system's trusted CA list. Nothing is bundled and there are no exceptions.
 - **Checked against the SIP domain, not the server address.** Even if you've set a separate outbound server, the certificate must be issued for the account's SIP domain, as [RFC 5922](https://www.rfc-editor.org/rfc/rfc5922) requires.
-- **A failure stops the line.** No fallback to plain text, no endless retry on "Connecting…". The line fails, and Technical details shows the reason and the certificate's SHA-256 fingerprint:
+- **A failure stops the line.** No fallback to plain text, no endless retry on "Connecting…". The line fails with the reason and the certificate's SHA-256 fingerprint in its error:
 
 ```
 security certificate not trusted: not signed by a trusted issuer (sha256:5941fb2b…)
@@ -43,6 +43,44 @@ security certificate not trusted: not signed by a trusted issuer (sha256:5941fb2
 The TLS implementation is Rust's `rustls`, so there's no OpenSSL dependency on any platform.
 
 Self-signed certificates and private CAs aren't supported, and there's no "trust this certificate" switch. If your provider uses a private certificate, that line has to stay on UDP or TCP.
+
+## Check your provider's TLS before you switch
+
+Two standard commands tell you whether a line will connect over TLS, before you change anything in the app. Replace `example.com` with your account's SIP domain.
+
+**Find the TLS host and port.** If your provider publishes an SRV record for SIP over TLS ([RFC 3263](https://www.rfc-editor.org/rfc/rfc3263)), it names both:
+
+```sh
+dig +short SRV _sips._tcp.example.com
+# 10 0 5061 sip.example.com.   ← priority, weight, port, host
+```
+
+No answer just means they don't publish one; use the host and port from their documentation.
+
+**Check the certificate the way a strict client does.** Connect to that host, and ask OpenSSL to verify the certificate against your SIP domain:
+
+```sh
+openssl s_client -connect sip.example.com:5061 \
+  -servername example.com -verify_hostname example.com </dev/null
+```
+
+Read the `Verify return code` line near the end:
+
+| Result | Meaning |
+|---|---|
+| `0 (ok)` | Trusted and valid for your SIP domain. The line should connect over TLS |
+| `62 (hostname mismatch)` | The certificate isn't issued for this SIP domain. Check the domain with your provider |
+| `18`, `19` or `20` | Self-signed or from a private CA. Not trusted by your system |
+| Connection refused or timed out | TLS isn't served on that host and port, or a firewall is blocking it |
+
+OpenSSL checks against its own CA bundle. On most Linux systems that's the system store; on a Mac it often isn't, so treat a `20` there as a hint rather than a verdict.
+
+To compare with the fingerprint in WaveKat Voice's certificate error, print the certificate's SHA-256 fingerprint. OpenSSL prints it in uppercase with colons; the hex digits are the same:
+
+```sh
+openssl s_client -connect sip.example.com:5061 -servername example.com </dev/null 2>/dev/null \
+  | openssl x509 -noout -fingerprint -sha256
+```
 
 ## Setting it up
 
@@ -84,18 +122,6 @@ The SIP message log lives in memory only: never written to disk, gone when the a
 | "The secure connection to your provider couldn't be set up" | Wrong port (often 5060), or TLS isn't offered on that hostname | Use the port and hostname from the provider's docs |
 | Won't register at all after switching | `TCP` + `5061`, or a firewall blocking outbound 5061 | Set Connection to `TLS`; allow outbound TCP 5061 |
 | Worked, then stayed unregistered | The TLS connection dropped (provider restart, router reaping idle connections) and wasn't re-established | Press **Sign in again** on the line |
-
-## How we tested it
-
-Before shipping, we ran Asterisk 22 in Docker with pjsip on 5061 and a certificate from a throwaway CA:
-
-| Case | Result |
-|---|---|
-| CA trusted, correct domain | Registered (200); Asterisk shows the contact as `transport=TLS` |
-| Outgoing call | Answered, remote hangup after 3.07 s; every `Via` is `SIP/2.0/TLS` |
-| Incoming call | Rang over the same TLS connection and was answered |
-| CA not trusted | Failed immediately: not signed by a trusted issuer, with fingerprint; no retry |
-| CA trusted, wrong domain | Failed immediately: not valid for this SIP domain |
 
 ## Known limitation: no automatic reconnect after a TLS drop
 

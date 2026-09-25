@@ -34,7 +34,7 @@ TLS 能不能防住中间人，全看证书校验做得严不严。我们的做�
 
 - **只信系统的根证书。** 用操作系统自带的受信任 CA 列表，不内置、不另开例外。
 - **按 SIP 域名校验，而不是按服务器地址。** 即使你另填了出站代理或服务器地址，证书也必须是签给账户 SIP 域名的，这是 [RFC 5922](https://www.rfc-editor.org/rfc/rfc5922) 的要求。
-- **校验失败就停。** 不降级回明文，也不在「正在连接」里无限重试。线路直接报错，技术详情里给出原因和证书的 SHA-256 指纹，比如：
+- **校验失败就停。** 不降级回明文，也不在「正在连接」里无限重试。线路直接报错，错误信息里带着原因和证书的 SHA-256 指纹，比如：
 
 ```
 security certificate not trusted: not signed by a trusted issuer (sha256:5941fb2b…)
@@ -43,6 +43,44 @@ security certificate not trusted: not signed by a trusted issuer (sha256:5941fb2
 TLS 实现用的是 Rust 的 `rustls`，三个平台都不依赖 OpenSSL。
 
 不支持自签名证书和私有 CA，应用里也没有「信任此证书」的开关。服务商如果用的是私有证书，这条线只能用 UDP 或 TCP。
+
+## 切换之前，先检查服务商的 TLS
+
+在应用里改任何设置之前，用两条标准命令就能判断这条线能不能走 TLS。把 `example.com` 换成你账户的 SIP 域名。
+
+**找出 TLS 的主机和端口。** 如果服务商发布了 SIP over TLS 的 SRV 记录（[RFC 3263](https://www.rfc-editor.org/rfc/rfc3263)），里面就写着这两项：
+
+```sh
+dig +short SRV _sips._tcp.example.com
+# 10 0 5061 sip.example.com.   ← 优先级、权重、端口、主机
+```
+
+查不到只说明对方没发布，按服务商文档里的主机和端口来就行。
+
+**像严格的客户端一样检查证书。** 连上这台主机，让 OpenSSL 按你的 SIP 域名校验证书：
+
+```sh
+openssl s_client -connect sip.example.com:5061 \
+  -servername example.com -verify_hostname example.com </dev/null
+```
+
+看输出末尾的 `Verify return code`：
+
+| 结果 | 含义 |
+|---|---|
+| `0 (ok)` | 证书受信任，且对你的 SIP 域名有效，线路应该能走 TLS |
+| `62 (hostname mismatch)` | 证书不是签给这个 SIP 域名的，找服务商核对域名 |
+| `18`、`19` 或 `20` | 自签名或私有 CA 签发，系统不信任 |
+| 连接被拒绝或超时 | 这个主机和端口没有提供 TLS，或者被防火墙拦了 |
+
+OpenSSL 用的是它自己的 CA 证书包。大多数 Linux 上就是系统证书库；在 Mac 上往往不是，所以在 Mac 上看到 `20`，只能当作参考，不能当结论。
+
+想和 WaveKat Voice 证书错误里的指纹对一下，可以打印证书的 SHA-256 指纹。OpenSSL 输出的是带冒号的大写形式，十六进制数字是一样的：
+
+```sh
+openssl s_client -connect sip.example.com:5061 -servername example.com </dev/null 2>/dev/null \
+  | openssl x509 -noout -fingerprint -sha256
+```
 
 ## 配置
 
@@ -86,18 +124,6 @@ SIP 消息日志只存在内存里，不写磁盘，退出应用就没了。`Aut
 | 原本正常，某次之后一直掉线 | TLS 连接断了（服务商重启、路由器回收空闲连接），没有自动重建 | 在线路上点**重新登录** |
 
 （这两条错误提示只有英文，中文界面下也显示英文原文。）
-
-## 我们怎么测的
-
-上线前我们用 Docker 起了一台 Asterisk 22，pjsip 开 5061，证书由一个临时 CA 签发：
-
-| 场景 | 结果 |
-|---|---|
-| CA 受信任，域名正确 | 注册成功（200），Asterisk 侧 contact 为 `transport=TLS` |
-| 外呼 | 接通，3.07 秒后对端挂断，所有 `Via` 均为 `SIP/2.0/TLS` |
-| 来电 | 在同一条 TLS 连接上振铃并接通 |
-| CA 不受信任 | 立即失败：not signed by a trusted issuer，带指纹，无重试 |
-| CA 受信任，域名错误 | 立即失败：not valid for this SIP domain |
 
 ## 已知限制：TLS 断线后不会自动重连
 
