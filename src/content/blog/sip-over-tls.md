@@ -7,60 +7,87 @@ tags: [voice-ai, sip, privacy]
 draft: false
 ---
 
-WaveKat Voice — the SIP softphone for Mac, Windows and Linux that records and transcribes every call — can now connect to your SIP provider over TLS. Set a line's **Connection** to `TLS` and the sign-in, the phone numbers, and every other detail of each call travel to your provider encrypted, instead of as plain text anyone on the network path can read. It lands in [0.0.56](/voice/changelog/#0.0.56).
+SIP over TLS encrypts the connection between your phone and your SIP provider, so the sign-in exchange, the numbers you call, and every call-control message travel scrambled instead of as plain text. It usually runs on port 5061 instead of 5060. It does **not** encrypt the call's audio — that's a separate protocol. As of [0.0.56](/voice/changelog/#0.0.56), WaveKat Voice — the SIP softphone for Mac, Windows and Linux that records and transcribes every call — supports it on any line.
 
-The same release adds a **Technical details** page for every line, which shows what the line is *actually* doing on the wire. The two belong together: a security setting you can't verify is a setting you have to take on faith, and we'd rather you didn't have to.
+This post covers what TLS actually protects, whether it's worth switching, how to set it up, how to confirm it's working, and what goes wrong — including the parts we haven't finished.
 
-## What SIP over TLS encrypts — and what it doesn't
+## What SIP over TLS encrypts, and what it doesn't
 
-SIP over TLS encrypts the SIP signaling between WaveKat Voice and your provider: the messages that sign your line in, ring a phone, answer, transfer, and hang up. It does not encrypt the call audio itself, which travels separately. Here is the split, plainly:
+SIP over TLS encrypts SIP signaling: the messages that sign a line in, ring a phone, answer, hold, transfer and hang up. Audio travels separately (as RTP) and is unaffected.
 
 | | UDP / TCP | TLS |
 |---|---|---|
-| **Your SIP sign-in (username, auth exchange)** | Readable on the network | Encrypted |
+| **Sign-in exchange** | Readable on the network | Encrypted |
 | **Who called whom, and when** | Readable on the network | Encrypted |
-| **Call control — hold, transfer, hang-up** | Readable on the network | Encrypted |
-| **The call's audio** | Not encrypted | Not encrypted (yet) |
-| **Checks it's really your provider** | No | Yes — the server's certificate is verified |
+| **Hold, transfer, hang-up** | Readable on the network | Encrypted |
+| **The call's audio** | Not encrypted | Not encrypted |
+| **Proves the server is really your provider** | No | Yes — its certificate is checked |
 | **Usual port** | `5060` | `5061` |
 
-In SIP terms, TLS protects the signaling channel; encrypting the audio is a separate protocol (SRTP) that WaveKat Voice doesn't speak yet. We'd rather say that in the first table on the page than have you discover it later. Your SIP password was never sent in the clear on any transport — SIP uses a challenge-and-response — but on UDP and TCP the exchange around it, and everything about your calls, is readable by anyone between you and your provider. TLS closes that.
+The sign-in row is the one people underestimate. SIP never sends your password itself — it uses a challenge-and-response ([RFC 3261](https://www.rfc-editor.org/rfc/rfc3261)) — but on UDP or TCP anyone on the network path can capture that exchange and try guesses against it offline, as fast as their hardware allows. A short or reused SIP password falls to that quickly. TLS takes the exchange off the wire entirely.
 
-## How to turn on TLS for a SIP line
+Encrypting the audio takes SRTP ([RFC 3711](https://www.rfc-editor.org/rfc/rfc3711)), which WaveKat Voice doesn't support yet. If your concern is someone listening to the conversation itself, TLS alone doesn't address it.
 
-Turning on TLS is one setting on a line you already have. Open the line in WaveKat Voice, set **Connection** to `TLS`, and use the port your provider documents for TLS — usually `5061`, which the app suggests as soon as you pick TLS. Nothing else about the line changes: same account, same number, same provider.
+## Should you switch a line to TLS?
 
-Your provider has to support SIP over TLS for this to work. Many business SIP providers and PBXs do, often on a separate hostname or port — check their setup guide before you switch. If they don't, leave the line on `UDP`, which is what most providers expect by default.
+Switch to TLS if your provider supports it and any of these apply:
 
-The line's settings back up to your WaveKat account like any other, so a TLS line stays a TLS line when you sign in on another computer.
+- **You make calls from networks you don't control** — a café, a coworking space, a hotel, a client's office. Those are exactly the paths where someone can capture the sign-in exchange.
+- **Your SIP password is weak or used elsewhere**, and you can't easily change it.
+- **Your router has a "SIP ALG" feature that's causing sign-in trouble.** SIP ALG rewrites unencrypted SIP messages on their way through the router and is a well-known cause of lines that won't stay signed in. It can't read TLS, so it leaves it alone.
+- **Someone — a client, an auditor, an IT policy — asks whether your phone traffic is encrypted.** TLS lets you say yes for signaling, and be precise that audio is a separate question.
 
-## Why WaveKat Voice refuses a certificate it can't verify
+Stay on UDP if your provider doesn't offer TLS, or if you need a line that recovers from network drops on its own (see [what we haven't finished](#what-we-tested-and-what-we-havent-finished) below).
 
-A TLS connection is only as good as the certificate behind it, so WaveKat Voice checks your provider's certificate against your computer's own list of trusted authorities, and checks that it was issued for your account's **SIP domain** — even when you've entered a separate server address to connect through. That's the rule the SIP standard sets out for TLS (RFC 5922), and it's what stops someone in the middle from impersonating your provider.
+## How to set up SIP over TLS
 
-If the check fails, the line doesn't connect, and it tells you so at once: *"Your provider's server didn't prove it is who it says it is."* It does not quietly fall back to an unencrypted connection, and it does not sit on "Connecting…" retrying forever. The **Technical details** page gives the exact reason — an untrusted issuer, or a certificate for a different domain — along with the certificate's fingerprint, which is what your provider's support team will ask for.
+1. **Check that your provider offers SIP over TLS**, and note the hostname and port from their setup guide. Most use port `5061`; some use a separate hostname for TLS. For example, the NZ provider 2talk documents SIP over TLS on port `5061`.
+2. **Open the line in WaveKat Voice** and set **Connection** to `TLS`. The port field suggests `5061` as soon as you pick it.
+3. **Make sure the account's domain is exactly the one your provider gave you.** The certificate is checked against that domain, not against a server address you entered separately.
+4. **Save.** The line signs in again over TLS; the account, number and everything else stay the same.
 
-The most common cause is a domain that's slightly off: the certificate is checked against the account's domain, so it has to be exactly the one your provider gave you. If your provider uses a certificate of its own rather than one from a public authority, ask them how their customers connect securely.
+One mistake is common enough to call out: setting Connection to `TCP` and the port to `5061` is **not** TLS. It sends unencrypted traffic to a port that expects an encrypted handshake, and the line simply won't sign in. Pick `TLS`.
 
-## See what a line is really doing
+The line's settings back up to your WaveKat account like any other, so it stays a TLS line when you sign in on another computer.
 
-Every line now has a **Technical details** page, one link under its connection details. It lists each setting with the value that's *in effect* on the live connection — not the value you typed — and points out any setting that didn't take effect. Below that are the SIP messages the line has sent and received, newest first, each expanding to the full text, with a button that copies everything for a support request.
+## How to check that a line is really using TLS
+
+Open the line and follow the **Technical details** link under its connection details. That page shows the settings actually *in effect* on the live connection — not the ones you typed — so it's the place to confirm TLS rather than assume it:
+
+- **Connection** reads `TLS`.
+- **Reachable at** ends in `;transport=tls`.
+- In **SIP messages**, each message's `Via` header starts with `SIP/2.0/TLS`.
 
 ![WaveKat Voice on Ubuntu — a line's Technical details page, showing the connection in effect is TLS and the device is reachable at transport=tls.](/screenshots/line-technical-details-tls/en.webp)
 
-That page exists because of a bug it would have caught in a minute. Until this release, setting a line's Connection to `TCP` quietly used UDP underneath, and every screen in the app agreed the line was on TCP — because every screen read the *setting*, and none read the connection. That's fixed in 0.0.56, and it's why the page compares the two side by side: when you switch a line to TLS, you can see the messages going out over TLS instead of hoping they are.
+Comparing what's in effect with what's configured is not a formality. Until 0.0.56, a line set to `TCP` quietly used UDP underneath, and every screen agreed it was on TCP because every screen read the setting. That's fixed, and this page is how we'd have caught it in a minute.
 
-The message log stays in memory on your computer: it's never written to disk and is gone when the app quits. Before a message reaches the page, the one value derived from your SIP password — the digest response in the authorization header — is blanked, so a copied log is safe to paste into an email.
+The message log is kept in memory only — never written to disk, gone when the app quits — and the password-derived digest in each authorization header is blanked before it's shown, so a copied log is safe to paste into a support email.
 
-This is all built into [our own SIP engine](/blog/our-own-sip-engine/), which is open source; its TLS support uses the Rust `rustls` library, so there's no OpenSSL to install or keep patched on any of the three platforms.
+## Troubleshooting SIP over TLS
 
-## Also in 0.0.56
+| What you see | Likely cause | What to do |
+|---|---|---|
+| *"Your provider's server didn't prove it is who it says it is"* | The account's domain doesn't match the provider's certificate, or the provider uses a private certificate | Use the exact domain your provider gave you. If they use their own certificate, ask how customers connect securely |
+| *"The secure connection to your provider couldn't be set up"* | Wrong port (often `5060`), or TLS isn't offered on that hostname | Use the TLS port and hostname from your provider's guide |
+| The line won't sign in at all after switching | Connection is `TCP` with port `5061`, or a firewall blocks outbound `5061` | Set Connection to `TLS`; allow outbound TCP on the TLS port |
+| The line was fine, then went signed out and stayed that way | The TLS connection dropped (provider restart, router closing an idle connection) and wasn't rebuilt | Press **Sign in again** on the line |
 
-- **Voicemail you notice.** When a caller leaves a message with your [call flow](/blog/answer-calls-with-a-call-flow/), you now get a notification, and History marks messages you haven't opened yet.
-- **Language from the account menu.** Change the app's language from the menu under your name at the bottom of the sidebar.
-- **Model download progress.** Settings → AI shows a progress bar while a transcription model downloads.
+For a certificate error, **Technical details** shows the exact reason — an untrusted issuer, or a certificate for another domain — and the certificate's SHA-256 fingerprint, which is what a provider's support team will ask for. WaveKat Voice never falls back to an unencrypted connection when a certificate fails, and doesn't sit retrying on "Connecting…"; it stops and says why. That behaviour follows [RFC 5922](https://www.rfc-editor.org/rfc/rfc5922), the standard for checking a SIP server's identity.
 
-The full list is in the [changelog](/voice/changelog/#0.0.56).
+## What we tested, and what we haven't finished
+
+We tested TLS against a real Asterisk 22 server with a certificate from a throwaway certificate authority, before shipping:
+
+| Test | Result |
+|---|---|
+| Trusted certificate, correct domain | Signed in; the server saw the device on TLS |
+| Outgoing call | Answered and hung up normally; every message went over TLS |
+| Incoming call | Rang over the same TLS connection and was answered |
+| Certificate from an untrusted authority | Refused at once, with the reason and fingerprint; no retry loop |
+| Trusted certificate, wrong domain | Refused at once: not valid for this SIP domain |
+
+What isn't finished: **a TLS line doesn't yet rebuild its connection on its own after it drops.** UDP has no connection to lose, so a network blip goes unnoticed; TLS keeps one connection open, and if the provider restarts or a router closes it, the line stays signed out until you press **Sign in again**. Automatic reconnection is the next piece of work on [our SIP engine](/blog/our-own-sip-engine/). If a line must keep taking calls unattended — say, one a [call flow](/blog/answer-calls-with-a-call-flow/) answers overnight — weigh that before switching.
 
 ## Frequently asked questions
 
@@ -76,18 +103,22 @@ No. SIP over TLS encrypts the signaling — your sign-in, the numbers, and call 
 
 SIP over TLS usually uses port 5061, while unencrypted SIP uses 5060. Some providers use a different port or hostname for TLS, so check your provider's setup guide.
 
-### Why does my TLS line say the server didn't prove who it is?
+### Is setting TCP with port 5061 the same as TLS?
 
-WaveKat Voice couldn't verify your provider's security certificate, so it refused to connect rather than connect insecurely. Check that the account's domain is exactly the one your provider gave you; the line's **Technical details** page shows the precise reason and the certificate's fingerprint.
+No. TCP on port 5061 sends unencrypted SIP to a port expecting an encrypted handshake, so the line won't sign in. In WaveKat Voice, set Connection to `TLS`.
+
+### How do I know my SIP line is actually encrypted?
+
+Open the line's **Technical details** page in WaveKat Voice. Connection should read `TLS`, the "Reachable at" address should end in `;transport=tls`, and the SIP messages should show `Via: SIP/2.0/TLS`.
 
 ### Can I use a self-signed certificate with WaveKat Voice?
 
-Not from inside the app. WaveKat Voice trusts the certificate authorities your computer already trusts, so a provider or PBX using its own private certificate won't connect over TLS. Ask your provider how their customers connect securely, or use UDP.
+Not from inside the app. WaveKat Voice trusts the certificate authorities your computer already trusts, so a provider or PBX using its own private certificate won't connect over TLS. Ask your provider how customers connect securely, or use UDP.
 
 ### Is SIP over TLS the same as end-to-end encryption?
 
-No. TLS encrypts the connection between WaveKat Voice and your provider only; your provider can still see the call's details, and beyond its network the call travels however the rest of the phone system carries it. End-to-end encryption needs both ends to support it, which ordinary phone calls don't.
+No. TLS encrypts only the connection between WaveKat Voice and your provider. Your provider still sees the call's details, and beyond its network the call travels however the phone system carries it.
 
 ## Try it
 
-[Download WaveKat Voice](/voice/download/) — or update to [0.0.56](/voice/changelog/#0.0.56) — then open a line, set Connection to `TLS`, and check **Technical details** to watch it sign in over an encrypted connection. The [SIP setup guide](/docs/voice/sip-trunks/) covers every other connection setting.
+[Download WaveKat Voice](/voice/download/) — or update to [0.0.56](/voice/changelog/#0.0.56) — then open a line, set Connection to `TLS`, and check **Technical details** to confirm it. The [SIP setup guide](/docs/voice/sip-trunks/) covers every other connection setting.
