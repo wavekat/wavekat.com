@@ -85,6 +85,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       prose-a:text-gray-600 dark:prose-a:text-gray-400 prose-a:underline prose-a:underline-offset-2
       prose-strong:text-gray-900 dark:prose-strong:text-gray-200
       prose-code:text-gray-700 dark:prose-code:text-gray-400
+      prose-code:before:content-none prose-code:after:content-none
+      [&_:not(pre)>code]:bg-gray-100 dark:[&_:not(pre)>code]:bg-white/10 [&_:not(pre)>code]:rounded
+      [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-normal
       prose-pre:bg-gray-50 dark:prose-pre:bg-wk-surface prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-white/10">
       <slot />
     </article>

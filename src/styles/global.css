@@ -60,6 +60,15 @@
     font-family: var(--font-mono);
   }
 
+  /* Code blocks carry both Shiki themes (astro.config.mjs): light inline,
+     dark as --shiki-dark vars. Switch on the site's .dark class rather than
+     prefers-color-scheme, so they follow the visitor's toggle. */
+  .dark .astro-code,
+  .dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+
   ::selection {
     background-color: rgb(45 91 255 / 0.25);
   }
