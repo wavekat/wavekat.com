@@ -86,6 +86,7 @@ const fullSite = [
   '/blog/answer-calls-with-a-call-flow/',
   '/blog/why-phone-links-dont-work/',
   '/blog/log-calls-in-hubspot/',
+  '/blog/sip-over-tls/',
   '/about/',
   '/privacy/',
   '/terms/',

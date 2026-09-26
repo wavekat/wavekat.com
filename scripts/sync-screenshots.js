@@ -89,6 +89,9 @@ const SCENES = [
   { name: "integrations-hubspot", source: "platform" }, // connected, in its catalogue
   { name: "integrations-hubspot-options", source: "platform" }, // the four sync switches
   { name: "call-in-hubspot", source: "platform" }, // a call with its "In HubSpot" badge
+  // SIP over TLS (the TLS blog post): a line's Technical details page showing
+  // the connection actually in effect is TLS.
+  { name: "line-technical-details-tls", source: "voice", frame: "ubuntu" },
 ];
 
 // The nine shipped interface languages, by wavekat.com locale `code` — exactly
