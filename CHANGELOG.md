@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.70](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.69...wavekat-com-v0.0.70) (2026-09-26)
+
+
+### Features
+
+* SIP over TLS blog post ([#204](https://github.com/wavekat/wavekat.com/issues/204)) ([be88e25](https://github.com/wavekat/wavekat.com/commit/be88e25449e6f848a3600a71cd7d1bb255c72991))
+
+
+### Bug Fixes
+
+* readable code blocks in light mode ([#205](https://github.com/wavekat/wavekat.com/issues/205)) ([1e3e79f](https://github.com/wavekat/wavekat.com/commit/1e3e79fb06c648026caf3e8b9b7da8752aa389c3))
+
 ## [0.0.69](https://github.com/wavekat/wavekat.com/compare/wavekat-com-v0.0.68...wavekat-com-v0.0.69) (2026-09-25)
 
 
