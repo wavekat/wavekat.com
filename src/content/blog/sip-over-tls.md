@@ -186,7 +186,7 @@ No. That sends plain-text SIP to a TLS port, and registration fails. Set Connect
 
 ### Which TLS versions are supported?
 
-TLS 1.2 and TLS 1.3. WaveKat Voice's TLS is built on `rustls`, which doesn't support the obsolete TLS 1.0 and 1.1, so a server that only offers those can't connect.
+TLS 1.2 and TLS 1.3, the two versions considered secure today. TLS 1.0 and 1.1 date from 1999 and 2006, rely on broken algorithms such as MD5 and SHA-1, and were formally deprecated by the IETF in 2021 ([RFC 8996](https://www.rfc-editor.org/rfc/rfc8996)); major browsers dropped them years ago. Leaving them out means a connection can't be downgraded to an insecure protocol. In practice it costs nothing: current SIP providers support TLS 1.2 or later, and 2talk, in our test above, negotiated TLS 1.3.
 
 ### Do I need port forwarding on my router with TLS?
 
