@@ -86,6 +86,7 @@ const fullSite = [
   '/blog/answer-calls-with-a-call-flow/',
   '/blog/why-phone-links-dont-work/',
   '/blog/log-calls-in-hubspot/',
+  '/blog/sip-over-tls/',
   '/about/',
   '/privacy/',
   '/terms/',
@@ -94,9 +95,7 @@ const fullSite = [
 // Which base paths exist in which non-default locale. The default locale is
 // assumed to have every path. Add a path here when you translate that page.
 export const translatedRoutes: Record<string, string[]> = {
-  // /blog/sip-over-tls/ is zh-only while its other translations are in review;
-  // it moves into fullSite once every locale ships it.
-  'zh-Hans': [...fullSite, '/blog/sip-over-tls/'],
+  'zh-Hans': fullSite,
   'zh-Hant': fullSite,
   ja: fullSite,
   ko: fullSite,
