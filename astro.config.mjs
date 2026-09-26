@@ -189,6 +189,13 @@ export default defineConfig({
   // processor, so the package is an explicit dependency — drop it and the
   // config fails validation before the build starts.
   markdown: {
+    // Light and dark Shiki themes, switched by the `.dark` class on <html>
+    // (see `.astro-code` in global.css). A single dark theme hard-codes a
+    // dark background that the prose text colour then renders unreadable on
+    // in light mode.
+    shikiConfig: {
+      themes: { light: 'github-light', dark: 'github-dark' },
+    },
     rehypePlugins: [
       rehypeRewriteDocLinks(),
       rehypeVersionAnchors(),
